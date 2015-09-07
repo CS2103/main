@@ -1,0 +1,4 @@
+toCheckTaskName = taskname
+toCheckStart = taskstart
+toCheckPriority = taskpriority
+toCheckEnd = taskend
