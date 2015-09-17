@@ -1,6 +1,12 @@
 
 Java class Parser
 
+int getStartingYear()
+int getStartingMonth()
+int getStartingDate()
+int getEndingDate()
+int getEndingMonth()
+int getEndingYear()
 Date getStartingDate()
 Date getEndingDate()
 Time getStartingTime()
