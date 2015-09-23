@@ -1,0 +1,27 @@
+
+Java class Parser
+
+int getStartingYear()
+int getStartingMonth()
+int getStartingDate()
+int getEndingDate()
+int getEndingMonth()
+int getEndingYear()
+Date getStartingDate()
+Date getEndingDate()
+Time getStartingTime()
+Time getEndTime()
+String getDescription()
+String getTitle()
+boolean getStatus()
+String returnCommand()
+
+
+void store(ArrayList<Task>)
+ArrayList<Task> read()
+
+void retrieve(Task task)
+
+TaskBin search()
+
+void delete(String title)
