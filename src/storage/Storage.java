@@ -45,4 +45,31 @@ public class Storage {
 	public static void setPath(Path path) {
 		Storage.path = path;
 	}
+	
+	private static void readFromFile(File file){
+		BufferedReader br = null;
+		try {
+			if (!file.exists()) {
+				file.createNewFile();
+			}
+			br = new BufferedReader(new FileReader(file));
+			String newLine;
+			while ((newLine = br.readLine()) != null) {
+				texts.add(newLine);
+			}
+		} catch (FileNotFoundException e) {
+		} catch (IOException e) {
+			System.exit(-1);
+		} finally {
+			try {
+				if (br != null) {
+					br.close();
+				}
+			} catch (IOException ex) {
+				System.exit(-1);
+			}
+		}
+		
+	}
+
 }
