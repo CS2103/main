@@ -251,13 +251,14 @@ public class Constants {
 	public static int NOT_FOUND = -1;
 
 	// keywords
-	public static final String[] KEYWORDS = { "at", "on", "by", "from" };
+	public static final String[] KEYWORDS = { "at", "on", "by", "from", "till" };
 
 	// index of keywords
 	public static final int INDEX_KEYWORD_AT = 0;
 	public static final int INDEX_KEYWORD_ON = 1;
 	public static final int INDEX_KEYWORD_BY = 2;
 	public static final int INDEX_KEYWORD_FROM = 3;
+	public static final int INDEX_KEYWORD_TILL = 4;
 
 	// regex
 	public static final String REGEX_ONE_OR_MORE_SPACES = "\\s+";
