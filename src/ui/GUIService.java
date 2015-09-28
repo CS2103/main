@@ -28,7 +28,6 @@ import javafx.stage.StageStyle;
 import logic.Task;
 import logic.TaskHandler;
 import parser.Parser;
-import storage.Storage;
 
 public class GUIService {
 
@@ -176,9 +175,9 @@ public class GUIService {
 		} else if (event.getCode()==KeyCode.ENTER) {
 			Task newTask = new Task(taskView.titleField.getText());			// refactor this
 			TaskHandler.addTask(newTask);									//
-			Storage.write(newTask.taskDetails());
+			//Storage.write(newTask.taskDetails());
 			showConsolePane();
-			printToConsole(newTask.taskDetails(), Constants.CALIBRI_BOLD_16);
+			//printToConsole(newTask.taskDetails(), Constants.CALIBRI_BOLD_16);
 		}
 	}
 
