@@ -11,33 +11,16 @@ import application.Constants;
 
 public class Parser {
 
-	private String input;
-	private String command;
-
-	// Constructors
-	public Parser() {
-		this("");
+	
+	public Parser(){
+		
 	}
-
-	public Parser(String input) {
-		this.input = input.toLowerCase();
-		this.command = "";
-	}
-
-	// Mutators
-	public String getInput() {
-		return input;
-	}
-
-	public String getComm() {
-		return command;
-	}
-
+	
 	// Methods
 	public String getCommandName(String input) {
 		String[] words;
 		words = input.split(" ");
-		command = words[0].trim();
+		String command = new String(words[0].trim());
 
 		return command;
 
@@ -45,11 +28,12 @@ public class Parser {
 
 	public String getDescription(String input) {
 
+		String command = new String(input);
 		String parameter = input;
 
 		// from
 		Pattern patternFrom = Pattern.compile(Constants.REGEX_KEYWORDS[Constants.INDEX_KEYWORD_FROM]);
-		Matcher matchFrom = patternFrom.matcher(getInput());
+		Matcher matchFrom = patternFrom.matcher(input);
 
 		while (matchFrom.find()) {
 			parameter = parameter.substring(0, matchFrom.end());
@@ -57,7 +41,7 @@ public class Parser {
 
 		// on
 		Pattern patternOn = Pattern.compile(Constants.REGEX_KEYWORDS[Constants.INDEX_KEYWORD_ON]);
-		Matcher matchOn = patternOn.matcher(getInput());
+		Matcher matchOn = patternOn.matcher(input);
 
 		while (matchOn.find()) {
 			parameter = parameter.substring(0, matchOn.end());
@@ -65,7 +49,7 @@ public class Parser {
 
 		// by
 		Pattern patternBy = Pattern.compile(Constants.REGEX_KEYWORDS[Constants.INDEX_KEYWORD_BY]);
-		Matcher matchBy = patternBy.matcher(getInput());
+		Matcher matchBy = patternBy.matcher(input);
 
 		while (matchBy.find()) {
 			parameter = parameter.substring(0, matchBy.end());
@@ -73,7 +57,7 @@ public class Parser {
 
 		// till
 		Pattern patternTill = Pattern.compile(Constants.REGEX_KEYWORDS[Constants.INDEX_KEYWORD_TILL]);
-		Matcher matchTill = patternTill.matcher(getInput());
+		Matcher matchTill = patternTill.matcher(input);
 
 		while (matchTill.find()) {
 			parameter = parameter.substring(0, matchTill.end());
@@ -109,7 +93,7 @@ public class Parser {
 
 		// from
 		Pattern patternFrom = Pattern.compile(Constants.REGEX_KEYWORDS[Constants.INDEX_KEYWORD_FROM]);
-		Matcher matchFrom = patternFrom.matcher(getInput());
+		Matcher matchFrom = patternFrom.matcher(input);
 
 		while (matchFrom.find()) {
 			parameter = parameter.substring(matchFrom.end());
@@ -129,7 +113,7 @@ public class Parser {
 
 		// on
 		Pattern patternOn = Pattern.compile(Constants.REGEX_KEYWORDS[Constants.INDEX_KEYWORD_ON]);
-		Matcher matchOn = patternOn.matcher(getInput());
+		Matcher matchOn = patternOn.matcher(input);
 
 		while (matchOn.find()) {
 			parameter = parameter.substring(matchOn.end());
@@ -137,7 +121,7 @@ public class Parser {
 
 		// by
 		Pattern patternBy = Pattern.compile(Constants.REGEX_KEYWORDS[Constants.INDEX_KEYWORD_BY]);
-		Matcher matchBy = patternBy.matcher(getInput());
+		Matcher matchBy = patternBy.matcher(input);
 
 		while (matchBy.find()) {
 			parameter = parameter.substring(matchBy.end());
@@ -145,7 +129,7 @@ public class Parser {
 
 		// till
 		Pattern patternTill = Pattern.compile(Constants.REGEX_KEYWORDS[Constants.INDEX_KEYWORD_TILL]);
-		Matcher matchTill = patternTill.matcher(getInput());
+		Matcher matchTill = patternTill.matcher(input);
 
 		while (matchTill.find()) {
 			parameter = parameter.substring(matchTill.end());
