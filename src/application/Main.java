@@ -53,6 +53,7 @@ public class Main extends Application{
 	@Override
 	public void start(Stage stage) {
 
+		Parser myParser = new Parser();
 		content = new StackPane();
 		consolePane = new Pane();
 		taskPane = new Pane();
@@ -138,7 +139,7 @@ public class Main extends Application{
 		printToConsole(Constants.WELCOME_MESSAGE, Constants.CALIBRI_BOLD_14);
 
 		inputConsole.textProperty().addListener((observable, oldValue, newValue) -> {
-			System.out.println("textfield changed from " + oldValue + " to " + newValue);
+			System.out.println("textfield changed from " + oldValue + " to " + newValue);//debug
 			if (newValue.equalsIgnoreCase("exit")) {
 				System.exit(0);
 			}
@@ -158,11 +159,13 @@ public class Main extends Application{
 			@Override
 			public void handle(ActionEvent event) {
 				String input = inputConsole.getText();
-				System.out.println("[Parsed] the command is : " + Parser.getCommandName(input));
-				if (Parser.getCommandName(input).trim().equals("add")) {
-					System.out.println("displaying taskpane");
+				System.out.println("[Parsed] the command is : " + myParser.getCommandName(input));//debug
+				if (myParser.getCommandName(input).trim().equals("add")) {
+					System.out.println("displaying taskpane");//debug
 					showTaskPane();
-					titleField.setText(Parser.getDescription(input));
+					//titleField.setText("hello");
+					//titleField.setText(myParser.getDescription(input));
+					System.out.println(myParser.getDescription(input));
 				}
 				inputConsole.clear();
 
