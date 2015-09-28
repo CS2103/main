@@ -4,3 +4,5 @@
 -finalise type of storage file (plain text, json, xml, ser, yaml, ...)<br>
 --XML (Extensible Markup Language): general purpose, better when loading a whole document than a small struct, existing parser and tool libraries, useful when sharing info between different environments. Disadvatages: complex syntax, difficult to read --> difficult to debug<br?
 --JSON (JavaScript Object Notation): existing libraries, human-readbable, better when loading a struct, serialize a data structure that’s not too text-heavy and all you want is for the receiver to get the same data structure with minimal effort<br>
+--SER reference https://github.com/cs2103aug2014-t15-3j/main/tree/master/Storage <br>
+--XML reference https://github.com/cs2103aug2014-t11-3j/main/tree/linh-dev/src/storage <br>
