@@ -270,7 +270,7 @@ public class Constants {
 	public static final String REGEX_AT_SPACE_WORD_START = "\\bat\\b\\s\\b";
 	public static final String REGEX_WORD_END_1SPACE_WORD_START = "\\b\\s\\b";
 	public static final String REGEX_WORD_END_SPACES_WORD_START = "\\b\\s*\\b";
-	public static final String[] REGEX_KEYWORDS = { "\\bat\\b", "\\bon\\b", "\\bby\\b", "\\bfrom\\b" };
+	public static final String[] REGEX_KEYWORDS = { "\\bat\\b", "\\bon\\b", "\\bby\\b", "\\bfrom\\b", "\\btill\\b" };
 
 	// space
 	public static final String SPACE = " ";

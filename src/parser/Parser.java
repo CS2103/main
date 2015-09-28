@@ -28,7 +28,7 @@ public class Parser {
 
 	public String getDescription(String input) {
 
-		String command = new String(input);
+		String command = new String(getCommandName(input));
 		String parameter = input;
 
 		// from
