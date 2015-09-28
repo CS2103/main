@@ -1,5 +1,6 @@
 package application;
 
+import java.text.ParseException;
 import java.util.Collections;
 
 import javafx.application.Application;
@@ -164,8 +165,15 @@ public class Main extends Application{
 					System.out.println("displaying taskpane");//debug
 					showTaskPane();
 					//titleField.setText("hello");
-					//titleField.setText(myParser.getDescription(input));
-					System.out.println(myParser.getDescription(input));
+					titleField.setText(myParser.getDescription(input));
+					//System.out.println(myParser.getDescription(input));
+					try {
+						startField.setText(myParser.getEndDate(input).toString());
+					} catch (ParseException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+
 				}
 				inputConsole.clear();
 
