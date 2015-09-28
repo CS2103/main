@@ -11,8 +11,8 @@ import application.Constants;
 
 public class Parser {
 
-	private static String input;
-	private static String command;
+	private String input;
+	private String command;
 
 	// Constructors
 	public Parser() {
@@ -25,16 +25,16 @@ public class Parser {
 	}
 
 	// Mutators
-	public static String getInput() {
+	public String getInput() {
 		return input;
 	}
 
-	public String getCommand() {
+	public String getComm() {
 		return command;
 	}
 
 	// Methods
-	public static String getCommandName(String input) {
+	public String getCommandName(String input) {
 		String[] words;
 		words = input.split(" ");
 		command = words[0].trim();
@@ -43,7 +43,7 @@ public class Parser {
 
 	}
 
-	public static String getDescription(String input) {
+	public String getDescription(String input) {
 
 		String parameter = input;
 
