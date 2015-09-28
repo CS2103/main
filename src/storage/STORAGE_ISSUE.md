@@ -1,4 +1,4 @@
--better to have a StorageMain interface (containing only loadTasks() and saveTasks());
+-better to have a StorageMain interface (containing only loadTasks() and saveTasks());<br>
 -create other classes to implement StorageMain
 -finalise on type of structures to store Tasks (ArrayList or LinkedList or create our own structure?) (can ArrayList do Undo?)
 -finalise type of storage file (plain text, json, xml, ser, ...)
