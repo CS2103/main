@@ -11,16 +11,19 @@ public class Task {
 	private Date endingDate;
 	private Time startingTime;
 	private Time endingTime;
+	private boolean isFinished;
 	
 	public Task(String title){
 		this.title = title;
 		description = new String();
 		numberOfTask++;
+		isFinished = false;
 	}
 	public Task(String title, String description){
 		this.title = title;
 		this.description = description;
 		numberOfTask++;
+		isFinished = false;
 	}
 	public void setStartingDate(Date date){
 		startingDate = date;
@@ -60,6 +63,14 @@ public class Task {
 	}
 	public int getTaskCount(){
 		return numberOfTask;
+	}
+	public void mark(){
+		isFinished = true;
+		numberOfTask--;
+	}
+	
+	public boolean getStatus(){
+		return isFinished;
 	}
 	
 
