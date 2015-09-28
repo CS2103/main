@@ -10,6 +10,8 @@ import javafx.scene.text.FontWeight;
 
 public class Constants {
 
+	public static final String APP_NAME = "TextBuddyAwesome";
+
 	public static final String WELCOME_MESSAGE = "Welcome to TaskBuddyAwesome. \n"
 			+ "To view available commands type HELP and hit enter.\n";
 	// Limit for number of days before current day for which task without year
@@ -270,7 +272,7 @@ public class Constants {
 	public static final String REGEX_AT_SPACE_WORD_START = "\\bat\\b\\s\\b";
 	public static final String REGEX_WORD_END_1SPACE_WORD_START = "\\b\\s\\b";
 	public static final String REGEX_WORD_END_SPACES_WORD_START = "\\b\\s*\\b";
-	public static final String[] REGEX_KEYWORDS = { "\\bat\\b", "\\bon\\b", "\\bby\\b", "\\bfrom\\b" };
+	public static final String[] REGEX_KEYWORDS = { "\\bat\\b", "\\bon\\b", "\\bby\\b", "\\bfrom\\b", "\\btill\\b" };
 
 	// space
 	public static final String SPACE = " ";
@@ -306,8 +308,8 @@ public class Constants {
 	final static Font TREBUCHET_BOLD_16 = Font.font("Trebuchet MS", FontWeight.BOLD, 16);
 	final static Font TREBUCHET_16 = Font.font("Trebuchet MS", 16);
 	final static Font CALIBRI_14 = Font.font("Calibri", 14);
-	final static Font CALIBRI_BOLD_14 = Font.font("Calibri", FontWeight.BOLD, 14);
-	final static Font CALIBRI_BOLD_16 = Font.font("Calibri", FontWeight.BOLD, 16);
+	public final static Font CALIBRI_BOLD_14 = Font.font("Calibri", FontWeight.BOLD, 14);
+	public final static Font CALIBRI_BOLD_16 = Font.font("Calibri", FontWeight.BOLD, 16);
 	final static Font CALIBRI_16 = Font.font("Calibri", 16);
 	final static Font TAHOMA_14 = Font.font("Tahoma", 14);
 

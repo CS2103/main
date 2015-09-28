@@ -1,3 +1,26 @@
+/**
+ * This class:
+ * Extracts important parameters from the user's raw input
+ * Use flexi-commands
+ *
+ * int getStartingYear()
+ * int getStartingMonth()
+ * int getStartingDate()
+ * int getEndingDate()
+ * int getEndingMonth()
+ * int getEndingYear()
+ * Date getStartingDate()
+ * Date getEndingDate()
+ * Time getStartingTime()
+ * Time getEndTime()
+ * String getDescription()
+ * String getTitle()
+ * boolean getStatus()
+ * String returnCommand()
+ *
+ * from a String input
+ */
+
 package parser;
 
 import java.text.DateFormat;
@@ -11,45 +34,29 @@ import application.Constants;
 
 public class Parser {
 
-	private static String input;
-	private static String command;
 
-	// Constructors
-	public Parser() {
-		this("");
-	}
+	public Parser(){
 
-	public Parser(String input) {
-		this.input = input.toLowerCase();
-		this.command = "";
-	}
-
-	// Mutators
-	public static String getInput() {
-		return input;
-	}
-
-	public String getCommand() {
-		return command;
 	}
 
 	// Methods
-	public static String getCommandName(String input) {
+	public String getCommandName(String input) {
 		String[] words;
 		words = input.split(" ");
-		command = words[0].trim();
+		String command = new String(words[0].trim());
 
 		return command;
 
 	}
 
-	public static String getDescription(String input) {
+	public String getDescription(String input) {
 
+		String command = new String(getCommandName(input));
 		String parameter = input;
 
 		// from
 		Pattern patternFrom = Pattern.compile(Constants.REGEX_KEYWORDS[Constants.INDEX_KEYWORD_FROM]);
-		Matcher matchFrom = patternFrom.matcher(getInput());
+		Matcher matchFrom = patternFrom.matcher(input);
 
 		while (matchFrom.find()) {
 			parameter = parameter.substring(0, matchFrom.end());
@@ -57,7 +64,7 @@ public class Parser {
 
 		// on
 		Pattern patternOn = Pattern.compile(Constants.REGEX_KEYWORDS[Constants.INDEX_KEYWORD_ON]);
-		Matcher matchOn = patternOn.matcher(getInput());
+		Matcher matchOn = patternOn.matcher(input);
 
 		while (matchOn.find()) {
 			parameter = parameter.substring(0, matchOn.end());
@@ -65,7 +72,7 @@ public class Parser {
 
 		// by
 		Pattern patternBy = Pattern.compile(Constants.REGEX_KEYWORDS[Constants.INDEX_KEYWORD_BY]);
-		Matcher matchBy = patternBy.matcher(getInput());
+		Matcher matchBy = patternBy.matcher(input);
 
 		while (matchBy.find()) {
 			parameter = parameter.substring(0, matchBy.end());
@@ -73,7 +80,7 @@ public class Parser {
 
 		// till
 		Pattern patternTill = Pattern.compile(Constants.REGEX_KEYWORDS[Constants.INDEX_KEYWORD_TILL]);
-		Matcher matchTill = patternTill.matcher(getInput());
+		Matcher matchTill = patternTill.matcher(input);
 
 		while (matchTill.find()) {
 			parameter = parameter.substring(0, matchTill.end());
@@ -109,7 +116,7 @@ public class Parser {
 
 		// from
 		Pattern patternFrom = Pattern.compile(Constants.REGEX_KEYWORDS[Constants.INDEX_KEYWORD_FROM]);
-		Matcher matchFrom = patternFrom.matcher(getInput());
+		Matcher matchFrom = patternFrom.matcher(input);
 
 		while (matchFrom.find()) {
 			parameter = parameter.substring(matchFrom.end());
@@ -129,7 +136,7 @@ public class Parser {
 
 		// on
 		Pattern patternOn = Pattern.compile(Constants.REGEX_KEYWORDS[Constants.INDEX_KEYWORD_ON]);
-		Matcher matchOn = patternOn.matcher(getInput());
+		Matcher matchOn = patternOn.matcher(input);
 
 		while (matchOn.find()) {
 			parameter = parameter.substring(matchOn.end());
@@ -137,7 +144,7 @@ public class Parser {
 
 		// by
 		Pattern patternBy = Pattern.compile(Constants.REGEX_KEYWORDS[Constants.INDEX_KEYWORD_BY]);
-		Matcher matchBy = patternBy.matcher(getInput());
+		Matcher matchBy = patternBy.matcher(input);
 
 		while (matchBy.find()) {
 			parameter = parameter.substring(matchBy.end());
@@ -145,7 +152,7 @@ public class Parser {
 
 		// till
 		Pattern patternTill = Pattern.compile(Constants.REGEX_KEYWORDS[Constants.INDEX_KEYWORD_TILL]);
-		Matcher matchTill = patternTill.matcher(getInput());
+		Matcher matchTill = patternTill.matcher(input);
 
 		while (matchTill.find()) {
 			parameter = parameter.substring(matchTill.end());
