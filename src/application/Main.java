@@ -1,6 +1,5 @@
 package application;
 
-
 import java.util.Collections;
 
 import javafx.application.Application;
@@ -26,7 +25,6 @@ import logic.TaskHandler;
 import parser.Parser;
 import storage.Storage;
 import ui.AutoCompleteTextField;
-
 
 public class Main extends Application{
 
@@ -164,7 +162,7 @@ public class Main extends Application{
 				if (Parser.getCommandName(input).trim().equals("add")) {
 					System.out.println("displaying taskpane");
 					showTaskPane();
-					titleField.setText(Parser.getTaskName(input));
+					titleField.setText(Parser.getDescription(input));
 				}
 				inputConsole.clear();
 

@@ -45,7 +45,7 @@ public class Storage {
 	public static void setPath(Path path) {
 		Storage.path = path;
 	}
-	
+	/*
 	private static void readFromFile(File file){
 		BufferedReader br = null;
 		try {
@@ -69,7 +69,7 @@ public class Storage {
 				System.exit(-1);
 			}
 		}
-		
-	}
 
+	}
+	 */
 }
