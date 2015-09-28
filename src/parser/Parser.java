@@ -1,3 +1,26 @@
+/**
+ * This class:
+ * Extracts important parameters from the user's raw input
+ * Use flexi-commands
+ *
+ * int getStartingYear()
+ * int getStartingMonth()
+ * int getStartingDate()
+ * int getEndingDate()
+ * int getEndingMonth()
+ * int getEndingYear()
+ * Date getStartingDate()
+ * Date getEndingDate()
+ * Time getStartingTime()
+ * Time getEndTime()
+ * String getDescription()
+ * String getTitle()
+ * boolean getStatus()
+ * String returnCommand()
+ *
+ * from a String input
+ */
+
 package parser;
 
 import java.text.DateFormat;
@@ -11,11 +34,11 @@ import application.Constants;
 
 public class Parser {
 
-	
+
 	public Parser(){
-		
+
 	}
-	
+
 	// Methods
 	public String getCommandName(String input) {
 		String[] words;

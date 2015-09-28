@@ -10,6 +10,8 @@ import javafx.scene.text.FontWeight;
 
 public class Constants {
 
+	public static final String APP_NAME = "TextBuddyAwesome";
+
 	public static final String WELCOME_MESSAGE = "Welcome to TaskBuddyAwesome. \n"
 			+ "To view available commands type HELP and hit enter.\n";
 	// Limit for number of days before current day for which task without year
@@ -306,8 +308,8 @@ public class Constants {
 	final static Font TREBUCHET_BOLD_16 = Font.font("Trebuchet MS", FontWeight.BOLD, 16);
 	final static Font TREBUCHET_16 = Font.font("Trebuchet MS", 16);
 	final static Font CALIBRI_14 = Font.font("Calibri", 14);
-	final static Font CALIBRI_BOLD_14 = Font.font("Calibri", FontWeight.BOLD, 14);
-	final static Font CALIBRI_BOLD_16 = Font.font("Calibri", FontWeight.BOLD, 16);
+	public final static Font CALIBRI_BOLD_14 = Font.font("Calibri", FontWeight.BOLD, 14);
+	public final static Font CALIBRI_BOLD_16 = Font.font("Calibri", FontWeight.BOLD, 16);
 	final static Font CALIBRI_16 = Font.font("Calibri", 16);
 	final static Font TAHOMA_14 = Font.font("Tahoma", 14);
 
