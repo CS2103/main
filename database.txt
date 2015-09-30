@@ -15,6 +15,7 @@ End Time: null
 Location: null
 Priority: null
 
+<<<<<<< HEAD
 Title: apple
 Start Date: null
 Start Time: null
@@ -39,6 +40,8 @@ End Time: null
 Location: null
 Priority: null
 
+=======
+>>>>>>> fb475bc2ffa12ee5beae23b9f95ab95546cef680
 Title: 
 Start Date: null
 Start Time: null
@@ -47,6 +50,7 @@ End Time: null
 Location: null
 Priority: null
 
+<<<<<<< HEAD
 Title: apple
 Start Date: null
 Start Time: null
@@ -56,6 +60,9 @@ Location: null
 Priority: null
 
 Title: orange
+=======
+Title: 
+>>>>>>> fb475bc2ffa12ee5beae23b9f95ab95546cef680
 Start Date: null
 Start Time: null
 Due Date: null
@@ -63,7 +70,11 @@ End Time: null
 Location: null
 Priority: null
 
+<<<<<<< HEAD
 Title: apple
+=======
+Title: 
+>>>>>>> fb475bc2ffa12ee5beae23b9f95ab95546cef680
 Start Date: null
 Start Time: null
 Due Date: null
@@ -71,7 +82,11 @@ End Time: null
 Location: null
 Priority: null
 
+<<<<<<< HEAD
 Title: apple
+=======
+Title: 
+>>>>>>> fb475bc2ffa12ee5beae23b9f95ab95546cef680
 Start Date: null
 Start Time: null
 Due Date: null
@@ -79,7 +94,11 @@ End Time: null
 Location: null
 Priority: null
 
+<<<<<<< HEAD
 Title: apple
+=======
+Title: 
+>>>>>>> fb475bc2ffa12ee5beae23b9f95ab95546cef680
 Start Date: null
 Start Time: null
 Due Date: null
@@ -87,7 +106,11 @@ End Time: null
 Location: null
 Priority: null
 
+<<<<<<< HEAD
 Title: apple
+=======
+Title: 
+>>>>>>> fb475bc2ffa12ee5beae23b9f95ab95546cef680
 Start Date: null
 Start Time: null
 Due Date: null
