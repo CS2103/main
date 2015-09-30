@@ -10,7 +10,7 @@ public class Main extends Application{
 	@Override
 	public void start(Stage stage) {
 		GUIService myGui = new GUIService(stage);
-		myGui.showStage();	// Loads the GUI window
+		myGui.showStage();	// Loads the GUI application window
 		myGui.showTray();	// Loads the System Tray instance
 	}
 
