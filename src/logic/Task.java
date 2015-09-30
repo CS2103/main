@@ -12,8 +12,8 @@ import java.sql.Time;
 
 public class Task {
 	private static int numberOfTask = 0;
-	private String title;
-	private String description;
+	protected String title;
+	protected String description;
 	private Date startingDate;
 	private Date endingDate;
 	private Time startingTime;

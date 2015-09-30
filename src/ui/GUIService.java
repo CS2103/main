@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import application.Constants;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -34,7 +35,7 @@ public class GUIService {
 	StackPane content;
 	ConsoleView consoleView;
 	TaskView taskView;
-	TrayService trayService;
+	private TrayService trayService;
 	Stage stage;
 	Parser myParser;
 
@@ -172,7 +173,7 @@ public class GUIService {
 		System.err.println("[KEYBOARD INPUT] " + event.getCode()); //debug
 		if(event.getCode()==KeyCode.ESCAPE) {
 			showConsolePane();
-		} else if (event.getCode()==KeyCode.ENTER) {
+		} else if (event.getCode()==KeyCode.ENTER && taskView.titleField.getText().length() != 0) {
 			Task newTask = new Task(taskView.titleField.getText());			// refactor this
 			TaskHandler.addTask(newTask);									//
 			//Storage.write(newTask.taskDetails());
@@ -188,6 +189,7 @@ public class GUIService {
 
 	public void showStage() {
 		stage.initStyle(StageStyle.TRANSPARENT);
+		Platform.setImplicitExit(false);
 		stage.setScene(returnScene());
 		stage.show();
 	}
