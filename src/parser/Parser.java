@@ -88,11 +88,6 @@ public class Parser {
 			parameter = parameter.substring(0, matchTill.end());
 		}
 		parameter = parameter.replaceFirst("till", "");
-<<<<<<< HEAD
-		
-=======
-
->>>>>>> master
 		parameter = parameter.replaceFirst(command, "");
 		parameter = cleanUp(parameter);
 
@@ -129,11 +124,8 @@ public class Parser {
 			parameter = parameter.substring(matchFrom.end());
 		}
 
-<<<<<<< HEAD
-		startDate = sdf.parse(parameter);
-=======
 		startDate = sdf.parse(parameter.trim());
->>>>>>> master
+
 
 		return sdf.format(startDate);
 
