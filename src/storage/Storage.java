@@ -1,5 +1,3 @@
-// Hi Hung
-
 package storage;
 
 import java.io.BufferedReader;
@@ -24,6 +22,7 @@ public class Storage {
 
 	public Storage() {
 	}
+	
 	static File file;
 	static Path path;
 
@@ -34,7 +33,7 @@ public class Storage {
 	public static void write(ArrayList<Task> tasks){
 		try {
 			BufferedWriter bw = new BufferedWriter(new FileWriter(todo));
-			for(Task task: tasks) {
+			for (Task task: tasks) {
 				String json = gson.toJson(task) + "\n";
 				bw.write(json);
 			}
@@ -46,7 +45,6 @@ public class Storage {
 		}
 
 	}
-
 
 	public static boolean createFile(String fileName) {
 		file = new File(fileName);
@@ -80,4 +78,5 @@ public class Storage {
 		}
 		return tasks;
 	}
+	
 }
