@@ -3,6 +3,8 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Stack;
 
+import storage.Storage;
+
 
 
 public class TaskBin {
@@ -18,25 +20,16 @@ public class TaskBin {
 	/********************************Construction Methods************************************/
 	
 	//This construction is used to success the past data from the storage file when the program is reopened
-	public TaskBin(ArrayList<Task> taskList, Storage taskStorage){
+	public TaskBin(ArrayList<Task> taskList){
 		undoStack = new Stack<Command>();
 		redoStack = new Stack<Command>();
 		this.taskList = taskList;
-		this.taskStorage = taskStorage;
 	}
 	
-	public TaskBin(File storageFile){
-		undoStack = new Stack<Command>();
-		redoStack = new Stack<Command>();
-		taskStorage = new Storage(storageFile);
-		taskList = taskStorage.read();
-		
-	}
 	
 	public TaskBin(){
 		undoStack = new Stack<Command>();
 		redoStack = new Stack<Command>();
-		taskStorage = new Storage();
 		taskList = new ArrayList<Task>();
 	}
 	
@@ -107,7 +100,7 @@ public class TaskBin {
 		undoStack.push(add);
 		taskList.add(newTask);
 		taskList = sortArrayByAlpha(taskList);
-		taskStorage.save(taskList);
+		Storage.write(taskList);
 	}
 	
 	public Task delete(Task task){
@@ -116,7 +109,7 @@ public class TaskBin {
 				Command delete = new Command(delete_tag, taskList.get(i));
 				undoStack.push(delete);
 				taskList.remove(i);
-				taskStorage.save(taskList);
+				Storage.write(taskList);
 			}
 		}
 	}
@@ -144,6 +137,19 @@ public class TaskBin {
 	
 
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	
