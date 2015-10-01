@@ -29,13 +29,15 @@ import javafx.stage.WindowEvent;
 
 public class TrayService {
 
-	public TrayService(Stage stage) {
-		this.stage = stage;
-	}
-	public static TrayIcon trayIcon;
+	public TrayIcon trayIcon;
 	Stage stage;
 	Scene scene;
 	StackPane root;
+
+	public TrayService(Stage stage) {
+		this.stage = stage;
+	}
+
 
 	public void createTrayIcon(final Stage stage) {
 
@@ -91,6 +93,7 @@ public class TrayService {
 					Platform.runLater(new Runnable() {
 						@Override
 						public void run() {
+							System.out.println("Clicked on show MenuItem");
 							stage.show();
 							stage.toFront();
 						}
@@ -118,7 +121,7 @@ public class TrayService {
 			trayIcon.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(java.awt.event.MouseEvent e) {
-					System.out.println(e.getButton());
+					System.out.println("Clicked on tray icon :" + e.getButton());
 					if (e.getButton() == 1) {
 						Platform.runLater(new Runnable() {
 							@Override
@@ -130,17 +133,8 @@ public class TrayService {
 					}
 				};
 			});
-			/*
-			showItem.setOnAction(new EventHandler() {
-				@Override
-				public void handle(Event event) {
-					// TODO Auto-generated method stub
-					stage.show();
-					stage.toFront();
-				}
-			});
 
-			 */
+
 			try {
 				tray.add(trayIcon);
 			} catch (AWTException e) {

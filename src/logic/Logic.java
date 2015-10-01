@@ -35,7 +35,10 @@ public class Logic {
 	public void deleteTask(){
 
 	}
-	public void searchTask(){
+	public void showOverdue() {
+
+	}
+	public void searchEntries(){
 
 	}
 	public void changeDirectory(){
