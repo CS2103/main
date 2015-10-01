@@ -8,7 +8,6 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import com.google.gson.Gson;
 
-
 public class Storage {
 	
 	private static Gson gson = new Gson();
@@ -39,8 +38,8 @@ public class Storage {
 	public static void write(ArrayList<Task> tasks){
 		try {
 			BufferedWriter bw = new BufferedWriter(new FileWriter(saveFile));
-			for(Task task: saveFile) {
-				String json = gson.toJson(task)+"\n";
+			for(Task task: tasks) {
+				String json = gson.toJson(task) + "\n";
 				bw.write(json);
 			}
 			bw.close();
@@ -95,13 +94,13 @@ public class Storage {
 	}
 	 */
 	 
-	 public static ArrayList<Task> read(){
-		ArrayList<Task> floatingList = new ArrayList<Task>();
+	 public static ArrayList<Task> read() {
+		ArrayList<Task> tasks = new ArrayList<Task>();
 		String line = "";
-		try{
+		try {
 			BufferedReader br = new BufferedReader(new FileReader(saveFile));
-			while((line=br.readLine())!=null){
-				saveFile.add(gson.fromJson(line, Task.class));
+			while((line = br.readLine()) != null) {
+				tasks.add(gson.fromJson(line, Task.class));
 			}
 			br.close();
 		}
@@ -110,6 +109,6 @@ public class Storage {
 		catch (IOException e) {
 			e.printStackTrace();
 		}
-		return floatingList;
+		return tasks;
 	}
 }
