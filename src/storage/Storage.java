@@ -1,5 +1,3 @@
-// Hi Hung
-
 package storage;
 
 import java.io.BufferedReader;
