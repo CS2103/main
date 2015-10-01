@@ -23,11 +23,9 @@
 
 package parser;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -90,7 +88,11 @@ public class Parser {
 			parameter = parameter.substring(0, matchTill.end());
 		}
 		parameter = parameter.replaceFirst("till", "");
+<<<<<<< HEAD
 		
+=======
+
+>>>>>>> master
 		parameter = parameter.replaceFirst(command, "");
 		parameter = cleanUp(parameter);
 
@@ -127,7 +129,11 @@ public class Parser {
 			parameter = parameter.substring(matchFrom.end());
 		}
 
+<<<<<<< HEAD
 		startDate = sdf.parse(parameter);
+=======
+		startDate = sdf.parse(parameter.trim());
+>>>>>>> master
 
 		return sdf.format(startDate);
 

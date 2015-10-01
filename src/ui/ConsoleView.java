@@ -29,20 +29,20 @@ public class ConsoleView {
 		applicationName = new Label();
 		applicationName.setText("TextBuddyAwesome");
 		applicationName.setPrefHeight(25);
-		applicationName.setPrefWidth(400);
+		applicationName.setPrefWidth(600);
 		applicationName.setStyle("-fx-background-color: orange;");
 		applicationName.setFont(Font.font("Georgia", 20));
 
 		outputConsole = new TextFlow();
-		outputConsole.setPrefHeight(345);
-		outputConsole.setPrefWidth(400);
+		outputConsole.setPrefHeight(545);
+		outputConsole.setPrefWidth(600);
 		outputConsole.setFocusTraversable(false);
 		outputConsole.setStyle("-fx-background-color: white;");
 
 		inputConsole = new AutoCompleteTextField();
 		inputConsole.setEditable(true);
 		inputConsole.setPrefHeight(25);
-		inputConsole.setPrefWidth(400);
+		inputConsole.setPrefWidth(600);
 
 		VBox consoleLayout = new VBox();
 		consoleLayout.setSpacing(1);
@@ -50,5 +50,4 @@ public class ConsoleView {
 		consoleLayout.getChildren().addAll(applicationName, outputConsole, inputConsole);
 		consolePane.getChildren().add(consoleLayout);
 	}
-
 }

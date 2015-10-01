@@ -10,7 +10,6 @@
 
 package ui;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -26,15 +25,13 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import logic.Task;
-import logic.TaskHandler;
 import parser.Parser;
 
 public class GUIService {
 
 	StackPane content;
 	ConsoleView consoleView;
-	TaskView taskView;
+
 	private TrayService trayService;
 	Stage stage;
 	Parser myParser;
@@ -44,14 +41,12 @@ public class GUIService {
 		content = new StackPane();
 		myParser = new Parser();
 		consoleView = new ConsoleView();
-		taskView = new TaskView();
 
 		addListenersToConsoleView();
-		addListenersToTaskView();
 
 		printToConsole(Constants.WELCOME_MESSAGE, Constants.CALIBRI_BOLD_14);
 
-		content.getChildren().addAll(consoleView.consolePane, taskView.taskPane);
+		content.getChildren().addAll(consoleView.consolePane);
 	}
 
 	private void addListenersToConsoleView() {
@@ -79,107 +74,35 @@ public class GUIService {
 				System.out.println("[PARSED] the command is : " + myParser.getCommandName(input));//debug
 				if (myParser.getCommandName(input).trim().equals("add")) {
 					System.out.println("[DEBUG] displaying taskpane");//debug
-					showTaskPane();
-					try {
-						taskView.titleField.setText(myParser.getDescription(input));
-						taskView.startField.setText(myParser.getStartDate(input).toString());
-						taskView.endField.setText(myParser.getEndDate(input).toString());
-					} catch (ParseException e) {
-						e.printStackTrace();
-					}
-
 				}
 				consoleView.inputConsole.clear();
-
 			}
 		});
 	}
 
-	private void addListenersToTaskView() {
-		taskView.titleField.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>(){
-			@Override
-			public void handle(KeyEvent event) {
-				checkProceedOrReturn(event);
-			}
-		});
-
-		taskView.startField.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>(){
-			@Override
-			public void handle(KeyEvent event) {
-				checkProceedOrReturn(event);
-			}
-		});
-
-		taskView.endField.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>(){
-			@Override
-			public void handle(KeyEvent event) {
-				checkProceedOrReturn(event);
-			}
-		});
-
-		taskView.priorityField.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>(){
-			@Override
-			public void handle(KeyEvent event) {
-				checkProceedOrReturn(event);
-			}
-		});
-
-		taskView.locationField.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>(){
-			@Override
-			public void handle(KeyEvent event) {
-				checkProceedOrReturn(event);
-			}
-		});
-
-		taskView.tagField.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>(){
-			@Override
-			public void handle(KeyEvent event) {
-				checkProceedOrReturn(event);
-			}
-		});
-	}
 
 	public Scene returnScene() {
-		Scene myScene  = new Scene(this.content, 400, 400);
+		Scene myScene  = new Scene(this.content, 600, 600);
 		showConsolePane();
 		return myScene;
 	}
 
 	public void showConsolePane() {
 		consoleView.consolePane.toFront();
-		taskView.taskPane.toBack();
-		taskView.taskPane.setDisable(true);
-		taskView.taskPane.setVisible(false);
 		consoleView.consolePane.setVisible(true);
 		consoleView.consolePane.setDisable(false);
 	}
 
 	public void showTaskPane() {
-		taskView.taskPane.toFront();
 		consoleView.consolePane.toBack();
 		consoleView.consolePane.setDisable(true);
 		consoleView.consolePane.setVisible(false);
-		taskView.taskPane.setVisible(true);
-		taskView.taskPane.setDisable(false);
 	}
 
 	public void printToConsole(String output, Font font){
 		Text text = new Text(output);
 		text.setFont(font);
 		consoleView.outputConsole.getChildren().add(text);
-	}
-
-	protected void checkProceedOrReturn(KeyEvent event) {
-		System.err.println("[KEYBOARD INPUT] " + event.getCode()); //debug
-		if(event.getCode()==KeyCode.ESCAPE) {
-			showConsolePane();
-		} else if (event.getCode()==KeyCode.ENTER && taskView.titleField.getText().length() != 0) {
-			Task newTask = new Task(taskView.titleField.getText());			// refactor this
-			TaskHandler.addTask(newTask);									//
-			//Storage.write(newTask.taskDetails());
-			showConsolePane();
-			//printToConsole(newTask.taskDetails(), Constants.CALIBRI_BOLD_16);
-		}
 	}
 
 	public void addAutocompleteEntries (ArrayList<String> stringArrayList) {

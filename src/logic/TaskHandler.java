@@ -14,7 +14,7 @@ public class TaskHandler {
 	public static boolean addTask(Task newTask) {
 		taskDatabase.add(newTask);
 		System.out.println("Task added!");
-		//System.out.println(newTask.taskDetails());
+		System.out.println(newTask.taskDetails());
 		return true;
 	}
 

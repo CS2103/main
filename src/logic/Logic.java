@@ -35,24 +35,6 @@ public class Logic {
 	public void deleteTask(){
 
 	}
-	public void addTodo(){
-
-	}
-	public void editTodo(){
-
-	}
-	public void deleteTodo(){
-
-	}
-	public void addEvent(){
-
-	}
-	public void editEvent(){
-
-	}
-	public void deleteEvent(){
-
-	}
 	public void showOverdue() {
 
 	}
