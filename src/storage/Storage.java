@@ -22,6 +22,7 @@ public class Storage {
 
 	public Storage() {
 	}
+	
 	static File file;
 	static Path path;
 
@@ -29,23 +30,10 @@ public class Storage {
 		return true;
 	}
 
-	/* this method writes to plain text file
-	public static void write(String stuff)  {
-
-		String toAdd = stuff + System.getProperty("line.separator");
-		byte data[] = toAdd.getBytes();
-		try {
-			Files.write(path, data, StandardOpenOption.APPEND);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-	 */
-
 	public static void write(ArrayList<Task> tasks){
 		try {
 			BufferedWriter bw = new BufferedWriter(new FileWriter(todo));
-			for(Task task: tasks) {
+			for (Task task: tasks) {
 				String json = gson.toJson(task) + "\n";
 				bw.write(json);
 			}
@@ -57,7 +45,6 @@ public class Storage {
 		}
 
 	}
-
 
 	public static boolean createFile(String fileName) {
 		file = new File(fileName);
@@ -73,34 +60,7 @@ public class Storage {
 	public static void setPath(Path path) {
 		Storage.path = path;
 	}
-	/*
-	private static void readFromFile(File file){
-		BufferedReader br = null;
-		try {
-			if (!file.exists()) {
-				file.createNewFile();
-			}
-			br = new BufferedReader(new FileReader(file));
-			String newLine;
-			while ((newLine = br.readLine()) != null) {
-				texts.add(newLine);
-			}
-		} catch (FileNotFoundException e) {
-		} catch (IOException e) {
-			System.exit(-1);
-		} finally {
-			try {
-				if (br != null) {
-					br.close();
-				}
-			} catch (IOException ex) {
-				System.exit(-1);
-			}
-		}
-
-	}
-	 */
-
+	
 	public static ArrayList<Task> read() {
 		ArrayList<Task> tasks = new ArrayList<Task>();
 		String line = "";
@@ -118,4 +78,5 @@ public class Storage {
 		}
 		return tasks;
 	}
+	
 }
