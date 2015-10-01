@@ -1,3 +1,5 @@
+package logic;
+
 import java.sql.Date;
 import java.sql.Time;
 import java.util.Calendar;
@@ -13,7 +15,7 @@ public class Task {
 	private Time startingTime;
 	private Time endingTime;
 	private static String type_tag;
-	
+
 	public Task(String title){
 		this.title = title;
 		description = new String();
@@ -21,7 +23,7 @@ public class Task {
 		isFinished = false;
 		type_tag = "task";
 	}
-	
+
 	public Task(){
 		String time = Calendar.getInstance().toString();
 		title = "Untitled " + time;
@@ -30,7 +32,7 @@ public class Task {
 		isFinished = false;
 		type_tag = "task";
 	}
-	
+
 	public Task(String title, Date sdate, Time stime, Date edate, Time etime){
 		this(title);
 		startingDate= sdate;
@@ -39,7 +41,7 @@ public class Task {
 		endingDate = edate;
 		type_tag = "event";
 	}
-	
+
 	public Task(Date sdate, Time stime, Date edate, Time etime){
 		this();
 		startingDate= sdate;
@@ -48,44 +50,44 @@ public class Task {
 		endingDate = edate;
 		type_tag = "event";
 	}
-	
+
 	public Task(String title, Date sdate, Date edate){
 		this(title);
 		startingDate = sdate;
 		endingDate = edate;
 		type_tag = "event";
 	}
-	
+
 	public Task(Date sdate, Date edate){
 		this();
 		startingDate = sdate;
 		endingDate = edate;
 		type_tag = "event";
 	}
-	
+
 	public Task(String title, Date date, Time time){
 		this(title);
 		endingTime = time;
 		endingDate = date;
 	}
-	
+
 	public Task(Date date, Time time){
 		this();
 		endingTime = time;
 		endingDate = date;
 	}
-	
+
 	public Task(String title, Date date){
 		this(title);
 		endingDate = date;
 	}
-	
+
 	public Task(Date date){
 		this();
 		endingDate = date;
 	}
-	
-	
+
+
 	//Accessors
 	public String getTitle(){
 		return title;
@@ -128,7 +130,7 @@ public class Task {
 		isFinished = true;
 		numberOfTask--;
 	}
-	
+
 	public void setStartingDate(Date date){
 		startingDate = date;
 		setTag();
@@ -148,9 +150,9 @@ public class Task {
 		endingTime = time;
 		setTag();
 	}
-	
+
 	//decide on the tag
-	
+
 	public void setTag(){
 		if((startingDate == null)){
 			if(endingDate == null){
@@ -164,11 +166,11 @@ public class Task {
 			type_tag = "event";
 		}
 	}
-	
+
 	//override
 	public boolean equals(Task task){
-		if (title.equals(task.getTitle()) 
-				&& description.equals(task.getDescription()) 
+		if (title.equals(task.getTitle())
+				&& description.equals(task.getDescription())
 				&& (isFinished == task.getStatus()
 				&& (startingDate.equals(task.getStartingDate()))
 				&& (startingTime.equals(task.getStartingTime()))
@@ -181,7 +183,7 @@ public class Task {
 			return false;
 		}
 	}
-	
+
 }
 
-	
+
