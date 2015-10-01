@@ -1,160 +1,187 @@
-package logic;
-
+import java.sql.Date;
 import java.sql.Time;
-import java.util.Date;
+import java.util.Calendar;
 
-import application.Constants;
 
 public class Task {
-
-	private String name;
-	private String location;
-	private Date dueDate;
-	private Date startDate;
-	private Time startTime;
-	private Time endTime;
-	private String priority;
-	private Boolean isDone;
-	private Boolean isOverdue;
-
-
-	/********** Constructors **********/
-	public Task(String name) {
-		setName(name);
-		setLocation(null);
-		setStartTime(null);
-		setEndTime(null);
-		setStartDate(null);
-		setDueDate(null);
-		setPriority(null);
-		setIsDone(false);
-		setIsOverdue(false);
+	private static int numberOfTask = 0;
+	private String title;
+	private String description;
+	private boolean isFinished;
+	private Date startingDate;
+	private Date endingDate;
+	private Time startingTime;
+	private Time endingTime;
+	private static String type_tag;
+	
+	public Task(String title){
+		this.title = title;
+		description = new String();
+		numberOfTask++;
+		isFinished = false;
+		type_tag = "task";
+	}
+	
+	public Task(){
+		String time = Calendar.getInstance().toString();
+		title = "Untitled " + time;
+		description = new String();
+		numberOfTask++;
+		isFinished = false;
+		type_tag = "task";
+	}
+	
+	public Task(String title, Date sdate, Time stime, Date edate, Time etime){
+		this(title);
+		startingDate= sdate;
+		startingTime = stime;
+		endingTime = etime;
+		endingDate = edate;
+		type_tag = "event";
+	}
+	
+	public Task(Date sdate, Time stime, Date edate, Time etime){
+		this();
+		startingDate= sdate;
+		startingTime = stime;
+		endingTime = etime;
+		endingDate = edate;
+		type_tag = "event";
+	}
+	
+	public Task(String title, Date sdate, Date edate){
+		this(title);
+		startingDate = sdate;
+		endingDate = edate;
+		type_tag = "event";
+	}
+	
+	public Task(Date sdate, Date edate){
+		this();
+		startingDate = sdate;
+		endingDate = edate;
+		type_tag = "event";
+	}
+	
+	public Task(String title, Date date, Time time){
+		this(title);
+		endingTime = time;
+		endingDate = date;
+	}
+	
+	public Task(Date date, Time time){
+		this();
+		endingTime = time;
+		endingDate = date;
+	}
+	
+	public Task(String title, Date date){
+		this(title);
+		endingDate = date;
+	}
+	
+	public Task(Date date){
+		this();
+		endingDate = date;
+	}
+	
+	
+	//Accessors
+	public String getTitle(){
+		return title;
+	}
+	public String getDescription(){
+		return description;
+	}
+	public boolean getStatus(){
+		return isFinished;
+	}
+	public int getTaskCount(){
+		return numberOfTask;
+	}
+	public String getType(){
+		return type_tag;
+	}
+	public Date getStartingDate(){
+		return startingDate;
+	}
+	public Time getStartingTime(){
+		return startingTime;
+	}
+	public Time getEndingTime(){
+		return endingTime;
+	}
+	public Date getEndingDate(){
+		return endingDate;
 	}
 
-	public Task(String name, String location, Date dueDate) {
-		setName(name);
-		setLocation(location);
-		setStartTime(null);
-		setEndTime(null);
-		setStartDate(null);
-		setDueDate(dueDate);
-		setPriority(null);
-		setIsDone(false);
-		setIsOverdue(false);
+
+	//Mutators
+	public void setDescription(String des){
+		description = des;
+	}
+	public void setTitle(String til){
+		title = til;
 	}
 
-	public Task(String name, String location, Date dueDate, Time endTime) {
-		setName(name);
-		setLocation(location);
-		setStartTime(null);
-		setEndTime(endTime);
-		setStartDate(null);
-		setDueDate(dueDate);
-		setPriority(null);
-		setIsDone(false);
-		setIsOverdue(false);
+	public void mark(){
+		isFinished = true;
+		numberOfTask--;
 	}
-	/************ Accessors *************/
-	public String getName() {
-		return name;
+	
+	public void setStartingDate(Date date){
+		startingDate = date;
+		setTag();
 	}
 
-	public String getLocation() {
-		return location;
+	public void setEndingDate(Date date){
+		endingDate = date;
+		setTag();
 	}
 
-	public Date getTaskDueDate() {
-		return dueDate;
+	public void setStartingTime(Time time){
+		startingTime = time;
+		setTag();
 	}
 
-	public Date getEndDate() {
-		return dueDate;
+	public void setEndingTime(Time time){
+		endingTime = time;
+		setTag();
 	}
-
-	public Time getStartTime() {
-		return startTime;
+	
+	//decide on the tag
+	
+	public void setTag(){
+		if((startingDate == null)){
+			if(endingDate == null){
+				type_tag = "task";
+			}
+			else{
+				type_tag = "deadline";
+			}
+		}
+		else{
+			type_tag = "event";
+		}
 	}
-
-	public Time getEndTime() {
-		return endTime;
+	
+	//override
+	public boolean equals(Task task){
+		if (title.equals(task.getTitle()) 
+				&& description.equals(task.getDescription()) 
+				&& (isFinished == task.getStatus()
+				&& (startingDate.equals(task.getStartingDate()))
+				&& (startingTime.equals(task.getStartingTime()))
+				&& (endingDate.equals(task.getEndingDate()))
+				&& (endingTime.equals(task.getEndingTime()))
+				&& type_tag.equals(task.getType()))){
+			return true;
+		}
+		else{
+			return false;
+		}
 	}
-
-	public boolean getIsDone() {
-		return isDone;
-	}
-
-	public boolean getIsOverdue() {
-		return isOverdue;
-	}
-
-	public Date getStartDate() {
-		return startDate;
-	}
-
-	public String getPriority() {
-		return priority;
-	}
-
-	/************ Mutators *************/
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public void setLocation(String location) {
-		this.location = location;
-	}
-
-	public void setStartDate(Date date) {
-		this.startDate = date;
-	}
-
-	public void setDueDate(Date date) {
-		this.dueDate = date;
-	}
-
-	public void setEndDate(Date dueDate) {
-		this.dueDate = dueDate;
-	}
-
-	public void setStartTime(Time startTime) {
-		this.startTime = startTime;
-	}
-
-	public void setEndTime(Time endTime) {
-		this.endTime = endTime;
-	}
-
-	public void setIsDone(boolean isDone) {
-		this.isDone = isDone;
-	}
-
-	public void setPriority(String priority) {
-		this.priority = priority;
-	}
-
-	public void setIsOverdue(boolean isOverdue) {
-		this.isOverdue = isOverdue;
-	}
-
-	/********** Overriding methods ***********/
-	@Override
-	public String toString() {
-		return getName();
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		return true;
-	}
-
-	/********** Formatting methods **********/
-	public String taskDetails() {
-		return Constants.LABEL_TITLE + name + Constants.LINEBREAK
-				+ Constants.LABEL_START_DATE + startDate + Constants.LINEBREAK
-				+ Constants.LABEL_START_TIME + startTime + Constants.LINEBREAK
-				+ Constants.LABEL_DUE_DATE + dueDate + Constants.LINEBREAK
-				+ Constants.LABEL_END_TIME + endTime + Constants.LINEBREAK
-				+ Constants.LABEL_LOCATION + location + Constants.LINEBREAK
-				+ Constants.LABEL_PRIORITY + priority + Constants.LINEBREAK;
-	}
+	
 }
+
+	
