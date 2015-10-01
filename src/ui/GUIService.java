@@ -82,7 +82,7 @@ public class GUIService {
 
 
 	public Scene returnScene() {
-		Scene myScene  = new Scene(this.content, 400, 400);
+		Scene myScene  = new Scene(this.content, 600, 600);
 		showConsolePane();
 		return myScene;
 	}
