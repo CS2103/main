@@ -23,10 +23,9 @@
 
 package parser;
 
-import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -61,6 +60,7 @@ public class Parser {
 		while (matchFrom.find()) {
 			parameter = parameter.substring(0, matchFrom.end());
 		}
+		parameter = parameter.replaceFirst("from", "");
 
 		// on
 		Pattern patternOn = Pattern.compile(Constants.REGEX_KEYWORDS[Constants.INDEX_KEYWORD_ON]);
@@ -69,6 +69,7 @@ public class Parser {
 		while (matchOn.find()) {
 			parameter = parameter.substring(0, matchOn.end());
 		}
+		parameter = parameter.replaceFirst("on", "");
 
 		// by
 		Pattern patternBy = Pattern.compile(Constants.REGEX_KEYWORDS[Constants.INDEX_KEYWORD_BY]);
@@ -77,6 +78,7 @@ public class Parser {
 		while (matchBy.find()) {
 			parameter = parameter.substring(0, matchBy.end());
 		}
+		parameter = parameter.replaceFirst("by", "");
 
 		// till
 		Pattern patternTill = Pattern.compile(Constants.REGEX_KEYWORDS[Constants.INDEX_KEYWORD_TILL]);
@@ -85,6 +87,7 @@ public class Parser {
 		while (matchTill.find()) {
 			parameter = parameter.substring(0, matchTill.end());
 		}
+		parameter = parameter.replaceFirst("till", "");
 
 		parameter = parameter.replaceFirst(command, "");
 		parameter = cleanUp(parameter);
@@ -108,11 +111,11 @@ public class Parser {
 		return input;
 	}
 
-	public Date getStartDate(String input) throws ParseException {
+	public String getStartDate(String input) throws ParseException {
 
 		Date startDate;
 		String parameter = input;
-		DateFormat df = DateFormat.getDateInstance(DateFormat.LONG, Locale.UK);
+		SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
 
 		// from
 		Pattern patternFrom = Pattern.compile(Constants.REGEX_KEYWORDS[Constants.INDEX_KEYWORD_FROM]);
@@ -122,17 +125,17 @@ public class Parser {
 			parameter = parameter.substring(matchFrom.end());
 		}
 
-		startDate = df.parse(parameter);
+		startDate = sdf.parse(parameter.trim());
 
-		return startDate;
+		return sdf.format(startDate);
 
 	}
 
-	public Date getEndDate(String input) throws ParseException {
+	public String getEndDate(String input) throws ParseException {
 
 		Date endDate;
 		String parameter = input;
-		DateFormat df = DateFormat.getDateInstance(DateFormat.LONG, Locale.UK);
+		SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
 
 		// on
 		Pattern patternOn = Pattern.compile(Constants.REGEX_KEYWORDS[Constants.INDEX_KEYWORD_ON]);
@@ -158,9 +161,9 @@ public class Parser {
 			parameter = parameter.substring(matchTill.end());
 		}
 
-		endDate = df.parse(parameter);
+		endDate = sdf.parse(parameter);
 
-		return endDate;
+		return sdf.format(endDate);
 
 	}
 

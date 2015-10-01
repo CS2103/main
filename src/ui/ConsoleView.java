@@ -50,5 +50,4 @@ public class ConsoleView {
 		consoleLayout.getChildren().addAll(applicationName, outputConsole, inputConsole);
 		consolePane.getChildren().add(consoleLayout);
 	}
-
 }
