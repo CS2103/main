@@ -34,6 +34,8 @@ public class Logic {
 	public Logic() {
 		bin.init();
 	}
+	
+	
 
 	public void addTask(String input) throws ParseException{
 		String title = myParser.getDescription(input);
