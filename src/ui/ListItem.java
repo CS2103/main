@@ -13,12 +13,18 @@ public class ListItem extends StackPane{
 	//private Color[] colorArray = {Color.CORNFLOWERBLUE, Color.GOLD, Color.PINK, Color.GREENYELLOW, Color.KHAKI};
 
 	private String[] colorArray = {"rgb(102,178,255)","rgb(255,153,51)","rgb(255,153,153)","rgb(153,255,51)","rgb(255,51,255)"};
+	private Label index;
 	private Label title;
 	private Label description;
 	private Label startTime;
 	private Label endTime;
+	private Label isDone;
+	private Label isOverDue;
 
-	public ListItem(String taskTitle, String taskDescription, String taskStartTime, String taskEndTime) {
+	public ListItem(String taskTitle, String taskDescription, String taskStartTime, String taskEndTime, int index) {
+		this.index = new Label(String.valueOf(index));
+		this.index.setFont(Font.font("Georgia",FontWeight.BOLD,15));
+
 		title = new Label(taskTitle);
 		title.setFont(Font.font("Georgia",FontWeight.BOLD,15));
 		title.setPrefHeight(25);
@@ -30,11 +36,15 @@ public class ListItem extends StackPane{
 
 		endTime  = new Label("End: " + taskEndTime);
 		//endTime.setPrefWidth();
+		isDone = new Label();
 
-		VBox consoleLayout = new VBox();
+		HBox consoleLayout = new HBox();
+		VBox detailsLayout = new VBox();
+		detailsLayout.setPrefWidth(550);
 		HBox timeLayout = new HBox();
 		timeLayout.getChildren().addAll(startTime, endTime);
-		consoleLayout.getChildren().addAll(title, description, timeLayout);
+		detailsLayout.getChildren().addAll(title, description, timeLayout);
+		consoleLayout.getChildren().addAll(detailsLayout, this.index);
 		this.setStyle("-fx-background-color: " + colorArray[colorIndex%5] + "; -fx-background-radius: 10px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);");
 		this.getChildren().add(consoleLayout);
 		ListItem.colorIndex++;

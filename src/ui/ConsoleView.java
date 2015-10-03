@@ -50,7 +50,6 @@ public class ConsoleView extends Pane{
 		applicationName.setPrefWidth(600);
 		applicationName.setPadding(new Insets(0 ,0 , 0, 20));
 		applicationName.setStyle("-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%), linear-gradient(#020b02, #3a3a3a), linear-gradient(#9d9e9d 0%, #6b6a6b 20%, #343534 80%, #242424 100%),linear-gradient(#8a8a8a 0%, #6b6a6b 20%, #343534 80%, #262626 100%); -fx-background-radius: 30 30 0 0;");
-		//applicationName.setStyle("-fx-background-color: orange; -fx-background-radius: 30 30 0 0;");
 		applicationName.setFont(Font.font("Georgia", 20));
 		applicationName.setTextFill(Color.WHITE);
 
@@ -59,7 +58,6 @@ public class ConsoleView extends Pane{
 		dateLabel.setFont(new Font("Arial", 30));
 		dateLabel.setPrefWidth(300);
 		dateLabel.setPadding(new Insets(0,0,0,20));
-
 
 		clock = new Label();
 		clock.setStyle("-fx-background-color: rgba(255,255,255, 0.6); ");
@@ -85,20 +83,25 @@ public class ConsoleView extends Pane{
 		listView = new ListView<ListItem>();
 		listView.setPrefHeight(470);
 		listView.setPrefWidth(600);
-		listView.setStyle("-fx-background-color: transparent;");
+		listView.setStyle("-fx-background-color: gray;");
+		listView.setFocusTraversable(false);
+		//listView.setStyle("-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%), linear-gradient(#020b02, #3a3a3a), linear-gradient(#9d9e9d 0%, #6b6a6b 20%, #343534 80%, #242424 100%),linear-gradient(#8a8a8a 0%, #6b6a6b 20%, #343534 80%, #262626 100%;");
 
 		inputConsole = new AutoCompleteTextField();
 		inputConsole.setEditable(true);
 		inputConsole.setPrefHeight(25);
 		inputConsole.setPrefWidth(600);
-		inputConsole.setStyle("-fx-background-color: lightgray;");
+		//inputConsole.setFont(value);
+		inputConsole.setStyle("-fx-background-color: rgba(255,255,255, 0.6);-fx-text-inner-color: black;-fx-font-size:15");
 		inputConsole.setFocusTraversable(true);
+
 
 		status = new Label();
 		status.setPrefWidth(600);
 		status.setPrefHeight(25);
 		status.setPadding(new Insets(0,0,0, 80));
-		status.setStyle("-fx-background-color: rgba(255,255,255, 0.8); -fx-background-radius: 0 0 30 30;");
+		//status.setStyle("-fx-background-color: rgba(255,255,255, 0.8); -fx-background-radius: 0 0 30 30;");
+		status.setStyle("-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%), linear-gradient(#020b02, #3a3a3a), linear-gradient(#9d9e9d 0%, #6b6a6b 20%, #343534 80%, #242424 100%),linear-gradient(#8a8a8a 0%, #6b6a6b 20%, #343534 80%, #262626 100%); -fx-background-radius: 0 0 30 30;");
 
 		HBox dateTime = new HBox();
 		dateTime.getChildren().addAll(dateLabel, clock);
