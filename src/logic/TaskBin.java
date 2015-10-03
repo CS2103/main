@@ -1,17 +1,14 @@
 package logic;
 
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Stack;
 
 import storage.Storage;
 
 class NoResultFound extends Exception{
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	public NoResultFound(){}
@@ -23,26 +20,26 @@ class NoResultFound extends Exception{
 public class TaskBin implements editTaskInfo{
 	ArrayList<Task> taskList;
 	ArrayList<Task> activeList;
- 	Storage taskStorage;
+	Storage taskStorage;
 	Stack<Command> undoStack;
 	Stack<Command> redoStack;
-	Task buffer; 
-	
+	Task buffer;
+
 	private static final String add_tag = "ADD";
 	private static final String delete_tag = "DELETE";
 	private static final String replace_tag = "REPLACE";
 	private static final String alter_tag = "ALTER";
-	
+
 	/********************************Construction Methods************************************/
-	
+
 	//This construction is used to success the past data from the storage file when the program is reopened
 	public TaskBin(ArrayList<Task> taskList){
 		undoStack = new Stack<Command>();
 		redoStack = new Stack<Command>();
 		this.taskList = taskList;
 	}
-	
-	
+
+
 	public TaskBin(){
 		undoStack = new Stack<Command>();
 		redoStack = new Stack<Command>();
@@ -73,24 +70,24 @@ public class TaskBin implements editTaskInfo{
 						break;
 					}
 				}
-				
+
 			}
 			if(isSorted == true){
 				return inboxArr;
-			}		
-		}		
+			}
+		}
 		return inboxArr;
 	}
-	
+
 	public ArrayList<Task> sortArrayByTime(ArrayList<Task> inboxArr){
 		ArrayList<Task> timeUndefined = new ArrayList<Task>();
 		if(inboxArr.size() <= 1){
 			return inboxArr;
 		}
-		
+
 		for(int m = 1; m < inboxArr.size() - 1; m++){
 			boolean isSorted = true;
-			for(int i = 0; (i < inboxArr.size() - m); i++){   
+			for(int i = 0; (i < inboxArr.size() - m); i++){
 				if(inboxArr.get(i).getEndingDate() == null){
 					timeUndefined.add(inboxArr.get(i));
 					inboxArr.remove(inboxArr.get(i));
@@ -124,75 +121,75 @@ public class TaskBin implements editTaskInfo{
 		Command previousComm = this.undoStack.pop();
 		String command = previousComm.returnCommand();
 		switch(command){
-			case add_tag:
-				redoStack.push(previousComm);
-				taskList.remove(previousComm.returnMani());
-				setDisplay();
-				break;
-			case delete_tag:
-				redoStack.push(previousComm);
-				taskList.add(previousComm.returnMani());
-				activeList.add(previousComm.returnMani());
-				break;
-			case replace_tag:
-				Command add = undoStack.pop();
-				taskList.remove(add.returnMani());
-				activeList.remove(add.returnMani());
-				redoStack.push(add);
-				Command del = undoStack.pop();
-				taskList.add(del.returnMani());
-				activeList.add(del.returnMani());
-				redoStack.push(del);
-				redoStack.push(previousComm);
-				break;
-				
-			case alter_tag:
-				redoStack.push(previousComm);
-				taskList.remove(previousComm.returnMani());
-				taskList.add(previousComm.returnOrigin());
-				activeList.remove(previousComm.returnMani());
-				activeList.add(previousComm.returnOrigin());
-				break;
-	
-			default:
-				System.out.println("Error: Unable to identify the command type");
+		case add_tag:
+			redoStack.push(previousComm);
+			taskList.remove(previousComm.returnMani());
+			setDisplay();
+			break;
+		case delete_tag:
+			redoStack.push(previousComm);
+			taskList.add(previousComm.returnMani());
+			activeList.add(previousComm.returnMani());
+			break;
+		case replace_tag:
+			Command add = undoStack.pop();
+			taskList.remove(add.returnMani());
+			activeList.remove(add.returnMani());
+			redoStack.push(add);
+			Command del = undoStack.pop();
+			taskList.add(del.returnMani());
+			activeList.add(del.returnMani());
+			redoStack.push(del);
+			redoStack.push(previousComm);
+			break;
+
+		case alter_tag:
+			redoStack.push(previousComm);
+			taskList.remove(previousComm.returnMani());
+			taskList.add(previousComm.returnOrigin());
+			activeList.remove(previousComm.returnMani());
+			activeList.add(previousComm.returnOrigin());
+			break;
+
+		default:
+			System.out.println("Error: Unable to identify the command type");
 		}
 		Storage.write(taskList);
 	}
-	
+
 	public void redo(){
 		Command redoComm = redoStack.pop();
 		String command = redoComm.returnCommand();
 		switch(command){
-			case add_tag:
-				undoStack.push(redoComm);
-				taskList.add(redoComm.returnMani());
-				setDisplay();
-				break;
-			case delete_tag:
-				undoStack.push(redoComm);
-				taskList.remove(redoComm.returnMani());
-				activeList.remove(redoComm.taskManipulation);
-				break;
-			case alter_tag:
-				undoStack.push(redoComm);
-				taskList.remove(redoComm.returnOrigin());
-				activeList.remove(redoComm.returnOrigin());
-				taskList.add(redoComm.returnMani());
-				activeList.add(redoComm.returnMani());
-				break;
-				
-			
-			default:
-				System.out.println("Error: Unable to identify the command type");
-		
+		case add_tag:
+			undoStack.push(redoComm);
+			taskList.add(redoComm.returnMani());
+			setDisplay();
+			break;
+		case delete_tag:
+			undoStack.push(redoComm);
+			taskList.remove(redoComm.returnMani());
+			activeList.remove(redoComm.taskManipulation);
+			break;
+		case alter_tag:
+			undoStack.push(redoComm);
+			taskList.remove(redoComm.returnOrigin());
+			activeList.remove(redoComm.returnOrigin());
+			taskList.add(redoComm.returnMani());
+			activeList.add(redoComm.returnMani());
+			break;
+
+
+		default:
+			System.out.println("Error: Unable to identify the command type");
+
 		}
-				
+
 	}
-	
-				
+
+
 	/*********************************Search Methods************************************************/
-	
+
 	public ArrayList<Task> findTaskByTitle(String title){
 		ArrayList<Task> result = new ArrayList<Task>();
 		for(Task task:taskList){
@@ -203,13 +200,13 @@ public class TaskBin implements editTaskInfo{
 			if(title.equals(task.getTitle())){
 				result.add(task);
 			}
-			*/
+			 */
 		}
 		sortArrayByTime(result);
-		return result;			
-		
+		return result;
+
 	}
-	
+
 	public ArrayList<Task> findTaskByTitle(ArrayList<Task> list, String title){
 		ArrayList<Task> result = new ArrayList<Task>();
 		for(Task task:list){
@@ -218,9 +215,9 @@ public class TaskBin implements editTaskInfo{
 			}
 		}
 		sortArrayByTime(result);
-		return result;					
+		return result;
 	}
-	
+
 	public ArrayList<Task> findTaskByDate(Calendar date){
 		ArrayList<Task> result = new ArrayList<Task>();
 		for(Task task:taskList){
@@ -229,9 +226,9 @@ public class TaskBin implements editTaskInfo{
 			}
 		}
 		sortArrayByTime(result);
-		return result;	
+		return result;
 	}
-	
+
 	public ArrayList<Task> findTaskByDate(ArrayList<Task> list, Calendar date){
 		ArrayList<Task> result = new ArrayList<Task>();
 		for(Task task:list){
@@ -240,9 +237,9 @@ public class TaskBin implements editTaskInfo{
 			}
 		}
 		sortArrayByTime(result);
-		return result;	
+		return result;
 	}
-	
+
 	/*********************************************Manipulation Methods****************************************/
 	public void add(Task newTask){
 		Command add = new Command(add_tag, newTask);
@@ -253,7 +250,6 @@ public class TaskBin implements editTaskInfo{
 		Storage.write(taskList);
 		redoStack.clear();
 	}
-	
 
 	public void delete(Task task){
 		for(int i = 0; i< taskList.size(); i++){
@@ -267,8 +263,6 @@ public class TaskBin implements editTaskInfo{
 		redoStack.clear();
 	}
 
-	
-	
 	public ArrayList<Task> getUnfinished(){
 		ArrayList<Task> result = new ArrayList<Task>();
 		for(Task task:taskList){
@@ -278,7 +272,7 @@ public class TaskBin implements editTaskInfo{
 		}
 		return result;
 	}
-	
+
 	public ArrayList<Task> getUnfinished(ArrayList<Task> list){
 		ArrayList<Task> result = new ArrayList<Task>();
 		for(Task task:list){
@@ -288,8 +282,9 @@ public class TaskBin implements editTaskInfo{
 		}
 		return result;
 	}
-	
+
 	/***********************************Implementation*******************************************/
+	@Override
 	public void replace(Task original, Task updated){
 		Command repla = new Command(replace_tag, original);
 		undoStack.push(repla);
@@ -298,49 +293,65 @@ public class TaskBin implements editTaskInfo{
 		Storage.write(taskList);
 		redoStack.clear();
 	}
-	
+
+	@Override
 	public void editStartingDate(Task task, Calendar date){
 		Task tar = taskList.get(taskList.indexOf(task));
+		Task tarDis = activeList.get(activeList.indexOf(tar));
 		buffer = task;
 		tar.setStartingDate(date);
+		tarDis.setEndingDate(date);
 		Command editDate = new Command(alter_tag, tar, buffer);
 		undoStack.push(editDate);
 		taskList = sortArrayByTime(taskList);
+
 		Storage.write(taskList);
 		buffer = null;
 		redoStack.clear();
 	}
-	
+
+	@Override
 	public void editEndingDate(Task task, Calendar date){
 		Task tar = taskList.get(taskList.indexOf(task));
+		Task tarDis = activeList.get(activeList.indexOf(tar));
 		buffer = task;
 		tar.setEndingDate(date);
+		tarDis.setEndingDate(date);
 		Command editDate = new Command(alter_tag, tar, buffer);
 		undoStack.push(editDate);
 		taskList = sortArrayByTime(taskList);
+
 		Storage.write(taskList);
 		buffer = null;
 		redoStack.clear();
 	}
-		
+
+	@Override
 	public void editTitle(Task task, String newTitle){
 		Task tar = taskList.get(taskList.indexOf(task));
+		Task tarDis = activeList.get(activeList.indexOf(tar));
+		tarDis.setTitle(newTitle);
 		buffer = task;
 		tar.setTitle(newTitle);
+
 		Command editTil = new Command(alter_tag, tar, buffer);
 		undoStack.push(editTil);
 		Storage.write(taskList);
 		buffer = null;
 		redoStack.clear();
 	}
-		
-		
+
+
+	@Override
 	public void editDescription(Task task, String newDes){
 		Task tar = taskList.get(taskList.indexOf(task));
 		buffer = task;
 		tar.setDescription(newDes);
+		Task tarDis = activeList.get(activeList.indexOf(tar));
+		tarDis.setTitle(newDes);
 		Command editDes = new Command(alter_tag, tar, buffer);
 		undoStack.push(editDes);
+
 		Storage.write(taskList);
 		buffer = null;
 		redoStack.clear();
@@ -354,18 +365,18 @@ public class TaskBin implements editTaskInfo{
 				result.add(task);
 			}
 		}
-		return result;	
+		return result;
 	}
-	
+
 	public void setDisplay(ArrayList<Task> list){
 		activeList = list;
 	}
-	
+
 	public void setDisplay(){
 		activeList = sortArrayByTime(activeList);
 		activeList = taskList;
 	}
-	
+
 	public ArrayList<Task> returnDisplay(){
 		activeList = sortArrayByTime(activeList);
 		return activeList;
@@ -386,12 +397,12 @@ public class TaskBin implements editTaskInfo{
 		System.out.println("No such task is found in the list");
 	}
 	return null;
-	
+
 }*/
 
 
 
 
-	
+
 
 }
