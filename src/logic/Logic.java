@@ -1,18 +1,11 @@
 package logic;
 
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-
-<<<<<<< HEAD
-
 import logic.TaskBin;
 import parser.CommandParser;
-=======
->>>>>>> 0a809f8cc701598e3d10dd9fec3f27ea53687f56
 import parser.Parser;
 import parser.TaskParser;
 
