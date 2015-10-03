@@ -39,7 +39,7 @@ public class GUIService {
 
 	Logic myLogic;
 
-	static int listIndex = 0;
+	int listIndex = 0;
 	private TrayService trayService;
 	Stage stage;
 	Parser myParser;
@@ -97,10 +97,14 @@ public class GUIService {
 				System.err.println(event.getCode());
 				if(event.getCode() == KeyCode.ESCAPE) {
 					System.exit(0);
+				} else if (consoleView.inputConsole.getText().length() == 0 && event.getCode() == KeyCode.BACK_SPACE) {
+					populateList(myLogic.startupDisplay());
 				} else if (event.getCode() == KeyCode.DOWN){
-					consoleView.listView.getSelectionModel().select(++listIndex);
+					consoleView.listView.getSelectionModel().select(++listIndex%consoleView.listView.getItems().size());
+					consoleView.listView.scrollTo(listIndex);
 				} else if (event.getCode() == KeyCode.UP) {
-					consoleView.listView.getSelectionModel().select(--listIndex);
+					consoleView.listView.getSelectionModel().select(--listIndex%consoleView.listView.getItems().size());
+					consoleView.listView.scrollTo(listIndex);
 				}
 			}
 		});
