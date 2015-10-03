@@ -20,17 +20,43 @@ public class Logic {
 		bin.init();
 	}
 	
+	public ArrayList<Task> inputHandler(String input) throws ParseException{
+		String command = myParser.getCommandName(input);
+		if(command.equals("add")){
+			addTask(input);
+			return bin.returnDisplay();
+		}
+		else if(command.equals("delete")){
+		}
+		else if(command.equals("edit")){
+		}
+		else if(command.equals("display")){
+		}
+		else if(command.equals("search")){
+			ArrayList<Task> result = searchEntries(myParser.getDescription(input));
+			return result;
+		}
+		else if(command.equals("undo")){
+		}
+		else if(command.equals("redo")){
+		}
+		
+		return null;
 	
+	}
 
 	public ArrayList<Task> addTask(String input) throws ParseException{
 		Calendar startingDate = Calendar.getInstance();
 		Calendar endingDate = Calendar.getInstance();
+		
 		String title = myParser.getDescription(input);
+		/*
 		String staDateStr = myParser.getStartDate(input);
 		String endDateStr = myParser.getEndDate(input);
 		DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 		startingDate.setTime(dateFormat.parse(staDateStr));
 		endingDate.setTime(dateFormat.parse(endDateStr));
+		*/
 		Task newTask = new Task(title, startingDate, endingDate);
 		bin.add(newTask);
 		bin.setDisplay();
@@ -38,8 +64,8 @@ public class Logic {
 		
 	}
 	
-	public void editTask(String input){
-		
+	public ArrayList<Task> editTask(String input){
+		return null;
 	}
 	
 	public ArrayList<Task> deleteTaskByName(String input) throws ParseException{
