@@ -16,31 +16,53 @@
 
 package logic;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Scanner;
+
+import logic.TaskBin;
 import parser.Parser;
 
 public class Logic {
 
 	Parser myParser = new Parser();
+	TaskBin bin = new TaskBin();
 
 	public Logic() {
-
+		bin.init();
 	}
 
-	public void addTask(){
-
+	public void addTask(String input){
+		String title = myParser.getDescription(input);
+		Date startingDate = myParser.getStartDate(input);
+		Date endingDate = myParser.getEndDate(input);
+		Task newTask = new Task(title, startingDate, endingDate);
+		bin.add(newTask);
 	}
-	public void editTask(){
-
+	
+	public void editTask(String input){
+		
 	}
-	public void deleteTask(){
-
+	public void deleteTask(String input){
+		String title = myParser.getDescription(input);
+		Date endingDate = myParser.getEndDate(input);
+		if(endingDate == null){
+			endingDate = new Date();
+		}
+		ArrayList<Task> result = bin.findTaskByTitle(title);
+		if(result.size() > 1){
+			result = bin.findTaskByDate(result, endingDate);
+		}
+		bin.delete(result.get(0));
 	}
 	public void showOverdue() {
-
+		
 	}
-	public void searchEntries(){
-
+	public ArrayList<Task> searchEntries(String keyWord){
+		ArrayList<Task> result = bin.findTaskByTitle(keyWord);
+		return result;
 	}
+	
 	public void changeDirectory(){
 
 	}

@@ -1,8 +1,10 @@
-import java.sql.Date;
+package logic;
+
+import java.util.Date;
 import java.sql.Time;
 import java.util.Calendar;
 
-
+//Storage class should store the static int numberOfTask; 
 public class Task {
 	private static int numberOfTask = 0;
 	private String title;
@@ -13,6 +15,7 @@ public class Task {
 	private Time startingTime;
 	private Time endingTime;
 	private static String type_tag;
+	private int index; 
 	
 	public Task(String title){
 		this.title = title;
@@ -20,6 +23,7 @@ public class Task {
 		numberOfTask++;
 		isFinished = false;
 		type_tag = "task";
+		index = numberOfTask;
 	}
 	
 	public Task(){
@@ -29,6 +33,7 @@ public class Task {
 		numberOfTask++;
 		isFinished = false;
 		type_tag = "task";
+		index = numberOfTask;
 	}
 	
 	public Task(String title, Date sdate, Time stime, Date edate, Time etime){
@@ -49,10 +54,10 @@ public class Task {
 		type_tag = "event";
 	}
 	
-	public Task(String title, Date sdate, Date edate){
+	public Task(String title, java.util.Date startingDate, java.util.Date endingDate){
 		this(title);
-		startingDate = sdate;
-		endingDate = edate;
+		this.startingDate = startingDate;
+		this.endingDate = endingDate;
 		type_tag = "event";
 	}
 	
@@ -113,6 +118,9 @@ public class Task {
 	}
 	public Date getEndingDate(){
 		return endingDate;
+	}
+	public int getIndex(){
+		return index;
 	}
 
 

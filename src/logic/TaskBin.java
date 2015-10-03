@@ -1,13 +1,24 @@
+package logic;
+
 import java.io.File;
-import java.sql.Date;
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.Stack;
 
 import storage.Storage;
 
+class NoResultFound extends Exception{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	public NoResultFound(){}
+	public NoResultFound(String message){
+		super(message);
+	}
+}
 
-
-public class TaskBin {
+public class TaskBin implements editTaskInfo{
 	ArrayList<Task> taskList;
 	Storage taskStorage;
 	Stack<Command> undoStack;
@@ -15,6 +26,7 @@ public class TaskBin {
 	
 	private static final String add_tag = "ADD";
 	private static final String delete_tag = "DELETE";
+	private static final String replace_tag = "REPLACE";
 	private static final String alter_tag = "ALTER";
 	
 	/********************************Construction Methods************************************/
@@ -32,8 +44,11 @@ public class TaskBin {
 		redoStack = new Stack<Command>();
 		taskList = new ArrayList<Task>();
 	}
-	
-	/********************************Sorting Methods************************************/
+	/*******************************************initialization*************************************/
+	public void init(){
+		taskList = Storage.read();
+	}
+	/******************************************Sorting Methods************************************/
 	public ArrayList<Task> sortArrayByAlpha(ArrayList<Task> inboxArr){
 		for(int m = 1; m < inboxArr.size(); m++){
 			boolean isSorted = true;
@@ -78,32 +93,88 @@ public class TaskBin {
 				return inboxArr;
 			}
 		}
+		return inboxArr;
 	}
 	/********************************Undo Methods************************************/
 	public void undo(){
-		Command previousComm = undoStack.peek();
-		redoStack.push(undoStack.pop());
-		switch(previousComm.returnCommand()){
+		Command previousComm = undoStack.pop();
+		String command = previousComm.returnCommand();
+		switch(command){
 			case add_tag:
-				taskList.remove(previousComm.returnTask());
+				taskList.remove(previousComm.returnMani());
 			case delete_tag:
-				taskList.add(previousComm.returnTask());
-			
+				taskList.add(previousComm.returnMani());
+			case replace_tag:
+				Command add = undoStack.pop();
+				taskList.remove(add.returnMani());
+				redoStack.push(add);
+				Command del = undoStack.pop();
+				taskList.add(del.returnMani());
+				redoStack.push(del);
+			case alter_tag:
+				
+			default:
+				System.out.println("Error: Unable to identify the command type");
 		}
+			
+		redoStack.push(previousComm);
+		Storage.write(taskList);
+	}
+				
+	/*********************************Search Methods************************************************/
+	
+	public ArrayList<Task> findTaskByTitle(String title){
+		ArrayList<Task> result = new ArrayList<Task>();
+		for(Task task:taskList){
+			if(title.equals(task.getTitle())){
+				result.add(task);
+			}
+		}
+		return result;			
 		
 	}
 	
+	public ArrayList<Task> findTaskByTitle(ArrayList<Task> list, String title){
+		ArrayList<Task> result = new ArrayList<Task>();
+		for(Task task:list){
+			if(title.equals(task.getTitle())){
+				result.add(task);
+			}
+		}
+		return result;					
+	}
 	
-	/********************************Manipulation Methods************************************/
+	public ArrayList<Task> findTaskByDate(Date date){
+		ArrayList<Task> result = new ArrayList<Task>();
+		for(Task task:taskList){
+			if(date.equals(task.getEndingDate())){
+				result.add(task);
+			}
+		}
+		return result;	
+	}
+	
+	public ArrayList<Task> findTaskByDate(ArrayList<Task> list, Date date){
+		ArrayList<Task> result = new ArrayList<Task>();
+		for(Task task:list){
+			if(date.equals(task.getEndingDate())){
+				result.add(task);
+			}
+		}
+		return result;	
+	}
+	
+	/*********************************************Manipulation Methods****************************************/
 	public void add(Task newTask){
 		Command add = new Command(add_tag, newTask);
 		undoStack.push(add);
 		taskList.add(newTask);
-		taskList = sortArrayByAlpha(taskList);
+		taskList = sortArrayByTime(taskList);
 		Storage.write(taskList);
 	}
 	
-	public Task delete(Task task){
+
+	public void delete(Task task){
 		for(int i = 0; i< taskList.size(); i++){
 			if(taskList.get(i).equals(task)){
 				Command delete = new Command(delete_tag, taskList.get(i));
@@ -113,14 +184,23 @@ public class TaskBin {
 			}
 		}
 	}
-	public ArrayList<Task> findTaskByTitle(String title){
-		ArrayList<Task> result = new ArrayList<Task>();
-		for(Task task:taskList){
-			if(title.equals(task.getTitle())){
-				result.add(task);
+
+	
+	public Task retrieveTask(int index) throws NoResultFound{
+		try{
+			for(Task task:taskList){
+				if(task.getIndex() == index){
+					return task;
+				}
+				else{
+					throw new NoResultFound("No such task found in the list");
+				}
 			}
 		}
-		return result;			
+		catch(NoResultFound ex){
+			System.out.println("No such task is found in the list");
+		}
+		return null;
 		
 	}
 	
@@ -135,26 +215,50 @@ public class TaskBin {
 		return result;
 	}
 	
+	/***********************************Implementation*******************************************/
+	public void replace(Task original, Task updated){
+		Command repla = new Command(replace_tag, original);
+		undoStack.push(repla);
+		delete(original);
+		add(updated);
+		Storage.write(taskList);
+	}
+	
+	public void editStartingDate(Task task, Date date){
+		Task tar = taskList.get(taskList.indexOf(task));
+		Command editDate = new Command(alter_tag, task);
+		undoStack.push(editDate);
+		tar.setStartingDate(date);
+		taskList = sortArrayByTime(taskList);
+		Storage.write(taskList);
+	}
+	
+	public void editEndingDate(Task task, Date date){
+		Task tar = taskList.get(taskList.indexOf(task));
+		Command editDate = new Command(alter_tag, task);
+		undoStack.push(editDate);
+		tar.setEndingDate(date);
+		taskList = sortArrayByTime(taskList);
+		Storage.write(taskList);
+	}
+		
+	public void editTitle(Task task, String newTitle){
+		Task tar = taskList.get(taskList.indexOf(task));
+		Command editDate = new Command(alter_tag, task);
+		undoStack.push(editDate);
+		tar.setTitle(newTitle);
+		Storage.write(taskList);
+	}
+		
+		
+	public void editDescription(Task task, String newDes){
+		Task tar = taskList.get(taskList.indexOf(task));
+		Command editDate = new Command(alter_tag, task);
+		undoStack.push(editDate);
+		tar.setDescription(newDes);
+		Storage.write(taskList);
+	}
 
+	
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 }
