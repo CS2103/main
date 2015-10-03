@@ -30,12 +30,15 @@ public class TaskParser {
 		if (text == null) {
 			text = splitInputWithDictionary(Constants.DICTIONARY_EDIT, input);
 		}
+		if (text == null) {
+			text = splitInputWithDictionary(Constants.DICTIONARY_SEARCH, input);
+		}
 
 		return text;
 	}
 
 	public static Date getStartDate(String input) {
-		
+
 		String startDateText = splitInputWithDictionary(Constants.TASK_START_DATE, input);
 		LocalDate startDate = LocalDate.now();
 		Date newDate;
@@ -43,11 +46,11 @@ public class TaskParser {
 		for (String formatString : dateFormats) {
 			try {
 				startDate = DateTimeFormat.forPattern(formatString).parseLocalDate(startDateText);
-				
+
 				if (startDate.getYear() == 2000){
 					startDate = startDate.withYear(currentYear);
 				}
-				
+
 				newDate = startDate.toDate();
 				return newDate;
 			} catch (IllegalArgumentException e) {
@@ -65,11 +68,11 @@ public class TaskParser {
 		for (String formatString : dateFormats) {
 			try {
 				endDate = DateTimeFormat.forPattern(formatString).parseLocalDate(endDateText);
-				
+
 				if (endDate.getYear() == 2000){
 					endDate = endDate.withYear(currentYear);
 				}
-				
+
 				newDate = endDate.toDate();
 				return newDate;
 			} catch (IllegalArgumentException e) {
