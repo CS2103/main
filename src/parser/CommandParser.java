@@ -1,4 +1,4 @@
-
+package parser;
 
 import java.util.Arrays;
 
@@ -24,7 +24,7 @@ public class CommandParser {
 	}
 */
 
-	static String getCommand(String input) {
+	public static String getCommand(String input) {
 		String command;
 		command = Parser.extractFirstWord(input);
 		if (checkForWordInDictionary(DICTIONARY_ADD, command)) {

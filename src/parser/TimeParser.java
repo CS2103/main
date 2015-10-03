@@ -1,3 +1,5 @@
+package parser;
+
 /**
  * Accepted time formats
  * 2359

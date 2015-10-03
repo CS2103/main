@@ -1,3 +1,5 @@
+package parser;
+
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -9,15 +11,15 @@ import org.joda.time.format.DateTimeFormat;
 
 public class TaskParser {
 
-	static String[] dateFormats = { "d MMM yyyy", "d/M/y", "d/M", "d-M-y", "d MMM", "d MMMM" };
-	static Calendar cal = Calendar.getInstance();
-	static int currentYear = cal.get(Calendar.YEAR);
+	private static String[] dateFormats = { "d MMM yyyy", "d/M/y", "d/M", "d-M-y", "d MMM", "d MMMM" };
+	private static Calendar cal = Calendar.getInstance();
+	private static int currentYear = cal.get(Calendar.YEAR);
 
 	static String getEdit(String input) {
 		return "";
 	}
 
-	static String getTitle(String input) {
+	public static String getTitle(String input) {
 		String text = new String();
 		text = splitInputWithDictionary(Constants.DICTIONARY_ADD, input);
 
@@ -32,7 +34,7 @@ public class TaskParser {
 		return text;
 	}
 
-	static Date getStartDate(String input) {
+	public static Date getStartDate(String input) {
 		
 		String startDateText = splitInputWithDictionary(Constants.TASK_START_DATE, input);
 		LocalDate startDate = LocalDate.now();
@@ -55,7 +57,7 @@ public class TaskParser {
 		return null;
 	}
 
-	static Date getEndDate(String input) {
+	public static Date getEndDate(String input) {
 		String endDateText = splitInputWithDictionary(Constants.TASK_END_DATE, input);
 		LocalDate endDate = LocalDate.now();
 		Date newDate;
@@ -78,7 +80,7 @@ public class TaskParser {
 
 	}
 
-	static String splitInputWithDictionary(String[] dictionary, String input) {
+	private static String splitInputWithDictionary(String[] dictionary, String input) {
 		int firstIndex = -1;
 		int lastIndex = input.length();
 

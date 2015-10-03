@@ -9,7 +9,9 @@ import java.util.Date;
 
 
 import logic.TaskBin;
+import parser.CommandParser;
 import parser.Parser;
+import parser.TaskParser;
 
 public class Logic {
 
@@ -21,7 +23,7 @@ public class Logic {
 	}
 	
 	public ArrayList<Task> inputHandler(String input) throws ParseException{
-		String command = myParser.getCommandName(input);
+		String command = CommandParser.getCommand(input);
 		if(command.equals("add")){
 			addTask(input);
 			return bin.returnDisplay();
@@ -36,7 +38,7 @@ public class Logic {
 		else if(command.equals("display")){
 		}
 		else if(command.equals("search")){
-			ArrayList<Task> result = searchEntries(myParser.getDescription(input));
+			ArrayList<Task> result = searchEntries(TaskParser.getTitle(input));
 			return result;
 		}
 		else if(command.equals("undo")){
@@ -55,7 +57,7 @@ public class Logic {
 	public ArrayList<Task> addTask(String input) throws ParseException{
 		Calendar startingDate = Calendar.getInstance();
 		Calendar endingDate = Calendar.getInstance();
-		String title = myParser.getDescription(input);
+		String title = TaskParser.getTitle(input);
 		/*
 		String staDateStr = myParser.getStartDate(input);
 		String endDateStr = myParser.getEndDate(input);
@@ -89,10 +91,10 @@ public class Logic {
 	}
 	 
 	public ArrayList<Task> deleteTaskByName(String input) throws ParseException{
-		String title = myParser.getDescription(input);
-		String dateStr = myParser.getEndDate(input);
-		DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
-		Date ending = dateFormat.parse(dateStr);
+		String title = TaskParser.getTitle(input);
+//		String dateStr = TaskParser.getEndDate(input);
+//		DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+		Date ending = TaskParser.getEndDate(input);
 		Calendar endingDate = Calendar.getInstance();
 		endingDate.setTime(ending);
 		if(ending == null){
