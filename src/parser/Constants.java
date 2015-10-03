@@ -12,12 +12,14 @@ public class Constants {
 	static final String[] DICTIONARY_REDO = {"redo", "re"};
 	static final String[] DICTIONARY_EXIT = {"exit", "quit"};
 	static final String[] DICTIONARY_MARK = {"mark"};
+	static final String[] DICTIONARY_SEARCH = {"search"};
+	static final String[] DICTIONARY_SETPATH = {"setpath"};
 
 	static final String COMMAND_INVALID = "invalid";
 
 	static final String[] TASK_START_DATE = {"from", "on"};
 	static final String[] TASK_END_DATE = {"by", "until", "to"};
-	
+
 	static final String[] TASK_END_TIME = {"at"};
 
 

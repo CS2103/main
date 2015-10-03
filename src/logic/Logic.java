@@ -4,7 +4,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import logic.TaskBin;
+
 import parser.CommandParser;
 import parser.Parser;
 import parser.TaskParser;
@@ -42,7 +42,9 @@ public class Logic {
 		else if(command.equals("display")){
 		}*/
 		else if(command.equals("search")){
+			System.out.println("DEBUG " + TaskParser.getTitle(input));
 			ArrayList<Task> result = searchEntries(TaskParser.getTitle(input));
+
 			return result;
 		}
 		else if(command.equals("undo")){
@@ -89,6 +91,10 @@ public class Logic {
 		case "description":
 			bin.editDescription(toEdit, info);
 			break;
+		case "start":
+			break;
+		case "end":
+			break;
 		}
 		return bin.returnDisplay();
 	}
@@ -119,8 +125,8 @@ public class Logic {
 
 	public ArrayList<Task> deleteTaskByName(String input) throws ParseException{
 		String title = TaskParser.getTitle(input);
-//		String dateStr = TaskParser.getEndDate(input);
-//		DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+		//		String dateStr = TaskParser.getEndDate(input);
+		//		DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 		Date ending = TaskParser.getEndDate(input);
 		Calendar endingDate = Calendar.getInstance();
 		endingDate.setTime(ending);
