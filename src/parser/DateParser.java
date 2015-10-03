@@ -10,6 +10,8 @@ package parser;
  * 10 december
  * 10 december 92
  * 10-12-1992
+ * 10.12.1992
+ * 10.12
  */
 
 
@@ -17,10 +19,10 @@ package parser;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import application.Constants;
 
 public class DateParser {
 
-	static String[] dateFormats = {"d MMM yyyy", "d/M/y", "d/M", "d-M-y", "d MMM", "d MMMM"};
 	static Calendar calendar = Calendar.getInstance();
 
 	public static int getMonth(String date) {
@@ -49,7 +51,7 @@ public class DateParser {
 
 
 	public static Calendar formatDate(String date) {
-		for (String formatString : dateFormats) {
+		for (String formatString : Constants.dateFormats) {
 			try {
 				calendar.setTime(new SimpleDateFormat(formatString).parse(date));
 				modifyDefaultYear(calendar);
