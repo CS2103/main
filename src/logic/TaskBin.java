@@ -1,6 +1,6 @@
 package logic;
 
-import java.io.File;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.ArrayList;
 import java.util.Stack;
@@ -20,7 +20,8 @@ class NoResultFound extends Exception{
 
 public class TaskBin implements editTaskInfo{
 	ArrayList<Task> taskList;
-	Storage taskStorage;
+	ArrayList<Task> activeList;
+ 	Storage taskStorage;
 	Stack<Command> undoStack;
 	Stack<Command> redoStack;
 	
@@ -130,6 +131,7 @@ public class TaskBin implements editTaskInfo{
 				result.add(task);
 			}
 		}
+		sortArrayByTime(result);
 		return result;			
 		
 	}
@@ -141,26 +143,29 @@ public class TaskBin implements editTaskInfo{
 				result.add(task);
 			}
 		}
+		sortArrayByTime(result);
 		return result;					
 	}
 	
-	public ArrayList<Task> findTaskByDate(Date date){
+	public ArrayList<Task> findTaskByDate(Calendar date){
 		ArrayList<Task> result = new ArrayList<Task>();
 		for(Task task:taskList){
-			if(date.equals(task.getEndingDate())){
+			if((date.get(Calendar.MONTH) == task.getEndingDate().get(Calendar.MONTH))&& (date.get(Calendar.DATE) == task.getEndingDate().get(Calendar.DATE)) && (date.get(Calendar.YEAR) == task.getEndingDate().get(Calendar.YEAR))){
 				result.add(task);
 			}
 		}
+		sortArrayByTime(result);
 		return result;	
 	}
 	
-	public ArrayList<Task> findTaskByDate(ArrayList<Task> list, Date date){
+	public ArrayList<Task> findTaskByDate(ArrayList<Task> list, Calendar date){
 		ArrayList<Task> result = new ArrayList<Task>();
 		for(Task task:list){
-			if(date.equals(task.getEndingDate())){
+			if((date.get(Calendar.MONTH) == task.getEndingDate().get(Calendar.MONTH))&& (date.get(Calendar.DATE) == task.getEndingDate().get(Calendar.DATE)) && (date.get(Calendar.YEAR) == task.getEndingDate().get(Calendar.YEAR))){
 				result.add(task);
 			}
 		}
+		sortArrayByTime(result);
 		return result;	
 	}
 	
@@ -186,28 +191,20 @@ public class TaskBin implements editTaskInfo{
 	}
 
 	
-	public Task retrieveTask(int index) throws NoResultFound{
-		try{
-			for(Task task:taskList){
-				if(task.getIndex() == index){
-					return task;
-				}
-				else{
-					throw new NoResultFound("No such task found in the list");
-				}
-			}
-		}
-		catch(NoResultFound ex){
-			System.out.println("No such task is found in the list");
-		}
-		return null;
-		
-	}
-	
 	
 	public ArrayList<Task> getUnfinished(){
 		ArrayList<Task> result = new ArrayList<Task>();
 		for(Task task:taskList){
+			if(task.getStatus() == false){
+				result.add(task);
+			}
+		}
+		return result;
+	}
+	
+	public ArrayList<Task> getUnfinished(ArrayList<Task> list){
+		ArrayList<Task> result = new ArrayList<Task>();
+		for(Task task:list){
 			if(task.getStatus() == false){
 				result.add(task);
 			}
@@ -224,7 +221,7 @@ public class TaskBin implements editTaskInfo{
 		Storage.write(taskList);
 	}
 	
-	public void editStartingDate(Task task, Date date){
+	public void editStartingDate(Task task, Calendar date){
 		Task tar = taskList.get(taskList.indexOf(task));
 		Command editDate = new Command(alter_tag, task);
 		undoStack.push(editDate);
@@ -233,7 +230,7 @@ public class TaskBin implements editTaskInfo{
 		Storage.write(taskList);
 	}
 	
-	public void editEndingDate(Task task, Date date){
+	public void editEndingDate(Task task, Calendar date){
 		Task tar = taskList.get(taskList.indexOf(task));
 		Command editDate = new Command(alter_tag, task);
 		undoStack.push(editDate);
@@ -258,6 +255,51 @@ public class TaskBin implements editTaskInfo{
 		tar.setDescription(newDes);
 		Storage.write(taskList);
 	}
+	/*****************************************Retrieve Different Displays**********************************/
+	public ArrayList<Task> displayInit(){
+		ArrayList<Task> result = new ArrayList<Task>();
+		Calendar now = Calendar.getInstance();
+		for(Task task: taskList){
+			if((now.get(Calendar.MONTH) == task.getEndingDate().get(Calendar.MONTH))&& (now.get(Calendar.DATE) == task.getEndingDate().get(Calendar.DATE)) && (now.get(Calendar.YEAR) == task.getEndingDate().get(Calendar.YEAR)) && (task.getStatus() == false)){
+				result.add(task);
+			}
+		}
+		return result;	
+	}
+	
+	public void setDisplay(ArrayList<Task> list){
+		activeList = list;
+	}
+	
+	public void setDisplay(){
+		activeList = taskList;
+	}
+	
+	public ArrayList<Task> returnDisplay(){
+		activeList = sortArrayByTime(activeList);
+		return activeList;
+	}
+	/******************************************Used Methods***************************************************/
+	/*public Task retrieveTask(int index) throws NoResultFound{
+	try{
+		for(Task task:taskList){
+			if(task.getIndex() == index){
+				return task;
+			}
+			else{
+				throw new NoResultFound("No such task found in the list");
+			}
+		}
+	}
+	catch(NoResultFound ex){
+		System.out.println("No such task is found in the list");
+	}
+	return null;
+	
+}*/
+
+
+
 
 	
 

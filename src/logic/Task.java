@@ -1,7 +1,6 @@
 package logic;
 
-import java.util.Date;
-import java.sql.Time;
+
 import java.util.Calendar;
 
 //Storage class should store the static int numberOfTask; 
@@ -10,10 +9,14 @@ public class Task {
 	private String title;
 	private String description;
 	private boolean isFinished;
-	private Date startingDate;
+	/*private Date startingDate;
 	private Date endingDate;
 	private Time startingTime;
-	private Time endingTime;
+	private Time endingTime;*/
+	private Calendar startingDate;
+	private Calendar endingDate;
+	//private Calendar startingTime;
+	//private Calendar endingTime;
 	private static String type_tag;
 	private int index; 
 	
@@ -36,7 +39,7 @@ public class Task {
 		index = numberOfTask;
 	}
 	
-	public Task(String title, Date sdate, Time stime, Date edate, Time etime){
+	/*public Task(String title, Calendar sdate, Time stime, Date edate, Time etime){
 		this(title);
 		startingDate= sdate;
 		startingTime = stime;
@@ -52,23 +55,23 @@ public class Task {
 		endingTime = etime;
 		endingDate = edate;
 		type_tag = "event";
-	}
+	}*/
 	
-	public Task(String title, java.util.Date startingDate, java.util.Date endingDate){
+	public Task(String title, Calendar startingDate, Calendar endingDate){
 		this(title);
 		this.startingDate = startingDate;
 		this.endingDate = endingDate;
 		type_tag = "event";
 	}
 	
-	public Task(Date sdate, Date edate){
+	public Task(Calendar sdate, Calendar edate){
 		this();
 		startingDate = sdate;
 		endingDate = edate;
 		type_tag = "event";
 	}
 	
-	public Task(String title, Date date, Time time){
+	/*public Task(String title, Date date, Time time){
 		this(title);
 		endingTime = time;
 		endingDate = date;
@@ -78,14 +81,14 @@ public class Task {
 		this();
 		endingTime = time;
 		endingDate = date;
-	}
+	}*/
 	
-	public Task(String title, Date date){
+	public Task(String title, Calendar date){
 		this(title);
 		endingDate = date;
 	}
 	
-	public Task(Date date){
+	public Task(Calendar date){
 		this();
 		endingDate = date;
 	}
@@ -107,16 +110,16 @@ public class Task {
 	public String getType(){
 		return type_tag;
 	}
-	public Date getStartingDate(){
+	public Calendar getStartingDate(){
 		return startingDate;
 	}
-	public Time getStartingTime(){
+	/*public Time getStartingTime(){
 		return startingTime;
 	}
 	public Time getEndingTime(){
 		return endingTime;
-	}
-	public Date getEndingDate(){
+	}*/
+	public Calendar getEndingDate(){
 		return endingDate;
 	}
 	public int getIndex(){
@@ -137,26 +140,17 @@ public class Task {
 		numberOfTask--;
 	}
 	
-	public void setStartingDate(Date date){
+	public void setStartingDate(Calendar date){
 		startingDate = date;
 		setTag();
 	}
 
-	public void setEndingDate(Date date){
+	public void setEndingDate(Calendar date){
 		endingDate = date;
 		setTag();
 	}
 
-	public void setStartingTime(Time time){
-		startingTime = time;
-		setTag();
-	}
 
-	public void setEndingTime(Time time){
-		endingTime = time;
-		setTag();
-	}
-	
 	//decide on the tag
 	
 	public void setTag(){
@@ -179,9 +173,7 @@ public class Task {
 				&& description.equals(task.getDescription()) 
 				&& (isFinished == task.getStatus()
 				&& (startingDate.equals(task.getStartingDate()))
-				&& (startingTime.equals(task.getStartingTime()))
 				&& (endingDate.equals(task.getEndingDate()))
-				&& (endingTime.equals(task.getEndingTime()))
 				&& type_tag.equals(task.getType()))){
 			return true;
 		}
@@ -190,6 +182,7 @@ public class Task {
 		}
 	}
 	
+
 }
 
 	
