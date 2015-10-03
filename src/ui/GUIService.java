@@ -29,6 +29,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import logic.Logic;
 import logic.Task;
+import parser.CommandParser;
 import parser.Parser;
 
 public class GUIService {
@@ -108,7 +109,7 @@ public class GUIService {
 			@Override
 			public void handle(ActionEvent event) {
 				String input = consoleView.inputConsole.getText();
-				System.out.println("[PARSED] the command is : " + myParser.getCommandName(input));//debug
+				System.out.println("[PARSED] the command is : " + CommandParser.getCommand(input));//debug
 				try {
 					populateList(myLogic.inputHandler(input));
 					consoleView.listView.scrollTo(consoleView.listView.getItems().size()-1);
