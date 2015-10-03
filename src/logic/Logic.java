@@ -16,6 +16,9 @@
 
 package logic;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
@@ -32,10 +35,13 @@ public class Logic {
 		bin.init();
 	}
 
-	public void addTask(String input){
+	public void addTask(String input) throws ParseException{
 		String title = myParser.getDescription(input);
-		Date startingDate = myParser.getStartDate(input);
-		Date endingDate = myParser.getEndDate(input);
+		String staDateStr = myParser.getStartDate(input);
+		String endDateStr = myParser.getEndDate(input);
+		DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+		Date startingDate = dateFormat.parse(staDateStr);
+		Date endingDate = dateFormat.parse(endDateStr);
 		Task newTask = new Task(title, startingDate, endingDate);
 		bin.add(newTask);
 	}
@@ -43,9 +49,11 @@ public class Logic {
 	public void editTask(String input){
 		
 	}
-	public void deleteTask(String input){
+	public void deleteTask(String input) throws ParseException{
 		String title = myParser.getDescription(input);
-		Date endingDate = myParser.getEndDate(input);
+		String dateStr = myParser.getEndDate(input);
+		DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+		Date endingDate = dateFormat.parse(dateStr);
 		if(endingDate == null){
 			endingDate = new Date();
 		}
