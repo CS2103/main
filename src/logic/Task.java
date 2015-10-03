@@ -18,7 +18,7 @@ public class Task {
 	//private Calendar startingTime;
 	//private Calendar endingTime;
 	private static String type_tag;
-	private int index; 
+	//private int index; 
 	
 	public Task(String title){
 		this.title = title;
@@ -26,7 +26,7 @@ public class Task {
 		numberOfTask++;
 		isFinished = false;
 		type_tag = "task";
-		index = numberOfTask;
+		//index = numberOfTask;
 	}
 	
 	public Task(){
@@ -36,7 +36,7 @@ public class Task {
 		numberOfTask++;
 		isFinished = false;
 		type_tag = "task";
-		index = numberOfTask;
+		//index = numberOfTask;
 	}
 	
 	/*public Task(String title, Calendar sdate, Time stime, Date edate, Time etime){
@@ -122,9 +122,9 @@ public class Task {
 	public Calendar getEndingDate(){
 		return endingDate;
 	}
-	public int getIndex(){
+	/*public int getIndex(){
 		return index;
-	}
+	}*/
 
 
 	//Mutators

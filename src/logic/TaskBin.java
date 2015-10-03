@@ -1,6 +1,8 @@
 package logic;
 
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.ArrayList;
 import java.util.Stack;
@@ -24,6 +26,7 @@ public class TaskBin implements editTaskInfo{
  	Storage taskStorage;
 	Stack<Command> undoStack;
 	Stack<Command> redoStack;
+	Task buffer; 
 	
 	private static final String add_tag = "ADD";
 	private static final String delete_tag = "DELETE";
@@ -48,6 +51,7 @@ public class TaskBin implements editTaskInfo{
 	/*******************************************initialization*************************************/
 	public void init(){
 		taskList = Storage.read();
+		activeList = Storage.read();
 	}
 	/******************************************Sorting Methods************************************/
 	public ArrayList<Task> sortArrayByAlpha(ArrayList<Task> inboxArr){
@@ -79,10 +83,21 @@ public class TaskBin implements editTaskInfo{
 	}
 	
 	public ArrayList<Task> sortArrayByTime(ArrayList<Task> inboxArr){
-		for(int m = 1; m < inboxArr.size(); m++){
+		ArrayList<Task> timeUndefined = new ArrayList<Task>();
+		if(inboxArr.size() <= 1){
+			return inboxArr;
+		}
+		
+		for(int m = 1; m < inboxArr.size() - 1; m++){
 			boolean isSorted = true;
 			for(int i = 0; (i < inboxArr.size() - m); i++){   
-				if(inboxArr.get(i).getStartingDate().compareTo(inboxArr.get(i+1).getStartingDate()) > 0){
+				if(inboxArr.get(i).getEndingDate() == null){
+					timeUndefined.add(inboxArr.get(i));
+					inboxArr.remove(inboxArr.get(i));
+					isSorted = false;
+					break;
+				}
+				if(inboxArr.get(i).getEndingDate().compareTo(inboxArr.get(i+1).getEndingDate()) > 0){
 					Task buffer = inboxArr.get(i);
 					inboxArr.set(i, inboxArr.get(i+1));
 					inboxArr.set(i+1, buffer);
@@ -91,45 +106,104 @@ public class TaskBin implements editTaskInfo{
 				}
 			}
 			if(isSorted){
+				inboxArr.addAll(timeUndefined);
 				return inboxArr;
 			}
 		}
+		/*Collections.sort(inboxArr, new Comparator<Task>(){
+			public int compare(Task task1, Task task2){
+				return task1.getStartingDate().compareTo(task2.getStartingDate());
+			}
+		});*/
+		timeUndefined = sortArrayByAlpha(timeUndefined);
+		inboxArr.addAll(timeUndefined);
 		return inboxArr;
 	}
 	/********************************Undo Methods************************************/
 	public void undo(){
-		Command previousComm = undoStack.pop();
+		Command previousComm = this.undoStack.pop();
 		String command = previousComm.returnCommand();
 		switch(command){
 			case add_tag:
+				redoStack.push(previousComm);
 				taskList.remove(previousComm.returnMani());
+				setDisplay();
+				break;
 			case delete_tag:
+				redoStack.push(previousComm);
 				taskList.add(previousComm.returnMani());
+				activeList.add(previousComm.returnMani());
+				break;
 			case replace_tag:
 				Command add = undoStack.pop();
 				taskList.remove(add.returnMani());
+				activeList.remove(add.returnMani());
 				redoStack.push(add);
 				Command del = undoStack.pop();
 				taskList.add(del.returnMani());
+				activeList.add(del.returnMani());
 				redoStack.push(del);
-			case alter_tag:
+				redoStack.push(previousComm);
+				break;
 				
+			case alter_tag:
+				redoStack.push(previousComm);
+				taskList.remove(previousComm.returnMani());
+				taskList.add(previousComm.returnOrigin());
+				activeList.remove(previousComm.returnMani());
+				activeList.add(previousComm.returnOrigin());
+				break;
+	
 			default:
 				System.out.println("Error: Unable to identify the command type");
 		}
-			
-		redoStack.push(previousComm);
 		Storage.write(taskList);
 	}
+	
+	public void redo(){
+		Command redoComm = redoStack.pop();
+		String command = redoComm.returnCommand();
+		switch(command){
+			case add_tag:
+				undoStack.push(redoComm);
+				taskList.add(redoComm.returnMani());
+				setDisplay();
+				break;
+			case delete_tag:
+				undoStack.push(redoComm);
+				taskList.remove(redoComm.returnMani());
+				activeList.remove(redoComm.taskManipulation);
+				break;
+			case alter_tag:
+				undoStack.push(redoComm);
+				taskList.remove(redoComm.returnOrigin());
+				activeList.remove(redoComm.returnOrigin());
+				taskList.add(redoComm.returnMani());
+				activeList.add(redoComm.returnMani());
+				break;
+				
+			
+			default:
+				System.out.println("Error: Unable to identify the command type");
+		
+		}
+				
+	}
+	
 				
 	/*********************************Search Methods************************************************/
 	
 	public ArrayList<Task> findTaskByTitle(String title){
 		ArrayList<Task> result = new ArrayList<Task>();
 		for(Task task:taskList){
+			if (task.getTitle().indexOf(title)>=0) {
+				result.add(task);
+			}
+			/*
 			if(title.equals(task.getTitle())){
 				result.add(task);
 			}
+			*/
 		}
 		sortArrayByTime(result);
 		return result;			
@@ -172,10 +246,12 @@ public class TaskBin implements editTaskInfo{
 	/*********************************************Manipulation Methods****************************************/
 	public void add(Task newTask){
 		Command add = new Command(add_tag, newTask);
-		undoStack.push(add);
-		taskList.add(newTask);
+		this.undoStack.push(add);
+		System.out.println(undoStack.size());
+		this.taskList.add(newTask);
 		taskList = sortArrayByTime(taskList);
 		Storage.write(taskList);
+		redoStack.clear();
 	}
 	
 
@@ -188,6 +264,7 @@ public class TaskBin implements editTaskInfo{
 				Storage.write(taskList);
 			}
 		}
+		redoStack.clear();
 	}
 
 	
@@ -219,41 +296,54 @@ public class TaskBin implements editTaskInfo{
 		delete(original);
 		add(updated);
 		Storage.write(taskList);
+		redoStack.clear();
 	}
 	
 	public void editStartingDate(Task task, Calendar date){
 		Task tar = taskList.get(taskList.indexOf(task));
-		Command editDate = new Command(alter_tag, task);
-		undoStack.push(editDate);
+		buffer = task;
 		tar.setStartingDate(date);
+		Command editDate = new Command(alter_tag, tar, buffer);
+		undoStack.push(editDate);
 		taskList = sortArrayByTime(taskList);
 		Storage.write(taskList);
+		buffer = null;
+		redoStack.clear();
 	}
 	
 	public void editEndingDate(Task task, Calendar date){
 		Task tar = taskList.get(taskList.indexOf(task));
-		Command editDate = new Command(alter_tag, task);
-		undoStack.push(editDate);
+		buffer = task;
 		tar.setEndingDate(date);
+		Command editDate = new Command(alter_tag, tar, buffer);
+		undoStack.push(editDate);
 		taskList = sortArrayByTime(taskList);
 		Storage.write(taskList);
+		buffer = null;
+		redoStack.clear();
 	}
 		
 	public void editTitle(Task task, String newTitle){
 		Task tar = taskList.get(taskList.indexOf(task));
-		Command editDate = new Command(alter_tag, task);
-		undoStack.push(editDate);
+		buffer = task;
 		tar.setTitle(newTitle);
+		Command editTil = new Command(alter_tag, tar, buffer);
+		undoStack.push(editTil);
 		Storage.write(taskList);
+		buffer = null;
+		redoStack.clear();
 	}
 		
 		
 	public void editDescription(Task task, String newDes){
 		Task tar = taskList.get(taskList.indexOf(task));
-		Command editDate = new Command(alter_tag, task);
-		undoStack.push(editDate);
+		buffer = task;
 		tar.setDescription(newDes);
+		Command editDes = new Command(alter_tag, tar, buffer);
+		undoStack.push(editDes);
 		Storage.write(taskList);
+		buffer = null;
+		redoStack.clear();
 	}
 	/*****************************************Retrieve Different Displays**********************************/
 	public ArrayList<Task> displayInit(){
@@ -272,6 +362,7 @@ public class TaskBin implements editTaskInfo{
 	}
 	
 	public void setDisplay(){
+		activeList = sortArrayByTime(activeList);
 		activeList = taskList;
 	}
 	
