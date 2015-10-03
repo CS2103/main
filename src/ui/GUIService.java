@@ -20,9 +20,11 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import logic.Logic;
@@ -46,12 +48,21 @@ public class GUIService {
 		content = new StackPane();
 		myParser = new Parser();
 		consoleView = new ConsoleView();
-		consoleView.setStyle("-fx-background-color: rgb(255,255,255); -fx-background-radius: 10px;");
+
+		content.setStyle("-fx-background-color: rgba(255,255,255, 0); -fx-background-radius: 10px;");
+		DropShadow dropShadow = new DropShadow();
+		dropShadow.setRadius(5.0);
+		dropShadow.setOffsetX(4.0);
+		dropShadow.setOffsetY(3.0);
+		dropShadow.setColor(Color.color(0.4, 0.5, 0.5));
+		content.setEffect(dropShadow);
 		addListenersToConsoleView();
-		populateList();
+		populateList(myLogic.startupDisplay());
+
 		content.getChildren().addAll(consoleView.consolePane);
 	}
-	private void populateList() {
+
+	private void populateList(ArrayList<Task> tasksArr) {
 		/*
 		ArrayList<Task> toShow = myLogic.getStartupDisplay();
 		ObservableList<StackPane> items =FXCollections.observableArrayList ();
@@ -61,11 +72,11 @@ public class GUIService {
 		}
 		 */
 
-		GUIServiceTest guiTest = new GUIServiceTest();
-		ArrayList<Task> toShow = guiTest.getStartupDisplay();
+		//GUIServiceTest guiTest = new GUIServiceTest();
+		//ArrayList<Task> toShow = guiTest.getStartupDisplay();
 		ObservableList<ListItem> items =FXCollections.observableArrayList ();
-		for (Task task : toShow) {
-			ListItem newListItem = new ListItem(task.getTitle(), "this is where the task description will be", "now", "later");
+		for (Task task : tasksArr) {
+			ListItem newListItem = new ListItem(task.getTitle(), "this is where the task description will be", "1800", "2000");
 			items.add(newListItem);
 			//newListItem.setStyle("-fx-background-color: rgb(15,175,221); -fx-background-radius: 10px;");
 		}
@@ -104,18 +115,10 @@ public class GUIService {
 			public void handle(ActionEvent event) {
 				String input = consoleView.inputConsole.getText();
 				System.out.println("[PARSED] the command is : " + myParser.getCommandName(input));//debug
-				Logic myLogic = new Logic();
 				try {
-					ArrayList<Task> toShow = myLogic.inputHandler(input);
+					populateList(myLogic.inputHandler(input));
 				} catch (ParseException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}
-
-
-
-				if (myParser.getCommandName(input).trim().equals("add")) {
-					System.out.println("[DEBUG] displaying taskpane");//debug
 				}
 				consoleView.inputConsole.clear();
 			}
@@ -123,8 +126,8 @@ public class GUIService {
 	}
 
 	public Scene returnScene() {
-		Scene myScene  = new Scene(this.content, 600, 600);
-
+		Scene myScene  = new Scene(this.content, 605, 600);
+		myScene.setFill(Color.TRANSPARENT);
 		showConsolePane();
 		return myScene;
 	}
@@ -141,14 +144,6 @@ public class GUIService {
 		consoleView.consolePane.setVisible(false);
 	}
 
-	/*
-	public void printToConsole(String output, Font font){
-		Text text = new Text(output);
-		text.setFont(font);
-		consoleView.outputConsole.getChildren().add(text);
-	}
-	 */
-
 	public void addAutocompleteEntries (ArrayList<String> stringArrayList) {
 		String[] stringArray = (String[]) stringArrayList.toArray();
 		Collections.addAll(consoleView.inputConsole.entries, stringArray);
@@ -157,9 +152,7 @@ public class GUIService {
 	public void showStage() {
 		stage.initStyle(StageStyle.TRANSPARENT);
 		Platform.setImplicitExit(false);
-
 		stage.setScene(returnScene());
-
 		stage.show();
 	}
 

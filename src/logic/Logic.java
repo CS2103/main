@@ -26,6 +26,9 @@ public class Logic {
 			addTask(input);
 			return bin.returnDisplay();
 		}
+		else if(command.equals("home")){
+			return displayHome();
+		}
 		else if(command.equals("delete")){
 		}
 		else if(command.equals("edit")){
@@ -37,8 +40,12 @@ public class Logic {
 			return result;
 		}
 		else if(command.equals("undo")){
+			bin.undo();
+			return bin.returnDisplay();
 		}
 		else if(command.equals("redo")){
+			bin.redo();
+			return bin.returnDisplay();
 		}
 		
 		return null;
@@ -48,7 +55,6 @@ public class Logic {
 	public ArrayList<Task> addTask(String input) throws ParseException{
 		Calendar startingDate = Calendar.getInstance();
 		Calendar endingDate = Calendar.getInstance();
-		
 		String title = myParser.getDescription(input);
 		/*
 		String staDateStr = myParser.getStartDate(input);
@@ -63,11 +69,25 @@ public class Logic {
 		return bin.returnDisplay();
 		
 	}
+	public ArrayList<Task> displayHome(){
+		bin.setDisplay();
+		return bin.returnDisplay();
+	}
 	
 	public ArrayList<Task> editTask(String input){
 		return null;
 	}
 	
+	public ArrayList<Task> undoChange(){
+		bin.undo();
+		return bin.returnDisplay();
+	}
+	
+	public ArrayList<Task> redoChange(){
+		bin.redo();
+		return bin.returnDisplay();
+	}
+	 
 	public ArrayList<Task> deleteTaskByName(String input) throws ParseException{
 		String title = myParser.getDescription(input);
 		String dateStr = myParser.getEndDate(input);
@@ -104,6 +124,14 @@ public class Logic {
 		bin.setDisplay(result);
 		return bin.returnDisplay();
 	}
+	
+	public ArrayList<Task> searchEntries(Calendar date){
+		ArrayList<Task> result = bin.findTaskByDate(date);
+		bin.setDisplay(result);
+		return bin.returnDisplay();
+	}
+	
+	
 	
 	public void changeDirectory(){
 
