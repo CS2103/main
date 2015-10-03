@@ -20,8 +20,6 @@ import application.Constants;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
@@ -38,13 +36,9 @@ public class TrayService {
 		this.stage = stage;
 	}
 
-
 	public void createTrayIcon(final Stage stage) {
 
-		Alert alert = new Alert(AlertType.INFORMATION);
-		alert.setTitle("About");
-		alert.setHeaderText(null);
-		alert.setContentText(Constants.APP_NAME + " 2015\n\nCreated by:\n Andy, Hung, Jun Ren, Xiaoming");
+		PopUp about = new PopUp("About", Constants.MSG_ABOUT);
 
 		if (SystemTray.isSupported()) {
 			SystemTray tray = SystemTray.getSystemTray();
@@ -81,7 +75,7 @@ public class TrayService {
 					Platform.runLater(new Runnable() {
 						@Override
 						public void run() {
-							alert.showAndWait();
+							about.showAndWait();
 						}
 					});
 				}
@@ -140,7 +134,6 @@ public class TrayService {
 			} catch (AWTException e) {
 				System.err.println(e);
 			}
-
 		}
 	}
 
