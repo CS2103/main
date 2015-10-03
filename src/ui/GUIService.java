@@ -57,27 +57,16 @@ public class GUIService {
 		dropShadow.setColor(Color.color(0.4, 0.5, 0.5));
 		content.setEffect(dropShadow);
 		addListenersToConsoleView();
-		populateList();
+		populateList(myLogic.startupDisplay());
+
 		content.getChildren().addAll(consoleView.consolePane);
 	}
 
-	private void populateList() {
-		/*
-		ArrayList<Task> toShow = myLogic.getStartupDisplay();
-		ObservableList<StackPane> items =FXCollections.observableArrayList ();
-		for (Task task : toShow) {
-			//ListItem newListItem = new ListItem(task.getTitle(), task.getStart(), task.getEnd());
-			items.add(newListItem);
-		}
-		 */
-
-		GUIServiceTest guiTest = new GUIServiceTest();
-		ArrayList<Task> toShow = guiTest.getStartupDisplay();
+	private void populateList(ArrayList<Task> tasksArr) {
 		ObservableList<ListItem> items =FXCollections.observableArrayList ();
-		for (Task task : toShow) {
+		for (Task task : tasksArr) {
 			ListItem newListItem = new ListItem(task.getTitle(), "this is where the task description will be", "1800", "2000");
 			items.add(newListItem);
-			//newListItem.setStyle("-fx-background-color: rgb(15,175,221); -fx-background-radius: 10px;");
 		}
 		consoleView.listView.setItems(items);
 	}
@@ -114,9 +103,9 @@ public class GUIService {
 			public void handle(ActionEvent event) {
 				String input = consoleView.inputConsole.getText();
 				System.out.println("[PARSED] the command is : " + myParser.getCommandName(input));//debug
-				Logic myLogic = new Logic();
 				try {
-					ArrayList<Task> toShow = myLogic.inputHandler(input);
+					populateList(myLogic.inputHandler(input));
+					consoleView.listView.scrollTo(consoleView.listView.getItems().size()-1);
 				} catch (ParseException e) {
 					e.printStackTrace();
 				}

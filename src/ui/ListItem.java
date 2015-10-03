@@ -12,7 +12,7 @@ public class ListItem extends StackPane{
 	private static int colorIndex = 0;
 	//private Color[] colorArray = {Color.CORNFLOWERBLUE, Color.GOLD, Color.PINK, Color.GREENYELLOW, Color.KHAKI};
 
-	private String[] colorArray = {"rgb(102,178,255)","rgb(255,153,51)","rgb(255,153,153)","rgb(153,255,51)","rgb(128,255,0)"};
+	private String[] colorArray = {"rgb(102,178,255)","rgb(255,153,51)","rgb(255,153,153)","rgb(153,255,51)","rgb(255,51,255)"};
 	private Label title;
 	private Label description;
 	private Label startTime;
@@ -35,7 +35,7 @@ public class ListItem extends StackPane{
 		HBox timeLayout = new HBox();
 		timeLayout.getChildren().addAll(startTime, endTime);
 		consoleLayout.getChildren().addAll(title, description, timeLayout);
-		this.setStyle("-fx-background-color: " + colorArray[colorIndex] + "; -fx-background-radius: 10px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);");
+		this.setStyle("-fx-background-color: " + colorArray[colorIndex%5] + "; -fx-background-radius: 10px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);");
 		this.getChildren().add(consoleLayout);
 		ListItem.colorIndex++;
 		this.setPadding(new Insets(5, 5, 5, 5));
