@@ -39,6 +39,7 @@ public class GUIService {
 
 	Logic myLogic;
 
+	static int listIndex = 0;
 	private TrayService trayService;
 	Stage stage;
 	Parser myParser;
@@ -64,9 +65,10 @@ public class GUIService {
 	}
 
 	private void populateList(ArrayList<Task> tasksArr) {
+		int index = 1;
 		ObservableList<ListItem> items =FXCollections.observableArrayList ();
 		for (Task task : tasksArr) {
-			ListItem newListItem = new ListItem(task.getTitle(), "this is where the task description will be", "1800", "2000");
+			ListItem newListItem = new ListItem(task.getTitle(), "this is where the task description will be", "1800", "2000", index++);
 			items.add(newListItem);
 		}
 		consoleView.listView.setItems(items);
@@ -76,8 +78,7 @@ public class GUIService {
 		consoleView.listView.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>(){
 			@Override
 			public void handle(KeyEvent event) {
-				if(event.getCode()==KeyCode.ESCAPE)
-				{
+				if(event.getCode() == KeyCode.ESCAPE) {
 					System.exit(0);
 				}
 			}
@@ -91,10 +92,15 @@ public class GUIService {
 
 		consoleView.inputConsole.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>(){
 			@Override
+
 			public void handle(KeyEvent event) {
-				if(event.getCode()==KeyCode.ESCAPE)
-				{
+				System.err.println(event.getCode());
+				if(event.getCode() == KeyCode.ESCAPE) {
 					System.exit(0);
+				} else if (event.getCode() == KeyCode.DOWN){
+					consoleView.listView.getSelectionModel().select(++listIndex);
+				} else if (event.getCode() == KeyCode.UP) {
+					consoleView.listView.getSelectionModel().select(--listIndex);
 				}
 			}
 		});
@@ -116,7 +122,7 @@ public class GUIService {
 	}
 
 	public Scene returnScene() {
-		Scene myScene  = new Scene(this.content, 605, 600);
+		Scene myScene  = new Scene(this.content, 605, 605);
 		myScene.setFill(Color.TRANSPARENT);
 		showConsolePane();
 		return myScene;
