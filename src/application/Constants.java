@@ -52,8 +52,8 @@ public class Constants {
 	public static final String[] DICTIONARY_SHOW = { "show", "display", "sh" };
 	public static final String[] DICTIONARY_SEARCH = { "search", "find", "sr" };
 	public static final String[] DICTIONARY_EDIT = { "edit", "change", "e", "modify" };
-	public static final String[] DICTIONARY_MARK = {"mark"};
-	public static final String[] DICTIONARY_UNMARK = {"unmark"};
+	public static final String[] DICTIONARY_MARK = {"mark", "m"};
+	public static final String[] DICTIONARY_UNMARK = {"unmark", "um"};
 	public static final String[] DICTIONARY_DONE = { "done", "dn" };
 	public static final String[] DICTIONARY_NOT_DONE = { "undone", "pending" };
 	public static final String[] DICTIONARY_UNDO = { "undo", "un" };
@@ -237,12 +237,12 @@ public class Constants {
 	public static final int WORD_COUNT_ONE = 1;
 
 	// date formats
-	public static String[] dateFormats = {"d MMM yyyy", "d/M/yy", "d/M", "d-M-y", "d MMM", "d MMMM", "dd.MM.yyyy", 
-											"d-M", "dd.M"};
-	
+	public static String[] dateFormats = {"d MMM yyyy", "d/M/yy", "d/M", "d-M-y", "d MMM", "d MMMM", "dd.MM.yyyy",
+			"d-M", "dd.M"};
+
 	// time formats
-	public static String[] timeFormats = {"hhmm", "hh:mm", "hh", "hh.mm",  
-											"HHmm", "HH:mm", "HH", "HH.mm"};
+	public static String[] timeFormats = {"hhmm", "hh:mm", "hh", "hh.mm",
+			"HHmm", "HH:mm", "HH", "HH.mm"};
 
 	// show parameters (LOWERCASE)
 	public static final String SHOW_OVERDUE = "overdue";
