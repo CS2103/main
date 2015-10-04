@@ -53,6 +53,7 @@ public class Constants {
 	public static final String[] DICTIONARY_SEARCH = { "search", "find", "sr" };
 	public static final String[] DICTIONARY_EDIT = { "edit", "change", "e", "modify" };
 	public static final String[] DICTIONARY_MARK = {"mark"};
+	public static final String[] DICTIONARY_UNMARK = {"unmark"};
 	public static final String[] DICTIONARY_DONE = { "done", "dn" };
 	public static final String[] DICTIONARY_NOT_DONE = { "undone", "pending" };
 	public static final String[] DICTIONARY_UNDO = { "undo", "un" };
