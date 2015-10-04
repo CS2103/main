@@ -39,7 +39,6 @@ public class TaskBin implements editTaskInfo{
 		this.taskList = taskList;
 	}
 
-
 	public TaskBin(){
 		undoStack = new Stack<Command>();
 		redoStack = new Stack<Command>();
@@ -190,6 +189,32 @@ public class TaskBin implements editTaskInfo{
 
 	/*********************************Search Methods************************************************/
 
+	public ArrayList<Task> markTaskInstance(Task task) {
+		for (Task obj : taskList) {
+			if (obj.equals(task)) {
+				System.out.println("ADSSADAD");
+				System.out.println(obj.getTitle());
+				obj.mark();
+			}
+		}
+		Storage.write(taskList);
+		return taskList;
+	}
+
+	public ArrayList<Task> unMarkTaskInstance(Task task) {
+		for (Task obj : taskList) {
+			if (obj.equals(task)) {
+				System.out.println("ADSSADAD");
+				System.out.println(obj.getTitle());
+				obj.unMark();
+			}
+		}
+		Storage.write(taskList);
+		return taskList;
+	}
+
+
+
 	public ArrayList<Task> findTaskByTitle(String title){
 		ArrayList<Task> result = new ArrayList<Task>();
 		for(Task task:taskList){
@@ -258,6 +283,7 @@ public class TaskBin implements editTaskInfo{
 				undoStack.push(delete);
 				taskList.remove(i);
 				Storage.write(taskList);
+				break;
 			}
 		}
 		redoStack.clear();
@@ -282,6 +308,7 @@ public class TaskBin implements editTaskInfo{
 		}
 		return result;
 	}
+
 
 	/***********************************Implementation*******************************************/
 	@Override
@@ -361,7 +388,7 @@ public class TaskBin implements editTaskInfo{
 		ArrayList<Task> result = new ArrayList<Task>();
 		Calendar now = Calendar.getInstance();
 		for(Task task: taskList){
-			if((now.get(Calendar.MONTH) == task.getEndingDate().get(Calendar.MONTH))&& (now.get(Calendar.DATE) == task.getEndingDate().get(Calendar.DATE)) && (now.get(Calendar.YEAR) == task.getEndingDate().get(Calendar.YEAR)) && (task.getStatus() == false)){
+			if((now.get(Calendar.MONTH) == task.getEndingDate().get(Calendar.MONTH))&& (now.get(Calendar.DATE) == task.getEndingDate().get(Calendar.DATE)) && (now.get(Calendar.YEAR) == task.getEndingDate().get(Calendar.YEAR))){
 				result.add(task);
 			}
 		}

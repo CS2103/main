@@ -36,7 +36,12 @@ public class CommandParser {
 			return Constants.DICTIONARY_EXIT[0];
 		} else if (checkForWordInDictionary(Constants.DICTIONARY_SETPATH, command)) {
 			return Constants.DICTIONARY_SETPATH[0];
+		} else if (checkForWordInDictionary(Constants.DICTIONARY_MARK, command)) {
+			return Constants.DICTIONARY_MARK[0];
+		} else if (checkForWordInDictionary(Constants.DICTIONARY_UNMARK, command)) {
+			return Constants.DICTIONARY_UNMARK[0];
 		} else {
+
 			return Constants.COMMAND_INVALID;
 		}
 	}
