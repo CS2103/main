@@ -2,12 +2,14 @@ package logic;
 
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
+
+import org.joda.time.DateTime;
 
 import parser.CommandParser;
 import parser.Parser;
 import parser.TaskParser;
+import storage.Storage;
 
 public class Logic {
 
@@ -28,7 +30,7 @@ public class Logic {
 			return displayHome();
 		}
 		else if (command.equals("setpath")){
-			bin.taskStorage.setPath(input.split(" ")[1].trim());
+			Storage.setPath(input.split(" ")[1].trim());
 			return displayHome();
 		}
 		else if(command.equals("delete")){
@@ -72,8 +74,8 @@ public class Logic {
 	}
 
 	public ArrayList<Task> addTask(String input) throws ParseException{
-		Calendar startingDate = Calendar.getInstance();
-		Calendar endingDate = Calendar.getInstance();
+		DateTime startingDate = new DateTime();
+		DateTime endingDate = new DateTime();
 		String title = TaskParser.getTitle(input);
 		/*
 		String staDateStr = myParser.getStartDate(input);
@@ -111,7 +113,7 @@ public class Logic {
 		return bin.returnDisplay();
 	}
 
-	public ArrayList<Task> editTask(int index, String field, Calendar date){
+	public ArrayList<Task> editTask(int index, String field, DateTime date){
 		ArrayList<Task> display = bin.returnDisplay();
 		Task toEdit = display.get(index - 1);
 		switch(field){
@@ -140,10 +142,9 @@ public class Logic {
 		//		String dateStr = TaskParser.getEndDate(input);
 		//		DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 		Date ending = TaskParser.getEndDate(input);
-		Calendar endingDate = Calendar.getInstance();
-		endingDate.setTime(ending);
+		DateTime endingDate = new DateTime(ending);
 		if(ending == null){
-			endingDate = Calendar.getInstance();
+			endingDate = DateTime.now();
 		}
 		ArrayList<Task> result = bin.findTaskByTitle(title);
 		if(result.size() > 1){
@@ -174,7 +175,7 @@ public class Logic {
 		return bin.returnDisplay();
 	}
 
-	public ArrayList<Task> searchEntries(Calendar date){
+	public ArrayList<Task> searchEntries(DateTime date){
 		ArrayList<Task> result = bin.findTaskByDate(date);
 		bin.setDisplay(result);
 		return bin.returnDisplay();
