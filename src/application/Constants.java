@@ -320,7 +320,6 @@ public class Constants {
 	final static Font CALIBRI_16 = Font.font("Calibri", 16);
 	final static Font TAHOMA_14 = Font.font("Tahoma", 14);
 
-	final static String LOL_NAME = "LOL - LifeOnLine";
 	final static String TODAY = "Today";
 	final static String PROGRESS_BAR = "Progress Bar";
 

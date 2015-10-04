@@ -15,9 +15,11 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Scanner;
-import application.Constants;
+
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
+
+import application.Constants;
 
 public class TimeParser {
 
@@ -28,6 +30,8 @@ public class TimeParser {
 		String timeString = sc.nextLine();
 		System.err.println(displayTime(timeString));
 		System.err.println(displayFullTime(timeString));
+		System.err.println(formatTime(timeString));
+		System.err.println(getEndTime(timeString));
 		sc.close();
 	}
 
@@ -69,12 +73,12 @@ public class TimeParser {
 	public static String displayTime(String time) {
 		return String.format("%02d:%02d", getHour(time), getMinute(time)) + " " + getAmPm(time);
 	}
-	
+
 	public static Date getEndTime(String input){
 		DateTime endTime = DateTime.now();
 		String endTimeText = TaskParser.splitInputWithDictionary(Constants.TASK_END_TIME, input);
 		Date newTime;
-		
+
 		for (String formatStr : Constants.timeFormats) {
 			try {
 				endTime = DateTimeFormat.forPattern(formatStr).parseDateTime(endTimeText);
@@ -83,10 +87,10 @@ public class TimeParser {
 			} catch (NullPointerException e) {
 
 			} catch (IllegalArgumentException e){
-				
+
 			}
 		}
-		
+
 		return null;
 	}
 }

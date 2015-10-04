@@ -83,9 +83,8 @@ public class ConsoleView extends Pane{
 		listView = new ListView<ListItem>();
 		listView.setPrefHeight(470);
 		listView.setPrefWidth(600);
-		listView.setStyle("-fx-background-color: gray;");
+		listView.setStyle("-fx-background-color: rgba(255,255,255, 0.6);");
 		listView.setFocusTraversable(false);
-		//listView.setStyle("-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%), linear-gradient(#020b02, #3a3a3a), linear-gradient(#9d9e9d 0%, #6b6a6b 20%, #343534 80%, #242424 100%),linear-gradient(#8a8a8a 0%, #6b6a6b 20%, #343534 80%, #262626 100%;");
 
 		inputConsole = new AutoCompleteTextField();
 		inputConsole.setEditable(true);
