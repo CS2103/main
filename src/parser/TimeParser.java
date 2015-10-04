@@ -5,6 +5,7 @@ package parser;
  * 2359
  * 23:45
  * 23
+ * 23.45
  */
 
 
@@ -12,11 +13,14 @@ package parser;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Scanner;
+import application.Constants;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
 
 public class TimeParser {
 
-	static String[] timeFormats = {"hhmm", "hh:mm", "hh"};
 	static Calendar calendar = Calendar.getInstance();
 
 	public static void main (String[] args) {
@@ -49,7 +53,7 @@ public class TimeParser {
 	}
 
 	public static Calendar formatTime(String time) {
-		for (String formatString : timeFormats) {
+		for (String formatString : Constants.timeFormats) {
 			try {
 				calendar.setTime(new SimpleDateFormat(formatString).parse(time));
 				return calendar;
@@ -64,5 +68,25 @@ public class TimeParser {
 	}
 	public static String displayTime(String time) {
 		return String.format("%02d:%02d", getHour(time), getMinute(time)) + " " + getAmPm(time);
+	}
+	
+	public static Date getEndTime(String input){
+		DateTime endTime = DateTime.now();
+		String endTimeText = TaskParser.splitInputWithDictionary(Constants.TASK_END_TIME, input);
+		Date newTime;
+		
+		for (String formatStr : Constants.timeFormats) {
+			try {
+				endTime = DateTimeFormat.forPattern(formatStr).parseDateTime(endTimeText);
+				newTime = endTime.toLocalDateTime().toDate();
+				return newTime;
+			} catch (NullPointerException e) {
+
+			} catch (IllegalArgumentException e){
+				
+			}
+		}
+		
+		return null;
 	}
 }

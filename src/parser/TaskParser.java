@@ -1,17 +1,15 @@
 package parser;
 
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
-
+import application.Constants;
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 
 public class TaskParser {
 
-	private static String[] dateFormats = { "d MMM yyyy", "d/M/y", "d/M", "d-M-y", "d MMM", "d MMMM" };
 	private static Calendar cal = Calendar.getInstance();
 	private static int currentYear = cal.get(Calendar.YEAR);
 
@@ -26,12 +24,23 @@ public class TaskParser {
 		if (text == null) {
 			text = splitInputWithDictionary(Constants.DICTIONARY_DELETE, input);
 		}
-
 		if (text == null) {
 			text = splitInputWithDictionary(Constants.DICTIONARY_EDIT, input);
 		}
 		if (text == null) {
 			text = splitInputWithDictionary(Constants.DICTIONARY_SEARCH, input);
+		}
+		if (text == null) {
+			text = splitInputWithDictionary(Constants.DICTIONARY_UNDO, input);
+		}
+		if (text == null) {
+			text = splitInputWithDictionary(Constants.DICTIONARY_REDO, input);
+		}
+		if (text == null) {
+			text = splitInputWithDictionary(Constants.DICTIONARY_EXIT, input);
+		}
+		if (text == null) {
+			text = splitInputWithDictionary(Constants.DICTIONARY_SETPATH, input);
 		}
 
 		return text;
@@ -43,7 +52,7 @@ public class TaskParser {
 		LocalDate startDate = LocalDate.now();
 		Date newDate;
 
-		for (String formatString : dateFormats) {
+		for (String formatString : Constants.dateFormats) {
 			try {
 				startDate = DateTimeFormat.forPattern(formatString).parseLocalDate(startDateText);
 
@@ -53,8 +62,10 @@ public class TaskParser {
 
 				newDate = startDate.toDate();
 				return newDate;
-			} catch (IllegalArgumentException e) {
+			} catch (NullPointerException e) {
 
+			} catch (IllegalArgumentException e){
+				
 			}
 		}
 		return null;
@@ -65,7 +76,7 @@ public class TaskParser {
 		LocalDate endDate = LocalDate.now();
 		Date newDate;
 
-		for (String formatString : dateFormats) {
+		for (String formatString : Constants.dateFormats) {
 			try {
 				endDate = DateTimeFormat.forPattern(formatString).parseLocalDate(endDateText);
 
@@ -75,15 +86,17 @@ public class TaskParser {
 
 				newDate = endDate.toDate();
 				return newDate;
-			} catch (IllegalArgumentException e) {
+			} catch (NullPointerException e) {
 
+			} catch (IllegalArgumentException e){
+				
 			}
 		}
 		return null;
 
 	}
 
-	private static String splitInputWithDictionary(String[] dictionary, String input) {
+	public static String splitInputWithDictionary(String[] dictionary, String input) {
 		int firstIndex = -1;
 		int lastIndex = input.length();
 
@@ -102,6 +115,7 @@ public class TaskParser {
 		taskKeywords.addAll(Arrays.asList(Constants.TASK_END_DATE));
 		taskKeywords.addAll(Arrays.asList(Constants.TASK_START_DATE));
 		taskKeywords.addAll(Arrays.asList(Constants.DICTIONARY_ADD));
+		taskKeywords.addAll(Arrays.asList(Constants.TASK_END_TIME));
 		taskKeywords.removeAll(Arrays.asList(dictionary));
 
 		// System.out.println(taskKeywords);
@@ -117,6 +131,23 @@ public class TaskParser {
 		}
 
 		return Parser.excludeFirstWord(input.substring(firstIndex, lastIndex)).trim();
+	}
+	
+	public static int getIndex(String input) {
+		input = input.split(" ")[1];		//replace with constant
+		
+		return Integer.parseInt(input);
+	}
+	
+	public static String getAttribute(String input){
+		return input.split(" ")[2].toLowerCase();
+	}
+	
+	public static String getEditTitle(String input){
+		for (int i = 0; i < 3; i++){
+			input = Parser.excludeFirstWord(input);
+		}
+		return input;
 	}
 
 }
