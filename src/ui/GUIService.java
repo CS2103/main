@@ -29,7 +29,12 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import logic.Logic;
 import logic.Task;
+<<<<<<< HEAD
+=======
+import parser.CommandParser;
+>>>>>>> f1408057840addec287f7fac076bfe841975c2fe
 import parser.Parser;
+import parser.TaskParser;
 
 public class GUIService {
 
@@ -38,6 +43,10 @@ public class GUIService {
 
 	Logic myLogic;
 
+<<<<<<< HEAD
+=======
+	int listIndex = 0;
+>>>>>>> f1408057840addec287f7fac076bfe841975c2fe
 	private TrayService trayService;
 	Stage stage;
 	Parser myParser;
@@ -58,12 +67,16 @@ public class GUIService {
 		content.setEffect(dropShadow);
 		addListenersToConsoleView();
 		populateList(myLogic.startupDisplay());
+<<<<<<< HEAD
 		System.out.println(myLogic.startupDisplay());
+=======
+>>>>>>> f1408057840addec287f7fac076bfe841975c2fe
 
 		content.getChildren().addAll(consoleView.consolePane);
 	}
 
 	private void populateList(ArrayList<Task> tasksArr) {
+<<<<<<< HEAD
 		/*
 		ArrayList<Task> toShow = myLogic.getStartupDisplay();
 		ObservableList<StackPane> items =FXCollections.observableArrayList ();
@@ -80,6 +93,13 @@ public class GUIService {
 			ListItem newListItem = new ListItem(task.getTitle(), "this is where the task description will be", "1800", "2000");
 			items.add(newListItem);
 			//newListItem.setStyle("-fx-background-color: rgb(15,175,221); -fx-background-radius: 10px;");
+=======
+		int index = 1;
+		ObservableList<ListItem> items =FXCollections.observableArrayList ();
+		for (Task task : tasksArr) {
+			ListItem newListItem = new ListItem(task.getTitle(), "this is where the task description will be", "1800", "2000", task.getStatus(),index++);
+			items.add(newListItem);
+>>>>>>> f1408057840addec287f7fac076bfe841975c2fe
 		}
 		consoleView.listView.setItems(items);
 	}
@@ -88,8 +108,12 @@ public class GUIService {
 		consoleView.listView.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>(){
 			@Override
 			public void handle(KeyEvent event) {
+<<<<<<< HEAD
 				if(event.getCode()==KeyCode.ESCAPE)
 				{
+=======
+				if(event.getCode() == KeyCode.ESCAPE) {
+>>>>>>> f1408057840addec287f7fac076bfe841975c2fe
 					System.exit(0);
 				}
 			}
@@ -103,10 +127,19 @@ public class GUIService {
 
 		consoleView.inputConsole.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>(){
 			@Override
+
 			public void handle(KeyEvent event) {
-				if(event.getCode()==KeyCode.ESCAPE)
-				{
+				System.err.println(event.getCode());
+				if(event.getCode() == KeyCode.ESCAPE) {
 					System.exit(0);
+				} else if (consoleView.inputConsole.getText().length() == 0 && event.getCode() == KeyCode.BACK_SPACE) {
+					populateList(myLogic.startupDisplay());
+				} else if (event.getCode() == KeyCode.DOWN){
+					consoleView.listView.getSelectionModel().select(++listIndex%consoleView.listView.getItems().size());
+					consoleView.listView.scrollTo(listIndex);
+				} else if (event.getCode() == KeyCode.UP) {
+					consoleView.listView.getSelectionModel().select(--listIndex%consoleView.listView.getItems().size());
+					consoleView.listView.scrollTo(listIndex);
 				}
 			}
 		});
@@ -115,9 +148,17 @@ public class GUIService {
 			@Override
 			public void handle(ActionEvent event) {
 				String input = consoleView.inputConsole.getText();
+<<<<<<< HEAD
 				System.out.println("[PARSED] the command is : " + myParser.getCommandName(input));//debug
 				try {
 					populateList(myLogic.inputHandler(input));
+=======
+System.out.println("[PARSED] the command is : " + CommandParser.getCommand(input));//debug
+System.out.println("The End Date is: " + TaskParser.getEndDate(input));//debug
+				try {
+					populateList(myLogic.inputHandler(input));
+					consoleView.listView.scrollTo(consoleView.listView.getItems().size()-1);
+>>>>>>> f1408057840addec287f7fac076bfe841975c2fe
 				} catch (ParseException e) {
 					e.printStackTrace();
 				}
@@ -127,7 +168,11 @@ public class GUIService {
 	}
 
 	public Scene returnScene() {
+<<<<<<< HEAD
 		Scene myScene  = new Scene(this.content, 605, 600);
+=======
+		Scene myScene  = new Scene(this.content, 605, 605);
+>>>>>>> f1408057840addec287f7fac076bfe841975c2fe
 		myScene.setFill(Color.TRANSPARENT);
 		showConsolePane();
 		return myScene;

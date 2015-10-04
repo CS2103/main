@@ -1,38 +1,10 @@
-/**
- * This class:
- * Extracts important parameters from the user's raw input
- * Use flexi-commands
- *
- * int getStartingYear()
- * int getStartingMonth()
- * int getStartingDate()
- * int getEndingDate()
- * int getEndingMonth()
- * int getEndingYear()
- * Date getStartingDate()
- * Date getEndingDate()
- * Time getStartingTime()
- * Time getEndTime()
- * String getDescription()
- * String getTitle()
- * boolean getStatus()
- * String returnCommand()
- *
- * from a String input
- */
-
 package parser;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import application.Constants;
 
 public class Parser {
 
+<<<<<<< HEAD
 
 	public Parser(){
 
@@ -135,42 +107,22 @@ public class Parser {
 
 		return sdf.format(startDate);
 
+=======
+	static String extractFirstWord(String input) {
+		input = input.split(" ")[0];
+		return input.trim();
 	}
 
-	public String getEndDate(String input) throws ParseException {
-
-		Date endDate;
-		String parameter = input;
-		SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
-
-		// on
-		Pattern patternOn = Pattern.compile(Constants.REGEX_KEYWORDS[Constants.INDEX_KEYWORD_ON]);
-		Matcher matchOn = patternOn.matcher(input);
-
-		while (matchOn.find()) {
-			parameter = parameter.substring(matchOn.end());
-		}
-
-		// by
-		Pattern patternBy = Pattern.compile(Constants.REGEX_KEYWORDS[Constants.INDEX_KEYWORD_BY]);
-		Matcher matchBy = patternBy.matcher(input);
-
-		while (matchBy.find()) {
-			parameter = parameter.substring(matchBy.end());
-		}
-
-		// till
-		Pattern patternTill = Pattern.compile(Constants.REGEX_KEYWORDS[Constants.INDEX_KEYWORD_TILL]);
-		Matcher matchTill = patternTill.matcher(input);
-
-		while (matchTill.find()) {
-			parameter = parameter.substring(matchTill.end());
-		}
-
-		endDate = sdf.parse(parameter);
-
-		return sdf.format(endDate);
-
+	static String excludeFirstWord(String input) {
+		input = input.substring(extractFirstWord(input).length());
+		return input.trim();
+>>>>>>> f1408057840addec287f7fac076bfe841975c2fe
 	}
 
+	public static int getIndex(String input) {
+		int index;
+		input = input.split(" ")[1].trim();
+		index = Integer.parseInt(input);
+		return index;
+	}
 }

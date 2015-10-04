@@ -23,6 +23,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
@@ -48,9 +49,28 @@ public class ConsoleView extends Pane{
 		applicationName.setPrefHeight(25);
 		applicationName.setPrefWidth(600);
 		applicationName.setPadding(new Insets(0 ,0 , 0, 20));
+<<<<<<< HEAD
 		applicationName.setStyle("-fx-background-color: orange; -fx-background-radius: 30 30 0 0;");
+=======
+		applicationName.setStyle("-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%), linear-gradient(#020b02, #3a3a3a), linear-gradient(#9d9e9d 0%, #6b6a6b 20%, #343534 80%, #242424 100%),linear-gradient(#8a8a8a 0%, #6b6a6b 20%, #343534 80%, #262626 100%); -fx-background-radius: 30 30 0 0;");
+>>>>>>> f1408057840addec287f7fac076bfe841975c2fe
 		applicationName.setFont(Font.font("Georgia", 20));
+		applicationName.setTextFill(Color.WHITE);
 
+		dateLabel = new Label();
+		dateLabel.setStyle("-fx-background-color: rgba(255,255,255, 0.6); ");
+		dateLabel.setFont(new Font("Arial", 30));
+		dateLabel.setPrefWidth(300);
+		dateLabel.setPadding(new Insets(0,0,0,20));
+
+		clock = new Label();
+		clock.setStyle("-fx-background-color: rgba(255,255,255, 0.6); ");
+		clock.setFont(new Font("Arial", 30));
+		clock.setTextAlignment(TextAlignment.CENTER);
+		clock.setPrefWidth(300);
+		clock.setPadding(new Insets(0,0,0,90));
+
+<<<<<<< HEAD
 		dateLabel = new Label();
 		dateLabel.setStyle("-fx-background-color: rgba(255,255,255, 0.8); ");
 		dateLabel.setFont(new Font("Arial", 30));
@@ -65,6 +85,8 @@ public class ConsoleView extends Pane{
 		clock.setPrefWidth(300);
 		clock.setPadding(new Insets(0,0,0,90));
 
+=======
+>>>>>>> f1408057840addec287f7fac076bfe841975c2fe
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy");
 		SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
 		Timeline timeline = new Timeline();
@@ -82,20 +104,39 @@ public class ConsoleView extends Pane{
 		listView = new ListView<ListItem>();
 		listView.setPrefHeight(470);
 		listView.setPrefWidth(600);
+<<<<<<< HEAD
 		listView.setStyle("-fx-background-color: transparent;");
+=======
+		listView.setStyle("-fx-background-color: gray;");
+		listView.setFocusTraversable(false);
+		//listView.setStyle("-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%), linear-gradient(#020b02, #3a3a3a), linear-gradient(#9d9e9d 0%, #6b6a6b 20%, #343534 80%, #242424 100%),linear-gradient(#8a8a8a 0%, #6b6a6b 20%, #343534 80%, #262626 100%;");
+>>>>>>> f1408057840addec287f7fac076bfe841975c2fe
 
 		inputConsole = new AutoCompleteTextField();
 		inputConsole.setEditable(true);
 		inputConsole.setPrefHeight(25);
 		inputConsole.setPrefWidth(600);
+<<<<<<< HEAD
 		inputConsole.setStyle("-fx-background-color: lightgray;");
 		inputConsole.setFocusTraversable(true);
 
+=======
+		//inputConsole.setFont(value);
+		inputConsole.setStyle("-fx-background-color: rgba(255,255,255, 0.6);-fx-text-inner-color: black;-fx-font-size:15");
+		inputConsole.setFocusTraversable(true);
+
+
+>>>>>>> f1408057840addec287f7fac076bfe841975c2fe
 		status = new Label();
 		status.setPrefWidth(600);
 		status.setPrefHeight(25);
 		status.setPadding(new Insets(0,0,0, 80));
+<<<<<<< HEAD
 		status.setStyle("-fx-background-color: white; -fx-background-radius: 0 0 30 30;");
+=======
+		//status.setStyle("-fx-background-color: rgba(255,255,255, 0.8); -fx-background-radius: 0 0 30 30;");
+		status.setStyle("-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%), linear-gradient(#020b02, #3a3a3a), linear-gradient(#9d9e9d 0%, #6b6a6b 20%, #343534 80%, #242424 100%),linear-gradient(#8a8a8a 0%, #6b6a6b 20%, #343534 80%, #262626 100%); -fx-background-radius: 0 0 30 30;");
+>>>>>>> f1408057840addec287f7fac076bfe841975c2fe
 
 		HBox dateTime = new HBox();
 		dateTime.getChildren().addAll(dateLabel, clock);

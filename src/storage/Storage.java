@@ -7,8 +7,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 
 import com.google.gson.Gson;
@@ -18,65 +16,76 @@ import logic.Task;
 public class Storage {
 
 	private static Gson gson = new Gson();
-	private static File todo = new File("saveFile.txt");
+	private static File tempFile = new File("tempFile.json");
+	private static File savedPath = new File("savedPath.txt");
+	private static String path;
+	private static BufferedReader br;
 
 	public Storage() {
-	}
-	
-	static File file;
-	static Path path;
 
-	public boolean newEntry(String taskName) {
-		return true;
+	}
+
+	public static void setPath(String path) {
+		try {
+			FileWriter fw = new FileWriter(savedPath.getAbsoluteFile());
+			BufferedWriter bw = new BufferedWriter(fw);
+			bw.write(path);
+			bw.close();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		Storage.path = path;
 	}
 
 	public static void write(ArrayList<Task> tasks){
 		try {
-			BufferedWriter bw = new BufferedWriter(new FileWriter(todo));
+			if (path == null) {
+				setPath(savedPath.getAbsolutePath());
+			}
+			File file = new File(path);
+			FileWriter fw = new FileWriter(file);
+			BufferedWriter bw = new BufferedWriter(fw);
 			for (Task task: tasks) {
 				String json = gson.toJson(task) + "\n";
 				bw.write(json);
 			}
 			bw.close();
 		}
-
 		catch (IOException e) {
 			e.printStackTrace();
 		}
-
 	}
 
-	public static boolean createFile(String fileName) {
-		file = new File(fileName);
-		setPath(Paths.get(fileName));
+	public static ArrayList<Task> read() {
 		try {
-			file.createNewFile();
-		} catch (IOException e) {
+			FileReader fr = new FileReader(savedPath);
+			br = new BufferedReader(fr);
+			Storage.path = br.readLine();
+		} 
+		catch (FileNotFoundException e) {
+		} 
+		catch (IOException e) {
 			e.printStackTrace();
 		}
-		return true;
-	}
-
-	public static void setPath(Path path) {
-		Storage.path = path;
-	}
-	
-	public static ArrayList<Task> read() {
-		ArrayList<Task> tasks = new ArrayList<Task>();
+		ArrayList<Task> taskList = new ArrayList<Task>();
 		String line = "";
+		if (path == null) {
+			setPath(tempFile.getAbsolutePath());
+		}
 		try {
-			BufferedReader br = new BufferedReader(new FileReader(todo));
+			FileReader fr = new FileReader(path);
+			BufferedReader br = new BufferedReader(fr);
 			while((line = br.readLine()) != null) {
-				tasks.add(gson.fromJson(line, Task.class));
+				taskList.add(gson.fromJson(line, Task.class));
 			}
 			br.close();
-		}
-		catch (FileNotFoundException e){
-		}
+		} 
+		catch (FileNotFoundException e) {
+		} 
 		catch (IOException e) {
 			e.printStackTrace();
 		}
-		return tasks;
+		return taskList;
 	}
-	
 }

@@ -47,18 +47,21 @@ public class Constants {
 	public static final String DOT = ".";
 
 	// Dictionaries
-	public static final String[] DICTIONARY_ADD = { "add", "a" };
+	public static final String[] DICTIONARY_ADD = { "add", "a", "create" };
 	public static final String[] DICTIONARY_DELETE = { "delete", "rm", "del" };
 	public static final String[] DICTIONARY_SHOW = { "show", "display", "sh" };
 	public static final String[] DICTIONARY_SEARCH = { "search", "find", "sr" };
-	public static final String[] DICTIONARY_EDIT = { "edit", "change", "e" };
+	public static final String[] DICTIONARY_EDIT = { "edit", "change", "e", "modify" };
+	public static final String[] DICTIONARY_MARK = {"mark", "m"};
+	public static final String[] DICTIONARY_UNMARK = {"unmark", "um"};
 	public static final String[] DICTIONARY_DONE = { "done", "dn" };
 	public static final String[] DICTIONARY_NOT_DONE = { "undone", "pending" };
-	public static final String[] DICTIONARY_UNDO = { "undo" };
-	public static final String[] DICTIONARY_REDO = { "redo" };
+	public static final String[] DICTIONARY_UNDO = { "undo", "un" };
+	public static final String[] DICTIONARY_REDO = { "redo", "re" };
 	public static final String[] DICTIONARY_VIEW_HOMESCREEN = { "home", "h" };
+	public static final String[] DICTIONARY_SETPATH = {"setpath", "set"};
 	public static final String[] DICTIONARY_HELP = { "help" };
-	public static final String[] DICTIONARY_EXIT = { "exit", "ex" };
+	public static final String[] DICTIONARY_EXIT = { "exit", "ex", "quit" };
 	public static final String[] DICTIONARY_PARAMETERS = { "location", "loc",
 			"date", "startdate", "enddate", "sd", "ed", "time", "starttime",
 			"endtime", "st", "et" , "from", "to"};
@@ -75,13 +78,17 @@ public class Constants {
 			"June", "July", "August", "September", "October", "November",
 	"December" };
 
-	// Days of the week
-	public static final String[] DAYS_SHORT = { "sun", "mon", "tue", "wed",
-			"thu", "fri", "sat" };
-	public static final String[] DAYS_LONG = { "sunday", "monday", "tuesday",
-			"wednesday", "thursday", "friday", "saturday" };
-	public static final String[] DAYS_IMMEDIATE = { "today", "tomorrow", "tmw",
-			"tmrw", "tmr" };
+	// Day Keywords
+	public static final String[] DICTIONARY_EVERY_DAY = {"every day"};
+	public static final String[] DICTIONARY_MON = {"mon", "monday"};
+	public static final String[] DICTIONARY__TUE = {"tue", "tues", "tuesday"};
+	public static final String[] DICTIONARY_WED = {"wed", "weds", "wednesday"};
+	public static final String[] DICTIONARY_THU = {"thur", "thurs", "thursday"};
+	public static final String[] DICTIONARY_FRI = {"fri", "friday"};
+	public static final String[] DICTIONARY_SAT = {"sat", "saturday"};
+	public static final String[] DICTIONARY_SUN = {"sun", "sunday"};
+	public static final String[] DICTIONARY_TOMORROW = {"tomorrow", "tmr"};
+	public static final String[] DICTIONARY_TODAY = {"today", "tdy"};
 
 	// Commands
 	public static final String COMMAND_ADD = "add";
@@ -230,15 +237,12 @@ public class Constants {
 	public static final int WORD_COUNT_ONE = 1;
 
 	// date formats
-	public static final String DATE_FORMAT_DAY_NUM_MONTH_NUM_YEAR_LONG = "d/M/yyyy";
-	public static final String DATE_FORMAT_DAY_NUM_MONTH_NUM_YEAR_SHORT = "d/M/yy";
-	public static final String DATE_FORMAT_DAY_NUM_MONTH_LONG_YEAR_LONG = "d MMMM yyyy";
-	public static final String DATE_FORMAT_DAY_NUM_MONTH_LONG_YEAR_SHORT = "d MMMM yy";
-	public static final String DATE_FORMAT_DAY_NUM_MONTH_NUM = "d/M";
-	public static final String DATE_FORMAT_DAY_NUM_MONTH_SHORT_YEAR_LONG = "d MMM yyyy";
-	public static final String DATE_FORMAT_DAY_NUM_MONTH_SHORT_YEAR_SHORT = "d MMM yy";
-	public static final String DATE_FORMAT_DAY_NUM_MONTH_SHORT = "d MMM";
-	public static final String DATE_FORMAT_DAY_NUM_MONTH_LONG = "d MMMM";
+	public static String[] dateFormats = {"d MMM yyyy", "d/M/yy", "d/M", "d-M-y", "d MMM", "d MMMM", "dd.MM.yyyy",
+			"d-M", "dd.M"};
+
+	// time formats
+	public static String[] timeFormats = {"hhmm", "hh:mm", "hh", "hh.mm",
+			"HHmm", "HH:mm", "HH", "HH.mm"};
 
 	// show parameters (LOWERCASE)
 	public static final String SHOW_OVERDUE = "overdue";
@@ -253,7 +257,10 @@ public class Constants {
 	public static int NOT_FOUND = -1;
 
 	// keywords
-	public static final String[] KEYWORDS = { "at", "on", "by", "from", "till" };
+	public static final String[] TASK_START_DATE = {"from", "on"};
+	public static final String[] TASK_END_DATE = {"by", "until", "to", "till"};
+
+	public static final String[] TASK_END_TIME = {"at"};
 
 	// index of keywords
 	public static final int INDEX_KEYWORD_AT = 0;
