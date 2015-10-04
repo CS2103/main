@@ -2,8 +2,6 @@ package logic;
 
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Date;
-
 import org.joda.time.DateTime;
 
 import parser.CommandParser;

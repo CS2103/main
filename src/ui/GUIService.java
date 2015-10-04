@@ -30,8 +30,8 @@ import javafx.stage.StageStyle;
 import logic.Logic;
 import logic.Task;
 import parser.CommandParser;
+import parser.DateParser;
 import parser.Parser;
-import parser.TaskParser;
 
 public class GUIService {
 
@@ -70,7 +70,7 @@ public class GUIService {
 		int index = 1;
 		ObservableList<ListItem> items =FXCollections.observableArrayList ();
 		for (Task task : tasksArr) {
-			ListItem newListItem = new ListItem(task.getTitle(), "this is where the task description will be", "1800", "2000", task.getStatus(),index++);
+			ListItem newListItem = new ListItem(task.getTitle(), "this is where the task description will be",task.getStartingTime().toLocalTime().toString("HHmm"), task.getEndingTime().toLocalTime().toString("HHmm"), task.getStatus(),index++);
 			items.add(newListItem);
 		}
 		consoleView.listView.setItems(items);
@@ -115,7 +115,7 @@ public class GUIService {
 			public void handle(ActionEvent event) {
 				String input = consoleView.inputConsole.getText();
 				System.out.println("[PARSED] the command is : " + CommandParser.getCommand(input));//debug
-				System.out.println("The End Date is: " + TaskParser.getEndDate(input));//debug
+				System.out.println("The End Date is: " + DateParser.getEndDate(input));//debug
 				try {
 					populateList(myLogic.inputHandler(input));
 					consoleView.listView.scrollTo(consoleView.listView.getItems().size()-1);
