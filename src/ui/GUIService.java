@@ -42,12 +42,13 @@ public class GUIService {
 
 	int listIndex = 0;
 	private TrayService trayService;
-	Stage stage;
+	private Stage stage;
 	Parser myParser;
 
 	public GUIService(Stage stage) {
 		this.stage = stage;
 		this.myLogic = new Logic();
+
 		content = new StackPane();
 		myParser = new Parser();
 		consoleView = new ConsoleView();
@@ -79,7 +80,7 @@ public class GUIService {
 		consoleView.listView.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>(){
 			@Override
 			public void handle(KeyEvent event) {
-				if(event.getCode() == KeyCode.ESCAPE) {
+				if(event.getCode() == KeyCode.ESCAPE ) {
 					System.exit(0);
 				}
 			}
@@ -93,7 +94,6 @@ public class GUIService {
 
 		consoleView.inputConsole.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>(){
 			@Override
-
 			public void handle(KeyEvent event) {
 				System.err.println(event.getCode());
 				if(event.getCode() == KeyCode.ESCAPE) {
@@ -114,8 +114,8 @@ public class GUIService {
 			@Override
 			public void handle(ActionEvent event) {
 				String input = consoleView.inputConsole.getText();
-System.out.println("[PARSED] the command is : " + CommandParser.getCommand(input));//debug
-System.out.println("The End Date is: " + TaskParser.getEndDate(input));//debug
+				System.out.println("[PARSED] the command is : " + CommandParser.getCommand(input));//debug
+				System.out.println("The End Date is: " + TaskParser.getEndDate(input));//debug
 				try {
 					populateList(myLogic.inputHandler(input));
 					consoleView.listView.scrollTo(consoleView.listView.getItems().size()-1);
@@ -127,8 +127,8 @@ System.out.println("The End Date is: " + TaskParser.getEndDate(input));//debug
 		});
 	}
 
-	public Scene returnScene() {
-		Scene myScene  = new Scene(this.content, 605, 605);
+	public Scene buildScene(StackPane content) {
+		Scene myScene  = new Scene(content, 605, 605);
 		myScene.setFill(Color.TRANSPARENT);
 		showConsolePane();
 		return myScene;
@@ -140,12 +140,6 @@ System.out.println("The End Date is: " + TaskParser.getEndDate(input));//debug
 		consoleView.consolePane.setDisable(false);
 	}
 
-	public void showTaskPane() {
-		consoleView.consolePane.toBack();
-		consoleView.consolePane.setDisable(true);
-		consoleView.consolePane.setVisible(false);
-	}
-
 	public void addAutocompleteEntries (ArrayList<String> stringArrayList) {
 		String[] stringArray = (String[]) stringArrayList.toArray();
 		Collections.addAll(consoleView.inputConsole.entries, stringArray);
@@ -154,12 +148,15 @@ System.out.println("The End Date is: " + TaskParser.getEndDate(input));//debug
 	public void showStage() {
 		stage.initStyle(StageStyle.TRANSPARENT);
 		Platform.setImplicitExit(false);
-		stage.setScene(returnScene());
+		stage.setScene(buildScene(this.content));
 		stage.show();
 	}
 
 	public void showTray() {
-		trayService = new TrayService(stage);
-		trayService.createTrayIcon(stage);
+		trayService = new TrayService(this.stage);
+		trayService.createTrayIcon(this.stage);
+	}
+
+	public void onEscapePressed() {
 	}
 }

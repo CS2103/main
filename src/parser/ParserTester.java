@@ -21,14 +21,14 @@ public class ParserTester {
 
 		String command = CommandParser.getCommand(rawInput);
 		System.out.println(command);
-//		System.out.println("Task title: " + TaskParser.getTitle(rawInput));
-//		System.out.println("Start date: " + TaskParser.getStartDate(rawInput).Calendar.get(Calendar.DAY_OF_MONTH));
-//		System.out.println("End date: " + TaskParser.getEndDate(rawInput));
-//		System.out.println("End Time: " + TimeParser.getEndTime(rawInput));
-//		System.out.println("Index: " + TaskParser.getIndex(rawInput));
-//		System.out.println("Attribute: " + TaskParser.getAttribute(rawInput));
-//		System.out.println("Edited title: " + TaskParser.getEditTitle(rawInput));
-		
+		//		System.out.println("Task title: " + TaskParser.getTitle(rawInput));
+		//		System.out.println("Start date: " + TaskParser.getStartDate(rawInput).Calendar.get(Calendar.DAY_OF_MONTH));
+		//		System.out.println("End date: " + TaskParser.getEndDate(rawInput));
+		//		System.out.println("End Time: " + TimeParser.getEndTime(rawInput));
+		//		System.out.println("Index: " + TaskParser.getIndex(rawInput));
+		//		System.out.println("Attribute: " + TaskParser.getAttribute(rawInput));
+		//		System.out.println("Edited title: " + TaskParser.getEditTitle(rawInput));
+
 		sc.close();
 	}
 
