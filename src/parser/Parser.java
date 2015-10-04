@@ -15,11 +15,9 @@ public class Parser {
 	}
 
 	public static int getIndex(String input) {
-
 		int index;
 		input = input.split(" ")[1].trim();
 		index = Integer.parseInt(input);
-
 		return index;
 	}
 }

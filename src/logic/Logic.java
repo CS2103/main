@@ -156,10 +156,12 @@ public class Logic {
 
 	public ArrayList<Task> deleteTaskByIndex(int index){
 		ArrayList<Task> display = bin.returnDisplay();
-		Task toDel = display.get(index - 1);
+		Task toDel = new Task();
+		toDel = display.get(index - 1);
 		bin.delete(toDel);
-		display.remove(index - 1);
-		bin.setDisplay(display);
+		//display.remove(index - 1);
+		//bin.setDisplay(display);
+		bin.setDisplay();
 		return bin.returnDisplay();
 	}
 
