@@ -31,16 +31,28 @@ public class Logic {
 			bin.taskStorage.setPath(input.split(" ")[1].trim());
 			return displayHome();
 		}
-		/*else if(command.equals("delete")){
-			int index = myParser.getIndex();
-			deleteTaskByIndex(index);
-		}
-		else if(command.equals("edit")){
-			int index = myParser.getIndex();
+		else if(command.equals("delete")){
+			int index = Parser.getIndex(input);
+			return deleteTaskByIndex(index);
 
 		}
+		else if(command.equals("edit")){
+			int index = Parser.getIndex(input);
+
+		}
+		else if (command.equals("mark")){
+			int index = Parser.getIndex(input);
+			System.out.println(index - index);
+			return markTaskByIndex(index-1);
+			//return bin.returnDisplay();
+		}
+		else if (command.equals("unmark")){
+			int index = Parser.getIndex(input);
+			System.out.println(index - index);
+			return unMarkTaskByIndex(index-1);
+		}
 		else if(command.equals("display")){
-		}*/
+		}
 		else if(command.equals("search")){
 			System.out.println("DEBUG " + TaskParser.getTitle(input));
 			ArrayList<Task> result = searchEntries(TaskParser.getTitle(input));
@@ -165,8 +177,23 @@ public class Logic {
 		bin.setDisplay(result);
 		return bin.returnDisplay();
 	}
-
-
+	public ArrayList<Task> markTaskByIndex(int index){
+		ArrayList<Task> display = bin.returnDisplay();
+		Task toMark = new Task();
+		toMark = display.get(index);
+		System.out.print(bin.markTaskInstance(toMark));
+		System.out.println(bin.markTaskInstance(toMark));
+		bin.setDisplay();
+		return bin.returnDisplay();
+	}
+	public ArrayList<Task> unMarkTaskByIndex(int index){
+		ArrayList<Task> display = bin.returnDisplay();
+		Task toMark = new Task();
+		toMark = display.get(index);
+		System.out.print(bin.unMarkTaskInstance(toMark));
+		bin.setDisplay();
+		return bin.returnDisplay();
+	}
 
 	public void changeDirectory(){
 

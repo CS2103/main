@@ -68,7 +68,7 @@ public class GUIService {
 		int index = 1;
 		ObservableList<ListItem> items =FXCollections.observableArrayList ();
 		for (Task task : tasksArr) {
-			ListItem newListItem = new ListItem(task.getTitle(), "this is where the task description will be", "1800", "2000", index++);
+			ListItem newListItem = new ListItem(task.getTitle(), "this is where the task description will be", "1800", "2000", task.getStatus(),index++);
 			items.add(newListItem);
 		}
 		consoleView.listView.setItems(items);

@@ -11,9 +11,10 @@ public class Constants {
 	static final String[] DICTIONARY_UNDO = {"undo", "un"};
 	static final String[] DICTIONARY_REDO = {"redo", "re"};
 	static final String[] DICTIONARY_EXIT = {"exit", "quit"};
-	static final String[] DICTIONARY_MARK = {"mark"};
+	static final String[] DICTIONARY_MARK = {"mark", "m"};
 	static final String[] DICTIONARY_SEARCH = {"search"};
 	static final String[] DICTIONARY_SETPATH = {"setpath"};
+	static final String[] DICTIONARY_UNMARK = {"unmark", "um"};
 
 	static final String COMMAND_INVALID = "invalid";
 

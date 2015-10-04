@@ -3,7 +3,7 @@ package logic;
 
 import java.util.Calendar;
 
-//Storage class should store the static int numberOfTask; 
+//Storage class should store the static int numberOfTask;
 public class Task {
 	private static int numberOfTask = 0;
 	private String title;
@@ -18,8 +18,8 @@ public class Task {
 	//private Calendar startingTime;
 	//private Calendar endingTime;
 	private static String type_tag;
-	//private int index; 
-	
+	//private int index;
+
 	public Task(String title){
 		this.title = title;
 		description = new String();
@@ -28,7 +28,7 @@ public class Task {
 		type_tag = "task";
 		//index = numberOfTask;
 	}
-	
+
 	public Task(){
 		String time = Calendar.getInstance().toString();
 		title = "Untitled " + time;
@@ -38,7 +38,7 @@ public class Task {
 		type_tag = "task";
 		//index = numberOfTask;
 	}
-	
+
 	/*public Task(String title, Calendar sdate, Time stime, Date edate, Time etime){
 		this(title);
 		startingDate= sdate;
@@ -47,7 +47,7 @@ public class Task {
 		endingDate = edate;
 		type_tag = "event";
 	}
-	
+
 	public Task(Date sdate, Time stime, Date edate, Time etime){
 		this();
 		startingDate= sdate;
@@ -56,44 +56,44 @@ public class Task {
 		endingDate = edate;
 		type_tag = "event";
 	}*/
-	
+
 	public Task(String title, Calendar startingDate, Calendar endingDate){
 		this(title);
 		this.startingDate = startingDate;
 		this.endingDate = endingDate;
 		type_tag = "event";
 	}
-	
+
 	public Task(Calendar sdate, Calendar edate){
 		this();
 		startingDate = sdate;
 		endingDate = edate;
 		type_tag = "event";
 	}
-	
+
 	/*public Task(String title, Date date, Time time){
 		this(title);
 		endingTime = time;
 		endingDate = date;
 	}
-	
+
 	public Task(Date date, Time time){
 		this();
 		endingTime = time;
 		endingDate = date;
 	}*/
-	
+
 	public Task(String title, Calendar date){
 		this(title);
 		endingDate = date;
 	}
-	
+
 	public Task(Calendar date){
 		this();
 		endingDate = date;
 	}
-	
-	
+
+
 	//Accessors
 	public String getTitle(){
 		return title;
@@ -135,11 +135,17 @@ public class Task {
 		title = til;
 	}
 
-	public void mark(){
-		isFinished = true;
+	public boolean mark(){
 		numberOfTask--;
+		isFinished = true;
+		return isFinished;
+
 	}
-	
+	public void unMark() {
+		isFinished = false;
+		numberOfTask++;
+	}
+
 	public void setStartingDate(Calendar date){
 		startingDate = date;
 		setTag();
@@ -152,7 +158,7 @@ public class Task {
 
 
 	//decide on the tag
-	
+
 	public void setTag(){
 		if((startingDate == null)){
 			if(endingDate == null){
@@ -166,24 +172,23 @@ public class Task {
 			type_tag = "event";
 		}
 	}
-	
-	//override
-	public boolean equals(Task task){
-		if (title.equals(task.getTitle()) 
-				&& description.equals(task.getDescription()) 
-				&& (isFinished == task.getStatus()
-				&& (startingDate.equals(task.getStartingDate()))
-				&& (endingDate.equals(task.getEndingDate()))
-				&& type_tag.equals(task.getType()))){
-			return true;
-		}
-		else{
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof Task) {
+			Task task = (Task) obj;
+			return (this.getDescription().equals(task.getDescription())) &&
+					(this.getTitle().equals(task.getTitle())) &&
+					(this.getStatus() == task.getStatus()) &&
+					(this.getEndingDate().equals(task.getEndingDate())) &&
+					(this.getStartingDate().equals(task.getStartingDate()));
+		} else {
 			return false;
 		}
 	}
 
-	
+
 
 }
 
-	
+
