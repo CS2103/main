@@ -128,7 +128,7 @@ public class TaskBin implements editTaskInfo{
 		case delete_tag:
 			redoStack.push(previousComm);
 			taskList.add(previousComm.returnMani());
-			activeList.add(previousComm.returnMani());
+			//activeList.add(previousComm.returnMani());
 			break;
 		case replace_tag:
 			Command add = undoStack.pop();
