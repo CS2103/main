@@ -19,6 +19,10 @@ package parser;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+
 import application.Constants;
 
 public class DateParser {
@@ -71,5 +75,41 @@ public class DateParser {
 	}
 	public static String displayDate(String date) {
 		return getDayOfTheWeek(date) + ", " + getDay(date) + " " + getMonthOfTheYear(date) + " " + getYear(date);
+	}
+	
+	public static DateTime getStartDate(String input) {
+
+		String startDateText = TaskParser.splitInputWithDictionary(Constants.TASK_START_DATE, input);
+		DateTime startDate = new DateTime();
+
+		for (String formatString : Constants.dateFormats) {
+			try {
+				startDate = DateTimeFormat.forPattern(formatString).parseDateTime(startDateText);
+				return startDate;
+			} catch (NullPointerException e) {
+
+			} catch (IllegalArgumentException e){
+				
+			}
+		}
+		return DateTime.now();
+	}
+
+	public static DateTime getEndDate(String input) {
+		String endDateText = TaskParser.splitInputWithDictionary(Constants.TASK_END_DATE, input);
+		DateTime endDate = new DateTime();
+
+		for (String formatString : Constants.dateFormats) {
+			try {
+				endDate = DateTimeFormat.forPattern(formatString).parseDateTime(endDateText);
+				return endDate;
+			} catch (NullPointerException e) {
+
+			} catch (IllegalArgumentException e){
+				
+			}
+		}
+		return DateTime.now();
+
 	}
 }

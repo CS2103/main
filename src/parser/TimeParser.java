@@ -6,6 +6,10 @@ package parser;
  * 23:45
  * 23
  * 23.45
+ * 3.45
+ * 3:45
+ * 3 45
+ * 3
  */
 
 
@@ -13,7 +17,6 @@ package parser;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Scanner;
 import application.Constants;
 import org.joda.time.DateTime;
@@ -70,16 +73,14 @@ public class TimeParser {
 		return String.format("%02d:%02d", getHour(time), getMinute(time)) + " " + getAmPm(time);
 	}
 	
-	public static Date getEndTime(String input){
-		DateTime endTime = DateTime.now();
-		String endTimeText = TaskParser.splitInputWithDictionary(Constants.TASK_END_TIME, input);
-		Date newTime;
+	public static DateTime getStartTime(String input){
+		DateTime startTime = DateTime.now();
+		String startTimeText = TaskParser.splitInputWithDictionary(Constants.TASK_START_TIME, input);
 		
 		for (String formatStr : Constants.timeFormats) {
 			try {
-				endTime = DateTimeFormat.forPattern(formatStr).parseDateTime(endTimeText);
-				newTime = endTime.toLocalDateTime().toDate();
-				return newTime;
+				startTime = DateTimeFormat.forPattern(formatStr).parseDateTime(startTimeText);
+				return startTime;
 			} catch (NullPointerException e) {
 
 			} catch (IllegalArgumentException e){
@@ -87,6 +88,26 @@ public class TimeParser {
 			}
 		}
 		
-		return null;
+		
+		return startTime.withTimeAtStartOfDay();
+	}
+	
+	public static DateTime getEndTime(String input){
+		DateTime endTime = DateTime.now();
+		String endTimeText = TaskParser.splitInputWithDictionary(Constants.TASK_END_TIME, input);
+		
+		for (String formatStr : Constants.timeFormats) {
+			try {
+				endTime = DateTimeFormat.forPattern(formatStr).parseDateTime(endTimeText);
+				return endTime;
+			} catch (NullPointerException e) {
+
+			} catch (IllegalArgumentException e){
+				
+			}
+		}
+		
+		
+		return endTime.withTime(23, 59, 0, 0);
 	}
 }
