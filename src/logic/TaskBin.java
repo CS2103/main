@@ -301,11 +301,14 @@ public class TaskBin implements editTaskInfo{
 	
 	public void editStartingDate(Task task, Calendar date){
 		Task tar = taskList.get(taskList.indexOf(task));
+		Task tarDis = activeList.get(activeList.indexOf(tar));
 		buffer = task;
 		tar.setStartingDate(date);
+		tarDis.setEndingDate(date);
 		Command editDate = new Command(alter_tag, tar, buffer);
 		undoStack.push(editDate);
 		taskList = sortArrayByTime(taskList);
+		
 		Storage.write(taskList);
 		buffer = null;
 		redoStack.clear();
@@ -313,11 +316,14 @@ public class TaskBin implements editTaskInfo{
 	
 	public void editEndingDate(Task task, Calendar date){
 		Task tar = taskList.get(taskList.indexOf(task));
+		Task tarDis = activeList.get(activeList.indexOf(tar));
 		buffer = task;
 		tar.setEndingDate(date);
+		tarDis.setEndingDate(date);
 		Command editDate = new Command(alter_tag, tar, buffer);
 		undoStack.push(editDate);
 		taskList = sortArrayByTime(taskList);
+		
 		Storage.write(taskList);
 		buffer = null;
 		redoStack.clear();
@@ -325,8 +331,11 @@ public class TaskBin implements editTaskInfo{
 		
 	public void editTitle(Task task, String newTitle){
 		Task tar = taskList.get(taskList.indexOf(task));
+		Task tarDis = activeList.get(activeList.indexOf(tar));
+		tarDis.setTitle(newTitle);
 		buffer = task;
 		tar.setTitle(newTitle);
+		
 		Command editTil = new Command(alter_tag, tar, buffer);
 		undoStack.push(editTil);
 		Storage.write(taskList);
@@ -339,8 +348,11 @@ public class TaskBin implements editTaskInfo{
 		Task tar = taskList.get(taskList.indexOf(task));
 		buffer = task;
 		tar.setDescription(newDes);
+		Task tarDis = activeList.get(activeList.indexOf(tar));
+		tarDis.setTitle(newDes);
 		Command editDes = new Command(alter_tag, tar, buffer);
 		undoStack.push(editDes);
+		
 		Storage.write(taskList);
 		buffer = null;
 		redoStack.clear();

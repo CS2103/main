@@ -29,12 +29,16 @@ public class Logic {
 		else if(command.equals("home")){
 			return displayHome();
 		}
-		else if(command.equals("delete")){
+		/*else if(command.equals("delete")){
+			int index = myParser.getIndex();
+			deleteTaskByIndex(index);
 		}
 		else if(command.equals("edit")){
+			int index = myParser.getIndex();
+			
 		}
 		else if(command.equals("display")){
-		}
+		}*/
 		else if(command.equals("search")){
 			ArrayList<Task> result = searchEntries(myParser.getDescription(input));
 			return result;
@@ -74,8 +78,30 @@ public class Logic {
 		return bin.returnDisplay();
 	}
 	
-	public ArrayList<Task> editTask(String input){
-		return null;
+	public ArrayList<Task> editTask(int index, String field, String info){
+		ArrayList<Task> display = bin.returnDisplay();
+		Task toEdit = display.get(index - 1);
+		switch(field){
+			case "title":
+				bin.editTitle(toEdit, info);
+				break;
+			case "description":
+				bin.editDescription(toEdit, info);
+				break;
+		}
+		return bin.returnDisplay();
+	}
+	
+	public ArrayList<Task> editTask(int index, String field, Calendar date){
+		ArrayList<Task> display = bin.returnDisplay();
+		Task toEdit = display.get(index - 1);
+		switch(field){
+		case "starting date":
+			bin.editStartingDate(toEdit, date);
+			break;
+		case "ending date":
+			bin.editEndingDate(toEdit, date);
+			break;
 	}
 	
 	public ArrayList<Task> undoChange(){
@@ -142,7 +168,7 @@ public class Logic {
 	
 	public ArrayList<Task> startupDisplay(){//display the initial screen
 		ArrayList <Task> initDis = bin.displayInit();
-		initDis = bin.sortArrayByTime(initDis);
+		//initDis = bin.sortArrayByTime(initDis);
 		return initDis;
 	}
 	

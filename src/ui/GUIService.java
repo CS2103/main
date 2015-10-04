@@ -58,6 +58,7 @@ public class GUIService {
 		content.setEffect(dropShadow);
 		addListenersToConsoleView();
 		populateList(myLogic.startupDisplay());
+		System.out.println(myLogic.startupDisplay());
 
 		content.getChildren().addAll(consoleView.consolePane);
 	}
