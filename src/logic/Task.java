@@ -3,20 +3,18 @@ package logic;
 
 import java.util.Calendar;
 
+import org.joda.time.DateTime;
+
 //Storage class should store the static int numberOfTask;
 public class Task {
 	private static int numberOfTask = 0;
 	private String title;
 	private String description;
 	private boolean isFinished;
-	/*private Date startingDate;
-	private Date endingDate;
-	private Time startingTime;
-	private Time endingTime;*/
-	private Calendar startingDate;
-	private Calendar endingDate;
-	//private Calendar startingTime;
-	//private Calendar endingTime;
+	private DateTime startingTime;
+	private DateTime endingTime;
+	private DateTime startingDate;
+	private DateTime endingDate;
 	private static String type_tag;
 	//private int index;
 
@@ -57,14 +55,14 @@ public class Task {
 		type_tag = "event";
 	}*/
 
-	public Task(String title, Calendar startingDate, Calendar endingDate){
+	public Task(String title, DateTime startingDate, DateTime endingDate){
 		this(title);
 		this.startingDate = startingDate;
 		this.endingDate = endingDate;
 		type_tag = "event";
 	}
 
-	public Task(Calendar sdate, Calendar edate){
+	public Task(DateTime sdate, DateTime edate){
 		this();
 		startingDate = sdate;
 		endingDate = edate;
@@ -83,12 +81,12 @@ public class Task {
 		endingDate = date;
 	}*/
 
-	public Task(String title, Calendar date){
+	public Task(String title, DateTime date){
 		this(title);
 		endingDate = date;
 	}
 
-	public Task(Calendar date){
+	public Task(DateTime date){
 		this();
 		endingDate = date;
 	}
@@ -110,16 +108,16 @@ public class Task {
 	public String getType(){
 		return type_tag;
 	}
-	public Calendar getStartingDate(){
+	public DateTime getStartingDate(){
 		return startingDate;
 	}
-	/*public Time getStartingTime(){
+	/*public DateTime getStartingTime(){
 		return startingTime;
 	}
-	public Time getEndingTime(){
+	public DateTime getEndingTime(){
 		return endingTime;
 	}*/
-	public Calendar getEndingDate(){
+	public DateTime getEndingDate(){
 		return endingDate;
 	}
 	/*public int getIndex(){
@@ -146,12 +144,12 @@ public class Task {
 		numberOfTask++;
 	}
 
-	public void setStartingDate(Calendar date){
+	public void setStartingDate(DateTime date){
 		startingDate = date;
 		setTag();
 	}
 
-	public void setEndingDate(Calendar date){
+	public void setEndingDate(DateTime date){
 		endingDate = date;
 		setTag();
 	}

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Stack;
 
+import org.joda.time.DateTime;
+
 import storage.Storage;
 
 class NoResultFound extends Exception{
@@ -243,10 +245,10 @@ public class TaskBin implements editTaskInfo{
 		return result;
 	}
 
-	public ArrayList<Task> findTaskByDate(Calendar date){
+	public ArrayList<Task> findTaskByDate(DateTime date){
 		ArrayList<Task> result = new ArrayList<Task>();
 		for(Task task:taskList){
-			if((date.get(Calendar.MONTH) == task.getEndingDate().get(Calendar.MONTH))&& (date.get(Calendar.DATE) == task.getEndingDate().get(Calendar.DATE)) && (date.get(Calendar.YEAR) == task.getEndingDate().get(Calendar.YEAR))){
+			if(date.equals(task.getEndingDate())){
 				result.add(task);
 			}
 		}
@@ -254,10 +256,10 @@ public class TaskBin implements editTaskInfo{
 		return result;
 	}
 
-	public ArrayList<Task> findTaskByDate(ArrayList<Task> list, Calendar date){
+	public ArrayList<Task> findTaskByDate(ArrayList<Task> list, DateTime date){
 		ArrayList<Task> result = new ArrayList<Task>();
 		for(Task task:list){
-			if((date.get(Calendar.MONTH) == task.getEndingDate().get(Calendar.MONTH))&& (date.get(Calendar.DATE) == task.getEndingDate().get(Calendar.DATE)) && (date.get(Calendar.YEAR) == task.getEndingDate().get(Calendar.YEAR))){
+			if(date.equals(task.getEndingDate())){
 				result.add(task);
 			}
 		}
@@ -321,8 +323,8 @@ public class TaskBin implements editTaskInfo{
 		redoStack.clear();
 	}
 
-	@Override
-	public void editStartingDate(Task task, Calendar date){
+//	@Override
+	public void editStartingDate(Task task, DateTime date){
 		Task tar = taskList.get(taskList.indexOf(task));
 		Task tarDis = activeList.get(activeList.indexOf(tar));
 		buffer = task;
@@ -337,8 +339,8 @@ public class TaskBin implements editTaskInfo{
 		redoStack.clear();
 	}
 
-	@Override
-	public void editEndingDate(Task task, Calendar date){
+//	@Override
+	public void editEndingDate(Task task, DateTime date){
 		Task tar = taskList.get(taskList.indexOf(task));
 		Task tarDis = activeList.get(activeList.indexOf(tar));
 		buffer = task;
@@ -386,9 +388,9 @@ public class TaskBin implements editTaskInfo{
 	/*****************************************Retrieve Different Displays**********************************/
 	public ArrayList<Task> displayInit(){
 		ArrayList<Task> result = new ArrayList<Task>();
-		Calendar now = Calendar.getInstance();
+		DateTime now = new DateTime();
 		for(Task task: taskList){
-			if((now.get(Calendar.MONTH) == task.getEndingDate().get(Calendar.MONTH))&& (now.get(Calendar.DATE) == task.getEndingDate().get(Calendar.DATE)) && (now.get(Calendar.YEAR) == task.getEndingDate().get(Calendar.YEAR))){
+			if(now.equals(task.getEndingDate())){
 				result.add(task);
 			}
 		}

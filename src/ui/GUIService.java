@@ -31,6 +31,7 @@ import logic.Logic;
 import logic.Task;
 import parser.CommandParser;
 import parser.Parser;
+import parser.TaskParser;
 
 public class GUIService {
 
@@ -113,7 +114,8 @@ public class GUIService {
 			@Override
 			public void handle(ActionEvent event) {
 				String input = consoleView.inputConsole.getText();
-				System.out.println("[PARSED] the command is : " + CommandParser.getCommand(input));//debug
+System.out.println("[PARSED] the command is : " + CommandParser.getCommand(input));//debug
+System.out.println("The End Date is: " + TaskParser.getEndDate(input));//debug
 				try {
 					populateList(myLogic.inputHandler(input));
 					consoleView.listView.scrollTo(consoleView.listView.getItems().size()-1);
