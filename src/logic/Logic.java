@@ -13,14 +13,17 @@ import logic.TaskBin;
 =======
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Date;
-
 import org.joda.time.DateTime;
 
 import parser.CommandParser;
+<<<<<<< HEAD
 >>>>>>> f1408057840addec287f7fac076bfe841975c2fe
+=======
+import parser.DateParser;
+>>>>>>> master
 import parser.Parser;
 import parser.TaskParser;
+import parser.TimeParser;
 import storage.Storage;
 
 public class Logic {
@@ -229,17 +232,14 @@ public class Logic {
 	}
 
 	public ArrayList<Task> addTask(String input) throws ParseException{
-		DateTime startingDate = new DateTime();
-		DateTime endingDate = new DateTime();
+		DateTime startingDate = DateParser.getStartDate(input);
+		DateTime endingDate = DateParser.getEndDate(input);
+		DateTime startTime = TimeParser.getStartTime(input);
+		DateTime endTime = TimeParser.getEndTime(input);
+		
 		String title = TaskParser.getTitle(input);
-		/*
-		String staDateStr = myParser.getStartDate(input);
-		String endDateStr = myParser.getEndDate(input);
-		DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
-		startingDate.setTime(dateFormat.parse(staDateStr));
-		endingDate.setTime(dateFormat.parse(endDateStr));
-		 */
-		Task newTask = new Task(title, startingDate, endingDate);
+		
+		Task newTask = new Task(title, startingDate, startTime, endingDate , endTime);
 		bin.add(newTask);
 		bin.setDisplay();
 		return bin.returnDisplay();
@@ -296,9 +296,8 @@ public class Logic {
 		String title = TaskParser.getTitle(input);
 		//		String dateStr = TaskParser.getEndDate(input);
 		//		DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
-		Date ending = TaskParser.getEndDate(input);
-		DateTime endingDate = new DateTime(ending);
-		if(ending == null){
+		DateTime endingDate = DateParser.getEndDate(input);
+		if(endingDate == null){
 			endingDate = DateTime.now();
 		}
 		ArrayList<Task> result = bin.findTaskByTitle(title);

@@ -61,8 +61,12 @@ public class Task {
 	
 =======
 
+<<<<<<< HEAD
 >>>>>>> f1408057840addec287f7fac076bfe841975c2fe
 	/*public Task(String title, Calendar sdate, Time stime, Date edate, Time etime){
+=======
+	public Task(String title, DateTime sdate, DateTime stime, DateTime edate, DateTime etime){
+>>>>>>> master
 		this(title);
 		startingDate= sdate;
 		startingTime = stime;
@@ -71,7 +75,7 @@ public class Task {
 		type_tag = "event";
 	}
 
-	public Task(Date sdate, Time stime, Date edate, Time etime){
+	/*public Task(DateTime sdate, DateTime stime, DateTime edate, DateTime etime){
 		this();
 		startingDate= sdate;
 		startingTime = stime;
@@ -166,16 +170,24 @@ public class Task {
 	public DateTime getStartingDate(){
 		return startingDate;
 	}
+<<<<<<< HEAD
 	/*public DateTime getStartingTime(){
 >>>>>>> f1408057840addec287f7fac076bfe841975c2fe
+=======
+	public DateTime getStartingTime(){
+>>>>>>> master
 		return startingTime;
 	}
 	public DateTime getEndingTime(){
 		return endingTime;
+<<<<<<< HEAD
 	}*/
 <<<<<<< HEAD
 	public Calendar getEndingDate(){
 =======
+=======
+	}
+>>>>>>> master
 	public DateTime getEndingDate(){
 >>>>>>> f1408057840addec287f7fac076bfe841975c2fe
 		return endingDate;

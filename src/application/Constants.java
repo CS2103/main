@@ -241,8 +241,7 @@ public class Constants {
 			"d-M", "dd.M"};
 
 	// time formats
-	public static String[] timeFormats = {"hhmm", "hh:mm", "hh", "hh.mm",
-			"HHmm", "HH:mm", "HH", "HH.mm"};
+	public static String[] timeFormats = {"HHmm", "H mm", "HH:mm", "HH", "HH.mm", "H.mm", "H:mm", "H"};
 
 	// show parameters (LOWERCASE)
 	public static final String SHOW_OVERDUE = "overdue";
@@ -258,9 +257,10 @@ public class Constants {
 
 	// keywords
 	public static final String[] TASK_START_DATE = {"from", "on"};
-	public static final String[] TASK_END_DATE = {"by", "until", "to", "till"};
+	public static final String[] TASK_END_DATE = {"by", "until", "till"};
 
-	public static final String[] TASK_END_TIME = {"at"};
+	public static final String[] TASK_START_TIME = {"between"};
+	public static final String[] TASK_END_TIME = {"at", "to"};
 
 	// index of keywords
 	public static final int INDEX_KEYWORD_AT = 0;
@@ -320,7 +320,6 @@ public class Constants {
 	final static Font CALIBRI_16 = Font.font("Calibri", 16);
 	final static Font TAHOMA_14 = Font.font("Tahoma", 14);
 
-	final static String LOL_NAME = "LOL - LifeOnLine";
 	final static String TODAY = "Today";
 	final static String PROGRESS_BAR = "Progress Bar";
 
