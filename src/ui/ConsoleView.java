@@ -83,7 +83,10 @@ public class ConsoleView extends Pane{
 		listView = new ListView<ListItem>();
 		listView.setPrefHeight(470);
 		listView.setPrefWidth(600);
-		listView.setStyle("-fx-background-color: rgba(255,255,255, 0.6);");
+		//listView.setStyle("-fx-background-color: rgba(255,255,255, 0.6);");
+		//listView.getStyleClass().add("style.listview");
+		listView.getStylesheets().add("ui/style.css");
+
 		listView.setFocusTraversable(false);
 
 		inputConsole = new AutoCompleteTextField();

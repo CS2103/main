@@ -30,10 +30,9 @@ public class AutoCompleteTextField extends TextField {
 	public AutoCompleteTextField() {
 		super();
 		entries = new TreeSet<>();
-		Collections.addAll(entries, "Singapore", "Sierra Leone");
+		Collections.addAll(entries, "add [taskname] between [starttime] to [endtime]", "exit", "delete [index]", "mark [index]", "search [keyword]", "unmark [index]", "edit [index] [field] [newvalue]");
 
 		entriesPopup = new ContextMenu();
-
 
 		textProperty().addListener(new ChangeListener<String>()
 		{
