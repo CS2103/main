@@ -14,8 +14,6 @@ package parser;
  * 10.12
  */
 
-
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -32,27 +30,30 @@ public class DateParser {
 	public static int getMonth(String date) {
 		return formatDate(date).get(Calendar.MONTH) + 1;
 	}
+
 	public static int getDay(String date) {
 		return formatDate(date).get(Calendar.DAY_OF_MONTH);
 	}
+
 	public static int getYear(String date) {
 		return formatDate(date).get(Calendar.YEAR);
 	}
+
 	public static String getDayOfTheWeek(String date) {
 		return formatDate(date).getTime().toString().split(" ")[0].trim();
 	}
+
 	public static String getMonthOfTheYear(String date) {
 		return formatDate(date).getTime().toString().split(" ")[1].trim();
 	}
 
-/*	public static void main (String[] args) {
-		Scanner sc = new Scanner(System.in);
-		String dateString = sc.nextLine();
-		System.err.println(displayDate(dateString));
-		sc.close();
-	}
-*/
-
+	/*
+	 * public static void main (String[] args) { 
+	 * Scanner sc = new Scanner(System.in); 
+	 * String dateString = sc.nextLine();
+	 * System.err.println(displayDate(dateString)); 
+	 * sc.close(); }
+	 */
 
 	public static Calendar formatDate(String date) {
 		for (String formatString : Constants.dateFormats) {
@@ -73,10 +74,11 @@ public class DateParser {
 		}
 		return calendar;
 	}
+
 	public static String displayDate(String date) {
 		return getDayOfTheWeek(date) + ", " + getDay(date) + " " + getMonthOfTheYear(date) + " " + getYear(date);
 	}
-	
+
 	public static DateTime getStartDate(String input) {
 
 		String startDateText = TaskParser.splitInputWithDictionary(Constants.TASK_START_DATE, input);
@@ -88,8 +90,8 @@ public class DateParser {
 				return startDate;
 			} catch (NullPointerException e) {
 
-			} catch (IllegalArgumentException e){
-				
+			} catch (IllegalArgumentException e) {
+
 			}
 		}
 		return DateTime.now();
@@ -105,8 +107,8 @@ public class DateParser {
 				return endDate;
 			} catch (NullPointerException e) {
 
-			} catch (IllegalArgumentException e){
-				
+			} catch (IllegalArgumentException e) {
+
 			}
 		}
 		return DateTime.now();
