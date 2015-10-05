@@ -5,18 +5,6 @@ import application.Constants;
 
 public class CommandParser {
 
-
-	/*	public static void main(String[] args) {
-		Scanner sc = new Scanner(System.in);
-		String rawInput = sc.nextLine();
-		System.err.println(rawInput);
-		System.err.println(extractFirstWord(rawInput));
-		System.err.println(excludeFirstWord(rawInput));
-		System.err.println(getCommand(rawInput));
-		sc.close();
-	}
-	 */
-
 	public static String getCommand(String input) {
 		String command;
 		command = Parser.extractFirstWord(input);

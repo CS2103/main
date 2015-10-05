@@ -12,103 +12,84 @@ package parser;
  * 3
  */
 
-
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Scanner;
-import application.Constants;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 
+import application.Constants;
+
 public class TimeParser {
 
-	static Calendar calendar = Calendar.getInstance();
+	public static String display24Time(String input) {
+		DateTime time = null;
 
-/*	public static void main (String[] args) {
-		Scanner sc = new Scanner(System.in);
-		String timeString = sc.nextLine();
-		System.err.println(displayTime(timeString));
-		System.err.println(displayFullTime(timeString));
-		sc.close();
-	}
-*/
-
-	public static int getHourOfDay(String time) {
-		return formatTime(time).get(Calendar.HOUR_OF_DAY);
-	}
-	public static int getHour (String time) {
-		if (formatTime(time).get(Calendar.HOUR)==0) {
-			return 12;
-		} else {
-			return formatTime(time).get(Calendar.HOUR);
-		}
-	}
-	public static int getMinute(String time) {
-		return formatTime(time).get(Calendar.MINUTE);
-	}
-	public static String getAmPm (String time) {
-		if (formatTime(time).get(Calendar.AM_PM)==0) {
-			return "AM";
-		} else {
-			return "PM";
-		}
-	}
-
-	public static Calendar formatTime(String time) {
-		for (String formatString : Constants.timeFormats) {
+		for (String formatStr : Constants.timeFormats) {
 			try {
-				calendar.setTime(new SimpleDateFormat(formatString).parse(time));
-				return calendar;
-			} catch (ParseException e) {
+				time = DateTimeFormat.forPattern(formatStr).parseDateTime(input);
+			} catch (NullPointerException e) {
+
+			} catch (IllegalArgumentException e) {
 
 			}
 		}
-		return null;
+
+		if (time == null)
+			time = DateTime.now();
+
+		return time.toLocalTime().toString("HHmm");
 	}
-	public static String displayFullTime(String time) {
-		return String.format("%02d%02d hrs", getHourOfDay(time), getMinute(time));
+
+	public static String display12Time(String input) {
+		DateTime time = null;
+
+		for (String formatStr : Constants.timeFormats) {
+			try {
+				time = DateTimeFormat.forPattern(formatStr).parseDateTime(input);
+			} catch (NullPointerException e) {
+
+			} catch (IllegalArgumentException e) {
+
+			}
+		}
+
+		if (time == null)
+			time = DateTime.now();
+
+		return time.toLocalTime().toString("hh:mm a");
 	}
-	public static String displayTime(String time) {
-		return String.format("%02d:%02d", getHour(time), getMinute(time)) + " " + getAmPm(time);
-	}
-	
-	public static DateTime getStartTime(String input){
+
+	public static DateTime getStartTime(String input) {
 		DateTime startTime = DateTime.now();
 		String startTimeText = TaskParser.splitInputWithDictionary(Constants.TASK_START_TIME, input);
-		
+
 		for (String formatStr : Constants.timeFormats) {
 			try {
 				startTime = DateTimeFormat.forPattern(formatStr).parseDateTime(startTimeText);
 				return startTime;
 			} catch (NullPointerException e) {
 
-			} catch (IllegalArgumentException e){
-				
+			} catch (IllegalArgumentException e) {
+
 			}
 		}
-		
-		
+
 		return startTime.withTimeAtStartOfDay();
 	}
-	
-	public static DateTime getEndTime(String input){
+
+	public static DateTime getEndTime(String input) {
 		DateTime endTime = DateTime.now();
 		String endTimeText = TaskParser.splitInputWithDictionary(Constants.TASK_END_TIME, input);
-		
+
 		for (String formatStr : Constants.timeFormats) {
 			try {
 				endTime = DateTimeFormat.forPattern(formatStr).parseDateTime(endTimeText);
 				return endTime;
 			} catch (NullPointerException e) {
 
-			} catch (IllegalArgumentException e){
-				
+			} catch (IllegalArgumentException e) {
+
 			}
 		}
-		
-		
+
 		return endTime.withTime(23, 59, 0, 0);
 	}
 }

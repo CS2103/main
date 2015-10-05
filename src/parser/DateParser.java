@@ -14,10 +14,6 @@ package parser;
  * 10.12
  */
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 
@@ -25,58 +21,23 @@ import application.Constants;
 
 public class DateParser {
 
-	static Calendar calendar = Calendar.getInstance();
 
-	public static int getMonth(String date) {
-		return formatDate(date).get(Calendar.MONTH) + 1;
-	}
-
-	public static int getDay(String date) {
-		return formatDate(date).get(Calendar.DAY_OF_MONTH);
-	}
-
-	public static int getYear(String date) {
-		return formatDate(date).get(Calendar.YEAR);
-	}
-
-	public static String getDayOfTheWeek(String date) {
-		return formatDate(date).getTime().toString().split(" ")[0].trim();
-	}
-
-	public static String getMonthOfTheYear(String date) {
-		return formatDate(date).getTime().toString().split(" ")[1].trim();
-	}
-
-	/*
-	 * public static void main (String[] args) { 
-	 * Scanner sc = new Scanner(System.in); 
-	 * String dateString = sc.nextLine();
-	 * System.err.println(displayDate(dateString)); 
-	 * sc.close(); }
-	 */
-
-	public static Calendar formatDate(String date) {
+	public static String displayDate(String input) {
+		DateTime date = null;
+		
 		for (String formatString : Constants.dateFormats) {
 			try {
-				calendar.setTime(new SimpleDateFormat(formatString).parse(date));
-				modifyDefaultYear(calendar);
-				return calendar;
-			} catch (ParseException e) {
+				date = DateTimeFormat.forPattern(formatString).parseDateTime(input);
+			} catch (NullPointerException e) {
+
+			} catch (IllegalArgumentException e) {
 
 			}
 		}
-		return null;
-	}
-
-	private static Calendar modifyDefaultYear(Calendar calendar) {
-		if (calendar.get(Calendar.YEAR) == 1970) {
-			calendar.set(Calendar.YEAR, Calendar.getInstance().get(Calendar.YEAR));
-		}
-		return calendar;
-	}
-
-	public static String displayDate(String date) {
-		return getDayOfTheWeek(date) + ", " + getDay(date) + " " + getMonthOfTheYear(date) + " " + getYear(date);
+		
+		date = (date == null)?DateTime.now():date;
+		
+		return date.toLocalDate().toString("dd.MM.yy");
 	}
 
 	public static DateTime getStartDate(String input) {

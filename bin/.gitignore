@@ -1,5 +1,2 @@
-/application/
-/logic/
 /parser/
-/storage/
-/ui/
+/logic/
