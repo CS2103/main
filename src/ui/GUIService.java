@@ -97,9 +97,13 @@ public class GUIService {
 			public void handle(KeyEvent event) {
 				System.err.println(event.getCode());
 				if(event.getCode() == KeyCode.ESCAPE) {
-					System.exit(0);
+					if (consoleView.inputConsole.getText().length() == 0) {
+						System.exit(0);
+					} else {
+						consoleView.inputConsole.clear();
+					}
 				} else if (consoleView.inputConsole.getText().length() == 0 && event.getCode() == KeyCode.BACK_SPACE) {
-					populateList(myLogic.startupDisplay());
+					//populateList(myLogic.startupDisplay());
 				} else if (event.getCode() == KeyCode.DOWN){
 					consoleView.listView.getSelectionModel().select(++listIndex%consoleView.listView.getItems().size());
 					consoleView.listView.scrollTo(listIndex);
