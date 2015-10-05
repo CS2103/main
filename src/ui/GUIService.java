@@ -40,7 +40,7 @@ public class GUIService {
 
 	Logic myLogic;
 
-	int listIndex = 0;
+	int listIndex;
 	private TrayService trayService;
 	private Stage stage;
 	Parser myParser;
@@ -61,8 +61,9 @@ public class GUIService {
 		dropShadow.setColor(Color.color(0.4, 0.5, 0.5));
 		content.setEffect(dropShadow);
 		addListenersToConsoleView();
-		populateList(myLogic.startupDisplay());
-
+		populateList(myLogic.displayHome());
+		consoleView.listView.getSelectionModel().select(0);
+		listIndex = consoleView.listView.getItems().size();
 		content.getChildren().addAll(consoleView.consolePane);
 	}
 
@@ -104,13 +105,27 @@ public class GUIService {
 					}
 				} else if (consoleView.inputConsole.getText().length() == 0 && event.getCode() == KeyCode.BACK_SPACE) {
 					populateList(myLogic.displayHome());
-				} else if (event.getCode() == KeyCode.DOWN){
-					consoleView.listView.getSelectionModel().select(++listIndex%consoleView.listView.getItems().size());
-					consoleView.listView.scrollTo(listIndex);
-				} else if (event.getCode() == KeyCode.UP) {
-					consoleView.listView.getSelectionModel().select(--listIndex%consoleView.listView.getItems().size());
-					consoleView.listView.scrollTo(listIndex);
+				} else if (event.getCode() == KeyCode.DOWN ){
+					listIndex++;
+					consoleView.listView.getSelectionModel().select(listIndex%consoleView.listView.getItems().size());
+					consoleView.listView.scrollTo(listIndex%consoleView.listView.getItems().size());
+					consoleView.inputConsole.setText(consoleView.listView.getItems().get(listIndex%consoleView.listView.getItems().size()).getTitle());
+					consoleView.inputConsole.positionCaret(consoleView.inputConsole.getText().length());
+				} else if (event.getCode() == KeyCode.UP ) {
+					listIndex--;
+					consoleView.listView.getSelectionModel().select(listIndex%consoleView.listView.getItems().size());
+					consoleView.listView.scrollTo(listIndex%consoleView.listView.getItems().size());
+					consoleView.inputConsole.setText(consoleView.listView.getItems().get(listIndex%consoleView.listView.getItems().size()).getTitle());
+					consoleView.inputConsole.positionCaret(consoleView.inputConsole.getText().length());
 				}
+
+				if (listIndex == 0) {
+					listIndex = consoleView.listView.getItems().size();
+				}
+
+				//listIndex = listIndex % consoleView.listView.getItems().size();
+
+				System.out.println(listIndex);
 			}
 		});
 
