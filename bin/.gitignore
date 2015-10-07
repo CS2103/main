@@ -1,2 +1,8 @@
-/parser/
+*.class
+
+/application/
 /logic/
+/parser/
+/resource/
+/storage/
+/ui/

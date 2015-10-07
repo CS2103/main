@@ -5,12 +5,19 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
 public class ListItem extends StackPane{
 
-	private String[] colorArray = {"rgb(102,178,255)","rgb(255,153,51)","rgb(255,153,153)","rgb(153,255,51)","rgb(255,255,51)","rgb(255,51,255)"};
+	private String[] colorArray = {
+			"linear-gradient( from 100.0% 0.0% to 100.0% 100.0%, rgb(255,179,102) 0.0, rgb(255,230,179) 40.0, rgb(255,179,102) 100.0);",
+			"linear-gradient( from 100.0% 0.0% to 100.0% 100.0%, rgb(128,179,128) 0.0, rgb(204,255,204) 40.0, rgb(128,179,128) 100.0);",
+			"linear-gradient( from 100.0% 0.0% to 100.0% 100.0%, rgb(255,188,0) 0.0, rgb(255,230,128) 40.0, rgb(255,188,0) 100.0);",
+			"linear-gradient( from 100.0% 0.0% to 100.0% 100.0%, rgb(27,255,0) 0.0, rgb(180,255,155) 40.0, rgb(27,255,0) 100.0);",
+			"linear-gradient( from 100.0% 0.0% to 100.0% 100.0%, rgb(255,102,102) 0.0, rgb(255,204,204) 40.0, rgb(255,128,128) 100.0);",
+	"linear-gradient( from 100.0% 0.0% to 100.0% 100.0%, rgb(102,128,230) 0.0, rgb(204,230,255) 40.0, rgb(102,128,230) 100.0);"};
 	private Label index;
 	private Label title;
 	private Label description;
@@ -37,8 +44,10 @@ public class ListItem extends StackPane{
 		this.isDone = new Label();
 		if (isDone) {
 			this.isDone.setText("Done");
+			this.isDone.setTextFill(Color.GREEN);
 		} else {
 			this.isDone.setText("Not Done");
+			this.isDone.setTextFill(Color.RED);
 		}
 
 
@@ -55,8 +64,13 @@ public class ListItem extends StackPane{
 		HBox consoleLayout = new HBox();
 		consoleLayout.getChildren().addAll(detailsLayout, statusLayout);
 		this.setStyle("-fx-background-color: " + colorArray[index%6] + "; -fx-background-radius: 10px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);");
+
+		//this.setStyle("background: linear-gradient(45deg, rgba(153,218,255,1) 0%, rgba(0,128,128,1) 100%);-fx-background-radius: 10px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);");
 		this.getChildren().add(consoleLayout);
 		this.setPadding(new Insets(5, 5, 5, 5));
 
+	}
+	public String getTitle() {
+		return this.title.getText();
 	}
 }

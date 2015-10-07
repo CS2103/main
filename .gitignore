@@ -1,2 +1,6 @@
+*.class
+
 savedPath.txt
 tempFile.json
+
+/bin/
