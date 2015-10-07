@@ -1,6 +1,6 @@
 /* The main scrollbar **track** CSS class  */
-.listview .scroll-bar:horizontal .track,
-.listview .scroll-bar:vertical .track{
+#ListView .scroll-bar:horizontal .track,
+#ListView .scroll-bar:vertical .track{
 	-fx-background-color:transparent;
 	-fx-border-color:transparent;
 	-fx-background-radius: 0em;
@@ -18,8 +18,8 @@
 
 /* The increment and decrement button CSS class of scrollbar */
 
-.listview .scroll-bar:vertical .increment-button ,
-.listview .scroll-bar:vertical .decrement-button {
+#ListView .scroll-bar:vertical .increment-button ,
+#ListView .scroll-bar:vertical .decrement-button {
 
     -fx-background-color:transparent;
 	-fx-background-radius: 0em;
@@ -27,17 +27,22 @@
 
 }
 
-.listview  .scroll-bar .increment-arrow,
-.listview  .scroll-bar .decrement-arrow {
+.ListView  .scroll-bar .increment-arrow,
+.ListView  .scroll-bar .decrement-arrow {
 	-fx-shape: " ";	
 	-fx-padding:0;
 }
 
 /* The main scrollbar **thumb** CSS class which we drag every time (movable) */
-.listview .scroll-bar:horizontal .thumb,
-.listview .scroll-bar:vertical .thumb {
+#ListView .scroll-bar:horizontal .thumb,
+#ListView .scroll-bar:vertical .thumb {
     -fx-background-color:derive(black,90%);
 	-fx-background-insets: 2, 0, 0;
 	-fx-background-radius: 2em;
 
+}
+
+#StatusBar {
+	-fx-text-alignment: right;
+	-fx-text-fill:linear-gradient( from 100.0% 0.0% to 250.0% 1200.0%, rgb(255,255,255) 0.0, rgb(0,0,0) 40.0, rgb(255,255,255) 100.0)
 }

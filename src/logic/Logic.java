@@ -2,8 +2,10 @@ package logic;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+
 import org.joda.time.DateTime;
 
+import application.Constants;
 import parser.CommandParser;
 import parser.DateParser;
 import parser.Parser;
@@ -78,9 +80,9 @@ public class Logic {
 		DateTime endingDate = DateParser.getEndDate(input);
 		DateTime startTime = TimeParser.getStartTime(input);
 		DateTime endTime = TimeParser.getEndTime(input);
-		
+
 		String title = TaskParser.getTitle(input);
-		
+
 		Task newTask = new Task(title, startingDate, startTime, endingDate , endTime);
 		bin.add(newTask);
 		bin.setDisplay();
@@ -205,5 +207,29 @@ public class Logic {
 		ArrayList <Task> initDis = bin.displayInit();
 		//initDis = bin.sortArrayByTime(initDis);
 		return initDis;
+	}
+	public String getStatusBarText(String input){
+		switch(CommandParser.getCommand(input)) {
+		case Constants.COMMAND_ADD :
+			return TaskParser.getTitle(input) + Constants.FEEDBACK_ADD_SUCCESS;
+		case Constants.COMMAND_MARK :
+			return bin.undoStack.peek().returnMani().getTitle() + Constants.FEEDBACK_DONE_SUCCESS;
+		case Constants.COMMAND_UNMARK :
+			return bin.undoStack.peek().returnMani().getTitle() + Constants.FEEDBACK_NOT_DONE_SUCCESS;
+		case Constants.COMMAND_DELETE :
+			return bin.undoStack.peek().returnMani().getTitle() + Constants.FEEDBACK_DEL_SUCCESS;
+		case Constants.COMMAND_SEARCH :
+			return Constants.FEEDBACK_SHOW_SUCCESS + TaskParser.getTitle(input);
+		case Constants.COMMAND_UNDO :
+			return bin.redoStack.peek() != null ? Constants.FEEDBACK_UNDO_SUCCESS : Constants.FEEDBACK_UNDO_FAILURE;
+		case Constants.COMMAND_REDO :
+
+
+			return bin.redoStack.peek() != null ? Constants.FEEDBACK_REDO_SUCCESS : Constants.FEEDBACK_REDO_FAILURE;
+
+		default :
+			return Constants.FEEDBACK_INVALID;
+		}
+		//bin.undoStack.peek().returnMani().getTitle()
 	}
 }
