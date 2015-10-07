@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-=======
-/parser/
->>>>>>> f1408057840addec287f7fac076bfe841975c2fe
-/logic/
-/ui/
-/application/
+*.class
+.classpath
+bin/parser/Parser.class

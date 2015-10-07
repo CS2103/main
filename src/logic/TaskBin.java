@@ -192,6 +192,7 @@ public class TaskBin implements editTaskInfo{
 			default:
 				System.out.println("Error: Unable to identify the command type");
 		}
+		//update tag
 		Storage.write(taskList);
 	}
 	
