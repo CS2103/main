@@ -21,9 +21,11 @@ public class Constants {
 	public static final String LABEL_TITLE = "Title: ";
 	public static final String LABEL_LOCATION = "Location: ";
 	public static final String LABEL_START_TIME = "Start Time: ";
+	public static final String LABEL_START = "Start: ";
+	public static final String LABEL_END = "End: ";
 	public static final String LABEL_END_TIME = "End Time: ";
 	public static final String LABEL_START_DATE = "Start Date: ";
-	public static final String LABEL_DUE_DATE = "Due Date: ";
+	public static final String LABEL_END_DATE = "Due Date: ";
 	public static final String LABEL_PRIORITY = "Priority: ";
 
 
@@ -98,8 +100,8 @@ public class Constants {
 	public static final String COMMAND_EDIT = "edit";
 	public static final String COMMAND_UNDO = "undo";
 	public static final String COMMAND_REDO = "redo";
-	public static final String COMMAND_DONE = "done";
-	public static final String COMMAND_NOT_DONE = "undone";
+	public static final String COMMAND_MARK = "mark";
+	public static final String COMMAND_UNMARK = "unmark";
 	public static final String COMMAND_VIEW_HOMESCREEN = "home";
 	public static final String COMMAND_HELP = "help";
 	public static final String COMMAND_EXIT = "exit";
@@ -195,7 +197,7 @@ public class Constants {
 	public static final String FEEDBACK_MASS_DEL_SUCCESS = "Mass delete performed successfully!";
 	public static final String FEEDBACK_MASS_DEL_FAILURE = "Invalid task ID specified!";
 	public static final String FEEDBACK_EDIT_SUCCESS = " was editted succesfully!";
-	public static final String FEEDBACK_SHOW_SUCCESS = "<html>Displaying search results for ";
+	public static final String FEEDBACK_SHOW_SUCCESS = "Displaying search results for: ";
 	public static final String FEEDBACK_SHOW_HITS_SINGLE = " task found!";
 	public static final String FEEDBACK_SHOW_HITS_MULTI = " tasks found!";
 	public static final String FEEDBACK_SHOW_FAILURE = "There are no tasks due on that day!";
@@ -227,6 +229,7 @@ public class Constants {
 	public static final String FEEDBACK_REDO_SUCCESS = "Redone!!";
 	public static final String FEEDBACK_REDO_FAILURE = "Nothing to redo!";
 	public static final String FEEDBACK_VIEW_HOMESCREEN = "Displaying Home-Screen!";
+	public static final String FEEDBACK_VIEW_TODAY = "Displaying agenda for today";
 	public static final String FEEDBACK_INVALID = "That is an invalid action!";
 	public static final String FEEDBACK_INVALID_NUMBER_OF_QUOTES = "Invaild number of quotes";
 	public static final String FEEDBACK_INVALID_PARAMETERS_FOR_EDIT = "Invalid parameters for edit command";

@@ -1,5 +1,4 @@
 package ui;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.SortedSet;
@@ -30,7 +29,7 @@ public class AutoCompleteTextField extends TextField {
 	public AutoCompleteTextField() {
 		super();
 		entries = new TreeSet<>();
-		Collections.addAll(entries, "add [taskname] between [starttime] to [endtime]", "exit", "delete [index]", "mark [index]", "search [keyword]", "unmark [index]", "edit [index] [field] [newvalue]");
+		//Collections.addAll(entries, "add [taskname] between [starttime] to [endtime]", "exit", "delete [index]", "mark [index]", "search [keyword]", "unmark [index]", "edit [index] [field] [newvalue]");
 
 		entriesPopup = new ContextMenu();
 

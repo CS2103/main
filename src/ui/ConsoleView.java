@@ -83,11 +83,9 @@ public class ConsoleView extends Pane{
 		listView = new ListView<ListItem>();
 		listView.setPrefHeight(470);
 		listView.setPrefWidth(600);
-		//listView.setStyle("-fx-background-color: rgba(255,255,255, 0.6);");
-		//listView.getStyleClass().add("style.listview");
-		listView.getStylesheets().add("ui/style.css");
-
+		listView.setStyle("-fx-background-color: rgba(255,255,255, 0.6);");
 		listView.setFocusTraversable(false);
+		listView.setId("ListView");
 
 		inputConsole = new AutoCompleteTextField();
 		inputConsole.setEditable(true);
@@ -101,7 +99,9 @@ public class ConsoleView extends Pane{
 		status = new Label();
 		status.setPrefWidth(600);
 		status.setPrefHeight(25);
-		status.setPadding(new Insets(0,0,0, 80));
+		status.setContentDisplay(ContentDisplay.RIGHT);
+		status.setPadding(new Insets(0,0,0, 20));
+		status.setId("StatusBar");
 		//status.setStyle("-fx-background-color: rgba(255,255,255, 0.8); -fx-background-radius: 0 0 30 30;");
 		status.setStyle("-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%), linear-gradient(#020b02, #3a3a3a), linear-gradient(#9d9e9d 0%, #6b6a6b 20%, #343534 80%, #242424 100%),linear-gradient(#8a8a8a 0%, #6b6a6b 20%, #343534 80%, #262626 100%); -fx-background-radius: 0 0 30 30;");
 

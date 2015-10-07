@@ -14,6 +14,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import application.Constants;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -71,7 +72,15 @@ public class GUIService {
 		int index = 1;
 		ObservableList<ListItem> items =FXCollections.observableArrayList ();
 		for (Task task : tasksArr) {
-			ListItem newListItem = new ListItem(task.getTitle(), "this is where the task description will be",task.getStartingTime().toLocalTime().toString("HHmm"), task.getEndingTime().toLocalTime().toString("HHmm"), task.getStatus(),index++);
+			ListItem newListItem = new ListItem(task.getTitle(),
+					null ,
+					task.getStartingDate().toLocalDate().toString("dd/MM/yy"),
+					task.getStartingTime().toLocalTime().toString("HHmm"),
+					task.getStartingDate().toLocalDate().toString("dd/MM/yy"),
+					task.getEndingTime().toLocalTime().toString("HHmm"),
+					task.getStatus(),
+					false,
+					index++);
 			items.add(newListItem);
 		}
 		consoleView.listView.setItems(items);
@@ -105,6 +114,7 @@ public class GUIService {
 					}
 				} else if (consoleView.inputConsole.getText().length() == 0 && event.getCode() == KeyCode.BACK_SPACE) {
 					populateList(myLogic.displayHome());
+					updateStatusLabel(Constants.FEEDBACK_VIEW_TODAY);
 				} else if (event.getCode() == KeyCode.DOWN ){
 					listIndex++;
 					consoleView.listView.getSelectionModel().select(listIndex%consoleView.listView.getItems().size());
@@ -123,8 +133,6 @@ public class GUIService {
 					listIndex = consoleView.listView.getItems().size();
 				}
 
-				//listIndex = listIndex % consoleView.listView.getItems().size();
-
 				System.out.println(listIndex);
 			}
 		});
@@ -138,6 +146,7 @@ public class GUIService {
 				try {
 					populateList(myLogic.inputHandler(input));
 					consoleView.listView.scrollTo(consoleView.listView.getItems().size()-1);
+					updateStatusLabel(myLogic.getStatusBarText(input));
 				} catch (ParseException e) {
 					e.printStackTrace();
 				}
@@ -149,6 +158,8 @@ public class GUIService {
 	public Scene buildScene(StackPane content) {
 		Scene myScene  = new Scene(content, 605, 605);
 		myScene.setFill(Color.TRANSPARENT);
+		myScene.getStylesheets().clear();
+		myScene.getStylesheets().add(this.getClass().getResource("style.css").toExternalForm());
 		showConsolePane();
 		return myScene;
 	}
@@ -177,5 +188,9 @@ public class GUIService {
 	}
 
 	public void onEscapePressed() {
+	}
+
+	public void updateStatusLabel(String text) {
+		consoleView.status.setText(text);
 	}
 }
