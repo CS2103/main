@@ -31,8 +31,6 @@ import javafx.stage.StageStyle;
 import logic.Logic;
 import logic.Task;
 import parser.CommandParser;
-import parser.DateParser;
-import parser.Parser;
 
 public class GUIService {
 
@@ -44,14 +42,12 @@ public class GUIService {
 	int listIndex;
 	private TrayService trayService;
 	private Stage stage;
-	Parser myParser;
 
 	public GUIService(Stage stage) {
 		this.stage = stage;
 		this.myLogic = new Logic();
 
 		content = new StackPane();
-		myParser = new Parser();
 		consoleView = new ConsoleView();
 
 		content.setStyle("-fx-background-color: rgba(255,255,255, 0); -fx-background-radius: 10px;");
@@ -142,7 +138,6 @@ public class GUIService {
 			public void handle(ActionEvent event) {
 				String input = consoleView.inputConsole.getText();
 				System.out.println("[PARSED] the command is : " + CommandParser.getCommand(input));//debug
-				System.out.println("The End Date is: " + DateParser.getEndDate(input));//debug
 				try {
 					populateList(myLogic.inputHandler(input));
 					consoleView.listView.scrollTo(consoleView.listView.getItems().size()-1);

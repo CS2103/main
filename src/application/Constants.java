@@ -28,12 +28,7 @@ public class Constants {
 	public static final String LABEL_END_DATE = "Due Date: ";
 	public static final String LABEL_PRIORITY = "Priority: ";
 
-
-
 	public static final int REFRESH_TIME = 60 * 1000; // refers to the time in
-	// milliseconds
-	// File name
-	public static final String FILE_NAME = "LOLTaskList.txt";
 
 	// Separators
 	public static final String SEPARATOR = "\\\\";

@@ -1,6 +1,6 @@
 package parser;
 
-
+import application.Constants;
 
 public class Parser {
 
@@ -10,8 +10,7 @@ public class Parser {
 	 * @return first word in a String
 	 */
 	static String extractFirstWord(String input) {
-		input = input.split(" ")[0];
-		return input.trim();
+		return input.split(" ")[0].trim();
 	}
 
 	/**
@@ -25,9 +24,11 @@ public class Parser {
 	}
 
 	public static int getIndex(String input) {
-		int index;
 		input = input.split(" ")[1].trim();
-		index = Integer.parseInt(input);
-		return index;
+		if (input.equalsIgnoreCase(Constants.SHOW_ALL)) {
+			return -1;
+		} else {
+			return Integer.parseInt(input);
+		}
 	}
 }

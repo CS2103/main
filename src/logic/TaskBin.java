@@ -24,12 +24,13 @@ public class TaskBin implements editTaskInfo{
 	Storage taskStorage;
 	Stack<Command> undoStack;
 	Stack<Command> redoStack;
-	Task buffer;
 
 	private static final String add_tag = "ADD";
 	private static final String delete_tag = "DELETE";
 	private static final String replace_tag = "REPLACE";
 	private static final String alter_tag = "ALTER";
+	private static final String mark_tag = "MARK";
+	private static final String unmark_tag = "UNMARK";
 
 	/********************************Construction Methods************************************/
 
@@ -145,10 +146,27 @@ public class TaskBin implements editTaskInfo{
 
 		case alter_tag:
 			redoStack.push(previousComm);
-			taskList.remove(previousComm.returnMani());
+			System.out.println(previousComm.returnMani().getTitle() + previousComm.returnOrigin().getTitle());
+			System.out.println(taskList.get(activeList.indexOf(previousComm.returnMani())));
+			taskList.remove(taskList.get(taskList.indexOf(previousComm.returnMani())));
 			taskList.add(previousComm.returnOrigin());
-			activeList.remove(previousComm.returnMani());
-			activeList.add(previousComm.returnOrigin());
+			if(activeList != taskList){
+				System.out.println(activeList.get(activeList.indexOf(previousComm.returnMani())));
+				activeList.remove(activeList.get(activeList.indexOf(previousComm.returnMani())));
+				activeList.add(previousComm.returnOrigin());
+			}
+			break;
+		
+		case mark_tag:
+			redoStack.push(previousComm);
+			taskList.get(taskList.indexOf(previousComm.returnMani())).unMark();
+			activeList.get(activeList.indexOf(previousComm.returnMani())).unMark();
+			break;
+		
+		case unmark_tag:
+			redoStack.push(previousComm);
+			taskList.get(taskList.indexOf(previousComm.returnMani())).mark();
+			activeList.get(activeList.indexOf(previousComm.returnMani())).mark();
 			break;
 
 		default:
@@ -175,10 +193,23 @@ public class TaskBin implements editTaskInfo{
 			undoStack.push(redoComm);
 			taskList.remove(redoComm.returnOrigin());
 			activeList.remove(redoComm.returnOrigin());
-			taskList.add(redoComm.returnMani());
-			activeList.add(redoComm.returnMani());
+			if(taskList != activeList){
+				taskList.add(redoComm.returnMani());
+				activeList.add(redoComm.returnMani());
+			}
 			break;
-
+		
+		case mark_tag:
+			undoStack.push(redoComm);
+			taskList.get(taskList.indexOf(redoComm.returnMani())).mark();
+			activeList.get(activeList.indexOf(redoComm.returnMani())).mark();
+			break;
+			
+		case unmark_tag:
+			undoStack.push(redoComm);
+			taskList.get(taskList.indexOf(redoComm.returnMani())).unMark();
+			activeList.get(activeList.indexOf(redoComm.returnMani())).unMark();
+			break;
 
 		default:
 			System.out.println("Error: Unable to identify the command type");
@@ -196,10 +227,19 @@ public class TaskBin implements editTaskInfo{
 				System.out.println("ADSSADAD");
 				System.out.println(obj.getTitle());
 				obj.mark();
+				Command mark = new Command(mark_tag, obj);
+				undoStack.push(mark);
+			}
+		}
+		for(Task obj : activeList){
+			if (obj.equals(task)) {
+				System.out.println("ADSSADAD");
+				System.out.println(obj.getTitle());
+				obj.mark();
 			}
 		}
 		Storage.write(taskList);
-		return taskList;
+		return activeList;
 	}
 
 	public ArrayList<Task> unMarkTaskInstance(Task task) {
@@ -208,25 +248,31 @@ public class TaskBin implements editTaskInfo{
 				System.out.println("ADSSADAD");
 				System.out.println(obj.getTitle());
 				obj.unMark();
+				Command mark = new Command(unmark_tag, obj);
+				undoStack.push(mark);
+			}
+		}
+		for(Task obj : activeList){
+			if (obj.equals(task)) {
+				System.out.println("ADSSADAD");
+				System.out.println(obj.getTitle());
+				obj.unMark();
 			}
 		}
 		Storage.write(taskList);
-		return taskList;
+		return activeList;
 	}
 
 
 
 	public ArrayList<Task> findTaskByTitle(String title){
 		ArrayList<Task> result = new ArrayList<Task>();
+		String[] keywords = title.split(" ");
 		for(Task task:taskList){
-			if (task.getTitle().indexOf(title)>=0) {
+			String[] listOfWord = task.getTitle().split(" ");
+			if(includeAllWords(keywords, listOfWord)){
 				result.add(task);
 			}
-			/*
-			if(title.equals(task.getTitle())){
-				result.add(task);
-			}
-			 */
 		}
 		sortArrayByTime(result);
 		return result;
@@ -235,8 +281,10 @@ public class TaskBin implements editTaskInfo{
 
 	public ArrayList<Task> findTaskByTitle(ArrayList<Task> list, String title){
 		ArrayList<Task> result = new ArrayList<Task>();
+		String[] keywords = title.split(" ");
 		for(Task task:list){
-			if(title.equals(task.getTitle())){
+			String[] listOfWord = task.getTitle().split(" ");
+			if(includeAllWords(keywords, listOfWord)){
 				result.add(task);
 			}
 		}
@@ -289,6 +337,7 @@ public class TaskBin implements editTaskInfo{
 		}
 		redoStack.clear();
 	}
+	
 
 	public ArrayList<Task> getUnfinished(){
 		ArrayList<Task> result = new ArrayList<Task>();
@@ -326,7 +375,7 @@ public class TaskBin implements editTaskInfo{
 	public void editStartingDate(Task task, DateTime date){
 		Task tar = taskList.get(taskList.indexOf(task));
 		Task tarDis = activeList.get(activeList.indexOf(tar));
-		buffer = task;
+		Task buffer = task;
 		tar.setStartingDate(date);
 		tarDis.setEndingDate(date);
 		Command editDate = new Command(alter_tag, tar, buffer);
@@ -334,7 +383,6 @@ public class TaskBin implements editTaskInfo{
 		taskList = sortArrayByTime(taskList);
 
 		Storage.write(taskList);
-		buffer = null;
 		redoStack.clear();
 	}
 
@@ -342,7 +390,7 @@ public class TaskBin implements editTaskInfo{
 	public void editEndingDate(Task task, DateTime date){
 		Task tar = taskList.get(taskList.indexOf(task));
 		Task tarDis = activeList.get(activeList.indexOf(tar));
-		buffer = task;
+		Task buffer = task;
 		tar.setEndingDate(date);
 		tarDis.setEndingDate(date);
 		Command editDate = new Command(alter_tag, tar, buffer);
@@ -350,7 +398,6 @@ public class TaskBin implements editTaskInfo{
 		taskList = sortArrayByTime(taskList);
 
 		Storage.write(taskList);
-		buffer = null;
 		redoStack.clear();
 	}
 
@@ -358,14 +405,12 @@ public class TaskBin implements editTaskInfo{
 	public void editTitle(Task task, String newTitle){
 		Task tar = taskList.get(taskList.indexOf(task));
 		Task tarDis = activeList.get(activeList.indexOf(tar));
+		Task buffer = new Task(task);
 		tarDis.setTitle(newTitle);
-		buffer = task;
 		tar.setTitle(newTitle);
-
 		Command editTil = new Command(alter_tag, tar, buffer);
 		undoStack.push(editTil);
 		Storage.write(taskList);
-		buffer = null;
 		redoStack.clear();
 	}
 
@@ -373,7 +418,7 @@ public class TaskBin implements editTaskInfo{
 	@Override
 	public void editDescription(Task task, String newDes){
 		Task tar = taskList.get(taskList.indexOf(task));
-		buffer = task;
+		Task buffer = task;
 		tar.setDescription(newDes);
 		Task tarDis = activeList.get(activeList.indexOf(tar));
 		tarDis.setTitle(newDes);
@@ -381,7 +426,6 @@ public class TaskBin implements editTaskInfo{
 		undoStack.push(editDes);
 
 		Storage.write(taskList);
-		buffer = null;
 		redoStack.clear();
 	}
 	/*****************************************Retrieve Different Displays**********************************/
@@ -410,23 +454,22 @@ public class TaskBin implements editTaskInfo{
 		return activeList;
 	}
 	/******************************************Used Methods***************************************************/
-	/*public Task retrieveTask(int index) throws NoResultFound{
-	try{
-		for(Task task:taskList){
-			if(task.getIndex() == index){
-				return task;
+	//All words in keywords list are included in the title
+	public boolean includeAllWords(String[] keywords, String[] title){
+		boolean isFound;
+		for(String key:keywords){
+			isFound = false;
+			for(String til: title){
+				if(key.equals(til)){
+					isFound = true;
+				}
 			}
-			else{
-				throw new NoResultFound("No such task found in the list");
+			if(isFound == false){
+				return false;
 			}
 		}
+		return true;
 	}
-	catch(NoResultFound ex){
-		System.out.println("No such task is found in the list");
-	}
-	return null;
-
-}*/
 
 
 

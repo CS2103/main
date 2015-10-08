@@ -36,12 +36,13 @@ public class Logic {
 			return displayHome();
 		}
 		else if(command.equals("delete")){
-			int index = Parser.getIndex(input);
-			return deleteTaskByIndex(index);
+			//int index = Parser.getIndex(input);
+			return deleteTaskByIndex(Parser.getIndex(input));
 
 		}
 		else if(command.equals("edit")){
 			int index = Parser.getIndex(input);
+			return editTask(index, TaskParser.getAttribute(input), TaskParser.getEditTitle(input));
 
 		}
 		else if (command.equals("mark")){
@@ -60,8 +61,9 @@ public class Logic {
 		else if(command.equals("search")){
 			System.out.println("DEBUG " + TaskParser.getTitle(input));
 			ArrayList<Task> result = searchEntries(TaskParser.getTitle(input));
+			bin.setDisplay(result);
 
-			return result;
+			return bin.returnDisplay();
 		}
 		else if(command.equals("undo")){
 			bin.undo();
@@ -123,7 +125,7 @@ public class Logic {
 			bin.editEndingDate(toEdit, date);
 			break;
 		}
-		return display;
+		return bin.returnDisplay();
 	}
 
 	public ArrayList<Task> undoChange(){
@@ -158,8 +160,6 @@ public class Logic {
 		Task toDel = new Task();
 		toDel = display.get(index - 1);
 		bin.delete(toDel);
-		//display.remove(index - 1);
-		//bin.setDisplay(display);
 		bin.setDisplay();
 		return bin.returnDisplay();
 	}
@@ -182,17 +182,16 @@ public class Logic {
 		ArrayList<Task> display = bin.returnDisplay();
 		Task toMark = new Task();
 		toMark = display.get(index);
-		System.out.print(bin.markTaskInstance(toMark));
-		System.out.println(bin.markTaskInstance(toMark));
-		bin.setDisplay();
+		bin.markTaskInstance(toMark);
+		//bin.setDisplay();
 		return bin.returnDisplay();
 	}
 	public ArrayList<Task> unMarkTaskByIndex(int index){
 		ArrayList<Task> display = bin.returnDisplay();
 		Task toMark = new Task();
 		toMark = display.get(index);
-		System.out.print(bin.unMarkTaskInstance(toMark));
-		bin.setDisplay();
+		bin.unMarkTaskInstance(toMark);
+		//bin.setDisplay();
 		return bin.returnDisplay();
 	}
 
@@ -205,7 +204,7 @@ public class Logic {
 
 	public ArrayList<Task> startupDisplay(){//display the initial screen
 		ArrayList <Task> initDis = bin.displayInit();
-		//initDis = bin.sortArrayByTime(initDis);
+		initDis = bin.sortArrayByTime(initDis);
 		return initDis;
 	}
 	public String getStatusBarText(String input){
@@ -221,12 +220,11 @@ public class Logic {
 		case Constants.COMMAND_SEARCH :
 			return Constants.FEEDBACK_SHOW_SUCCESS + TaskParser.getTitle(input);
 		case Constants.COMMAND_UNDO :
-			return bin.redoStack.peek() != null ? Constants.FEEDBACK_UNDO_SUCCESS : Constants.FEEDBACK_UNDO_FAILURE;
+			//return bin.redoStack.peek() != null ? Constants.FEEDBACK_UNDO_SUCCESS : Constants.FEEDBACK_UNDO_FAILURE;
 		case Constants.COMMAND_REDO :
-
-
-			return bin.redoStack.peek() != null ? Constants.FEEDBACK_REDO_SUCCESS : Constants.FEEDBACK_REDO_FAILURE;
-
+			//return bin.redoStack.peek() != null ? Constants.FEEDBACK_REDO_SUCCESS : Constants.FEEDBACK_REDO_FAILURE;
+		case Constants.COMMAND_EDIT :
+			return Constants.FEEDBACK_EDIT_SUCCESS;
 		default :
 			return Constants.FEEDBACK_INVALID;
 		}

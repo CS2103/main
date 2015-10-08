@@ -5,7 +5,7 @@ import java.util.Calendar;
 
 import org.joda.time.DateTime;
 
-//Storage class should store the static int numberOfTask;
+
 public class Task {
 	private static int numberOfTask = 0;
 	private String title;
@@ -17,6 +17,16 @@ public class Task {
 	private DateTime endingDate;
 	private static String type_tag;
 	//private int index;
+
+	public Task(Task task){
+		this.title = task.getTitle();
+		this.description = task.getDescription();
+		this.startingDate = task.getStartingDate();
+		this.endingDate = task.getEndingDate();
+		this.isFinished = task.getStatus();
+		this.startingTime = task.getStartingTime();
+		this.endingTime = task.getEndingTime();
+	}
 
 	public Task(String title){
 		this.title = title;
@@ -69,26 +79,17 @@ public class Task {
 		type_tag = "event";
 	}
 
-	/*public Task(String title, Date date, Time time){
-		this(title);
-		endingTime = time;
-		endingDate = date;
-	}
-
-	public Task(Date date, Time time){
-		this();
-		endingTime = time;
-		endingDate = date;
-	}*/
 
 	public Task(String title, DateTime date){
 		this(title);
 		endingDate = date;
+		type_tag = "deadline";
 	}
 
 	public Task(DateTime date){
 		this();
 		endingDate = date;
+		type_tag = "deadline";
 	}
 
 
@@ -120,10 +121,6 @@ public class Task {
 	public DateTime getEndingDate(){
 		return endingDate;
 	}
-	/*public int getIndex(){
-		return index;
-	}*/
-
 
 	//Mutators
 	public void setDescription(String des){
