@@ -15,22 +15,25 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import application.Constants;
+import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Duration;
 import logic.Logic;
 import logic.Task;
-import parser.CommandParser;
 
 public class GUIService {
 
@@ -42,6 +45,9 @@ public class GUIService {
 	int listIndex;
 	private TrayService trayService;
 	private Stage stage;
+
+	private static double xOffset = 0;
+	private static double yOffset = 0;
 
 	public GUIService(Stage stage) {
 		this.stage = stage;
@@ -57,10 +63,8 @@ public class GUIService {
 		dropShadow.setOffsetY(3.0);
 		dropShadow.setColor(Color.color(0.4, 0.5, 0.5));
 		content.setEffect(dropShadow);
-		addListenersToConsoleView();
+		addListenersToConsoleView(stage);
 		populateList(myLogic.displayHome());
-		consoleView.listView.getSelectionModel().select(0);
-		listIndex = consoleView.listView.getItems().size();
 		content.getChildren().addAll(consoleView.consolePane);
 	}
 
@@ -79,22 +83,30 @@ public class GUIService {
 					index++);
 			items.add(newListItem);
 		}
-		consoleView.listView.setItems(items);
+		consoleView.list.getChildren().setAll(items);
 	}
 
-	private void addListenersToConsoleView() {
-		consoleView.listView.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>(){
-			@Override
-			public void handle(KeyEvent event) {
-				if(event.getCode() == KeyCode.ESCAPE ) {
-					System.exit(0);
-				}
-			}
-		});
+	private void addListenersToConsoleView(Stage stage) {
 		consoleView.inputConsole.textProperty().addListener((observable, oldValue, newValue) -> {
 			System.out.println("textfield changed from " + oldValue + " to " + newValue);//debug
 			if (newValue.equalsIgnoreCase("exit")) {
 				System.exit(0);
+			}
+		});
+
+		consoleView.consolePane.addEventHandler(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent> (){
+			@Override
+			public void handle(MouseEvent event) {
+				xOffset = stage.getX() - event.getScreenX();
+				yOffset = stage.getY() - event.getScreenY();
+			}
+		});
+
+		consoleView.consolePane.addEventHandler(MouseEvent.MOUSE_DRAGGED, new EventHandler<MouseEvent> (){
+			@Override
+			public void handle(MouseEvent event) {
+				stage.setX(event.getScreenX() + xOffset);
+				stage.setY(event.getScreenY() + yOffset);
 			}
 		});
 
@@ -112,23 +124,20 @@ public class GUIService {
 					populateList(myLogic.displayHome());
 					updateStatusLabel(Constants.FEEDBACK_VIEW_TODAY);
 				} else if (event.getCode() == KeyCode.DOWN ){
-					listIndex++;
-					consoleView.listView.getSelectionModel().select(listIndex%consoleView.listView.getItems().size());
-					consoleView.listView.scrollTo(listIndex%consoleView.listView.getItems().size());
-					consoleView.inputConsole.setText(consoleView.listView.getItems().get(listIndex%consoleView.listView.getItems().size()).getTitle());
-					consoleView.inputConsole.positionCaret(consoleView.inputConsole.getText().length());
+					consoleView.list.getChildren().get(0);
 				} else if (event.getCode() == KeyCode.UP ) {
-					listIndex--;
-					consoleView.listView.getSelectionModel().select(listIndex%consoleView.listView.getItems().size());
-					consoleView.listView.scrollTo(listIndex%consoleView.listView.getItems().size());
-					consoleView.inputConsole.setText(consoleView.listView.getItems().get(listIndex%consoleView.listView.getItems().size()).getTitle());
-					consoleView.inputConsole.positionCaret(consoleView.inputConsole.getText().length());
-				}
 
-				if (listIndex == 0) {
-					listIndex = consoleView.listView.getItems().size();
-				}
+				} else if (event.getCode() == KeyCode.BACK_QUOTE) {
+					Node tempNode = consoleView.list.getChildren().get(0);
 
+					TranslateTransition translateTransition =
+							new TranslateTransition(Duration.millis(1000), tempNode);
+					translateTransition.setFromX(50);
+					translateTransition.setToX(700);
+					translateTransition.setCycleCount(1);
+					translateTransition.setAutoReverse(false);
+					translateTransition.play();
+				}
 				System.out.println(listIndex);
 			}
 		});
@@ -137,14 +146,11 @@ public class GUIService {
 			@Override
 			public void handle(ActionEvent event) {
 				String input = consoleView.inputConsole.getText();
-				System.out.println("[PARSED] the command is : " + CommandParser.getCommand(input));//debug
 				try {
-					populateList(myLogic.inputHandler(input));
-					consoleView.listView.scrollTo(consoleView.listView.getItems().size()-1);
-					updateStatusLabel(myLogic.getStatusBarText(input));
+					updateInterface(input, myLogic.inputHandler(input));
 				} catch (ParseException e) {
-					e.printStackTrace();
 				}
+				updateStatusLabel(myLogic.getStatusBarText(input));
 				consoleView.inputConsole.clear();
 			}
 		});
@@ -171,6 +177,7 @@ public class GUIService {
 	}
 
 	public void showStage() {
+		stage.setAlwaysOnTop(true);
 		stage.initStyle(StageStyle.TRANSPARENT);
 		Platform.setImplicitExit(false);
 		stage.setScene(buildScene(this.content));
@@ -188,4 +195,37 @@ public class GUIService {
 	public void updateStatusLabel(String text) {
 		consoleView.status.setText(text);
 	}
+	public void updateDisplayLabel(String text) {
+		consoleView.currentDisplay.setText(text);
+	}
+	public void updateInterface(String input, ArrayList<Task> taskArray) {
+		String command = myLogic.getCommand(input);
+		if (command.equals(Constants.DICTIONARY_ADD[0])) {
+			populateList(taskArray);
+		} else if (command.equals(Constants.DICTIONARY_DELETE[0])) {
+			int index = myLogic.getIndex(input);
+			Node tempNode = consoleView.list.getChildren().get(index-1);
+			populateList(taskArray);
+			consoleView.list.getChildren().add(index-1, tempNode);
+
+			TranslateTransition translateTransition =
+					new TranslateTransition(Duration.millis(800), tempNode);
+			translateTransition.setFromX(50);
+			translateTransition.setToX(700);
+			translateTransition.setCycleCount(1);
+			translateTransition.setAutoReverse(false);
+			translateTransition.play();
+
+			translateTransition.setOnFinished(new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent event) {
+					populateList(taskArray);
+				}
+			});
+		} else {
+			populateList(taskArray);
+		}
+	}
+
+
 }

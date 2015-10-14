@@ -2,11 +2,13 @@ package ui;
 
 import application.Constants;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
@@ -20,7 +22,8 @@ public class ListItem extends StackPane{
 			"linear-gradient( from 100.0% 0.0% to 100.0% 100.0%, rgb(255,102,102) 0.0, rgb(255,204,204) 40.0, rgb(255,128,128) 100.0);",
 	"linear-gradient( from 100.0% 0.0% to 100.0% 100.0%, rgb(102,128,230) 0.0, rgb(204,230,255) 40.0, rgb(102,128,230) 100.0);"};
 
-	private String color = "linear-gradient( from 100.0% 0.0% to 100.0% 100.0%, rgb(51,51,51) 0.0, rgb(179,179,179) 40.0, rgb(51,51,51) 100.0);";
+	private String color = "Color.BLACK";
+	private Circle statusIcon;
 	private Label index;
 	private Label title;
 	private Label description;
@@ -29,6 +32,7 @@ public class ListItem extends StackPane{
 	private Label startDate;
 	private Label endDate;
 	private Label isDone;
+	private Label duration;
 	private Label isOverDue;
 	private Label startText;
 	private Label endText;
@@ -36,66 +40,74 @@ public class ListItem extends StackPane{
 	public ListItem(String taskTitle, String taskDescription, String taskStartDate, String taskStartTime, String taskEndDate, String taskEndTime, boolean isDone, boolean isOverdue, int index) {
 		this.index = new Label(String.valueOf(index));
 		this.index.setFont(Font.font("Georgia",FontWeight.BOLD,25));
+		this.index.setTextFill(Color.WHITE);
 
 		title = new Label(taskTitle);
-		title.setFont(Font.font("Georgia",FontWeight.BOLD,16));
-		title.setPrefHeight(25);
+		title.setFont(Font.font("SansSerif",FontWeight.BOLD,16));
+		title.setPadding(new Insets(0,0,0,5));
+		title.setTextFill(Color.ANTIQUEWHITE);
 
 		description = new Label(taskDescription);
 
+		statusIcon = new Circle();
+		statusIcon.setRadius(5);
+
+		if (isDone) {
+			this.statusIcon.setFill(Color.GREENYELLOW);
+		} else {
+			this.statusIcon.setFill(Color.RED);
+		}
+
 		startText = new Label(Constants.LABEL_START);
-		startText.setFont(Font.font("Georgia", FontWeight.BOLD, 12));
+		startText.setFont(Font.font("SansSerif", FontWeight.BOLD, 12));
 		startText.setPrefWidth(40);
 
 		endText = new Label(Constants.LABEL_END);
-		endText.setFont(Font.font("Georgia", FontWeight.BOLD, 12));
+		endText.setFont(Font.font("SansSerif", FontWeight.BOLD, 12));
 		endText.setPrefWidth(40);
 
 		startDate = new Label(taskStartDate);
 		startDate.setPrefWidth(60);
-		startDate.setFont(Font.font("Georgia", FontWeight.SEMI_BOLD, 12));
+		startDate.setFont(Font.font("SansSerif", FontWeight.SEMI_BOLD, 12));
 
 		startTime  = new Label(taskStartTime);
 		startTime.setPrefWidth(180);
-		startTime.setFont(Font.font("Georgia", FontWeight.SEMI_BOLD, 12));
+		startTime.setTextFill(Color.GREY);
+		startTime.setFont(Font.font("SansSerif", FontWeight.SEMI_BOLD, 12));
 
 		endDate = new Label(taskEndDate);
 		endDate.setPrefWidth(60);
-		endDate.setFont(Font.font("Georgia", FontWeight.SEMI_BOLD, 12));
+		endDate.setFont(Font.font("SansSerif", FontWeight.SEMI_BOLD, 12));
 
 		endTime  = new Label(taskEndTime);
-		endTime.setFont(Font.font("Georgia", FontWeight.SEMI_BOLD, 12));
-		//endTime.setPrefWidth(100);
-		//endTime.setPrefWidth();
+		endTime.setFont(Font.font("SansSerif", FontWeight.SEMI_BOLD, 12));
+		endTime.setTextFill(Color.GREY);
 
-		this.isDone = new Label();
-		this.isDone.setFont(Font.font("georgia", FontWeight.BOLD, 12));
-		this.isDone.setStyle("-fx-effect: dropshadow( one-pass-box , grey , 2 , 0.0 , 1 , 0 )");
-		if (isDone) {
-			this.isDone.setText("Done");
-			this.isDone.setTextFill(Color.GREEN);
-		} else {
-			this.isDone.setText("Not Done");
-			this.isDone.setTextFill(Color.RED);
-		}
+		duration = new Label();
+		duration.setText(taskStartTime + " - " + taskEndTime);
+		duration.setTextFill(Color.LIGHTGRAY);
+		duration.setPadding(new Insets(0,0,0,15));
+
+		HBox titleNstatus = new HBox();
+		titleNstatus.setAlignment(Pos.CENTER_LEFT);
+		titleNstatus.getChildren().addAll(statusIcon, title);
 
 		HBox timeLayout = new HBox();
-		timeLayout.getChildren().addAll(startText, startDate, startTime, endText, endDate, endTime);
+		timeLayout.getChildren().addAll(duration);
 
 		VBox detailsLayout = new VBox();
 		detailsLayout.setPrefWidth(500);
-		detailsLayout.getChildren().addAll(title, description, timeLayout);
+		detailsLayout.getChildren().addAll(titleNstatus, timeLayout);
 
 		VBox statusLayout = new VBox();
-		statusLayout.getChildren().addAll(this.index, this.isDone);
+		statusLayout.getChildren().addAll(this.index);
 
 		HBox consoleLayout = new HBox();
 		consoleLayout.getChildren().addAll(detailsLayout, statusLayout);
-		//this.setStyle("-fx-background-color: " + colorArray[index%6] + "; -fx-background-radius: 10px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);");
-		this.setStyle("-fx-background-color: " + color + "; -fx-background-radius: 10px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);");
+		this.setId("listItem");
 		this.getChildren().add(consoleLayout);
-		this.setPrefWidth(500);
-		this.setPadding(new Insets(5, 5, 5, 5));
+		this.setPrefWidth(600);
+		this.setPadding(new Insets(5, 5, 5, 10));
 
 	}
 	public String getTitle() {

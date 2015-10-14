@@ -230,4 +230,10 @@ public class Logic {
 		}
 		//bin.undoStack.peek().returnMani().getTitle()
 	}
+	public int getIndex(String input) {
+		return Parser.getIndex(input);
+	}
+	public String getCommand(String input) {
+		return CommandParser.getCommand(input);
+	}
 }
