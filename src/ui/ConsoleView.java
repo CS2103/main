@@ -57,17 +57,17 @@ public class ConsoleView extends Pane{
 
 		dateDisplay = new Label();
 		dateDisplay.setId("timeDisplay");
-		dateDisplay.setFont(new Font("Arial", 30));
+		dateDisplay.setFont(new Font("SansSerif", 30));
 		dateDisplay.setPrefWidth(300);
 		dateDisplay.setPadding(new Insets(0,0,0,20));
 		dateDisplay.setTextFill(Color.WHITE);
 
 		clockDisplay = new Label();
 		clockDisplay.setId("timeDisplay");
-		clockDisplay.setFont(new Font("Arial", 30));
+		clockDisplay.setFont(new Font("SansSerif", 30));
 		clockDisplay.setTextAlignment(TextAlignment.CENTER);
 		clockDisplay.setPrefWidth(300);
-		clockDisplay.setPadding(new Insets(0,0,0,90));
+		clockDisplay.setPadding(new Insets(0,0,0,160));
 		clockDisplay.setTextFill(Color.WHITE);
 
 		currentDisplay = new Label();
@@ -94,6 +94,7 @@ public class ConsoleView extends Pane{
 		list.setStyle("-fx-background-color:linear-gradient( from 100.0% 0.0% to 100.0% 100.0%, rgb(51,51,51) 0.0, rgb(179,179,179) 40.0, rgb(51,51,51) 100.0)");
 		list.setPrefWidth(598);
 		list.autosize();
+		list.setFocusTraversable(false);
 
 		sp = new ScrollPane();
 		sp.setId("scrollPane");
@@ -102,12 +103,13 @@ public class ConsoleView extends Pane{
 		sp.setHbarPolicy(ScrollBarPolicy.NEVER);
 		sp.setMaxWidth(600);
 		sp.setFocusTraversable(false);
+		sp.setBorder(null);
 
 		inputConsole = new AutoCompleteTextField();
 		inputConsole.setEditable(true);
 		inputConsole.setPrefHeight(25);
 		inputConsole.setPrefWidth(600);
-		inputConsole.setStyle("-fx-background-color: rgba(255,255,255, 0.9);-fx-text-inner-color: black;-fx-font-size:15");
+		inputConsole.setStyle("-fx-background-color: rgba(255,255,255, 0.8);-fx-text-inner-color: black;-fx-font-size:15");
 		inputConsole.setFocusTraversable(true);
 
 		status = new Label();
@@ -116,7 +118,7 @@ public class ConsoleView extends Pane{
 		status.setContentDisplay(ContentDisplay.RIGHT);
 		status.setPadding(new Insets(0,0,0, 20));
 		status.setId("statusBar");
-		status.setTextFill(Color.LIGHTGRAY);
+		status.setTextFill(Color.WHITE);
 		status.setFont(new Font("Arial", 20));
 
 		HBox dateTime = new HBox();

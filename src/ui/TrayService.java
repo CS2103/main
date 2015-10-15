@@ -36,14 +36,14 @@ public class TrayService {
 		this.stage = stage;
 	}
 
-	public void createTrayIcon(final Stage stage) {
+	public TrayIcon createTrayIcon(final Stage stage) {
 
 		PopUp about = new PopUp("About", Constants.MSG_ABOUT);
 
 		if (SystemTray.isSupported()) {
 			SystemTray tray = SystemTray.getSystemTray();
 			java.awt.Image image = Toolkit.getDefaultToolkit().getImage(TrayService.class.getResource("/resource/icon1.png"));
-			stage.getIcons().add(new Image("/resource/icon1.png"));
+			stage.getIcons().add(new Image("/resource/icon.png"));
 
 			stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 				@Override
@@ -135,6 +135,7 @@ public class TrayService {
 				System.err.println(e);
 			}
 		}
+		return trayIcon;
 	}
 
 	public void showProgramIsMinimizedMsg() {

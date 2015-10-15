@@ -11,6 +11,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.scene.text.TextAlignment;
 
 public class ListItem extends StackPane{
 
@@ -38,14 +39,16 @@ public class ListItem extends StackPane{
 	private Label endText;
 
 	public ListItem(String taskTitle, String taskDescription, String taskStartDate, String taskStartTime, String taskEndDate, String taskEndTime, boolean isDone, boolean isOverdue, int index) {
-		this.index = new Label(String.valueOf(index));
-		this.index.setFont(Font.font("Georgia",FontWeight.BOLD,25));
-		this.index.setTextFill(Color.WHITE);
 
 		title = new Label(taskTitle);
 		title.setFont(Font.font("SansSerif",FontWeight.BOLD,16));
 		title.setPadding(new Insets(0,0,0,5));
 		title.setTextFill(Color.ANTIQUEWHITE);
+
+		this.index = new Label(String.valueOf(index));
+		this.index.setFont(Font.font("SansSerif",FontWeight.LIGHT,22));
+		this.index.setTextFill(Color.WHITESMOKE);
+		this.index.setTextAlignment(TextAlignment.RIGHT);
 
 		description = new Label(taskDescription);
 
@@ -96,10 +99,14 @@ public class ListItem extends StackPane{
 		timeLayout.getChildren().addAll(duration);
 
 		VBox detailsLayout = new VBox();
-		detailsLayout.setPrefWidth(500);
+		detailsLayout.setPrefWidth(540);
 		detailsLayout.getChildren().addAll(titleNstatus, timeLayout);
+		detailsLayout.setPadding(new Insets(0,0,0,5));
 
 		VBox statusLayout = new VBox();
+		statusLayout.setPadding(new Insets(0,0,0,0));
+		statusLayout.setAlignment(Pos.CENTER_RIGHT);
+		statusLayout.setPrefWidth(30);
 		statusLayout.getChildren().addAll(this.index);
 
 		HBox consoleLayout = new HBox();
@@ -107,7 +114,7 @@ public class ListItem extends StackPane{
 		this.setId("listItem");
 		this.getChildren().add(consoleLayout);
 		this.setPrefWidth(600);
-		this.setPadding(new Insets(5, 5, 5, 10));
+		this.setPadding(new Insets(2, 0, 2, 0));
 
 	}
 	public String getTitle() {

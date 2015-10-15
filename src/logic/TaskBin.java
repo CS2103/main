@@ -21,7 +21,6 @@ class NoResultFound extends Exception{
 public class TaskBin implements editTaskInfo{
 	ArrayList<Task> taskList;
 	ArrayList<Task> activeList;
-	Storage taskStorage;
 	Stack<Command> undoStack;
 	Stack<Command> redoStack;
 
@@ -156,13 +155,13 @@ public class TaskBin implements editTaskInfo{
 				activeList.add(previousComm.returnOrigin());
 			}
 			break;
-		
+
 		case mark_tag:
 			redoStack.push(previousComm);
 			taskList.get(taskList.indexOf(previousComm.returnMani())).unMark();
 			activeList.get(activeList.indexOf(previousComm.returnMani())).unMark();
 			break;
-		
+
 		case unmark_tag:
 			redoStack.push(previousComm);
 			taskList.get(taskList.indexOf(previousComm.returnMani())).mark();
@@ -198,13 +197,13 @@ public class TaskBin implements editTaskInfo{
 				activeList.add(redoComm.returnMani());
 			}
 			break;
-		
+
 		case mark_tag:
 			undoStack.push(redoComm);
 			taskList.get(taskList.indexOf(redoComm.returnMani())).mark();
 			activeList.get(activeList.indexOf(redoComm.returnMani())).mark();
 			break;
-			
+
 		case unmark_tag:
 			undoStack.push(redoComm);
 			taskList.get(taskList.indexOf(redoComm.returnMani())).unMark();
@@ -337,7 +336,7 @@ public class TaskBin implements editTaskInfo{
 		}
 		redoStack.clear();
 	}
-	
+
 
 	public ArrayList<Task> getUnfinished(){
 		ArrayList<Task> result = new ArrayList<Task>();
@@ -371,7 +370,8 @@ public class TaskBin implements editTaskInfo{
 		redoStack.clear();
 	}
 
-//	@Override
+	//	@Override
+	@Override
 	public void editStartingDate(Task task, DateTime date){
 		Task tar = taskList.get(taskList.indexOf(task));
 		Task tarDis = activeList.get(activeList.indexOf(tar));
@@ -386,7 +386,8 @@ public class TaskBin implements editTaskInfo{
 		redoStack.clear();
 	}
 
-//	@Override
+	//	@Override
+	@Override
 	public void editEndingDate(Task task, DateTime date){
 		Task tar = taskList.get(taskList.indexOf(task));
 		Task tarDis = activeList.get(activeList.indexOf(tar));

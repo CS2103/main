@@ -36,20 +36,17 @@ public class Logic {
 			return displayHome();
 		}
 		else if(command.equals("delete")){
-			//int index = Parser.getIndex(input);
 			return deleteTaskByIndex(Parser.getIndex(input));
 
 		}
 		else if(command.equals("edit")){
 			int index = Parser.getIndex(input);
 			return editTask(index, TaskParser.getAttribute(input), TaskParser.getEditTitle(input));
-
 		}
 		else if (command.equals("mark")){
 			int index = Parser.getIndex(input);
 			System.out.println(index - index);
 			return markTaskByIndex(index-1);
-			//return bin.returnDisplay();
 		}
 		else if (command.equals("unmark")){
 			int index = Parser.getIndex(input);
@@ -62,7 +59,6 @@ public class Logic {
 			System.out.println("DEBUG " + TaskParser.getTitle(input));
 			ArrayList<Task> result = searchEntries(TaskParser.getTitle(input));
 			bin.setDisplay(result);
-
 			return bin.returnDisplay();
 		}
 		else if(command.equals("undo")){
@@ -73,7 +69,6 @@ public class Logic {
 			bin.redo();
 			return bin.returnDisplay();
 		}
-
 		return null;
 	}
 

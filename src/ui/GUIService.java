@@ -10,6 +10,7 @@
 
 package ui;
 
+import java.awt.TrayIcon;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -40,7 +41,7 @@ public class GUIService {
 	StackPane content;
 	ConsoleView consoleView;
 
-	Logic myLogic;
+	Logic logic;
 
 	int listIndex;
 	private TrayService trayService;
@@ -51,7 +52,7 @@ public class GUIService {
 
 	public GUIService(Stage stage) {
 		this.stage = stage;
-		this.myLogic = new Logic();
+		this.logic = new Logic();
 
 		content = new StackPane();
 		consoleView = new ConsoleView();
@@ -64,7 +65,7 @@ public class GUIService {
 		dropShadow.setColor(Color.color(0.4, 0.5, 0.5));
 		content.setEffect(dropShadow);
 		addListenersToConsoleView(stage);
-		populateList(myLogic.displayHome());
+		populateList(logic.displayHome());
 		content.getChildren().addAll(consoleView.consolePane);
 	}
 
@@ -121,7 +122,7 @@ public class GUIService {
 						consoleView.inputConsole.clear();
 					}
 				} else if (consoleView.inputConsole.getText().length() == 0 && event.getCode() == KeyCode.BACK_SPACE) {
-					populateList(myLogic.displayHome());
+					populateList(logic.displayHome());
 					updateStatusLabel(Constants.FEEDBACK_VIEW_TODAY);
 				} else if (event.getCode() == KeyCode.DOWN ){
 					consoleView.list.getChildren().get(0);
@@ -147,10 +148,11 @@ public class GUIService {
 			public void handle(ActionEvent event) {
 				String input = consoleView.inputConsole.getText();
 				try {
-					updateInterface(input, myLogic.inputHandler(input));
+					updateInterface(input, logic.inputHandler(input));
 				} catch (ParseException e) {
+					System.err.println("Input error!");
 				}
-				updateStatusLabel(myLogic.getStatusBarText(input));
+				updateStatusLabel(logic.getStatusBarText(input));
 				consoleView.inputConsole.clear();
 			}
 		});
@@ -177,16 +179,16 @@ public class GUIService {
 	}
 
 	public void showStage() {
+		Platform.setImplicitExit(false);
 		stage.setAlwaysOnTop(true);
 		stage.initStyle(StageStyle.TRANSPARENT);
-		Platform.setImplicitExit(false);
 		stage.setScene(buildScene(this.content));
 		stage.show();
 	}
 
-	public void showTray() {
+	public TrayIcon showTray() {
 		trayService = new TrayService(this.stage);
-		trayService.createTrayIcon(this.stage);
+		return trayService.createTrayIcon(this.stage);
 	}
 
 	public void onEscapePressed() {
@@ -199,11 +201,11 @@ public class GUIService {
 		consoleView.currentDisplay.setText(text);
 	}
 	public void updateInterface(String input, ArrayList<Task> taskArray) {
-		String command = myLogic.getCommand(input);
+		String command = logic.getCommand(input);
 		if (command.equals(Constants.DICTIONARY_ADD[0])) {
 			populateList(taskArray);
 		} else if (command.equals(Constants.DICTIONARY_DELETE[0])) {
-			int index = myLogic.getIndex(input);
+			int index = logic.getIndex(input);
 			Node tempNode = consoleView.list.getChildren().get(index-1);
 			populateList(taskArray);
 			consoleView.list.getChildren().add(index-1, tempNode);
@@ -226,6 +228,4 @@ public class GUIService {
 			populateList(taskArray);
 		}
 	}
-
-
 }
