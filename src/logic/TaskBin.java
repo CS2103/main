@@ -364,17 +364,21 @@ public class TaskBin implements editTaskInfo{
 	
 	//New Method
 	public void addWeeklyTask(Task newTask, DateTime endTime){
+		ArrayList<Task> taskAdded = new ArrayList<Task>();
 		DateTime start = newTask.getEndingDate();
 		int i = 0;
 		while(newTask.getEndingDate().isBefore(endTime.getMillis())){
 			Task tskcpy = new Task(newTask);
-			taskList.add(tskcpy);
 			tskcpy.setEndingDate(start.plusWeeks(i));
 			if(newTask.getStartingDate()!=null){
 				tskcpy.setStartingDate(tskcpy.getStartingDate().plusWeeks(1));
 			}
 			i++;
+			taskList.add(tskcpy);
+			taskAdded.add(tskcpy);
 		}
+		Command redoRecur = new Command(add_tag, taskAdded);
+		redoStack.push(redoRecur);
 	}
 	
 	public void addMonthlyTask(Task newTask, DateTime endTime){
@@ -382,12 +386,13 @@ public class TaskBin implements editTaskInfo{
 		int i = 0;
 		while(newTask.getEndingDate().isBefore(endTime.getMillis())){
 			Task tskcpy = new Task(newTask);
-			taskList.add(tskcpy);
+			
 			tskcpy.setEndingDate(start.plusMonths(i));
 			if(newTask.getStartingDate()!=null){
 				tskcpy.setStartingDate(tskcpy.getStartingDate().plusWeeks(1));
 			}
 			i++;
+			taskList.add(tskcpy);
 		}
 	}
 	
@@ -396,12 +401,13 @@ public class TaskBin implements editTaskInfo{
 		int i = 0;
 		while(newTask.getEndingDate().isBefore(endTime.getMillis())){
 			Task tskcpy = new Task(newTask);
-			taskList.add(tskcpy);
+		
 			tskcpy.setEndingDate(start.plusYears(i));
 			if(newTask.getStartingDate()!=null){
 				tskcpy.setStartingDate(tskcpy.getStartingDate().plusWeeks(1));
 			}
 			i++;
+			taskList.add(tskcpy);
 		}
 	}
 	
