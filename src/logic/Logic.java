@@ -57,6 +57,7 @@ public class Logic {
 			return unMarkTaskByIndex(index-1);
 		}
 		else if(command.equals("display")){
+			
 		}
 		else if(command.equals("search")){
 			System.out.println("DEBUG " + TaskParser.getTitle(input));
@@ -90,6 +91,15 @@ public class Logic {
 		bin.setDisplay();
 		return bin.returnDisplay();
 
+	}
+	
+	public ArrayList<Task> addRecurTask(String input, DateTime endDate){
+		Task newTask = new Task(TaskParser.getTitle(input),DateParser.getStartDate(input), DateParser.getEndDate(input));
+		switch(TaskParser.getPeriod()){
+		case "weekly":
+			bin.addWeeklyTask(newTask, endDate);
+			break;
+		}
 	}
 	public ArrayList<Task> displayHome(){
 		bin.setDisplay();

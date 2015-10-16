@@ -312,12 +312,18 @@ public class TaskBin implements editTaskInfo{
 		
 	}
 	
-	/*public ArrayList<Task> returnOverdue(){
+	public ArrayList<Task> returnOverdue(){
+		ArrayList<Task> overdue = new ArrayList<Task>();
 		DateTime now = DateTime.now();
 		ArrayList<Task> undone = getUnfinished();
-		re
+		for(Task t:undone){
+			if(t.getEndingDate().isAfter(now)){
+				overdue.add(t);
+			}
+		}
+		return overdue;
 		
-	}*/
+	}
 	
 
 
