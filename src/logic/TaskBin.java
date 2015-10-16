@@ -21,6 +21,7 @@ class NoResultFound extends Exception{
 public class TaskBin implements editTaskInfo{
 	ArrayList<Task> taskList;
 	ArrayList<Task> activeList;
+	Storage taskStorage;
 	Stack<Command> undoStack;
 	Stack<Command> redoStack;
 
@@ -155,13 +156,13 @@ public class TaskBin implements editTaskInfo{
 				activeList.add(previousComm.returnOrigin());
 			}
 			break;
-
+		
 		case mark_tag:
 			redoStack.push(previousComm);
 			taskList.get(taskList.indexOf(previousComm.returnMani())).unMark();
 			activeList.get(activeList.indexOf(previousComm.returnMani())).unMark();
 			break;
-
+		
 		case unmark_tag:
 			redoStack.push(previousComm);
 			taskList.get(taskList.indexOf(previousComm.returnMani())).mark();
@@ -197,13 +198,13 @@ public class TaskBin implements editTaskInfo{
 				activeList.add(redoComm.returnMani());
 			}
 			break;
-
+		
 		case mark_tag:
 			undoStack.push(redoComm);
 			taskList.get(taskList.indexOf(redoComm.returnMani())).mark();
 			activeList.get(activeList.indexOf(redoComm.returnMani())).mark();
 			break;
-
+			
 		case unmark_tag:
 			undoStack.push(redoComm);
 			taskList.get(taskList.indexOf(redoComm.returnMani())).unMark();
@@ -277,6 +278,16 @@ public class TaskBin implements editTaskInfo{
 		return result;
 
 	}
+	
+	public ArrayList<Task> returnTaskByType(String type_tag){
+		ArrayList<Task> result = new ArrayList<Task>();
+		for(Task t: taskList){
+			if(t.getType().equals(type_tag)){
+				result.add(t);
+			}
+		}
+		return result;
+	}
 
 	public ArrayList<Task> findTaskByTitle(ArrayList<Task> list, String title){
 		ArrayList<Task> result = new ArrayList<Task>();
@@ -290,11 +301,32 @@ public class TaskBin implements editTaskInfo{
 		sortArrayByTime(result);
 		return result;
 	}
+	
+	public DateTime returnToday(){
+		DateTime date = DateTime.now();
+		int day = date.getDayOfMonth();
+		int year = date.getYear();
+		int month = date.getMonthOfYear();
+		DateTime today = new DateTime(year, month, day, 0, 0);
+		return today;
+		
+	}
+	
+	/*public ArrayList<Task> returnOverdue(){
+		DateTime now = DateTime.now();
+		ArrayList<Task> undone = getUnfinished();
+		re
+		
+	}*/
+	
+
 
 	public ArrayList<Task> findTaskByDate(DateTime date){
 		ArrayList<Task> result = new ArrayList<Task>();
+		DateTime day = returnToday();
+		
 		for(Task task:taskList){
-			if(date.equals(task.getEndingDate())){
+			if((day.isAfter(task.getEndingDate()))&&(day.isBefore(day.plusDays(1)))){
 				result.add(task);
 			}
 		}
@@ -323,6 +355,18 @@ public class TaskBin implements editTaskInfo{
 		Storage.write(taskList);
 		redoStack.clear();
 	}
+	
+	//New Method
+	public void addWeeklyTask(Task newTask, DateTime endTime){
+		DateTime start = newTask.getEndingDate();
+		while(newTask.getEndingDate().isBefore(endTime.getMillis())){
+			taskList.add(newTask);
+			newTask.setEndingDate(start.plusWeeks(1));
+			if(newTask.getStartingDate()!=null){
+				newTask.setStartingDate(newTask.getStartingDate().plusWeeks(1));
+			}
+		}
+	}
 
 	public void delete(Task task){
 		for(int i = 0; i< taskList.size(); i++){
@@ -336,7 +380,8 @@ public class TaskBin implements editTaskInfo{
 		}
 		redoStack.clear();
 	}
-
+	
+	
 
 	public ArrayList<Task> getUnfinished(){
 		ArrayList<Task> result = new ArrayList<Task>();
@@ -370,8 +415,7 @@ public class TaskBin implements editTaskInfo{
 		redoStack.clear();
 	}
 
-	//	@Override
-	@Override
+//	@Override
 	public void editStartingDate(Task task, DateTime date){
 		Task tar = taskList.get(taskList.indexOf(task));
 		Task tarDis = activeList.get(activeList.indexOf(tar));
@@ -386,8 +430,7 @@ public class TaskBin implements editTaskInfo{
 		redoStack.clear();
 	}
 
-	//	@Override
-	@Override
+//	@Override
 	public void editEndingDate(Task task, DateTime date){
 		Task tar = taskList.get(taskList.indexOf(task));
 		Task tarDis = activeList.get(activeList.indexOf(tar));
@@ -433,11 +476,28 @@ public class TaskBin implements editTaskInfo{
 	public ArrayList<Task> displayInit(){
 		ArrayList<Task> result = new ArrayList<Task>();
 		DateTime now = new DateTime();
+		DateTime startOfDay = now.withTimeAtStartOfDay();
+		DateTime endOfDay = startOfDay.plusHours(24);
 		for(Task task: taskList){
-			if(now.equals(task.getEndingDate())){
+			switch(task.getType()){
+			case "task":
 				result.add(task);
+				break;
+				
+			case "event":
+				if(task.getEndingDate().isBefore(endOfDay) && (task.getEndingDate().isAfter(startOfDay))){
+					result.add(task);
+				}
+				break;
+			
+			case "deadline":
+				if(task.getEndingDate().isBefore(endOfDay)){
+					result.add(task);
+				}
+				break;
 			}
 		}
+		
 		return result;
 	}
 
