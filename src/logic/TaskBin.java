@@ -31,6 +31,7 @@ public class TaskBin implements editTaskInfo{
 	private static final String alter_tag = "ALTER";
 	private static final String mark_tag = "MARK";
 	private static final String unmark_tag = "UNMARK";
+	private static final String recur_tag = "ADD_RECUR";
 
 	/********************************Construction Methods************************************/
 
@@ -156,8 +157,16 @@ public class TaskBin implements editTaskInfo{
 				activeList.add(previousComm.returnOrigin());
 			}
 			break;
-		
-		case mark_tag:
+			
+		case recur_tag:
+			redoStack.push(previousComm);
+			ArrayList<Task> added = previousComm.returnListMani();
+			for(Task t: added){
+				taskList.remove(t);
+			}
+			break;
+			
+		case mark_tag: 
 			redoStack.push(previousComm);
 			taskList.get(taskList.indexOf(previousComm.returnMani())).unMark();
 			activeList.get(activeList.indexOf(previousComm.returnMani())).unMark();
@@ -377,7 +386,7 @@ public class TaskBin implements editTaskInfo{
 			taskList.add(tskcpy);
 			taskAdded.add(tskcpy);
 		}
-		Command redoRecur = new Command(add_tag, taskAdded);
+		Command redoRecur = new Command(recur_tag, taskAdded);
 		redoStack.push(redoRecur);
 	}
 	

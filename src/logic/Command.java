@@ -37,7 +37,9 @@ public class Command {
 	}
 
 
-
+	public ArrayList<Task> returnListMani(){
+		return listMani;
+	}
 	public String returnCommand(){
 		return COMMAND;		
 	}
