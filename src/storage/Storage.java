@@ -20,7 +20,7 @@ public class Storage {
 
 	// initial methods to serialise/deserialise tempFile.json with DateTime
 	// formats
-	final static Gson gson = Converters.registerDateTime(new GsonBuilder().setPrettyPrinting()).create();
+	final static Gson gson = Converters.registerDateTime(new GsonBuilder()).create();
 	final DateTime original = new DateTime();
 	String json = gson.toJson(original);
 	final DateTime reconstituted = gson.fromJson(json, DateTime.class);
