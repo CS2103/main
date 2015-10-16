@@ -7,7 +7,7 @@ import application.Constants;
 public class CommandParser {
 
 	public static String getCommand(String input) {
-		String command = Parser.extractFirstWord(input);
+		String command = extractFirstWord(input);
 		if (checkForWordInDictionary(Constants.DICTIONARY_ADD, command)) {
 			return Constants.DICTIONARY_ADD[0];
 		} else if (checkForWordInDictionary(Constants.DICTIONARY_DELETE, command)) {
@@ -39,5 +39,12 @@ public class CommandParser {
 		} else {
 			return false;
 		}
+	}
+	static String extractFirstWord(String input) {
+		return input.split(" ")[0].trim();
+	}
+
+	static String excludeFirstWord(String input) {
+		return input.substring(extractFirstWord(input).length()).trim();
 	}
 }

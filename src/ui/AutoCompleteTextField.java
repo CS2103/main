@@ -27,7 +27,7 @@ public class AutoCompleteTextField extends TextField {
 	public AutoCompleteTextField() {
 		super();
 		entries = new TreeSet<>();
-		Collections.addAll(entries, "add [taskname] between [starttime] to [endtime]", "exit", "delete [index]", "mark [index]", "search [keyword]", "unmark [index]", "edit [index] [field] [newvalue]");
+		Collections.addAll(entries, "add [taskname] from [day] [time] to [day] [time]", "add [taskname] from [time] to [time]", "add [taskname]", "exit", "delete [index]", "mark [index]", "search [keyword]", "unmark [index]", "edit [index] [field] [newvalue]");
 
 		entriesPopup = new ContextMenu();
 		entriesPopup.setAutoHide(true);
@@ -67,9 +67,6 @@ public class AutoCompleteTextField extends TextField {
 				entriesPopup.hide();
 			}
 		});
-
-
-
 	}
 
 	/**

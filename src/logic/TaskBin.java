@@ -89,13 +89,13 @@ public class TaskBin implements editTaskInfo{
 		for(int m = 1; m < inboxArr.size() - 1; m++){
 			boolean isSorted = true;
 			for(int i = 0; (i < inboxArr.size() - m); i++){
-				if(inboxArr.get(i).getEndingDate() == null){
+				if(inboxArr.get(i).getEndingTime() == null){
 					timeUndefined.add(inboxArr.get(i));
 					inboxArr.remove(inboxArr.get(i));
 					isSorted = false;
 					break;
 				}
-				if(inboxArr.get(i).getEndingDate().compareTo(inboxArr.get(i+1).getEndingDate()) > 0){
+				if(inboxArr.get(i).getEndingTime().compareTo(inboxArr.get(i+1).getEndingTime()) > 0){
 					Task buffer = inboxArr.get(i);
 					inboxArr.set(i, inboxArr.get(i+1));
 					inboxArr.set(i+1, buffer);
@@ -110,7 +110,7 @@ public class TaskBin implements editTaskInfo{
 		}
 		/*Collections.sort(inboxArr, new Comparator<Task>(){
 			public int compare(Task task1, Task task2){
-				return task1.getStartingDate().compareTo(task2.getStartingDate());
+				return task1.getStartingTime().compareTo(task2.getStartingTime());
 			}
 		});*/
 		timeUndefined = sortArrayByAlpha(timeUndefined);
@@ -156,13 +156,13 @@ public class TaskBin implements editTaskInfo{
 				activeList.add(previousComm.returnOrigin());
 			}
 			break;
-		
+
 		case mark_tag:
 			redoStack.push(previousComm);
 			taskList.get(taskList.indexOf(previousComm.returnMani())).unMark();
 			activeList.get(activeList.indexOf(previousComm.returnMani())).unMark();
 			break;
-		
+
 		case unmark_tag:
 			redoStack.push(previousComm);
 			taskList.get(taskList.indexOf(previousComm.returnMani())).mark();
@@ -198,13 +198,13 @@ public class TaskBin implements editTaskInfo{
 				activeList.add(redoComm.returnMani());
 			}
 			break;
-		
+
 		case mark_tag:
 			undoStack.push(redoComm);
 			taskList.get(taskList.indexOf(redoComm.returnMani())).mark();
 			activeList.get(activeList.indexOf(redoComm.returnMani())).mark();
 			break;
-			
+
 		case unmark_tag:
 			undoStack.push(redoComm);
 			taskList.get(taskList.indexOf(redoComm.returnMani())).unMark();
@@ -278,7 +278,7 @@ public class TaskBin implements editTaskInfo{
 		return result;
 
 	}
-	
+
 	public ArrayList<Task> returnTaskByType(String type_tag){
 		ArrayList<Task> result = new ArrayList<Task>();
 		for(Task t: taskList){
@@ -301,7 +301,7 @@ public class TaskBin implements editTaskInfo{
 		sortArrayByTime(result);
 		return result;
 	}
-	
+
 	public DateTime returnToday(){
 		DateTime date = DateTime.now();
 		int day = date.getDayOfMonth();
@@ -309,30 +309,30 @@ public class TaskBin implements editTaskInfo{
 		int month = date.getMonthOfYear();
 		DateTime today = new DateTime(year, month, day, 0, 0);
 		return today;
-		
+
 	}
-	
+
 	public ArrayList<Task> returnOverdue(){
 		ArrayList<Task> overdue = new ArrayList<Task>();
 		DateTime now = DateTime.now();
 		ArrayList<Task> undone = getUnfinished();
 		for(Task t:undone){
-			if(t.getEndingDate().isAfter(now)){
+			if(t.getEndingTime().isAfter(now)){
 				overdue.add(t);
 			}
 		}
 		return overdue;
-		
+
 	}
-	
+
 
 
 	public ArrayList<Task> findTaskByDate(DateTime date){
 		ArrayList<Task> result = new ArrayList<Task>();
 		DateTime day = returnToday();
-		
+
 		for(Task task:taskList){
-			if((day.isAfter(task.getEndingDate()))&&(day.isBefore(day.plusDays(1)))){
+			if((day.isAfter(task.getEndingTime()))&&(day.isBefore(day.plusDays(1)))){
 				result.add(task);
 			}
 		}
@@ -343,7 +343,7 @@ public class TaskBin implements editTaskInfo{
 	public ArrayList<Task> findTaskByDate(ArrayList<Task> list, DateTime date){
 		ArrayList<Task> result = new ArrayList<Task>();
 		for(Task task:list){
-			if(date.equals(task.getEndingDate())){
+			if(date.equals(task.getEndingTime())){
 				result.add(task);
 			}
 		}
@@ -361,52 +361,52 @@ public class TaskBin implements editTaskInfo{
 		Storage.write(taskList);
 		redoStack.clear();
 	}
-	
+
 	//New Method
 	public void addWeeklyTask(Task newTask, DateTime endTime){
-		DateTime start = newTask.getEndingDate();
+		DateTime start = newTask.getEndingTime();
 		int i = 0;
-		while(newTask.getEndingDate().isBefore(endTime.getMillis())){
+		while(newTask.getEndingTime().isBefore(endTime.getMillis())){
 			Task tskcpy = new Task(newTask);
 			taskList.add(tskcpy);
 			tskcpy.setEndingDate(start.plusWeeks(i));
-			if(newTask.getStartingDate()!=null){
-				tskcpy.setStartingDate(tskcpy.getStartingDate().plusWeeks(1));
+			if(newTask.getStartingTime()!=null){
+				tskcpy.setStartingDate(tskcpy.getStartingTime().plusWeeks(1));
 			}
 			i++;
 		}
 	}
-	
+
 	public void addMonthlyTask(Task newTask, DateTime endTime){
-		DateTime start = newTask.getEndingDate();
+		DateTime start = newTask.getEndingTime();
 		int i = 0;
-		while(newTask.getEndingDate().isBefore(endTime.getMillis())){
+		while(newTask.getEndingTime().isBefore(endTime.getMillis())){
 			Task tskcpy = new Task(newTask);
 			taskList.add(tskcpy);
 			tskcpy.setEndingDate(start.plusMonths(i));
-			if(newTask.getStartingDate()!=null){
-				tskcpy.setStartingDate(tskcpy.getStartingDate().plusWeeks(1));
+			if(newTask.getStartingTime()!=null){
+				tskcpy.setStartingDate(tskcpy.getStartingTime().plusWeeks(1));
 			}
 			i++;
 		}
 	}
-	
+
 	public void addYearlyTask(Task newTask, DateTime endTime){
-		DateTime start = newTask.getEndingDate();
+		DateTime start = newTask.getEndingTime();
 		int i = 0;
-		while(newTask.getEndingDate().isBefore(endTime.getMillis())){
+		while(newTask.getEndingTime().isBefore(endTime.getMillis())){
 			Task tskcpy = new Task(newTask);
 			taskList.add(tskcpy);
 			tskcpy.setEndingDate(start.plusYears(i));
-			if(newTask.getStartingDate()!=null){
-				tskcpy.setStartingDate(tskcpy.getStartingDate().plusWeeks(1));
+			if(newTask.getStartingTime()!=null){
+				tskcpy.setStartingDate(tskcpy.getStartingTime().plusWeeks(1));
 			}
 			i++;
 		}
 	}
-	
-	
-	
+
+
+
 
 	public void delete(Task task){
 		for(int i = 0; i< taskList.size(); i++){
@@ -420,8 +420,8 @@ public class TaskBin implements editTaskInfo{
 		}
 		redoStack.clear();
 	}
-	
-	
+
+
 
 	public ArrayList<Task> getUnfinished(){
 		ArrayList<Task> result = new ArrayList<Task>();
@@ -455,7 +455,8 @@ public class TaskBin implements editTaskInfo{
 		redoStack.clear();
 	}
 
-//	@Override
+	//	@Override
+	@Override
 	public void editStartingDate(Task task, DateTime date){
 		Task tar = taskList.get(taskList.indexOf(task));
 		Task tarDis = activeList.get(activeList.indexOf(tar));
@@ -470,7 +471,8 @@ public class TaskBin implements editTaskInfo{
 		redoStack.clear();
 	}
 
-//	@Override
+	//	@Override
+	@Override
 	public void editEndingDate(Task task, DateTime date){
 		Task tar = taskList.get(taskList.indexOf(task));
 		Task tarDis = activeList.get(activeList.indexOf(tar));
@@ -503,7 +505,7 @@ public class TaskBin implements editTaskInfo{
 	public void editDescription(Task task, String newDes){
 		Task tar = taskList.get(taskList.indexOf(task));
 		Task buffer = task;
-		tar.setDescription(newDes);
+
 		Task tarDis = activeList.get(activeList.indexOf(tar));
 		tarDis.setTitle(newDes);
 		Command editDes = new Command(alter_tag, tar, buffer);
@@ -523,21 +525,21 @@ public class TaskBin implements editTaskInfo{
 			case "task":
 				result.add(task);
 				break;
-				
+
 			case "event":
-				if(task.getEndingDate().isBefore(endOfDay) && (task.getEndingDate().isAfter(startOfDay))){
+				if(task.getEndingTime().isBefore(endOfDay) && (task.getEndingTime().isAfter(startOfDay))){
 					result.add(task);
 				}
 				break;
-			
+
 			case "deadline":
-				if(task.getEndingDate().isBefore(endOfDay)){
+				if(task.getEndingTime().isBefore(endOfDay)){
 					result.add(task);
 				}
 				break;
 			}
 		}
-		
+
 		return result;
 	}
 

@@ -66,25 +66,50 @@ public class GUIService {
 		content.setEffect(dropShadow);
 		addListenersToConsoleView(stage);
 		populateList(logic.displayHome());
-		content.getChildren().addAll(consoleView.consolePane);
+		content.getChildren().addAll(consoleView);
 	}
 
 	private void populateList(ArrayList<Task> tasksArr) {
 		int index = 1;
 		ObservableList<ListItem> items =FXCollections.observableArrayList ();
+		ObservableList<ListItem> floatingTasks=FXCollections.observableArrayList ();
 		for (Task task : tasksArr) {
-			ListItem newListItem = new ListItem(task.getTitle(),
-					null ,
-					task.getStartingDate().toLocalDate().toString("dd/MM/yy"),
-					task.getStartingTime().toLocalTime().toString("HHmm"),
-					task.getStartingDate().toLocalDate().toString("dd/MM/yy"),
-					task.getEndingTime().toLocalTime().toString("HHmm"),
-					task.getStatus(),
-					false,
-					index++);
-			items.add(newListItem);
+			System.out.println(task.getType());
+
+			if (!task.getType().equals("task")) {
+				ListItem newListItem = new ListItem(
+						task.getTitle(),
+						task.getStartingTime().toLocalDate().toString("EEE dd MMM"),
+						task.getStartingTime().toLocalTime().toString("HHmm"),
+						task.getStartingTime().toLocalDate().toString("EEE dd MMM"),
+						task.getEndingTime().toLocalTime().toString("HHmm"),
+						task.getStatus(),
+						false,
+						index++);
+				items.add(newListItem);
+			}
+			else if (task.getType().equals("task")) {
+				ListItem newFloatingItem = new ListItem(
+						task.getTitle(),
+						null,
+						null,
+						null,
+						null,
+						task.getStatus(),
+						false,
+						index++);
+				floatingTasks.add(newFloatingItem);
+			}
 		}
-		consoleView.list.getChildren().setAll(items);
+		consoleView.timedList.getChildren().setAll(items);
+		consoleView.floatingList.getChildren().setAll(floatingTasks);
+
+		if (floatingTasks.isEmpty()) {
+			consoleView.what.getChildren().setAll(consoleView.timedList);
+		} else {
+			consoleView.what.getChildren().setAll(consoleView.timedList, consoleView.floatingList);
+		}
+
 	}
 
 	private void addListenersToConsoleView(Stage stage) {
@@ -95,7 +120,7 @@ public class GUIService {
 			}
 		});
 
-		consoleView.consolePane.addEventHandler(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent> (){
+		consoleView.addEventHandler(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent> (){
 			@Override
 			public void handle(MouseEvent event) {
 				xOffset = stage.getX() - event.getScreenX();
@@ -103,7 +128,7 @@ public class GUIService {
 			}
 		});
 
-		consoleView.consolePane.addEventHandler(MouseEvent.MOUSE_DRAGGED, new EventHandler<MouseEvent> (){
+		consoleView.addEventHandler(MouseEvent.MOUSE_DRAGGED, new EventHandler<MouseEvent> (){
 			@Override
 			public void handle(MouseEvent event) {
 				stage.setX(event.getScreenX() + xOffset);
@@ -125,11 +150,11 @@ public class GUIService {
 					populateList(logic.displayHome());
 					updateStatusLabel(Constants.FEEDBACK_VIEW_TODAY);
 				} else if (event.getCode() == KeyCode.DOWN ){
-					consoleView.list.getChildren().get(0);
+					consoleView.timedList.getChildren().get(0);
 				} else if (event.getCode() == KeyCode.UP ) {
 
 				} else if (event.getCode() == KeyCode.BACK_QUOTE) {
-					Node tempNode = consoleView.list.getChildren().get(0);
+					Node tempNode = consoleView.timedList.getChildren().get(0);
 
 					TranslateTransition translateTransition =
 							new TranslateTransition(Duration.millis(1000), tempNode);
@@ -168,9 +193,9 @@ public class GUIService {
 	}
 
 	public void showConsolePane() {
-		consoleView.consolePane.toFront();
-		consoleView.consolePane.setVisible(true);
-		consoleView.consolePane.setDisable(false);
+		consoleView.toFront();
+		consoleView.setVisible(true);
+		consoleView.setDisable(false);
 	}
 
 	public void addAutocompleteEntries (ArrayList<String> stringArrayList) {
@@ -202,13 +227,14 @@ public class GUIService {
 	}
 	public void updateInterface(String input, ArrayList<Task> taskArray) {
 		String command = logic.getCommand(input);
+		/*
 		if (command.equals(Constants.DICTIONARY_ADD[0])) {
 			populateList(taskArray);
 		} else if (command.equals(Constants.DICTIONARY_DELETE[0])) {
 			int index = logic.getIndex(input);
-			Node tempNode = consoleView.list.getChildren().get(index-1);
+			Node tempNode = consoleView.timedList.getChildren().get(index-1);
 			populateList(taskArray);
-			consoleView.list.getChildren().add(index-1, tempNode);
+			consoleView.timedList.getChildren().add(index-1, tempNode);
 
 			TranslateTransition translateTransition =
 					new TranslateTransition(Duration.millis(800), tempNode);
@@ -227,5 +253,7 @@ public class GUIService {
 		} else {
 			populateList(taskArray);
 		}
+		 */
+		populateList(taskArray);
 	}
 }
