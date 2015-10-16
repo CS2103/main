@@ -365,9 +365,23 @@ public class TaskBin implements editTaskInfo{
 	//New Method
 	public void addWeeklyTask(Task newTask, DateTime endTime){
 		DateTime start = newTask.getEndingDate();
+		int i = 0;
+		while(newTask.getEndingDate().isBefore(endTime.getMillis())){
+			Task tskcpy = new Task(newTask);
+			taskList.add(tskcpy);
+			tskcpy.setEndingDate(start.plusWeeks(i));
+			if(newTask.getStartingDate()!=null){
+				tskcpy.setStartingDate(tskcpy.getStartingDate().plusWeeks(1));
+			}
+			i++;
+		}
+	}
+	
+	public void addMonthlyTask(Task newTask, DateTime endTime){
+		DateTime start = newTask.getEndingDate();
 		while(newTask.getEndingDate().isBefore(endTime.getMillis())){
 			taskList.add(newTask);
-			newTask.setEndingDate(start.plusWeeks(1));
+			newTask.setEndingDate(start.plusMonth(1));
 			if(newTask.getStartingDate()!=null){
 				newTask.setStartingDate(newTask.getStartingDate().plusWeeks(1));
 			}
