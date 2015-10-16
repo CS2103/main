@@ -1,35 +1,36 @@
 package parser;
 
-
-
-import java.util.Calendar;
+import java.time.DayOfWeek;
+import java.time.Month;
+import java.time.format.TextStyle;
+import java.util.Locale;
 import java.util.Scanner;
 
 public class ParserTester {
 
 	public static void main(String[] args) {
+
 		Scanner sc = new Scanner(System.in);
-		String rawInput = sc.nextLine();
-		Calendar cal = Calendar.getInstance();
+		Parser parser = new Parser();
 
-		/*
-		 add meet rongxiang from 1000 to 1200
-		 add do homework by 1400
-		 add eat porridge
-		 add go to school on 14 sep
-		 */
+		while(true) {
+			String rawInput = sc.nextLine();
+			System.out.println("Command: " + parser.getCommand(rawInput));
+			System.out.println("Title: " + parser.getTitle(rawInput));
+			System.out.println("Start: " + parser.getStart(rawInput));
+			System.out.println("End: " + parser.getEnd(rawInput));
 
-		String command = CommandParser.getCommand(rawInput);
-		System.out.println(command);
-		//		System.out.println("Task title: " + TaskParser.getTitle(rawInput));
-		//		System.out.println("Start date: " + TaskParser.getStartDate(rawInput).Calendar.get(Calendar.DAY_OF_MONTH));
-		//		System.out.println("End date: " + TaskParser.getEndDate(rawInput));
-		//		System.out.println("End Time: " + TimeParser.getEndTime(rawInput));
-		//		System.out.println("Index: " + TaskParser.getIndex(rawInput));
-		//		System.out.println("Attribute: " + TaskParser.getAttribute(rawInput));
-		//		System.out.println("Edited title: " + TaskParser.getEditTitle(rawInput));
+			System.out.println();
+			System.err.println("Start Date: " + parser.getStartTime(rawInput));
+			System.out.println(DayOfWeek.of(parser.getStartTime(rawInput).getDayOfWeek()).getDisplayName(TextStyle.FULL, Locale.ENGLISH)
+					+ ", " + parser.getStartTime(rawInput).getDayOfMonth() + " " + Month.of(parser.getStartTime(rawInput).getMonthOfYear())
+					+ " " + parser.getStartTime(rawInput).getYear() + " " + parser.getStartTime(rawInput).toString().substring(11, 16));
 
-		sc.close();
+			System.out.println();
+			System.err.println("End Date: " + parser.getEndTime(rawInput));
+			System.out.println(DayOfWeek.of(parser.getEndTime(rawInput).getDayOfWeek()).getDisplayName(TextStyle.FULL, Locale.ENGLISH)
+					+ ", " + parser.getEndTime(rawInput).getDayOfMonth() + " " + Month.of(parser.getEndTime(rawInput).getMonthOfYear())
+					+ " " + parser.getEndTime(rawInput).getYear() + " " + parser.getEndTime(rawInput).toString().substring(11, 16));
+		}
 	}
-
 }

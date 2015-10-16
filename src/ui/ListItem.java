@@ -38,7 +38,7 @@ public class ListItem extends StackPane{
 	private Label startText;
 	private Label endText;
 
-	public ListItem(String taskTitle, String taskDescription, String taskStartDate, String taskStartTime, String taskEndDate, String taskEndTime, boolean isDone, boolean isOverdue, int index) {
+	public ListItem(String taskTitle, String taskStartDate, String taskStartTime, String taskEndDate, String taskEndTime, boolean isDone, boolean isOverdue, int index) {
 
 		title = new Label(taskTitle);
 		title.setFont(Font.font("SansSerif",FontWeight.BOLD,16));
@@ -48,9 +48,10 @@ public class ListItem extends StackPane{
 		this.index = new Label(String.valueOf(index));
 		this.index.setFont(Font.font("SansSerif",FontWeight.LIGHT,22));
 		this.index.setTextFill(Color.WHITESMOKE);
-		this.index.setTextAlignment(TextAlignment.RIGHT);
+		this.index.setTextAlignment(TextAlignment.CENTER);
+		this.index.setMinWidth(30);
 
-		description = new Label(taskDescription);
+		//description = new Label(taskDescription);
 
 		statusIcon = new Circle();
 		statusIcon.setRadius(5);
@@ -87,7 +88,7 @@ public class ListItem extends StackPane{
 		endTime.setTextFill(Color.GREY);
 
 		duration = new Label();
-		duration.setText(taskStartTime + " - " + taskEndTime);
+		duration.setText("[" + taskStartDate + "] " + taskStartTime + " hrs  -  [" + taskEndDate + "] " + taskEndTime + " hrs");
 		duration.setTextFill(Color.LIGHTGRAY);
 		duration.setPadding(new Insets(0,0,0,15));
 
@@ -100,8 +101,15 @@ public class ListItem extends StackPane{
 
 		VBox detailsLayout = new VBox();
 		detailsLayout.setPrefWidth(540);
-		detailsLayout.getChildren().addAll(titleNstatus, timeLayout);
+
+		if (taskStartDate== null && taskStartTime==null && taskEndDate==null && taskEndTime==null) {
+			detailsLayout.getChildren().addAll(titleNstatus);
+		} else {
+			detailsLayout.getChildren().addAll(titleNstatus, timeLayout);
+		}
+
 		detailsLayout.setPadding(new Insets(0,0,0,5));
+		detailsLayout.setAlignment(Pos.CENTER);
 
 		VBox statusLayout = new VBox();
 		statusLayout.setPadding(new Insets(0,0,0,0));
@@ -114,7 +122,7 @@ public class ListItem extends StackPane{
 		this.setId("listItem");
 		this.getChildren().add(consoleLayout);
 		this.setPrefWidth(600);
-		this.setPadding(new Insets(2, 0, 2, 0));
+		this.setPadding(new Insets(2, 10, 2, 2));
 
 	}
 	public String getTitle() {

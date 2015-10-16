@@ -7,15 +7,12 @@ import org.joda.time.DateTime;
 
 import application.Constants;
 import parser.CommandParser;
-import parser.DateParser;
 import parser.Parser;
-import parser.TaskParser;
-import parser.TimeParser;
 import storage.Storage;
 
 public class Logic {
 
-	Parser myParser = new Parser();
+	Parser parser = new Parser();
 	TaskBin bin = new TaskBin();
 
 	public Logic() {
@@ -36,38 +33,33 @@ public class Logic {
 			return displayHome();
 		}
 		else if(command.equals("delete")){
-			//int index = Parser.getIndex(input);
-			return deleteTaskByIndex(Parser.getIndex(input));
-
+			return deleteTaskByIndex(parser.getIndex(input));
 		}
 		else if(command.equals("edit")){
-			int index = Parser.getIndex(input);
-			return editTask(index, TaskParser.getAttribute(input), TaskParser.getEditTitle(input));
-
+			int index = parser.getIndex(input);
+			return editTask(index, parser.getField(input), Parser.getEditTitle(input));
 		}
 		else if (command.equals("mark")){
-			int index = Parser.getIndex(input);
+			int index = parser.getIndex(input);
 			System.out.println(index - index);
 			return markTaskByIndex(index-1);
-			//return bin.returnDisplay();
 		}
 		else if (command.equals("unmark")){
-			int index = Parser.getIndex(input);
+			int index = parser.getIndex(input);
 			System.out.println(index - index);
 			return unMarkTaskByIndex(index-1);
 		}
 		else if(command.equals("display")){
-			
+
 		}
-		
 		else if(command.equals("recur")){
 			DateTime endTime = new DateTime(2015, 11, 25, 0, 0);
 			addRecurTask(input, endTime);
 		}
-		
+
 		else if(command.equals("search")){
-			System.out.println("DEBUG " + TaskParser.getTitle(input));
-			ArrayList<Task> result = searchEntries(TaskParser.getTitle(input));
+			System.out.println("DEBUG " + parser.getTitle(input));
+			ArrayList<Task> result = searchEntries(parser.getTitle(input));
 			bin.setDisplay(result);
 
 			return bin.returnDisplay();
@@ -85,28 +77,27 @@ public class Logic {
 	}
 
 	public ArrayList<Task> addTask(String input) throws ParseException{
-		DateTime startingDate = DateParser.getStartDate(input);
-		DateTime endingDate = DateParser.getEndDate(input);
-		DateTime startTime = TimeParser.getStartTime(input);
-		DateTime endTime = TimeParser.getEndTime(input);
+		String title = parser.getTitle(input);
+		System.out.println("Title: " +title);
+		DateTime startTime = parser.getStartTime(input);
+		DateTime endTime = parser.getEndTime(input);
+		System.out.println(startTime);
+		System.out.println(endTime);
 
-		String title = TaskParser.getTitle(input);
-
-		Task newTask = new Task(title, startingDate, startTime, endingDate , endTime);
+		Task newTask = new Task(title, startTime, endTime);
 		bin.add(newTask);
 		bin.setDisplay();
 		return bin.returnDisplay();
-
 	}
-	
+
 	public ArrayList<Task> addRecurTask(String input, DateTime endDate){
-		Task newTask = new Task(TaskParser.getTitle(input),DateParser.getStartDate(input), DateParser.getEndDate(input));
+		Task newTask = new Task(parser.getTitle(input), parser.getStartTime(input), parser.getEndTime(input));
 		//switch(TaskParser.getPeriod()){
 		//case "weekly":
-			bin.addWeeklyTask(newTask, endDate);
-			//break;
+		bin.addWeeklyTask(newTask, endDate);
+		//break;
 		//}
-			return startupDisplay();
+		return startupDisplay();
 	}
 	public ArrayList<Task> displayHome(){
 		bin.setDisplay();
@@ -156,10 +147,8 @@ public class Logic {
 	}
 
 	public ArrayList<Task> deleteTaskByName(String input) throws ParseException{
-		String title = TaskParser.getTitle(input);
-		//		String dateStr = TaskParser.getEndDate(input);
-		//		DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
-		DateTime endingDate = DateParser.getEndDate(input);
+		String title = parser.getTitle(input);
+		DateTime endingDate = parser.getEndTime(input);
 		if(endingDate == null){
 			endingDate = DateTime.now();
 		}
@@ -200,7 +189,6 @@ public class Logic {
 		Task toMark = new Task();
 		toMark = display.get(index);
 		bin.markTaskInstance(toMark);
-		//bin.setDisplay();
 		return bin.returnDisplay();
 	}
 	public ArrayList<Task> unMarkTaskByIndex(int index){
@@ -208,7 +196,6 @@ public class Logic {
 		Task toMark = new Task();
 		toMark = display.get(index);
 		bin.unMarkTaskInstance(toMark);
-		//bin.setDisplay();
 		return bin.returnDisplay();
 	}
 
@@ -218,19 +205,19 @@ public class Logic {
 	public void editSettings(){
 
 	}
-	
-	
+
+
 
 	public ArrayList<Task> startupDisplay(){//display the initial screen
 		ArrayList <Task> initDis = bin.displayInit();
 		initDis = bin.sortArrayByTime(initDis);
 		return initDis;
 	}
-	
+
 	public String getStatusBarText(String input){
 		switch(CommandParser.getCommand(input)) {
 		case Constants.COMMAND_ADD :
-			return TaskParser.getTitle(input) + Constants.FEEDBACK_ADD_SUCCESS;
+			return parser.getTitle(input) + Constants.FEEDBACK_ADD_SUCCESS;
 		case Constants.COMMAND_MARK :
 			return bin.undoStack.peek().returnMani().getTitle() + Constants.FEEDBACK_DONE_SUCCESS;
 		case Constants.COMMAND_UNMARK :
@@ -238,7 +225,7 @@ public class Logic {
 		case Constants.COMMAND_DELETE :
 			return bin.undoStack.peek().returnMani().getTitle() + Constants.FEEDBACK_DEL_SUCCESS;
 		case Constants.COMMAND_SEARCH :
-			return Constants.FEEDBACK_SHOW_SUCCESS + TaskParser.getTitle(input);
+			return Constants.FEEDBACK_SHOW_SUCCESS + parser.getTitle(input);
 		case Constants.COMMAND_UNDO :
 			//return bin.redoStack.peek() != null ? Constants.FEEDBACK_UNDO_SUCCESS : Constants.FEEDBACK_UNDO_FAILURE;
 		case Constants.COMMAND_REDO :
@@ -251,9 +238,9 @@ public class Logic {
 		//bin.undoStack.peek().returnMani().getTitle()
 	}
 	public int getIndex(String input) {
-		return Parser.getIndex(input);
+		return parser.getIndex(input);
 	}
 	public String getCommand(String input) {
-		return CommandParser.getCommand(input);
+		return parser.getCommand(input);
 	}
 }

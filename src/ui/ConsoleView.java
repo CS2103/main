@@ -31,21 +31,21 @@ import javafx.util.Duration;
 
 public class ConsoleView extends Pane{
 
-	Pane consolePane;
-
 	Label titleBar;
 	Label dateDisplay;
 	Label clockDisplay;
 	Label currentDisplay;
 	AutoCompleteTextField inputConsole;
 	Label status;
-	VBox list;
-	ScrollPane sp;
+
+	HBox what;
+	VBox timedList;
+	VBox floatingList;
+	ScrollPane scrollPane;
 
 	public ConsoleView() {
 
-		consolePane = new Pane();
-
+		/*
 		titleBar = new Label();
 		titleBar.setId("titleBar");
 		titleBar.setText("TextBuddyAwesome");
@@ -54,7 +54,7 @@ public class ConsoleView extends Pane{
 		titleBar.setPadding(new Insets(0 ,0 , 0, 20));
 		titleBar.setFont(Font.font("Georgia", 20));
 		titleBar.setTextFill(Color.ORANGE);
-
+		 */
 		dateDisplay = new Label();
 		dateDisplay.setId("timeDisplay");
 		dateDisplay.setFont(new Font("SansSerif", 30));
@@ -89,21 +89,27 @@ public class ConsoleView extends Pane{
 		timeline.setCycleCount(Animation.INDEFINITE);
 		timeline.play();
 
-		list = new VBox();
+		timedList = new VBox();
+		timedList.setStyle("-fx-background-color:linear-gradient( from 100.0% 0.0% to 100.0% 100.0%, rgb(51,51,51) 0.0, rgb(179,179,179) 40.0, rgb(51,51,51) 100.0)");
+		timedList.autosize();
+		timedList.setFocusTraversable(false);
 
-		list.setStyle("-fx-background-color:linear-gradient( from 100.0% 0.0% to 100.0% 100.0%, rgb(51,51,51) 0.0, rgb(179,179,179) 40.0, rgb(51,51,51) 100.0)");
-		list.setPrefWidth(598);
-		list.autosize();
-		list.setFocusTraversable(false);
+		floatingList = new VBox();
+		floatingList.setStyle("-fx-background-color: linear-gradient( from 100.0% 0.0% to 100.0% 100.0%, rgb(60,26,0) 0.0, rgb(102,70,0) 40.0, rgb(72,42,0) 100.0)");
+		floatingList.setFocusTraversable(false);
+		//floatingList.setMaxWidth(750);
 
-		sp = new ScrollPane();
-		sp.setId("scrollPane");
-		sp.setContent(list);
-		sp.setMaxHeight(470);
-		sp.setHbarPolicy(ScrollBarPolicy.NEVER);
-		sp.setMaxWidth(600);
-		sp.setFocusTraversable(false);
-		sp.setBorder(null);
+		what = new HBox();
+		what.setPrefWidth(600);
+
+		scrollPane = new ScrollPane();
+		scrollPane.setId("scrollPane");
+		scrollPane.setContent(what);
+		scrollPane.setMaxHeight(470);
+		scrollPane.setHbarPolicy(ScrollBarPolicy.NEVER);
+		scrollPane.setMaxWidth(600);
+		scrollPane.setFocusTraversable(false);
+		scrollPane.setBorder(null);
 
 		inputConsole = new AutoCompleteTextField();
 		inputConsole.setEditable(true);
@@ -125,7 +131,7 @@ public class ConsoleView extends Pane{
 		dateTime.getChildren().addAll(dateDisplay, clockDisplay);
 
 		VBox consoleLayout = new VBox();
-		consoleLayout.getChildren().addAll(dateTime, sp, inputConsole, status);
-		consolePane.getChildren().add(consoleLayout);
+		consoleLayout.getChildren().addAll(dateTime, scrollPane, inputConsole, status);
+		this.getChildren().add(consoleLayout);
 	}
 }
