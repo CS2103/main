@@ -28,12 +28,7 @@ public class Constants {
 	public static final String LABEL_END_DATE = "Due Date: ";
 	public static final String LABEL_PRIORITY = "Priority: ";
 
-
-
 	public static final int REFRESH_TIME = 60 * 1000; // refers to the time in
-	// milliseconds
-	// File name
-	public static final String FILE_NAME = "LOLTaskList.txt";
 
 	// Separators
 	public static final String SEPARATOR = "\\\\";
@@ -49,15 +44,13 @@ public class Constants {
 	public static final String DOT = ".";
 
 	// Dictionaries
-	public static final String[] DICTIONARY_ADD = { "add", "a", "create" };
+	public static final String[] DICTIONARY_ADD = { "add", "a ", "create" };
 	public static final String[] DICTIONARY_DELETE = { "delete", "rm", "del" };
 	public static final String[] DICTIONARY_SHOW = { "show", "display", "sh" };
 	public static final String[] DICTIONARY_SEARCH = { "search", "find", "sr" };
 	public static final String[] DICTIONARY_EDIT = { "edit", "change", "e", "modify" };
 	public static final String[] DICTIONARY_MARK = {"mark", "m"};
 	public static final String[] DICTIONARY_UNMARK = {"unmark", "um"};
-	public static final String[] DICTIONARY_DONE = { "done", "dn" };
-	public static final String[] DICTIONARY_NOT_DONE = { "undone", "pending" };
 	public static final String[] DICTIONARY_UNDO = { "undo", "un" };
 	public static final String[] DICTIONARY_REDO = { "redo", "re" };
 	public static final String[] DICTIONARY_VIEW_HOMESCREEN = { "home", "h" };
@@ -196,7 +189,7 @@ public class Constants {
 	public static final String FEEDBACK_DEL_SUCCESS = " deleted successfully!";
 	public static final String FEEDBACK_MASS_DEL_SUCCESS = "Mass delete performed successfully!";
 	public static final String FEEDBACK_MASS_DEL_FAILURE = "Invalid task ID specified!";
-	public static final String FEEDBACK_EDIT_SUCCESS = " was editted succesfully!";
+	public static final String FEEDBACK_EDIT_SUCCESS = " was edited succesfully!";
 	public static final String FEEDBACK_SHOW_SUCCESS = "Displaying search results for: ";
 	public static final String FEEDBACK_SHOW_HITS_SINGLE = " task found!";
 	public static final String FEEDBACK_SHOW_HITS_MULTI = " tasks found!";
@@ -246,6 +239,23 @@ public class Constants {
 	// time formats
 	public static String[] timeFormats = {"HHmm", "H mm", "HH:mm", "HH", "HH.mm", "H.mm", "H:mm", "H"};
 
+	// date-time formats
+	public static String[] dateTimeFormats = {"d MMM yyyy HHmm", "d/M/yy", "d/M", "d-M-y", "d MMM", "d MMMM", "dd.MM.yyyy",
+			"d-M", "dd.M"};
+
+	//public static String[] dateRegex = {"\\d{1,2}\\s\\D+\\s[0-9]{2,4}\\s", "\\d{1,2}\\s\\D+", "\\d{1,2}\\d[^:^ ]\\d{1,2}", "\\d{1,2}\\D{1}\\d{1,2}\\D\\d{2,4}"};
+	public static String[] dateRegex = {
+			"\\d{1,2}\\s\\D+\\s[0-9]{2,4}\\s",		// 10 sadfs 1324
+			"\\d{1,2}\\D{1}\\d{1,2}[^a-zA-Z_0-9&&[^ ]]{1}\\d{2,4}",	// 10a12s1992
+			"\\d{1,2}\\s\\D+",							// 10 1234
+			"\\d{1,2}\\d[^:^ ]\\d{1,2}"				// 10.12
+	};
+	public static String[] timeRegex = {
+			"\\d{4}$",
+			"\\d{1,2}[^a-zA-Z_0-9&&[^/^ ]]{1}\\d{2}$",
+			"\\d{1,2}[^/][0-5]{1,2}\\d$"
+	};
+
 	// show parameters (LOWERCASE)
 	public static final String SHOW_OVERDUE = "overdue";
 	public static final String SHOW_ARCHIVE = "archive";
@@ -259,11 +269,16 @@ public class Constants {
 	public static int NOT_FOUND = -1;
 
 	// keywords
-	public static final String[] TASK_START_DATE = {"from", "on"};
-	public static final String[] TASK_END_DATE = {"by", "until", "till"};
+	//public static final String[] TASK_START_DATE = {};
+	//public static final String[] TASK_END_DATE = {};
 
-	public static final String[] TASK_START_TIME = {"between"};
-	public static final String[] TASK_END_TIME = {"at", "to"};
+	public static final String[] TASK_START_TIME = {"from", "on", "between"};
+	public static final String[] TASK_END_TIME = {"by", "until", "till", "before", "to"};
+
+	//public static final String[] TASK_START = {"from"};
+	//public static final String[] TASK_END = {"to"};
+
+	public static final String[] TASK_RECURRING = {"every "};
 
 	// index of keywords
 	public static final int INDEX_KEYWORD_AT = 0;

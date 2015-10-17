@@ -9,33 +9,39 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
+// import Joda Time library
 import org.joda.time.DateTime;
 
+// import Google Gson library
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
 import logic.Task;
 
 public class Storage {
 
-	// initial methods to serialise/deserialise tempFile.json with DateTime
+	// initial methods to serialise/deserialise savedTask.json with DateTime
 	// formats
-	final static Gson gson = Converters.registerDateTime(new GsonBuilder()).create();
+	final static Gson gson = Converters.registerDateTime(new GsonBuilder().setPrettyPrinting().serializeNulls()).create();
 	final DateTime original = new DateTime();
 	String json = gson.toJson(original);
 	final DateTime reconstituted = gson.fromJson(json, DateTime.class);
 
 	// attributes
-	private static File tempFile = new File("tempFile.json");
+	private static File savedTask = new File("savedTask.json");
 	private static File savedPath = new File("savedPath.txt");
 	private static String path;
 	private static BufferedReader br;
+	private static ArrayList<Task> currentTaskList = new ArrayList<Task>();
 
 	public Storage() {
 
 	}
 
 	public static void setPath(String path) {
+		Storage.currentTaskList = read();
+
 		try {
 			FileWriter fw = new FileWriter(savedPath.getAbsoluteFile());
 			BufferedWriter bw = new BufferedWriter(fw);
@@ -45,7 +51,10 @@ public class Storage {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
 		Storage.path = path;
+
+		write(currentTaskList);
 	}
 
 	public static void write(ArrayList<Task> tasks) {
@@ -56,10 +65,7 @@ public class Storage {
 			File file = new File(path);
 			FileWriter fw = new FileWriter(file);
 			BufferedWriter bw = new BufferedWriter(fw);
-			for (Task task : tasks) {
-				String json = gson.toJson(task) + "\n";
-				bw.write(json);
-			}
+			bw.write(gson.toJson(tasks));
 			bw.close();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -78,15 +84,20 @@ public class Storage {
 		ArrayList<Task> taskList = new ArrayList<Task>();
 		String line = "";
 		if (path == null) {
-			setPath(tempFile.getAbsolutePath());
+			path = savedTask.getAbsolutePath();
+			System.out.println(path);
+			System.out.println("here");
 		}
 		try {
 			FileReader fr = new FileReader(path);
 			BufferedReader br = new BufferedReader(fr);
+			StringBuilder stringBuilder = new StringBuilder();
 			while ((line = br.readLine()) != null) {
-				taskList.add(gson.fromJson(line, Task.class));
+				stringBuilder.append(line).append("\n");
 			}
 			br.close();
+			String jsonString = stringBuilder.toString();			   
+			taskList = gson.fromJson(jsonString, new TypeToken<ArrayList<Task>>(){}.getType());
 		} catch (FileNotFoundException e) {
 		} catch (IOException e) {
 			e.printStackTrace();

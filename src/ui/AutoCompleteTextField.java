@@ -1,4 +1,5 @@
 package ui;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.SortedSet;
@@ -20,18 +21,16 @@ import javafx.scene.control.TextField;
  */
 public class AutoCompleteTextField extends TextField {
 
-	/** The existing autocomplete entries. */
 	public final SortedSet<String> entries;
-	/** The popup used to select an entry. */
 	private ContextMenu entriesPopup;
 
-	/** Construct a new AutoCompleteTextField. */
 	public AutoCompleteTextField() {
 		super();
 		entries = new TreeSet<>();
-		//Collections.addAll(entries, "add [taskname] between [starttime] to [endtime]", "exit", "delete [index]", "mark [index]", "search [keyword]", "unmark [index]", "edit [index] [field] [newvalue]");
+		Collections.addAll(entries, "add [taskname] from [day] [time] to [day] [time]", "add [taskname] from [time] to [time]", "add [taskname]", "exit", "delete [index]", "mark [index]", "search [keyword]", "unmark [index]", "edit [index] [field] [newvalue]");
 
 		entriesPopup = new ContextMenu();
+		entriesPopup.setAutoHide(true);
 
 		textProperty().addListener(new ChangeListener<String>()
 		{
@@ -55,6 +54,9 @@ public class AutoCompleteTextField extends TextField {
 					{
 						entriesPopup.hide();
 					}
+					if (searchResult.size() == 0) {
+						entriesPopup.hide();
+					}
 				}
 			}
 		});
@@ -65,9 +67,6 @@ public class AutoCompleteTextField extends TextField {
 				entriesPopup.hide();
 			}
 		});
-
-
-
 	}
 
 	/**
@@ -82,7 +81,6 @@ public class AutoCompleteTextField extends TextField {
 	 */
 	private void populatePopup(List<String> searchResult) {
 		List<CustomMenuItem> menuItems = new LinkedList<>();
-		// If you'd like more entries, modify this line.
 		int maxEntries = 10;
 		int count = Math.min(searchResult.size(), maxEntries);
 		for (int i = 0; i < count; i++)

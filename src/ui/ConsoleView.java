@@ -19,7 +19,8 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -30,41 +31,49 @@ import javafx.util.Duration;
 
 public class ConsoleView extends Pane{
 
-	Pane consolePane;
-
-	Label applicationName;
-	Label dateLabel;
-	Label clock;
-	ListView<ListItem> listView;
+	Label titleBar;
+	Label dateDisplay;
+	Label clockDisplay;
+	Label currentDisplay;
 	AutoCompleteTextField inputConsole;
 	Label status;
 
+	HBox what;
+	VBox timedList;
+	VBox floatingList;
+	ScrollPane scrollPane;
+
 	public ConsoleView() {
 
-		consolePane = new Pane();
+		/*
+		titleBar = new Label();
+		titleBar.setId("titleBar");
+		titleBar.setText("TextBuddyAwesome");
+		titleBar.setPrefHeight(25);
+		titleBar.setPrefWidth(600);
+		titleBar.setPadding(new Insets(0 ,0 , 0, 20));
+		titleBar.setFont(Font.font("Georgia", 20));
+		titleBar.setTextFill(Color.ORANGE);
+		 */
+		dateDisplay = new Label();
+		dateDisplay.setId("timeDisplay");
+		dateDisplay.setFont(new Font("SansSerif", 30));
+		dateDisplay.setPrefWidth(300);
+		dateDisplay.setPadding(new Insets(0,0,0,20));
+		dateDisplay.setTextFill(Color.WHITE);
 
-		applicationName = new Label();
-		applicationName.setText("TextBuddyAwesome");
-		applicationName.setContentDisplay(ContentDisplay.CENTER);
-		applicationName.setPrefHeight(25);
-		applicationName.setPrefWidth(600);
-		applicationName.setPadding(new Insets(0 ,0 , 0, 20));
-		applicationName.setStyle("-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%), linear-gradient(#020b02, #3a3a3a), linear-gradient(#9d9e9d 0%, #6b6a6b 20%, #343534 80%, #242424 100%),linear-gradient(#8a8a8a 0%, #6b6a6b 20%, #343534 80%, #262626 100%); -fx-background-radius: 30 30 0 0;");
-		applicationName.setFont(Font.font("Georgia", 20));
-		applicationName.setTextFill(Color.WHITE);
+		clockDisplay = new Label();
+		clockDisplay.setId("timeDisplay");
+		clockDisplay.setFont(new Font("SansSerif", 30));
+		clockDisplay.setTextAlignment(TextAlignment.CENTER);
+		clockDisplay.setPrefWidth(300);
+		clockDisplay.setPadding(new Insets(0,0,0,160));
+		clockDisplay.setTextFill(Color.WHITE);
 
-		dateLabel = new Label();
-		dateLabel.setStyle("-fx-background-color: rgba(255,255,255, 0.6); ");
-		dateLabel.setFont(new Font("Arial", 30));
-		dateLabel.setPrefWidth(300);
-		dateLabel.setPadding(new Insets(0,0,0,20));
-
-		clock = new Label();
-		clock.setStyle("-fx-background-color: rgba(255,255,255, 0.6); ");
-		clock.setFont(new Font("Arial", 30));
-		clock.setTextAlignment(TextAlignment.CENTER);
-		clock.setPrefWidth(300);
-		clock.setPadding(new Insets(0,0,0,90));
+		currentDisplay = new Label();
+		currentDisplay.setPrefWidth(600);
+		currentDisplay.setTextAlignment(TextAlignment.CENTER);
+		currentDisplay.setPrefHeight(25);
 
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy");
 		SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
@@ -72,44 +81,57 @@ public class ConsoleView extends Pane{
 		EventHandler<ActionEvent> onFinished = new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent t) {
-				dateLabel.setText(Calendar.getInstance().getTime().toString().split(" ")[0].trim() + ", " + dateFormat.format(Calendar.getInstance().getTime()));
-				clock.setText(timeFormat.format(Calendar.getInstance().getTime()));
+				dateDisplay.setText(Calendar.getInstance().getTime().toString().split(" ")[0].trim() + ", " + dateFormat.format(Calendar.getInstance().getTime()));
+				clockDisplay.setText(timeFormat.format(Calendar.getInstance().getTime()));
 			}
 		};
 		timeline.getKeyFrames().add(new KeyFrame(Duration.millis(500), onFinished));
 		timeline.setCycleCount(Animation.INDEFINITE);
 		timeline.play();
 
-		listView = new ListView<ListItem>();
-		listView.setPrefHeight(470);
-		listView.setPrefWidth(600);
-		listView.setStyle("-fx-background-color: rgba(255,255,255, 0.6);");
-		listView.setFocusTraversable(false);
-		listView.setId("ListView");
+		timedList = new VBox();
+		timedList.setStyle("-fx-background-color:linear-gradient( from 100.0% 0.0% to 100.0% 100.0%, rgb(51,51,51) 0.0, rgb(179,179,179) 40.0, rgb(51,51,51) 100.0)");
+		timedList.autosize();
+		timedList.setFocusTraversable(false);
+
+		floatingList = new VBox();
+		floatingList.setStyle("-fx-background-color: linear-gradient( from 100.0% 0.0% to 100.0% 100.0%, rgb(60,26,0) 0.0, rgb(102,70,0) 40.0, rgb(72,42,0) 100.0)");
+		floatingList.setFocusTraversable(false);
+		//floatingList.setMaxWidth(750);
+
+		what = new HBox();
+		what.setPrefWidth(600);
+
+		scrollPane = new ScrollPane();
+		scrollPane.setId("scrollPane");
+		scrollPane.setContent(what);
+		scrollPane.setMaxHeight(470);
+		scrollPane.setHbarPolicy(ScrollBarPolicy.NEVER);
+		scrollPane.setMaxWidth(600);
+		scrollPane.setFocusTraversable(false);
+		scrollPane.setBorder(null);
 
 		inputConsole = new AutoCompleteTextField();
 		inputConsole.setEditable(true);
 		inputConsole.setPrefHeight(25);
 		inputConsole.setPrefWidth(600);
-		//inputConsole.setFont(value);
-		inputConsole.setStyle("-fx-background-color: rgba(255,255,255, 0.6);-fx-text-inner-color: black;-fx-font-size:15");
+		inputConsole.setStyle("-fx-background-color: rgba(255,255,255, 0.8);-fx-text-inner-color: black;-fx-font-size:15");
 		inputConsole.setFocusTraversable(true);
-
 
 		status = new Label();
 		status.setPrefWidth(600);
-		status.setPrefHeight(25);
+		status.setPrefHeight(30);
 		status.setContentDisplay(ContentDisplay.RIGHT);
 		status.setPadding(new Insets(0,0,0, 20));
-		status.setId("StatusBar");
-		//status.setStyle("-fx-background-color: rgba(255,255,255, 0.8); -fx-background-radius: 0 0 30 30;");
-		status.setStyle("-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%), linear-gradient(#020b02, #3a3a3a), linear-gradient(#9d9e9d 0%, #6b6a6b 20%, #343534 80%, #242424 100%),linear-gradient(#8a8a8a 0%, #6b6a6b 20%, #343534 80%, #262626 100%); -fx-background-radius: 0 0 30 30;");
+		status.setId("statusBar");
+		status.setTextFill(Color.WHITE);
+		status.setFont(new Font("Arial", 20));
 
 		HBox dateTime = new HBox();
-		dateTime.getChildren().addAll(dateLabel, clock);
+		dateTime.getChildren().addAll(dateDisplay, clockDisplay);
+
 		VBox consoleLayout = new VBox();
-		consoleLayout.setSpacing(1);
-		consoleLayout.getChildren().addAll(applicationName, dateTime, listView, inputConsole, status);
-		consolePane.getChildren().add(consoleLayout);
+		consoleLayout.getChildren().addAll(dateTime, scrollPane, inputConsole, status);
+		this.getChildren().add(consoleLayout);
 	}
 }
