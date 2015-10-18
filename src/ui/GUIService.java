@@ -81,7 +81,7 @@ public class GUIService {
 						task.getTitle(),
 						task.getStartingTime().toLocalDate().toString("EEE dd MMM"),
 						task.getStartingTime().toLocalTime().toString("HHmm"),
-						task.getStartingTime().toLocalDate().toString("EEE dd MMM"),
+						task.getEndingTime().toLocalDate().toString("EEE dd MMM"),
 						task.getEndingTime().toLocalTime().toString("HHmm"),
 						task.getStatus(),
 						false,
