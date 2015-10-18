@@ -28,8 +28,9 @@ public class DateParser {
 
 	public static DateTime getDateTime(String input) {
 		DateTime dateTime;
-		String dateString = "";
-		String timeString = "";
+		String dateString = new String();
+		String timeString = new String();
+		
 		Pattern dp;
 		Matcher dm;
 
@@ -39,7 +40,7 @@ public class DateParser {
 				dm = dp.matcher(input);
 				if (dm.find()) {
 					dateString = dm.group().trim();
-					System.out.println("[DATEPARSER] Date Match: " + dm.group());
+					//System.out.println("[DATEPARSER] Date Match: " + dm.group());
 					break;
 				}
 			} catch (NullPointerException e) {
@@ -63,22 +64,16 @@ public class DateParser {
 			}
 		}
 
-		//System.err.println("Date: " + dateString + "\nTime: " + timeString);
-
-		if (dateString.length() == 0 && timeString.length() == 0) {
-			return DateTime.parse("00000");
-		} else if (dateString.length() < 6 && timeString.length() == 0) {
-			timeString = dateString;
-			dateString = "";
-		}
-
-		//System.err.println("Date: " + dateString + "\nTime: " + timeString);
-
 		dateTime = parseDate(dateString);
-		//System.out.println(dateTime);
+		
+		if (!timeString.isEmpty()){
+			dateTime = DateTime.now();
+		}
+		
 		dateTime = dateTime.withHourOfDay(parseTime(timeString).getHourOfDay());
 		dateTime = dateTime.withMinuteOfHour(parseTime(timeString).getMinuteOfHour());
-		return completeFields(dateTime);
+		
+		return dateTime;
 	}
 
 	private static DateTime parseDate(String dateString) {
@@ -89,7 +84,7 @@ public class DateParser {
 			} catch (IllegalArgumentException e) {
 			}
 		}
-		return DateTime.parse("00000");
+		return DateTime.now().withYear(0);
 	}
 
 	private static DateTime parseTime(String timeString) {
@@ -101,16 +96,7 @@ public class DateParser {
 			} catch (IllegalArgumentException e) {
 			}
 		}
-		return DateTime.parse("00000");
+		return DateTime.now().withHourOfDay(0).withMinuteOfHour(0);
 	}
 
-	private static DateTime completeFields(DateTime dateTime) {
-		if ((dateTime.getYear()==0 && dateTime.getDayOfMonth()==1 && dateTime.getMonthOfYear()==1)) {
-			dateTime = dateTime.withYear(DateTime.now().getYear()).withMonthOfYear(DateTime.now().getMonthOfYear()).withDayOfMonth(DateTime.now().getDayOfMonth());
-		}
-		if (dateTime.getYear()==2000) {
-			dateTime = dateTime.withYear(DateTime.now().getYear());
-		}
-		return dateTime;
-	}
 }
