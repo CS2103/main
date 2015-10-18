@@ -85,8 +85,6 @@ public class Storage {
 		String line = "";
 		if (path == null) {
 			path = savedTask.getAbsolutePath();
-			System.out.println(path);
-			System.out.println("here");
 		}
 		try {
 			FileReader fr = new FileReader(path);
