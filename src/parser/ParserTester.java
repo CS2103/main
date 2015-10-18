@@ -21,16 +21,16 @@ public class ParserTester {
 			System.out.println("End: " + parser.getEnd(rawInput));
 
 			System.out.println();
-			System.err.println("Start Date: " + parser.getStartTime(rawInput));
-			System.out.println(DayOfWeek.of(parser.getStartTime(rawInput).getDayOfWeek()).getDisplayName(TextStyle.FULL, Locale.ENGLISH)
-					+ ", " + parser.getStartTime(rawInput).getDayOfMonth() + " " + Month.of(parser.getStartTime(rawInput).getMonthOfYear())
-					+ " " + parser.getStartTime(rawInput).getYear() + " " + parser.getStartTime(rawInput).toString().substring(11, 16));
+			System.err.println("Start Date: " + parser.getStartDateTime(rawInput));
+			System.out.println(DayOfWeek.of(parser.getStartDateTime(rawInput).getDayOfWeek()).getDisplayName(TextStyle.FULL, Locale.ENGLISH)
+					+ ", " + parser.getStartDateTime(rawInput).getDayOfMonth() + " " + Month.of(parser.getStartDateTime(rawInput).getMonthOfYear())
+					+ " " + parser.getStartDateTime(rawInput).getYear() + " " + parser.getStartDateTime(rawInput).toString().substring(11, 16));
 
 			System.out.println();
-			System.err.println("End Date: " + parser.getEndTime(rawInput));
-			System.out.println(DayOfWeek.of(parser.getEndTime(rawInput).getDayOfWeek()).getDisplayName(TextStyle.FULL, Locale.ENGLISH)
-					+ ", " + parser.getEndTime(rawInput).getDayOfMonth() + " " + Month.of(parser.getEndTime(rawInput).getMonthOfYear())
-					+ " " + parser.getEndTime(rawInput).getYear() + " " + parser.getEndTime(rawInput).toString().substring(11, 16));
+			System.err.println("End Date: " + parser.getEndDateTime(rawInput));
+			System.out.println(DayOfWeek.of(parser.getEndDateTime(rawInput).getDayOfWeek()).getDisplayName(TextStyle.FULL, Locale.ENGLISH)
+					+ ", " + parser.getEndDateTime(rawInput).getDayOfMonth() + " " + Month.of(parser.getEndDateTime(rawInput).getMonthOfYear())
+					+ " " + parser.getEndDateTime(rawInput).getYear() + " " + parser.getEndDateTime(rawInput).toString().substring(11, 16));
 		}
 	}
 }

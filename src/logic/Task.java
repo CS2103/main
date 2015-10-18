@@ -111,9 +111,9 @@ public class Task {
 	}
 
 	public void setTag(){
-		if(isValidDate(endingTime)){
+		if(isValidDate(endingTime) || isValidDate(startingTime)){
 			if(isValidDate(startingTime)){
-				this.type_tag = "event";			// no start and end time
+				this.type_tag = "event";			// have start and end time
 			}
 			else{
 				this.type_tag = "deadline";		// have end but no start time

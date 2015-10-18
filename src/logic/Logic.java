@@ -8,6 +8,7 @@ import org.joda.time.DateTime;
 import application.Constants;
 import parser.CommandParser;
 import parser.Parser;
+import parser.TitleParser;
 import storage.Storage;
 
 public class Logic {
@@ -37,7 +38,7 @@ public class Logic {
 		}
 		else if(command.equals("edit")){
 			int index = parser.getIndex(input);
-			return editTask(index, parser.getField(input), Parser.getEditTitle(input));
+			return editTask(index, parser.getField(input), TitleParser.getEditTitle(input));
 		}
 		else if (command.equals("mark")){
 			int index = parser.getIndex(input);
@@ -78,9 +79,9 @@ public class Logic {
 
 	public ArrayList<Task> addTask(String input) throws ParseException{
 		String title = parser.getTitle(input);
-		System.out.println("Title: " +title);
-		DateTime startTime = parser.getStartTime(input);
-		DateTime endTime = parser.getEndTime(input);
+		System.out.println("Title: " +title);							
+		DateTime startTime = parser.getStartDateTime(input);
+		DateTime endTime = parser.getEndDateTime(input);
 		System.out.println(startTime);
 		System.out.println(endTime);
 
@@ -91,7 +92,7 @@ public class Logic {
 	}
 
 	public ArrayList<Task> addRecurTask(String input, DateTime endDate){
-		Task newTask = new Task(parser.getTitle(input), parser.getStartTime(input), parser.getEndTime(input));
+		Task newTask = new Task(parser.getTitle(input), parser.getStartDateTime(input), parser.getEndDateTime(input));
 		//switch(TaskParser.getPeriod()){
 		//case "weekly":
 		bin.addWeeklyTask(newTask, endDate);
@@ -148,7 +149,7 @@ public class Logic {
 
 	public ArrayList<Task> deleteTaskByName(String input) throws ParseException{
 		String title = parser.getTitle(input);
-		DateTime endingDate = parser.getEndTime(input);
+		DateTime endingDate = parser.getEndDateTime(input);
 		if(endingDate == null){
 			endingDate = DateTime.now();
 		}

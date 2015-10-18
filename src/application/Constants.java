@@ -233,7 +233,7 @@ public class Constants {
 	public static final int WORD_COUNT_ONE = 1;
 
 	// date formats
-	public static String[] dateFormats = {"d MMM yyyy", "d/M/yy", "d/M", "d-M-y", "d MMM", "d MMMM", "dd.MM.yyyy",
+	public static String[] dateFormats = {"dd MMM yyyy", "d/M/yy", "d/M", "d-M-y", "dd MMM", "dd MMMM", "dd.MM.yyyy",
 			"d-M", "dd.M"};
 
 	// time formats
@@ -245,15 +245,15 @@ public class Constants {
 
 	//public static String[] dateRegex = {"\\d{1,2}\\s\\D+\\s[0-9]{2,4}\\s", "\\d{1,2}\\s\\D+", "\\d{1,2}\\d[^:^ ]\\d{1,2}", "\\d{1,2}\\D{1}\\d{1,2}\\D\\d{2,4}"};
 	public static String[] dateRegex = {
-			"\\d{1,2}\\s\\D+\\s[0-9]{2,4}\\s",		// 10 sadfs 1324
-			"\\d{1,2}\\D{1}\\d{1,2}[^a-zA-Z_0-9&&[^ ]]{1}\\d{2,4}",	// 10a12s1992
-			"\\d{1,2}\\s\\D+",							// 10 1234
-			"\\d{1,2}\\d[^:^ ]\\d{1,2}"				// 10.12
+			"(3[0-1]|2[0-9]|1[0-9]|[1-9])[\\s]\\D+[\\s]2[0-9]{3}",				// 10 dec+ 2015
+			"(3[0-1]|2[0-9]|1[0-9]|[1-9])[.|/|-](1[0-2]|[1-9])[.|/|-]\\d{2,4}",	// 10.12.2015 OR 10/12/2015 OR 10-12-2015
+			"(3[0-1]|2[0-9]|1[0-9]|[1-9])[\\s]\\D\\S+",							// 10 dec+
+			"(3[0-1]|2[0-9]|(1[0-9])|[1-9])[.|/]((1[0-2]|[1-9]))"				// 10.12 OR 10/12
 	};
 	public static String[] timeRegex = {
-			"\\d{4}$",
-			"\\d{1,2}[^a-zA-Z_0-9&&[^/^ ]]{1}\\d{2}$",
-			"\\d{1,2}[^/][0-5]{1,2}\\d$"
+			"[(2[0-3]|1[0-9]|[0-9])]{2}[[1-5]?[0-9]]{2}",								// 2345
+			"(2[0-3]|1[0-9]|[0-9]):([1-5]?[0-9])"//,						// 23:45
+			//"\\d{1,2}[^/][0-5]{1,2}\\d"
 	};
 
 	// show parameters (LOWERCASE)
@@ -272,8 +272,8 @@ public class Constants {
 	//public static final String[] TASK_START_DATE = {};
 	//public static final String[] TASK_END_DATE = {};
 
-	public static final String[] TASK_START_TIME = {"from", "on", "between"};
-	public static final String[] TASK_END_TIME = {"by", "until", "till", "before", "to"};
+	public static final String[] TASK_START_DATETIME = {"from", "on", "between"};
+	public static final String[] TASK_END_DATETIME = {"by", "until", "till", "before", "to"};
 
 	//public static final String[] TASK_START = {"from"};
 	//public static final String[] TASK_END = {"to"};
