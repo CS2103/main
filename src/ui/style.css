@@ -1,17 +1,10 @@
-#titleBar {
-	-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%), linear-gradient(#020b02, #3a3a3a), linear-gradient(#9d9e9d 0%, #6b6a6b 20%, #343534 80%, #242424 100%),linear-gradient(#8a8a8a 0%, #6b6a6b 20%, #343534 80%, #262626 100%); 
-	-fx-background-radius: 30 30 0 0;
-}
-
-#statusBar {
-	
-	-fx-background-color: linear-gradient( from 100.0% 0.0% to 100.0% 100.0%, rgba(128,128,128, 0.8) 0.0, rgba(204,204,204, 0.8) 40.0, rgba(153,153,153, 0.8) 100.0)
+#currentDisplay {
+		
 }
 
 #timeDisplay {
 	-fx-background-color: rgba(140,140,140, 0.3);
 }
-
 
 #scrollPane .scroll-bar:horizontal .track,
 #scrollPane .scroll-bar:horizontal .increment-button,
@@ -22,58 +15,20 @@
 	-fx-padding:0 0 0 0;
 }
 
+#scrollPane {
+	-fx-background-color:linear-gradient( from 100.0% 0.0% to 100.0% 100.0%, rgb(51,51,51) 0.0, rgb(179,179,179) 40.0, rgb(51,51,51) 100.0);
+}
+
+#statusBar {	
+	
+	-fx-background-color: linear-gradient( from 100.0% 0.0% to 100.0% 100.0%, rgba(128,128,128, 0.8) 0.0, rgba(204,204,204, 0.8) 40.0, rgba(153,153,153, 0.8) 100.0)
+	 
+}
+
 
 
 #listItem {
-	-fx-background-color: rgba(0,0,0,0.4);
-}
-
-/* The main scrollbar **track** CSS class  */
-#ListView .scroll-bar:horizontal .track,
-#ListView .scroll-bar:vertical .track{
-	-fx-background-color:transparent;
-	-fx-border-color:transparent;
-	-fx-background-radius: 0em;
-	-fx-border-radius:2em;
-}
-
-/* The increment and decrement button CSS class of scrollbar */
-.listview .scroll-bar:horizontal .increment-button ,
-.listview .scroll-bar:horizontal .decrement-button {
-    -fx-background-color:transparent;
-	-fx-background-radius: 0;
-	-fx-padding:0 0 10 0;
-
-}
-
-/* The increment and decrement button CSS class of scrollbar */
-
-#ListView .scroll-bar:vertical .increment-button ,
-#ListView .scroll-bar:vertical .decrement-button {
-
-    -fx-background-color:transparent;
-	-fx-background-radius: 0em;
-	-fx-padding:0 10 0 0;
-
-}
-
-.ListView  .scroll-bar .increment-arrow,
-.ListView  .scroll-bar .decrement-arrow {
-	-fx-shape: " ";	
-	-fx-padding:0;
-}
-
-/* The main scrollbar **thumb** CSS class which we drag every time (movable) */
-#ListView .scroll-bar:horizontal .thumb,
-#ListView .scroll-bar:vertical .thumb {
-    -fx-background-color:derive(black,90%);
-	-fx-background-insets: 2, 0, 0;
-	-fx-background-radius: 2em;
-
-}
-
-#ListItem {
-	-fx-background-color:linear-gradient( from 100.0% 0.0% to 100.0% 100.0%, rgb(51,51,51) 0.0, rgb(179,179,179) 40.0, rgb(51,51,51) 100.0);
+	-fx-background-color: rgba(0,0,0,0.2);
 }
 
 #StatusBar {

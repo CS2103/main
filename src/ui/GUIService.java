@@ -76,7 +76,7 @@ public class GUIService {
 		for (Task task : tasksArr) {
 			System.out.println(task.getType());
 
-			if (!task.getType().equals("task")) {
+			if (task.getType().equals("event")) {
 				ListItem newListItem = new ListItem(
 						task.getTitle(),
 						task.getStartingTime().toLocalDate().toString("EEE dd MMM"),
@@ -87,8 +87,18 @@ public class GUIService {
 						false,
 						index++);
 				items.add(newListItem);
-			}
-			else if (task.getType().equals("task")) {
+			} else if (task.getType().equalsIgnoreCase("deadline")) {
+				ListItem newListItem = new ListItem(
+						task.getTitle(),
+						null,
+						null,
+						task.getEndingTime().toLocalDate().toString("EEE dd MMM"),
+						task.getEndingTime().toLocalTime().toString("HHmm"),
+						task.getStatus(),
+						false,
+						index++);
+				items.add(newListItem);
+			} else if (task.getType().equals("task")) {
 				ListItem newFloatingItem = new ListItem(
 						task.getTitle(),
 						null,
@@ -105,9 +115,9 @@ public class GUIService {
 		consoleView.floatingList.getChildren().setAll(floatingTasks);
 
 		if (floatingTasks.isEmpty()) {
-			consoleView.what.getChildren().setAll(consoleView.timedList);
+			consoleView.listDisplay.getChildren().setAll(consoleView.timedList);
 		} else {
-			consoleView.what.getChildren().setAll(consoleView.timedList, consoleView.floatingList);
+			consoleView.listDisplay.getChildren().setAll(consoleView.timedList, consoleView.floatingList);
 		}
 
 	}
@@ -133,6 +143,15 @@ public class GUIService {
 			public void handle(MouseEvent event) {
 				stage.setX(event.getScreenX() + xOffset);
 				stage.setY(event.getScreenY() + yOffset);
+			}
+		});
+
+		consoleView.scrollPane.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>(){
+			@Override
+			public void handle(KeyEvent event) {
+				if(event.getCode() == KeyCode.ESCAPE) {
+					System.exit(0);
+				}
 			}
 		});
 
@@ -184,7 +203,7 @@ public class GUIService {
 	}
 
 	public Scene buildScene(StackPane content) {
-		Scene myScene  = new Scene(content, 605, 605);
+		Scene myScene  = new Scene(content, 700, 700);
 		myScene.setFill(Color.TRANSPARENT);
 		myScene.getStylesheets().clear();
 		myScene.getStylesheets().add(this.getClass().getResource("style.css").toExternalForm());
@@ -226,8 +245,9 @@ public class GUIService {
 		consoleView.currentDisplay.setText(text);
 	}
 	public void updateInterface(String input, ArrayList<Task> taskArray) {
-		String command = logic.getCommand(input);
 		/*
+		String command = logic.getCommand(input);
+
 		if (command.equals(Constants.DICTIONARY_ADD[0])) {
 			populateList(taskArray);
 		} else if (command.equals(Constants.DICTIONARY_DELETE[0])) {

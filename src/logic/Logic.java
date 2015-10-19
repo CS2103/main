@@ -79,7 +79,7 @@ public class Logic {
 
 	public ArrayList<Task> addTask(String input) throws ParseException{
 		String title = parser.getTitle(input);
-		System.out.println("Title: " +title);							
+		System.out.println("Title: " +title);
 		DateTime startTime = parser.getStartDateTime(input);
 		DateTime endTime = parser.getEndDateTime(input);
 		System.out.println(startTime);
@@ -216,7 +216,7 @@ public class Logic {
 	}
 
 	public String getStatusBarText(String input){
-		switch(CommandParser.getCommand(input)) {
+		switch(parser.getCommand(input)) {
 		case Constants.COMMAND_ADD :
 			return parser.getTitle(input) + Constants.FEEDBACK_ADD_SUCCESS;
 		case Constants.COMMAND_MARK :
@@ -233,6 +233,8 @@ public class Logic {
 			//return bin.redoStack.peek() != null ? Constants.FEEDBACK_REDO_SUCCESS : Constants.FEEDBACK_REDO_FAILURE;
 		case Constants.COMMAND_EDIT :
 			return Constants.FEEDBACK_EDIT_SUCCESS;
+		case Constants.COMMAND_SETPATH :
+			return Constants.FEEDBACK_SETPATH_SUCCESS + input.split(" ")[1].trim();
 		default :
 			return Constants.FEEDBACK_INVALID;
 		}

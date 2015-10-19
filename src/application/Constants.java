@@ -101,6 +101,8 @@ public class Constants {
 	public static final String COMMAND_INVALID = "invalid command";
 	public static final String COMMAND_ALERT = "alert";
 	public static final String COMMAND_CLEAR = "clear";
+	public static final String COMMAND_SETPATH = "setpath";
+
 
 	// Array indices
 	public static final int INDEX_DAY = 0;
@@ -227,6 +229,7 @@ public class Constants {
 	public static final String FEEDBACK_INVALID = "That is an invalid action!";
 	public static final String FEEDBACK_INVALID_NUMBER_OF_QUOTES = "Invaild number of quotes";
 	public static final String FEEDBACK_INVALID_PARAMETERS_FOR_EDIT = "Invalid parameters for edit command";
+	public static final String FEEDBACK_SETPATH_SUCCESS= "New save location is: ";
 
 	// Switch-case
 	public static final int EMPTY_LIST = 0;
@@ -244,13 +247,13 @@ public class Constants {
 	public static String[] dateTimeFormats = {"d MMM yyyy HHmm", "d/M/yy", "d/M", "d-M-y", "d MMM", "d MMMM", "dd.MM.yyyy",
 			"d-M", "dd.M"};
 
-	
+
 	public static String[] dateRegex = {
 			"(3[0-1]|2[0-9]|1[0-9]|[1-9])[\\s]\\D+[\\s][0-9]{2}",				// 10 dec+ 2015
 			"(3[0-1]|2[0-9]|1[0-9]|[1-9])[.|/|-](1[0-2]|[1-9])[.|/|-]\\d{1,4}",	// 10.12.2015 OR 10/12/2015 OR 10-12-2015
 			"(3[0-1]|2[0-9]|1[0-9]|[1-9])[\\s]\\D+",							// 10 dec+
 			"(3[0-1]|2[0-9]|(1[0-9])|[1-9])[.|/|-]((1[0-2]|[1-9]))"				// 10.12 OR 10/12
-//			"\b(0?[1-9]|[1-2][0-9]|3[0-1])[- /.](0?[1-9]|1[0-2])[- /.](19|20)?[0-9]{2}\b"
+			//			"\b(0?[1-9]|[1-2][0-9]|3[0-1])[- /.](0?[1-9]|1[0-2])[- /.](19|20)?[0-9]{2}\b"
 	};
 	public static String[] timeRegex = {
 			"[(2[0-3]|1[0-9]|[0-9])]{2}[[1-5]?[0-9]]{2}",						// 2345

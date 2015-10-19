@@ -38,7 +38,7 @@ public class ConsoleView extends Pane{
 	AutoCompleteTextField inputConsole;
 	Label status;
 
-	HBox what;
+	HBox listDisplay;
 	VBox timedList;
 	VBox floatingList;
 	ScrollPane scrollPane;
@@ -58,7 +58,7 @@ public class ConsoleView extends Pane{
 		dateDisplay = new Label();
 		dateDisplay.setId("timeDisplay");
 		dateDisplay.setFont(new Font("SansSerif", 30));
-		dateDisplay.setPrefWidth(300);
+		dateDisplay.setPrefWidth(500);
 		dateDisplay.setPadding(new Insets(0,0,0,20));
 		dateDisplay.setTextFill(Color.WHITE);
 
@@ -66,8 +66,8 @@ public class ConsoleView extends Pane{
 		clockDisplay.setId("timeDisplay");
 		clockDisplay.setFont(new Font("SansSerif", 30));
 		clockDisplay.setTextAlignment(TextAlignment.CENTER);
-		clockDisplay.setPrefWidth(300);
-		clockDisplay.setPadding(new Insets(0,0,0,160));
+		clockDisplay.setPrefWidth(200);
+		clockDisplay.setPadding(new Insets(0,0,0,50));
 		clockDisplay.setTextFill(Color.WHITE);
 
 		currentDisplay = new Label();
@@ -89,37 +89,44 @@ public class ConsoleView extends Pane{
 		timeline.setCycleCount(Animation.INDEFINITE);
 		timeline.play();
 
+
+
 		timedList = new VBox();
 		timedList.setStyle("-fx-background-color:linear-gradient( from 100.0% 0.0% to 100.0% 100.0%, rgb(51,51,51) 0.0, rgb(179,179,179) 40.0, rgb(51,51,51) 100.0)");
 		timedList.autosize();
+		timedList.setPrefHeight(400);
 		timedList.setFocusTraversable(false);
 
 		floatingList = new VBox();
-		floatingList.setStyle("-fx-background-color: linear-gradient( from 100.0% 0.0% to 100.0% 100.0%, rgb(60,26,0) 0.0, rgb(102,70,0) 40.0, rgb(72,42,0) 100.0)");
+		floatingList.setStyle("-fx-background-color: linear-gradient( from 100.0% 0.0% to 100.0% 100.0%, rgb(46,50,68) 0.0, rgb(51,51,51) 40.0, rgb(39,41,54) 100.0)");
 		floatingList.setFocusTraversable(false);
+		floatingList.autosize();
 		//floatingList.setMaxWidth(750);
 
-		what = new HBox();
-		what.setPrefWidth(600);
+		listDisplay = new HBox();
+		listDisplay.setPrefWidth(700);
+		listDisplay.setStyle("-fx-background-color:linear-gradient( from 100.0% 0.0% to 100.0% 100.0%, rgb(51,51,51) 0.0, rgb(179,179,179) 40.0, rgb(51,51,51) 100.0)");
+
 
 		scrollPane = new ScrollPane();
 		scrollPane.setId("scrollPane");
-		scrollPane.setContent(what);
+		scrollPane.setContent(listDisplay);
 		scrollPane.setMaxHeight(470);
 		scrollPane.setHbarPolicy(ScrollBarPolicy.NEVER);
-		scrollPane.setMaxWidth(600);
+		scrollPane.setMaxWidth(700);
+		scrollPane.setMinHeight(400);
 		scrollPane.setFocusTraversable(false);
 		scrollPane.setBorder(null);
 
 		inputConsole = new AutoCompleteTextField();
 		inputConsole.setEditable(true);
 		inputConsole.setPrefHeight(25);
-		inputConsole.setPrefWidth(600);
+		inputConsole.setPrefWidth(700);
 		inputConsole.setStyle("-fx-background-color: rgba(255,255,255, 0.8);-fx-text-inner-color: black;-fx-font-size:15");
 		inputConsole.setFocusTraversable(true);
 
 		status = new Label();
-		status.setPrefWidth(600);
+		status.setPrefWidth(700);
 		status.setPrefHeight(30);
 		status.setContentDisplay(ContentDisplay.RIGHT);
 		status.setPadding(new Insets(0,0,0, 20));
