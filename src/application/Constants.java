@@ -100,6 +100,7 @@ public class Constants {
 	public static final String COMMAND_EXIT = "exit";
 	public static final String COMMAND_INVALID = "invalid command";
 	public static final String COMMAND_ALERT = "alert";
+	public static final String COMMAND_CLEAR = "clear";
 
 	// Array indices
 	public static final int INDEX_DAY = 0;
@@ -233,7 +234,7 @@ public class Constants {
 	public static final int WORD_COUNT_ONE = 1;
 
 	// date formats
-	public static String[] dateFormats = {"dd MMM yyyy", "d/M/yy", "d/M", "d-M-y", "dd MMM", "dd MMMM", "dd.MM.yyyy",
+	public static String[] dateFormats = {"dd MMM yy", "d/M/yy", "d/M", "d-M-yy", "d MMM", "dd MMMM", "dd.MM.yy",
 			"d-M", "dd.M"};
 
 	// time formats
@@ -243,16 +244,17 @@ public class Constants {
 	public static String[] dateTimeFormats = {"d MMM yyyy HHmm", "d/M/yy", "d/M", "d-M-y", "d MMM", "d MMMM", "dd.MM.yyyy",
 			"d-M", "dd.M"};
 
-	//public static String[] dateRegex = {"\\d{1,2}\\s\\D+\\s[0-9]{2,4}\\s", "\\d{1,2}\\s\\D+", "\\d{1,2}\\d[^:^ ]\\d{1,2}", "\\d{1,2}\\D{1}\\d{1,2}\\D\\d{2,4}"};
+	
 	public static String[] dateRegex = {
-			"(3[0-1]|2[0-9]|1[0-9]|[1-9])[\\s]\\D+[\\s]2[0-9]{3}",				// 10 dec+ 2015
-			"(3[0-1]|2[0-9]|1[0-9]|[1-9])[.|/|-](1[0-2]|[1-9])[.|/|-]\\d{2,4}",	// 10.12.2015 OR 10/12/2015 OR 10-12-2015
-			"(3[0-1]|2[0-9]|1[0-9]|[1-9])[\\s]\\D\\S+",							// 10 dec+
-			"(3[0-1]|2[0-9]|(1[0-9])|[1-9])[.|/]((1[0-2]|[1-9]))"				// 10.12 OR 10/12
+			"(3[0-1]|2[0-9]|1[0-9]|[1-9])[\\s]\\D+[\\s][0-9]{2}",				// 10 dec+ 2015
+			"(3[0-1]|2[0-9]|1[0-9]|[1-9])[.|/|-](1[0-2]|[1-9])[.|/|-]\\d{1,4}",	// 10.12.2015 OR 10/12/2015 OR 10-12-2015
+			"(3[0-1]|2[0-9]|1[0-9]|[1-9])[\\s]\\D+",							// 10 dec+
+			"(3[0-1]|2[0-9]|(1[0-9])|[1-9])[.|/|-]((1[0-2]|[1-9]))"				// 10.12 OR 10/12
+//			"\b(0?[1-9]|[1-2][0-9]|3[0-1])[- /.](0?[1-9]|1[0-2])[- /.](19|20)?[0-9]{2}\b"
 	};
 	public static String[] timeRegex = {
-			"[(2[0-3]|1[0-9]|[0-9])]{2}[[1-5]?[0-9]]{2}",								// 2345
-			"(2[0-3]|1[0-9]|[0-9]):([1-5]?[0-9])"//,						// 23:45
+			"[(2[0-3]|1[0-9]|[0-9])]{2}[[1-5]?[0-9]]{2}",						// 2345
+			"(2[0-3]|1[0-9]|[0-9]):([1-5]?[0-9])"//,							// 23:45
 			//"\\d{1,2}[^/][0-5]{1,2}\\d"
 	};
 
@@ -274,11 +276,11 @@ public class Constants {
 
 	public static final String[] TASK_START_DATETIME = {"from", "on", "between"};
 	public static final String[] TASK_END_DATETIME = {"by", "until", "till", "before", "to"};
+	public static final String[] TASK_RECURRING = {"daily", "weekly", "monthly", "yearly"};
 
 	//public static final String[] TASK_START = {"from"};
 	//public static final String[] TASK_END = {"to"};
 
-	public static final String[] TASK_RECURRING = {"every "};
 
 	// index of keywords
 	public static final int INDEX_KEYWORD_AT = 0;
