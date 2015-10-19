@@ -1,6 +1,5 @@
 package ui;
 
-import application.Constants;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -10,65 +9,47 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
 
 public class ListItem extends StackPane{
 
-	private String[] colorArray = {
-			"linear-gradient( from 100.0% 0.0% to 100.0% 100.0%, rgb(255,179,102) 0.0, rgb(255,230,179) 40.0, rgb(255,179,102) 100.0);",
-			"linear-gradient( from 100.0% 0.0% to 100.0% 100.0%, rgb(128,179,128) 0.0, rgb(204,255,204) 40.0, rgb(128,179,128) 100.0);",
-			"linear-gradient( from 100.0% 0.0% to 100.0% 100.0%, rgb(255,188,0) 0.0, rgb(255,230,128) 40.0, rgb(255,188,0) 100.0);",
-			"linear-gradient( from 100.0% 0.0% to 100.0% 100.0%, rgb(27,255,0) 0.0, rgb(180,255,155) 40.0, rgb(27,255,0) 100.0);",
-			"linear-gradient( from 100.0% 0.0% to 100.0% 100.0%, rgb(255,102,102) 0.0, rgb(255,204,204) 40.0, rgb(255,128,128) 100.0);",
-	"linear-gradient( from 100.0% 0.0% to 100.0% 100.0%, rgb(102,128,230) 0.0, rgb(204,230,255) 40.0, rgb(102,128,230) 100.0);"};
-
-	private String color = "Color.BLACK";
 	private Circle statusIcon;
 	private Label index;
 	private Label title;
-	private Label description;
 	private Label startTime;
 	private Label endTime;
 	private Label startDate;
 	private Label endDate;
-	private Label isDone;
-	private Label duration;
-	private Label isOverDue;
-	private Label startText;
-	private Label endText;
+	//private Label isDone;
+	private Label taskDuration;
+	//private Label isOverDue;
 
-	public ListItem(String taskTitle, String taskStartDate, String taskStartTime, String taskEndDate, String taskEndTime, boolean isDone, boolean isOverdue, int index) {
+	public ListItem(String taskTitle, String taskStartDate, String taskStartTime, String taskEndDate, String taskEndTime, boolean isDone, boolean isOverdue, int taskIndex) {
 
 		title = new Label(taskTitle);
+		title.setId("title");
 		title.setFont(Font.font("SansSerif",FontWeight.BOLD,16));
 		title.setPadding(new Insets(0,0,0,5));
 		title.setTextFill(Color.ANTIQUEWHITE);
 
-		this.index = new Label(String.valueOf(index));
-		this.index.setFont(Font.font("SansSerif",FontWeight.LIGHT,22));
-		this.index.setTextFill(Color.WHITESMOKE);
-		this.index.setTextAlignment(TextAlignment.CENTER);
-		this.index.setMinWidth(30);
-
-		//description = new Label(taskDescription);
+		index = new Label(String.valueOf(taskIndex));
+		index.setId("index");
+		index.setFont(Font.font("SansSerif",FontWeight.LIGHT,22));
+		index.setTextFill(Color.WHITESMOKE);
+		index.setTextAlignment(TextAlignment.CENTER);
+		index.setMinWidth(30);
 
 		statusIcon = new Circle();
+		statusIcon.setId("statusIcon");
 		statusIcon.setRadius(5);
 
 		if (isDone) {
-			this.statusIcon.setFill(Color.GREENYELLOW);
+			statusIcon.setFill(Color.GREENYELLOW);
 		} else {
-			this.statusIcon.setFill(Color.RED);
+			statusIcon.setFill(Color.RED);
 		}
-
-		startText = new Label(Constants.LABEL_START);
-		startText.setFont(Font.font("SansSerif", FontWeight.BOLD, 12));
-		startText.setPrefWidth(40);
-
-		endText = new Label(Constants.LABEL_END);
-		endText.setFont(Font.font("SansSerif", FontWeight.BOLD, 12));
-		endText.setPrefWidth(40);
 
 		startDate = new Label(taskStartDate);
 		startDate.setPrefWidth(60);
@@ -87,20 +68,25 @@ public class ListItem extends StackPane{
 		endTime.setFont(Font.font("SansSerif", FontWeight.SEMI_BOLD, 12));
 		endTime.setTextFill(Color.GREY);
 
-		duration = new Label();
-		duration.setText("[" + taskStartDate + "] " + taskStartTime + " hrs  -  [" + taskEndDate + "] " + taskEndTime + " hrs");
-		duration.setTextFill(Color.LIGHTGRAY);
-		duration.setPadding(new Insets(0,0,0,15));
+		taskDuration = new Label();
+		if (taskStartDate == null && taskStartTime == null && taskEndDate != null && taskEndTime!= null) {
+			taskDuration.setText("By [" + taskEndDate + "] " + taskEndTime + " hrs");
+		} else {
+			taskDuration.setText("[" + taskStartDate + "] " + taskStartTime + " hrs  -  [" + taskEndDate + "] " + taskEndTime + " hrs");
+		}
+		taskDuration.setTextFill(Color.LIGHTGRAY);
+		taskDuration.setFont(Font.font("SansSerif", FontPosture.ITALIC, 11));
+		taskDuration.setPadding(new Insets(0,0,0,15));
 
 		HBox titleNstatus = new HBox();
 		titleNstatus.setAlignment(Pos.CENTER_LEFT);
 		titleNstatus.getChildren().addAll(statusIcon, title);
 
 		HBox timeLayout = new HBox();
-		timeLayout.getChildren().addAll(duration);
+		timeLayout.getChildren().addAll(taskDuration);
 
 		VBox detailsLayout = new VBox();
-		detailsLayout.setPrefWidth(540);
+		detailsLayout.setPrefWidth(700);
 
 		if (taskStartDate== null && taskStartTime==null && taskEndDate==null && taskEndTime==null) {
 			detailsLayout.getChildren().addAll(titleNstatus);
@@ -121,8 +107,9 @@ public class ListItem extends StackPane{
 		consoleLayout.getChildren().addAll(detailsLayout, statusLayout);
 		this.setId("listItem");
 		this.getChildren().add(consoleLayout);
-		this.setPrefWidth(600);
+		//this.setPrefWidth(600);
 		this.setPadding(new Insets(2, 10, 2, 2));
+		this.setMinHeight(40);
 
 	}
 	public String getTitle() {

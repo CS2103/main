@@ -100,6 +100,7 @@ public class Constants {
 	public static final String COMMAND_EXIT = "exit";
 	public static final String COMMAND_INVALID = "invalid command";
 	public static final String COMMAND_ALERT = "alert";
+	public static final String COMMAND_SETPATH = "setpath";
 
 	// Array indices
 	public static final int INDEX_DAY = 0;
@@ -226,6 +227,7 @@ public class Constants {
 	public static final String FEEDBACK_INVALID = "That is an invalid action!";
 	public static final String FEEDBACK_INVALID_NUMBER_OF_QUOTES = "Invaild number of quotes";
 	public static final String FEEDBACK_INVALID_PARAMETERS_FOR_EDIT = "Invalid parameters for edit command";
+	public static final String FEEDBACK_SETPATH_SUCCESS= "New save location is: ";
 
 	// Switch-case
 	public static final int EMPTY_LIST = 0;
