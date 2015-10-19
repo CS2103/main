@@ -11,5 +11,5 @@ public interface ParserInterface {
 	DateTime getStartDateTime(String input);
 	DateTime getEndDateTime(String input);
 	int getIndex(String input);
-	Boolean isValidEndingTime(DateTime startTime, DateTime endTime);
+	boolean isValidEndingTime(DateTime startTime, DateTime endTime);
 }
