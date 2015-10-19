@@ -56,10 +56,11 @@ public class Parser implements ParserInterface {
 			return Integer.parseInt(input);
 		}
 	}
-
+	
 	@Override
-	public Boolean isValidEndingTime(DateTime startTime, DateTime endTime) {
+	public boolean isValidEndingTime(DateTime startTime, DateTime endTime) {
 		return startTime.isBefore(endTime);
 	}
+
 	
 }
