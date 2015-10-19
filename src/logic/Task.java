@@ -113,16 +113,16 @@ public class Task {
 	public void setTag(){
 		if(isValidDate(endingTime) || isValidDate(startingTime)){
 			if(isValidDate(startingTime)){
-				this.type_tag = "event";			// have start and end time
+				this.type_tag = "event";			// Event Tasks (have start and end time)
 			}
 			else{
-				this.type_tag = "deadline";		// have end but no start time
+				this.type_tag = "deadline";		// Deadline Tasks (have end but no start time)
 			}
 		} else{
-			this.type_tag = "task";				// have start time
+			this.type_tag = "task";				// Floating Tasks (no start and end date/time)
 		}
-	}
-
+	}	
+	
 	public boolean isValidDate(DateTime date) {
 		if (date.getYear() == 0){
 			return false;
