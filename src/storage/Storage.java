@@ -41,6 +41,11 @@ public class Storage {
 
 	public static void setPath(String path) {
 		Storage.currentTaskList = read();
+		
+		File file = new File(path);
+		if (file.isDirectory()) {
+			path = path + "/TBAsave.txt"; // this is for mac or "\\TBAsave.txt" for windows
+		}
 
 		try {
 			FileWriter fw = new FileWriter(savedPath.getAbsoluteFile());
@@ -85,8 +90,6 @@ public class Storage {
 		String line = "";
 		if (path == null) {
 			path = savedTask.getAbsolutePath();
-			System.out.println(path);
-			System.out.println("here");
 		}
 		try {
 			FileReader fr = new FileReader(path);
