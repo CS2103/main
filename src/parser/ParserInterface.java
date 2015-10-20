@@ -12,4 +12,5 @@ public interface ParserInterface {
 	DateTime getEndDateTime(String input);
 	int getIndex(String input);
 	boolean isValidEndingTime(DateTime startTime, DateTime endTime);
+	String getRecurValue(String input);
 }
