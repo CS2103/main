@@ -1,5 +1,7 @@
 package ui;
 
+import org.joda.time.DateTime;
+
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -18,15 +20,11 @@ public class ListItem extends StackPane{
 	private Circle statusIcon;
 	private Label index;
 	private Label title;
-	private Label startTime;
-	private Label endTime;
-	private Label startDate;
-	private Label endDate;
 	//private Label isDone;
 	private Label taskDuration;
 	//private Label isOverDue;
 
-	public ListItem(String taskTitle, String taskStartDate, String taskStartTime, String taskEndDate, String taskEndTime, boolean isDone, boolean isOverdue, int taskIndex) {
+	public ListItem(String taskTitle, DateTime taskStartTime, DateTime taskEndTime, String taskType, boolean isDone, boolean isOverdue, int taskIndex) {
 
 		title = new Label(taskTitle);
 		title.setId("title");
@@ -51,28 +49,18 @@ public class ListItem extends StackPane{
 			statusIcon.setFill(Color.RED);
 		}
 
-		startDate = new Label(taskStartDate);
-		startDate.setPrefWidth(60);
-		startDate.setFont(Font.font("SansSerif", FontWeight.SEMI_BOLD, 12));
-
-		startTime  = new Label(taskStartTime);
-		startTime.setPrefWidth(180);
-		startTime.setTextFill(Color.GREY);
-		startTime.setFont(Font.font("SansSerif", FontWeight.SEMI_BOLD, 12));
-
-		endDate = new Label(taskEndDate);
-		endDate.setPrefWidth(60);
-		endDate.setFont(Font.font("SansSerif", FontWeight.SEMI_BOLD, 12));
-
-		endTime  = new Label(taskEndTime);
-		endTime.setFont(Font.font("SansSerif", FontWeight.SEMI_BOLD, 12));
-		endTime.setTextFill(Color.GREY);
+		String startDate = (taskStartTime.getYear() == DateTime.now().getYear()) ? 
+				taskStartTime.toLocalDate().toString("EEE dd MMM") : taskStartTime.toLocalDate().toString("EEE dd MMM YYYY");
+		String startTime = taskStartTime.toLocalTime().toString("HHmm");
+		String endDate = (taskEndTime.getYear() == DateTime.now().getYear()) ?
+				taskEndTime.toLocalDate().toString("EEE dd MMM") : taskEndTime.toLocalDate().toString("EEE dd MMM YYYY");
+		String endTime = taskEndTime.toLocalTime().toString("HHmm");
 
 		taskDuration = new Label();
-		if (taskStartDate == null && taskStartTime == null && taskEndDate != null && taskEndTime!= null) {
-			taskDuration.setText("By [" + taskEndDate + "] " + taskEndTime + " hrs");
-		} else {
-			taskDuration.setText("[" + taskStartDate + "] " + taskStartTime + " hrs  -  [" + taskEndDate + "] " + taskEndTime + " hrs");
+		if (taskType.equals("deadline")) {
+			taskDuration.setText("By [" + endDate + "] " + endTime + " hrs");
+		} else if (taskType.equals("event")){
+			taskDuration.setText("[" + startDate + "] " + startTime + " hrs  -  [" + endDate + "] " + endTime + " hrs");
 		}
 		taskDuration.setTextFill(Color.LIGHTGRAY);
 		taskDuration.setFont(Font.font("SansSerif", FontPosture.ITALIC, 11));
@@ -88,7 +76,7 @@ public class ListItem extends StackPane{
 		VBox detailsLayout = new VBox();
 		detailsLayout.setPrefWidth(700);
 
-		if (taskStartDate== null && taskStartTime==null && taskEndDate==null && taskEndTime==null) {
+		if (taskType.equals("task")) {
 			detailsLayout.getChildren().addAll(titleNstatus);
 		} else {
 			detailsLayout.getChildren().addAll(titleNstatus, timeLayout);
