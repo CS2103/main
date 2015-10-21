@@ -206,8 +206,11 @@ public class TaskBin implements editTaskInfo{
 				taskList.add(redoComm.returnMani());
 				activeList.add(redoComm.returnMani());
 			}
+			else{
+				taskList.add(redoComm.returnMani());
+			}
 			break;
-
+			
 		case mark_tag:
 			undoStack.push(redoComm);
 			taskList.get(taskList.indexOf(redoComm.returnMani())).mark();
@@ -326,7 +329,7 @@ public class TaskBin implements editTaskInfo{
 		DateTime now = DateTime.now();
 		ArrayList<Task> undone = getUnfinished();
 		for(Task t:undone){
-			if(t.getEndingTime().isAfter(now)){
+			if((t.getEndingTime().isAfter(now))&&(!t.getType().equals("task"))){
 				overdue.add(t);
 			}
 		}
@@ -373,7 +376,6 @@ public class TaskBin implements editTaskInfo{
 
 	//New Method
 	public void addWeeklyTask(Task newTask, DateTime endTime){
-
 		ArrayList<Task> taskAdded = new ArrayList<Task>();
 		DateTime start = newTask.getEndingTime();
 		int i = 0;
@@ -387,6 +389,7 @@ public class TaskBin implements editTaskInfo{
 			taskList.add(tskcpy);
 			taskAdded.add(tskcpy);
 		}
+		Storage.write(taskList);
 		Command redoRecur = new Command(recur_tag, taskAdded);
 		redoStack.push(redoRecur);
 	}
@@ -404,6 +407,7 @@ public class TaskBin implements editTaskInfo{
 			i++;
 			taskList.add(tskcpy);
 		}
+		Storage.write(taskList);
 	}
 
 	public void addYearlyTask(Task newTask, DateTime endTime){
@@ -419,6 +423,7 @@ public class TaskBin implements editTaskInfo{
 			i++;
 			taskList.add(tskcpy);
 		}
+		
 	}
 
 
@@ -561,11 +566,18 @@ public class TaskBin implements editTaskInfo{
 
 	public void setDisplay(ArrayList<Task> list){
 		activeList = list;
+		
 	}
 
 	public void setDisplay(){
-		activeList = sortArrayByTime(activeList);
-		activeList = taskList;
+		ArrayList<Task> dis = new ArrayList<Task>();
+		for(Task t:taskList){
+			if(isWithinOneWeek(t)){
+				dis.add(t);
+			}
+		}
+		dis = sortArrayByTime(dis);
+		activeList = dis;
 	}
 
 	public ArrayList<Task> returnDisplay(){
@@ -589,10 +601,22 @@ public class TaskBin implements editTaskInfo{
 		}
 		return true;
 	}
-
-
-
-
-
-
+	
+	
+	public boolean isWithinOneWeek(Task t){
+		DateTime now = new DateTime();
+		if(t.getEndingTime().isAfter(now.plusWeeks(1))){
+			return false;
+		}
+		else{
+			return true;
+		}
+	}
+		
 }
+
+
+
+
+
+

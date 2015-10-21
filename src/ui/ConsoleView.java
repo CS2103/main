@@ -17,7 +17,6 @@ import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
@@ -31,7 +30,6 @@ import javafx.util.Duration;
 
 public class ConsoleView extends Pane{
 
-	Label titleBar;
 	Label dateDisplay;
 	Label clockDisplay;
 	Label currentDisplay;
@@ -45,16 +43,6 @@ public class ConsoleView extends Pane{
 
 	public ConsoleView() {
 
-		/*
-		titleBar = new Label();
-		titleBar.setId("titleBar");
-		titleBar.setText("TextBuddyAwesome");
-		titleBar.setPrefHeight(25);
-		titleBar.setPrefWidth(600);
-		titleBar.setPadding(new Insets(0 ,0 , 0, 20));
-		titleBar.setFont(Font.font("Georgia", 20));
-		titleBar.setTextFill(Color.ORANGE);
-		 */
 		dateDisplay = new Label();
 		dateDisplay.setId("timeDisplay");
 		dateDisplay.setFont(new Font("SansSerif", 30));
@@ -89,8 +77,6 @@ public class ConsoleView extends Pane{
 		timeline.setCycleCount(Animation.INDEFINITE);
 		timeline.play();
 
-
-
 		timedList = new VBox();
 		timedList.setStyle("-fx-background-color:linear-gradient( from 100.0% 0.0% to 100.0% 100.0%, rgb(51,51,51) 0.0, rgb(179,179,179) 40.0, rgb(51,51,51) 100.0)");
 		timedList.autosize();
@@ -119,20 +105,17 @@ public class ConsoleView extends Pane{
 		scrollPane.setBorder(null);
 
 		inputConsole = new AutoCompleteTextField();
+		inputConsole.setId("inputConsole");
 		inputConsole.setEditable(true);
 		inputConsole.setPrefHeight(25);
 		inputConsole.setPrefWidth(700);
-		inputConsole.setStyle("-fx-background-color: rgba(255,255,255, 0.8);-fx-text-inner-color: black;-fx-font-size:15");
+		inputConsole.setStyle("-fx-background-color: rgba(255,255,255, 0.7);-fx-text-inner-color: black;-fx-font-size:15");
 		inputConsole.setFocusTraversable(true);
 
 		status = new Label();
 		status.setPrefWidth(700);
 		status.setPrefHeight(30);
-		status.setContentDisplay(ContentDisplay.RIGHT);
-		status.setPadding(new Insets(0,0,0, 20));
 		status.setId("statusBar");
-		status.setTextFill(Color.WHITE);
-		status.setFont(new Font("Arial", 20));
 
 		HBox dateTime = new HBox();
 		dateTime.getChildren().addAll(dateDisplay, clockDisplay);

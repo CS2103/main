@@ -22,54 +22,54 @@ public class Logic {
 
 	public ArrayList<Task> inputHandler(String input) throws ParseException{
 		String command = CommandParser.getCommand(input);
-		if(command.equals("add")){
+		if(command.equalsIgnoreCase(("add"))){
 			addTask(input);
 			return bin.returnDisplay();
 		}
-		else if(command.equals("home")){
+		else if(command.equalsIgnoreCase("home")){
 			return displayHome();
 		}
-		else if (command.equals("setpath")){
+		else if (command.equalsIgnoreCase("setpath")){
 			Storage.setPath(input.split(" ")[1].trim());
 			return displayHome();
 		}
-		else if(command.equals("delete")){
+		else if(command.equalsIgnoreCase("delete")){
 			return deleteTaskByIndex(parser.getIndex(input));
 		}
-		else if(command.equals("edit")){
+		else if(command.equalsIgnoreCase("edit")){
 			int index = parser.getIndex(input);
 			return editTask(index, parser.getField(input), TitleParser.getEditTitle(input));
 		}
-		else if (command.equals("mark")){
+		else if (command.equalsIgnoreCase("mark")){
 			int index = parser.getIndex(input);
 			System.out.println(index - index);
 			return markTaskByIndex(index-1);
 		}
-		else if (command.equals("unmark")){
+		else if (command.equalsIgnoreCase("unmark")){
 			int index = parser.getIndex(input);
 			System.out.println(index - index);
 			return unMarkTaskByIndex(index-1);
 		}
-		else if(command.equals("display")){
+		else if(command.equalsIgnoreCase("display")){
 
 		}
-		else if(command.equals("recur")){
+		else if(command.equalsIgnoreCase("recur")){
 			DateTime endTime = new DateTime(2015, 11, 25, 0, 0);
 			addRecurTask(input, endTime);
 		}
 
-		else if(command.equals("search")){
+		else if(command.equalsIgnoreCase("search")){
 			System.out.println("DEBUG " + parser.getTitle(input));
 			ArrayList<Task> result = searchEntries(parser.getTitle(input));
 			bin.setDisplay(result);
 
 			return bin.returnDisplay();
 		}
-		else if(command.equals("undo")){
+		else if(command.equalsIgnoreCase("undo")){
 			bin.undo();
 			return bin.returnDisplay();
 		}
-		else if(command.equals("redo")){
+		else if(command.equalsIgnoreCase("redo")){
 			bin.redo();
 			return bin.returnDisplay();
 		}
