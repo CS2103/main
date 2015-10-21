@@ -563,11 +563,18 @@ public class TaskBin implements editTaskInfo{
 
 	public void setDisplay(ArrayList<Task> list){
 		activeList = list;
+		
 	}
 
 	public void setDisplay(){
-		activeList = sortArrayByTime(activeList);
-		activeList = taskList;
+		ArrayList<Task> dis = new ArrayList<Task>();
+		for(Task t:taskList){
+			if(isWithinOneWeek(t)){
+				dis.add(t);
+			}
+		}
+		dis = sortArrayByTime(dis);
+		activeList = dis;
 	}
 
 	public ArrayList<Task> returnDisplay(){
@@ -591,10 +598,22 @@ public class TaskBin implements editTaskInfo{
 		}
 		return true;
 	}
-
-
-
-
-
-
+	
+	
+	public boolean isWithinOneWeek(Task t){
+		DateTime now = new DateTime();
+		if(t.getEndingTime().isAfter(now.plusWeeks(1))){
+			return false;
+		}
+		else{
+			return true;
+		}
+	}
+		
 }
+
+
+
+
+
+
