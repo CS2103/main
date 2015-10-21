@@ -22,7 +22,7 @@ public class Logic {
 
 	public ArrayList<Task> inputHandler(String input) throws ParseException{
 		String command = CommandParser.getCommand(input);
-		if(command.equalsIgnoreCase(("add")){
+		if(command.equalsIgnoreCase(("add"))){
 			addTask(input);
 			return bin.returnDisplay();
 		}
