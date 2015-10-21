@@ -79,10 +79,9 @@ public class GUIService {
 			if (task.getType().equals("event")) {
 				ListItem newListItem = new ListItem(
 						task.getTitle(),
-						task.getStartingTime().toLocalDate().toString("EEE dd MMM"),
-						task.getStartingTime().toLocalTime().toString("HHmm"),
-						task.getEndingTime().toLocalDate().toString("EEE dd MMM"),
-						task.getEndingTime().toLocalTime().toString("HHmm"),
+						task.getStartingTime(),
+						task.getEndingTime(),
+						task.getType(),
 						task.getStatus(),
 						false,
 						index++);
@@ -90,10 +89,9 @@ public class GUIService {
 			} else if (task.getType().equalsIgnoreCase("deadline")) {
 				ListItem newListItem = new ListItem(
 						task.getTitle(),
-						null,
-						null,
-						task.getEndingTime().toLocalDate().toString("EEE dd MMM"),
-						task.getEndingTime().toLocalTime().toString("HHmm"),
+						task.getStartingTime(),
+						task.getEndingTime(),
+						task.getType(),
 						task.getStatus(),
 						false,
 						index++);
@@ -101,10 +99,9 @@ public class GUIService {
 			} else if (task.getType().equals("task")) {
 				ListItem newFloatingItem = new ListItem(
 						task.getTitle(),
-						null,
-						null,
-						null,
-						null,
+						task.getStartingTime(),
+						task.getEndingTime(),
+						task.getType(),
 						task.getStatus(),
 						false,
 						index++);
@@ -136,6 +133,15 @@ public class GUIService {
 				xOffset = stage.getX() - event.getScreenX();
 				yOffset = stage.getY() - event.getScreenY();
 			}
+		});
+
+
+		consoleView.floatingList.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent> (){
+
+			@Override
+			public void handle(MouseEvent event) {
+			}
+
 		});
 
 		consoleView.addEventHandler(MouseEvent.MOUSE_DRAGGED, new EventHandler<MouseEvent> (){
