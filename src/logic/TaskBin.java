@@ -329,7 +329,7 @@ public class TaskBin implements editTaskInfo{
 		DateTime now = DateTime.now();
 		ArrayList<Task> undone = getUnfinished();
 		for(Task t:undone){
-			if(t.getEndingTime().isAfter(now)){
+			if((t.getEndingTime().isAfter(now))&&(!t.getType().equals("task"))){
 				overdue.add(t);
 			}
 		}
@@ -389,6 +389,7 @@ public class TaskBin implements editTaskInfo{
 			taskList.add(tskcpy);
 			taskAdded.add(tskcpy);
 		}
+		Storage.write(taskList);
 		Command redoRecur = new Command(recur_tag, taskAdded);
 		redoStack.push(redoRecur);
 	}
@@ -406,6 +407,7 @@ public class TaskBin implements editTaskInfo{
 			i++;
 			taskList.add(tskcpy);
 		}
+		Storage.write(taskList);
 	}
 
 	public void addYearlyTask(Task newTask, DateTime endTime){
@@ -421,6 +423,7 @@ public class TaskBin implements editTaskInfo{
 			i++;
 			taskList.add(tskcpy);
 		}
+		
 	}
 
 
