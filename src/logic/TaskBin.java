@@ -206,8 +206,11 @@ public class TaskBin implements editTaskInfo{
 				taskList.add(redoComm.returnMani());
 				activeList.add(redoComm.returnMani());
 			}
+			else{
+				taskList.add(redoComm.returnMani());
+			}
 			break;
-
+			
 		case mark_tag:
 			undoStack.push(redoComm);
 			taskList.get(taskList.indexOf(redoComm.returnMani())).mark();
@@ -373,7 +376,6 @@ public class TaskBin implements editTaskInfo{
 
 	//New Method
 	public void addWeeklyTask(Task newTask, DateTime endTime){
-
 		ArrayList<Task> taskAdded = new ArrayList<Task>();
 		DateTime start = newTask.getEndingTime();
 		int i = 0;
