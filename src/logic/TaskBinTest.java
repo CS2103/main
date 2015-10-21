@@ -95,17 +95,41 @@ public class TaskBinTest {
 
 	@Test
 	public void testAddWeeklyTask() {
-		fail("Not yet implemented"); // TODO
+		boolean pass = false;
+		//DateTime d0 = new DateTime(0,1,1,0,0);
+		//DateTime d1 = new DateTime(2015,10,21,0,0);
+		DateTime d2 = new DateTime(2015,11,25,0,0);
+		//DateTime d3 = new DateTime(2015,2,22,0,0);
+		DateTime d4 = new DateTime(2016,1,21,0,0);
+		DateTime d5 = new DateTime(2014,3,23,0,0);
+		Task t = new Task("Go fishing" ,d5, d2);
+		testBin.addWeeklyTask(t, d4);
+		testBin.setDisplayAll();
+		ArrayList<Task> eventsList = testBin.returnDisplay();
+		for(int i = 0; i< eventsList.size(); i++){
+			System.out.println(eventsList.get(i).getEndingTime().toString());
+		}
+		
+		assertTrue(pass);
 	}
 
-	@Test
-	public void testDisplayInit() {
-		fail("Not yet implemented"); // TODO
-	}
 
 	@Test
 	public void testIncludeAllWords() {
-		fail("Not yet implemented"); // TODO
+		String[] l1 = {"Hello", "World"};
+		String[] l2 = {"Hello"};
+		String[] l3 = {"World He say", "world ", "Helloworld"}; 
+		String[] l4 = {"world", "hello", "He", "is"};
+		String[] l5 = {"Hello world", "world"};
+		String[][] listCases = {l2, l3, l4, l5};
+		boolean[] results = new boolean[4];
+		for(int i =0; i < 4; i++){
+			results[i] = testBin.includeAllWords(l1, listCases[i]);
+		}
+		boolean[] expected = {false, false, true, false};
+		assertArrayEquals(results, expected);
 	}
+		
+
 
 }

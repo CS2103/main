@@ -566,7 +566,10 @@ public class TaskBin implements editTaskInfo{
 
 	public void setDisplay(ArrayList<Task> list){
 		activeList = list;
-		
+	}
+	
+	public void setDisplayAll(){
+		activeList = taskList;
 	}
 
 	public void setDisplay(){
@@ -591,7 +594,7 @@ public class TaskBin implements editTaskInfo{
 		for(String key:keywords){
 			isFound = false;
 			for(String til: title){
-				if(key.equals(til)){
+				if(key.equalsIgnoreCase(til)){
 					isFound = true;
 				}
 			}
