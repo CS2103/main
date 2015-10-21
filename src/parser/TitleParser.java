@@ -54,8 +54,8 @@ public class TitleParser {
 		int lastIndex = input.length();
 
 		for (String regex : dictionary) {
-			if (input.indexOf(regex + " ") > firstIndex) {
-				firstIndex = input.indexOf(regex + " ");
+			if (input.toLowerCase().indexOf(regex + " ") > firstIndex) {
+				firstIndex = input.toLowerCase().indexOf(regex + " ");
 			}
 		}
 
@@ -71,8 +71,8 @@ public class TitleParser {
 		taskKeywords.removeAll(Arrays.asList(dictionary));
 
 		for (String regex : taskKeywords) {
-			if (input.indexOf(" " + regex) < lastIndex && input.indexOf(" " + regex) > 0) {
-				lastIndex = input.indexOf(regex + " ");
+			if (input.toLowerCase().indexOf(" " + regex) < lastIndex && input.toLowerCase().indexOf(" " + regex) > 0) {
+				lastIndex = input.toLowerCase().indexOf(regex + " ");
 			}
 		}
 		if (lastIndex <= firstIndex) {
