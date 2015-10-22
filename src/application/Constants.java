@@ -10,7 +10,7 @@ import javafx.scene.text.FontWeight;
 
 public class Constants {
 
-	public static final String APP_NAME = "TextBuddyAwesome";
+	public static final String APP_NAME = "TBA";
 
 	public static final String WELCOME_MESSAGE = "Welcome to TaskBuddyAwesome. \n"
 			+ "To view available commands type HELP and hit enter.\n";
@@ -225,7 +225,7 @@ public class Constants {
 	public static final String FEEDBACK_REDO_SUCCESS = "Redone!!";
 	public static final String FEEDBACK_REDO_FAILURE = "Nothing to redo!";
 	public static final String FEEDBACK_VIEW_HOMESCREEN = "Displaying Home-Screen!";
-	public static final String FEEDBACK_VIEW_TODAY = "Displaying agenda for today";
+	public static final String FEEDBACK_VIEW_TODAY = "Displaying agenda for this week";
 	public static final String FEEDBACK_INVALID = "That is an invalid action!";
 	public static final String FEEDBACK_INVALID_NUMBER_OF_QUOTES = "Invaild number of quotes";
 	public static final String FEEDBACK_INVALID_PARAMETERS_FOR_EDIT = "Invalid parameters for edit command";

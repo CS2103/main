@@ -105,5 +105,4 @@ public class DateParser {
 		}
 		return DateTime.now().withHourOfDay(0).withMinuteOfHour(0);
 	}
-
 }

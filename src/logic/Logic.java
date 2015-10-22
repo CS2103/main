@@ -37,18 +37,13 @@ public class Logic {
 			return deleteTaskByIndex(parser.getIndex(input));
 		}
 		else if(command.equals("edit")){
-			int index = parser.getIndex(input);
-			return editTask(index, parser.getField(input), TitleParser.getEditTitle(input));
+			return editTask(parser.getIndex(input), parser.getField(input), TitleParser.getEditTitle(input));
 		}
 		else if (command.equals("mark")){
-			int index = parser.getIndex(input);
-			System.out.println(index - index);
-			return markTaskByIndex(index-1);
+			return markTaskByIndex(parser.getIndexes(input));
 		}
 		else if (command.equals("unmark")){
-			int index = parser.getIndex(input);
-			System.out.println(index - index);
-			return unMarkTaskByIndex(index-1);
+			return unMarkTaskByIndex(parser.getIndexes(input));
 		}
 		else if(command.equals("display")){
 
@@ -57,37 +52,35 @@ public class Logic {
 			DateTime endTime = new DateTime(2015, 11, 25, 0, 0);
 			addRecurTask(input, endTime);
 		}
-
 		else if(command.equals("search")){
 			System.out.println("DEBUG " + parser.getTitle(input));
 			ArrayList<Task> result = searchEntries(parser.getTitle(input));
 			bin.setDisplay(result);
-
 			return bin.returnDisplay();
 		}
 		else if(command.equals("undo")){
 			bin.undo();
 			return bin.returnDisplay();
-		}
-		else if(command.equals("redo")){
+		} else if(command.equals("redo")){
 			bin.redo();
 			return bin.returnDisplay();
 		}
-
 		return null;
 	}
 
 	public ArrayList<Task> addTask(String input) throws ParseException{
 		String title = parser.getTitle(input);
-		System.out.println("Title: " +title);
+		if (title.length()!=0) {
 		DateTime startTime = parser.getStartDateTime(input);
 		DateTime endTime = parser.getEndDateTime(input);
-		System.out.println(startTime);
-		System.out.println(endTime);
+		System.out.println("Title: " + title);
+		System.out.println("StartTime: " + startTime);
+		System.out.println("EndTime: " + endTime);
 
 		Task newTask = new Task(title, startTime, endTime);
 		bin.add(newTask);
 		bin.setDisplay();
+		}
 		return bin.returnDisplay();
 	}
 
@@ -106,8 +99,7 @@ public class Logic {
 	}
 
 	public ArrayList<Task> editTask(int index, String field, String info){
-		ArrayList<Task> display = bin.returnDisplay();
-		Task toEdit = display.get(index - 1);
+		Task toEdit = bin.returnDisplay().get(index - 1);
 		switch(field){
 		case "title":
 			bin.editTitle(toEdit, info);
@@ -116,22 +108,10 @@ public class Logic {
 			bin.editDescription(toEdit, info);
 			break;
 		case "start":
+			bin.editStartingDate(toEdit, parser.getDateTime(info));
 			break;
 		case "end":
-			break;
-		}
-		return bin.returnDisplay();
-	}
-
-	public ArrayList<Task> editTask(int index, String field, DateTime date){
-		ArrayList<Task> display = bin.returnDisplay();
-		Task toEdit = display.get(index - 1);
-		switch(field){
-		case "starting date":
-			bin.editStartingDate(toEdit, date);
-			break;
-		case "ending date":
-			bin.editEndingDate(toEdit, date);
+			bin.editEndingDate(toEdit, parser.getDateTime(info));
 			break;
 		}
 		return bin.returnDisplay();
@@ -185,18 +165,22 @@ public class Logic {
 		bin.setDisplay(result);
 		return bin.returnDisplay();
 	}
-	public ArrayList<Task> markTaskByIndex(int index){
-		ArrayList<Task> display = bin.returnDisplay();
-		Task toMark = new Task();
-		toMark = display.get(index);
-		bin.markTaskInstance(toMark);
+	public ArrayList<Task> markTaskByIndex(ArrayList<Integer> indexArray){
+		for (int index : indexArray) {
+			ArrayList<Task> display = bin.returnDisplay();
+			Task toMark = new Task();
+			toMark = display.get(index-1);
+			bin.markTaskInstance(toMark);
+		}
 		return bin.returnDisplay();
 	}
-	public ArrayList<Task> unMarkTaskByIndex(int index){
+	public ArrayList<Task> unMarkTaskByIndex(ArrayList<Integer> indexArray){
+		for (int index : indexArray) {
 		ArrayList<Task> display = bin.returnDisplay();
 		Task toMark = new Task();
-		toMark = display.get(index);
+		toMark = display.get(index-1);
 		bin.unMarkTaskInstance(toMark);
+		}
 		return bin.returnDisplay();
 	}
 
@@ -228,17 +212,16 @@ public class Logic {
 		case Constants.COMMAND_SEARCH :
 			return Constants.FEEDBACK_SHOW_SUCCESS + parser.getTitle(input);
 		case Constants.COMMAND_UNDO :
-			//return bin.redoStack.peek() != null ? Constants.FEEDBACK_UNDO_SUCCESS : Constants.FEEDBACK_UNDO_FAILURE;
+			return bin.undoStack.isEmpty() ? Constants.FEEDBACK_UNDO_FAILURE : Constants.FEEDBACK_UNDO_SUCCESS;
 		case Constants.COMMAND_REDO :
-			//return bin.redoStack.peek() != null ? Constants.FEEDBACK_REDO_SUCCESS : Constants.FEEDBACK_REDO_FAILURE;
+			return bin.redoStack.isEmpty() ? Constants.FEEDBACK_REDO_FAILURE : Constants.FEEDBACK_REDO_SUCCESS;
 		case Constants.COMMAND_EDIT :
-			return Constants.FEEDBACK_EDIT_SUCCESS;
+			return bin.undoStack.peek().returnMani().getTitle() + Constants.FEEDBACK_EDIT_SUCCESS;
 		case Constants.COMMAND_SETPATH :
 			return Constants.FEEDBACK_SETPATH_SUCCESS + input.split(" ")[1].trim();
 		default :
 			return Constants.FEEDBACK_INVALID;
 		}
-		//bin.undoStack.peek().returnMani().getTitle()
 	}
 	public int getIndex(String input) {
 		return parser.getIndex(input);

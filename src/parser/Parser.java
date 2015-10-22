@@ -1,5 +1,7 @@
 package parser;
 
+import java.util.ArrayList;
+
 import org.joda.time.DateTime;
 
 import application.Constants;
@@ -27,6 +29,11 @@ public class Parser implements ParserInterface {
 	}
 
 	@Override
+	public DateTime getDateTime(String input) {
+		return DateParser.getDateTime(input);
+	}
+	
+	@Override
 	public DateTime getStartDateTime(String input) {
 		return DateParser.getDateTime(getStart(input));
 	}
@@ -50,10 +57,23 @@ public class Parser implements ParserInterface {
 	@Override
 	public int getIndex(String input) {
 		input = input.split(Constants.SPACE)[1].trim();
-		if (input.equalsIgnoreCase(Constants.SHOW_ALL)) {
-			return -1;
-		} else {
+		
 			return Integer.parseInt(input);
+		
+	}
+	
+	public ArrayList<Integer> getIndexes(String input) {
+		ArrayList<Integer> indexArray = new ArrayList<Integer>();
+		input = input.split(Constants.SPACE)[1].trim();
+		if (input.length() == 1) {
+			 indexArray.add(Integer.parseInt(input));
+			 return indexArray;
+		} else {
+			String[] indexStringArray = input.split(Constants.COMMA);
+			for (String indexString : indexStringArray) {
+				indexArray.add(Integer.parseInt(indexString));
+			}
+			return indexArray;
 		}
 	}
 	

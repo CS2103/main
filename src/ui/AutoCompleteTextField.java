@@ -27,7 +27,20 @@ public class AutoCompleteTextField extends TextField {
 	public AutoCompleteTextField() {
 		super();
 		entries = new TreeSet<>();
-		Collections.addAll(entries, "add [taskname] from [day] [time] to [day] [time]", "add [taskname] from [time] to [time]", "add [taskname]", "exit", "delete [index]", "mark [index]", "search [keyword]", "unmark [index]", "edit [index] [field] [newvalue]");
+		Collections.addAll(
+				entries, 
+				"add [taskname] from [day] [time] to [day] [time]", 
+				"add [taskname] from [time] to [time]", 
+				"add [taskname]", 
+				"undo",
+				"redo",
+				"exit",
+				"delete [index]", 
+				"mark [index]", 
+				"search [keyword]", 
+				"unmark [index]", 
+				"edit [index] title/start/end [newvalue]"
+				);
 
 		entriesPopup = new ContextMenu();
 		entriesPopup.setAutoHide(true);
@@ -88,14 +101,15 @@ public class AutoCompleteTextField extends TextField {
 			final String result = searchResult.get(i);
 			Label entryLabel = new Label(result);
 			CustomMenuItem item = new CustomMenuItem(entryLabel, true);
-			item.setOnAction(new EventHandler<ActionEvent>()
-			{
+			/*
+			item.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent actionEvent) {
 					setText(result);
 					entriesPopup.hide();
 				}
 			});
+			*/
 			menuItems.add(item);
 		}
 		entriesPopup.getItems().clear();
