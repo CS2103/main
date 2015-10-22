@@ -31,8 +31,8 @@ public class Storage {
 	// attributes
 	private static File savedTask = new File("savedTask.json");
 	private static File savedPath = new File("savedPath.txt");
-	private static String path;
-	private static BufferedReader br;
+	public static String path;
+//	private static BufferedReader br;
 	private static ArrayList<Task> currentTaskList = new ArrayList<Task>();
 
 	public Storage() {
@@ -41,7 +41,7 @@ public class Storage {
 
 	public static void setPath(String path) {
 		Storage.currentTaskList = read();
-		
+
 		File file = new File(path);
 		if (file.isDirectory()) {
 			path = path + "/TBAsave.txt"; // this is for mac or "\\TBAsave.txt" for windows
@@ -80,8 +80,9 @@ public class Storage {
 	public static ArrayList<Task> read() {
 		try {
 			FileReader fr = new FileReader(savedPath);
-			br = new BufferedReader(fr);
+			BufferedReader br = new BufferedReader(fr);
 			Storage.path = br.readLine();
+			br.close();
 		} catch (FileNotFoundException e) {
 		} catch (IOException e) {
 			e.printStackTrace();
