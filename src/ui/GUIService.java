@@ -41,7 +41,7 @@ public class GUIService {
 
 	StackPane content;
 	ConsoleView consoleView;
-	DetailedView detailedView;
+	//DetailedView detailedView;
 	
 	Logic logic;
 
