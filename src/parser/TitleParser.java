@@ -10,34 +10,26 @@ public class TitleParser {
 	public static String getTitle(String input) {
 		String text = new String();
 		text = splitInputWithDictionary(Constants.DICTIONARY_ADD, input);
-		System.err.println("Te 1"+text);
 		if (text == null) {
 			text = splitInputWithDictionary(Constants.DICTIONARY_DELETE, input);
-			System.err.println("Te 2"+text);
 		}
 		if (text == null) {
 			text = splitInputWithDictionary(Constants.DICTIONARY_EDIT, input);
-			System.err.println("Te 3"+text);
 		}
 		if (text == null) {
 			text = splitInputWithDictionary(Constants.DICTIONARY_SEARCH, input);
-			System.err.println("Te 4"+text);
 		}
 		if (text == null) {
 			text = splitInputWithDictionary(Constants.DICTIONARY_UNDO, input);
-			System.err.println("Te 5"+text);
 		}
 		if (text == null) {
 			text = splitInputWithDictionary(Constants.DICTIONARY_REDO, input);
-			System.err.println("Te 6"+text);
 		}
 		if (text == null) {
 			text = splitInputWithDictionary(Constants.DICTIONARY_EXIT, input);
-			System.err.println("Te 7"+text);
 		}
 		if (text == null) {
 			text = splitInputWithDictionary(Constants.DICTIONARY_SETPATH, input);
-			System.err.println("Te "+text);
 		}
 		return text;
 	}

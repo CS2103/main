@@ -8,6 +8,7 @@ public interface ParserInterface {
 	String getStart(String input);
 	String getEnd(String input);
 	String getField(String input);
+	DateTime getDateTime(String input);
 	DateTime getStartDateTime(String input);
 	DateTime getEndDateTime(String input);
 	int getIndex(String input);

@@ -120,6 +120,9 @@ public class TaskBin implements editTaskInfo{
 	}
 	/********************************Undo Methods************************************/
 	public void undo(){
+		if (this.undoStack.isEmpty()) {
+			return;
+		}
 		Command previousComm = this.undoStack.pop();
 		String command = previousComm.returnCommand();
 		switch(command){
@@ -185,6 +188,9 @@ public class TaskBin implements editTaskInfo{
 	}
 
 	public void redo(){
+		if (this.redoStack.isEmpty()) {
+			return;
+		}
 		Command redoComm = redoStack.pop();
 		String command = redoComm.returnCommand();
 		switch(command){
@@ -476,14 +482,13 @@ public class TaskBin implements editTaskInfo{
 		redoStack.clear();
 	}
 
-	//	@Override
 	@Override
 	public void editStartingDate(Task task, DateTime date){
 		Task tar = taskList.get(taskList.indexOf(task));
 		Task tarDis = activeList.get(activeList.indexOf(tar));
 		Task buffer = task;
 		tar.setStartingDate(date);
-		tarDis.setEndingDate(date);
+		tarDis.setStartingDate(date);
 		Command editDate = new Command(alter_tag, tar, buffer);
 		undoStack.push(editDate);
 		taskList = sortArrayByTime(taskList);

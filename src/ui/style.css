@@ -27,8 +27,18 @@
 	-fx-padding: 0 0 0 20;
 }
 
-
-
 #listItem {
 	-fx-background-color: rgba(0,0,0,0.2);
+}
+
+#title {
+	
+}
+
+#index {
+	
+}
+
+#statusIcon {
+	
 }
