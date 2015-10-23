@@ -620,6 +620,16 @@ public class TaskBin implements editTaskInfo{
 			return true;
 		}
 	}
+	
+	public ArrayList<Task> taskFilter(ArrayList<Task> arr){
+		ArrayList<Task> filteredResults = new ArrayList<Task>();
+		for(Task t: arr){
+			if(t.isAfterNow()&& t.getStatus()){
+				filteredResults.add(t);
+			}
+		}
+		return filteredResults;
+	}
 		
 }
 

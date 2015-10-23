@@ -13,7 +13,6 @@ public class Task {
 	private DateTime startingTime;
 	private DateTime endingTime;
 	private String type_tag;
-	private boolean isOverdue = false;
 	private boolean[] recurring = new boolean[7];
 
 	public Task(Task task){
@@ -84,8 +83,8 @@ public class Task {
 	public DateTime getEndingTime(){
 		return endingTime;
 	}
-	public boolean getIsOverdue() {
-		return endingTime.isBeforeNow() && !isFinished && !type_tag.equals("task");
+	public boolean isAfterNow() {
+		return endingTime.isBeforeNow() && !type_tag.equals("task");
 	}
 
 	//Mutators
