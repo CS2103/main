@@ -92,6 +92,7 @@ public class TaskBinTest {
 		assertTrue(pass);
 		
 	}
+	//The test consists of cases include different dates
 
 	@Test
 	public void testAddWeeklyTask() {
@@ -129,7 +130,7 @@ public class TaskBinTest {
 		boolean[] expected = {false, false, true, false};
 		assertArrayEquals(results, expected);
 	}
-		
+	//Include different situations: with different capital and with or without space	
 
 
 }

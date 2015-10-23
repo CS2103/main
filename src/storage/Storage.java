@@ -29,10 +29,10 @@ public class Storage {
 	final DateTime reconstituted = gson.fromJson(json, DateTime.class);
 
 	// attributes
-	private static File savedTask = new File("savedTask.json");
+	private static File tempSavedTask = new File("savedTask.json");
 	private static File savedPath = new File("savedPath.txt");
-	private static String path;
-	private static BufferedReader br;
+
+	public static String path; // public for testing, change after done
 	private static ArrayList<Task> currentTaskList = new ArrayList<Task>();
 
 	public Storage() {
@@ -40,9 +40,12 @@ public class Storage {
 	}
 
 	public static void setPath(String path) {
-		Storage.currentTaskList = read();
-		
 		File file = new File(path);
+		if (!file.exists()) {
+			System.out.println("file not exists");
+		}
+		Storage.currentTaskList = read();
+
 		if (file.isDirectory()) {
 			path = path + "/TBAsave.txt"; // this is for mac or "\\TBAsave.txt" for windows
 		}
@@ -60,6 +63,8 @@ public class Storage {
 		Storage.path = path;
 
 		write(currentTaskList);
+
+		tempSavedTask.delete();
 	}
 
 	public static void write(ArrayList<Task> tasks) {
@@ -80,8 +85,9 @@ public class Storage {
 	public static ArrayList<Task> read() {
 		try {
 			FileReader fr = new FileReader(savedPath);
-			br = new BufferedReader(fr);
+			BufferedReader br = new BufferedReader(fr);
 			Storage.path = br.readLine();
+			br.close();
 		} catch (FileNotFoundException e) {
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -89,7 +95,7 @@ public class Storage {
 		ArrayList<Task> taskList = new ArrayList<Task>();
 		String line = "";
 		if (path == null) {
-			path = savedTask.getAbsolutePath();
+			path = tempSavedTask.getAbsolutePath();
 		}
 		try {
 			FileReader fr = new FileReader(path);
@@ -99,7 +105,7 @@ public class Storage {
 				stringBuilder.append(line).append("\n");
 			}
 			br.close();
-			String jsonString = stringBuilder.toString();			   
+			String jsonString = stringBuilder.toString();		
 			taskList = gson.fromJson(jsonString, new TypeToken<ArrayList<Task>>(){}.getType());
 		} catch (FileNotFoundException e) {
 		} catch (IOException e) {

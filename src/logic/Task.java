@@ -83,6 +83,9 @@ public class Task {
 	public DateTime getEndingTime(){
 		return endingTime;
 	}
+	public boolean isAfterNow() {
+		return endingTime.isBeforeNow() && !type_tag.equals("task");
+	}
 
 	//Mutators
 	public void setTitle(String til){
@@ -121,7 +124,7 @@ public class Task {
 		} else{
 			this.type_tag = "task";				// Floating Tasks (no start and end date/time)
 		}
-	}	
+	}
 	
 	public boolean isValidDate(DateTime date) {
 		if (date.getYear() == 0){

@@ -17,6 +17,7 @@ import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
@@ -91,8 +92,7 @@ public class ConsoleView extends Pane{
 
 		listDisplay = new HBox();
 		listDisplay.setPrefWidth(700);
-		listDisplay.setStyle("-fx-background-color:linear-gradient( from 100.0% 0.0% to 100.0% 100.0%, rgb(51,51,51) 0.0, rgb(179,179,179) 40.0, rgb(51,51,51) 100.0)");
-
+		//listDisplay.setStyle("-fx-background-color:linear-gradient( from 100.0% 0.0% to 100.0% 100.0%, rgb(51,51,51) 0.0, rgb(179,179,179) 40.0, rgb(51,51,51) 100.0)");
 
 		scrollPane = new ScrollPane();
 		scrollPane.setId("scrollPane");
@@ -103,7 +103,8 @@ public class ConsoleView extends Pane{
 		scrollPane.setMinHeight(400);
 		scrollPane.setFocusTraversable(false);
 		scrollPane.setBorder(null);
-
+		scrollPane.setPickOnBounds(false);
+		
 		inputConsole = new AutoCompleteTextField();
 		inputConsole.setId("inputConsole");
 		inputConsole.setEditable(true);
@@ -116,6 +117,7 @@ public class ConsoleView extends Pane{
 		status.setPrefWidth(700);
 		status.setPrefHeight(30);
 		status.setId("statusBar");
+		status.setAlignment(Pos.CENTER_LEFT);
 
 		HBox dateTime = new HBox();
 		dateTime.getChildren().addAll(dateDisplay, clockDisplay);

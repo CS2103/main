@@ -19,6 +19,7 @@ import application.Constants;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -40,7 +41,8 @@ public class GUIService {
 
 	StackPane content;
 	ConsoleView consoleView;
-
+	//DetailedView detailedView;
+	
 	Logic logic;
 
 	int listIndex;
@@ -75,37 +77,19 @@ public class GUIService {
 		ObservableList<ListItem> floatingTasks=FXCollections.observableArrayList ();
 		for (Task task : tasksArr) {
 			System.out.println(task.getType());
-
-			if (task.getType().equals("event")) {
-				ListItem newListItem = new ListItem(
-						task.getTitle(),
-						task.getStartingTime(),
-						task.getEndingTime(),
-						task.getType(),
-						task.getStatus(),
-						false,
-						index++);
+			ListItem newListItem = new ListItem(
+					task.getTitle(),
+					task.getStartingTime(),
+					task.getEndingTime(),
+					task.getType(),
+					task.getStatus(),
+					task.getIsOverdue(),
+					index++);
+			assert task.getType()!=null;
+			if (task.getType().equalsIgnoreCase("task")) {
+				floatingTasks.add(newListItem);
+			} else {
 				items.add(newListItem);
-			} else if (task.getType().equalsIgnoreCase("deadline")) {
-				ListItem newListItem = new ListItem(
-						task.getTitle(),
-						task.getStartingTime(),
-						task.getEndingTime(),
-						task.getType(),
-						task.getStatus(),
-						false,
-						index++);
-				items.add(newListItem);
-			} else if (task.getType().equals("task")) {
-				ListItem newFloatingItem = new ListItem(
-						task.getTitle(),
-						task.getStartingTime(),
-						task.getEndingTime(),
-						task.getType(),
-						task.getStatus(),
-						false,
-						index++);
-				floatingTasks.add(newFloatingItem);
 			}
 		}
 		consoleView.timedList.getChildren().setAll(items);
@@ -116,7 +100,6 @@ public class GUIService {
 		} else {
 			consoleView.listDisplay.getChildren().setAll(consoleView.timedList, consoleView.floatingList);
 		}
-
 	}
 
 	private void addListenersToConsoleView(Stage stage) {
@@ -135,15 +118,12 @@ public class GUIService {
 			}
 		});
 
-
 		consoleView.floatingList.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent> (){
-
 			@Override
 			public void handle(MouseEvent event) {
 			}
-
 		});
-
+		
 		consoleView.addEventHandler(MouseEvent.MOUSE_DRAGGED, new EventHandler<MouseEvent> (){
 			@Override
 			public void handle(MouseEvent event) {
@@ -175,9 +155,11 @@ public class GUIService {
 					populateList(logic.displayHome());
 					updateStatusLabel(Constants.FEEDBACK_VIEW_TODAY);
 				} else if (event.getCode() == KeyCode.DOWN ){
-					consoleView.timedList.getChildren().get(0);
+					
 				} else if (event.getCode() == KeyCode.UP ) {
-
+				
+				} else if (event.getCode() == KeyCode.TAB ) {
+					
 				} else if (event.getCode() == KeyCode.BACK_QUOTE) {
 					Node tempNode = consoleView.timedList.getChildren().get(0);
 
@@ -209,7 +191,7 @@ public class GUIService {
 	}
 
 	public Scene buildScene(StackPane content) {
-		Scene myScene  = new Scene(content, 700, 700);
+		Scene myScene  = new Scene(content, 700, 600);
 		myScene.setFill(Color.TRANSPARENT);
 		myScene.getStylesheets().clear();
 		myScene.getStylesheets().add(this.getClass().getResource("style.css").toExternalForm());
@@ -230,9 +212,11 @@ public class GUIService {
 
 	public void showStage() {
 		Platform.setImplicitExit(false);
-		stage.setAlwaysOnTop(true);
+		stage.setAlwaysOnTop(true);		
+		stage.setTitle(Constants.APP_NAME);
 		stage.initStyle(StageStyle.TRANSPARENT);
 		stage.setScene(buildScene(this.content));
+		stage.sizeToScene();
 		stage.show();
 	}
 

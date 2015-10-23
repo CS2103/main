@@ -30,14 +30,23 @@ public class ListItem extends StackPane{
 		title.setId("title");
 		title.setFont(Font.font("SansSerif",FontWeight.BOLD,16));
 		title.setPadding(new Insets(0,0,0,5));
-		title.setTextFill(Color.ANTIQUEWHITE);
+		if (isOverdue) {
+			
+			title.setTextFill(Color.PALEVIOLETRED);
+			title.setFont(Font.font("SansSerif", FontWeight.BOLD, FontPosture.ITALIC, 16));
+		} else {
+			title.setTextFill(Color.ANTIQUEWHITE);	
+		}
+		
 
 		index = new Label(String.valueOf(taskIndex));
 		index.setId("index");
 		index.setFont(Font.font("SansSerif",FontWeight.LIGHT,22));
 		index.setTextFill(Color.WHITESMOKE);
-		index.setTextAlignment(TextAlignment.CENTER);
-		index.setMinWidth(30);
+		index.setTextAlignment(TextAlignment.RIGHT);
+		index.setAlignment(Pos.CENTER_RIGHT);
+		index.setPadding(new Insets(0,0,0,0));
+		index.setMinWidth(50);
 
 		statusIcon = new Circle();
 		statusIcon.setId("statusIcon");
@@ -98,7 +107,6 @@ public class ListItem extends StackPane{
 		//this.setPrefWidth(600);
 		this.setPadding(new Insets(2, 10, 2, 2));
 		this.setMinHeight(40);
-
 	}
 	public String getTitle() {
 		return this.title.getText();
