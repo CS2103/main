@@ -37,7 +37,6 @@ public class ConsoleView extends Pane{
 
 	Label dateDisplay;
 	Label clockDisplay;
-	Label currentDisplay;
 	AutoCompleteTextField inputConsole;
 	Label status;
 
@@ -53,7 +52,6 @@ public class ConsoleView extends Pane{
 
 		dateDisplay = new Label();
 		clockDisplay = new Label();
-		currentDisplay = new Label();
 		
 		timedList = new VBox();
 		floatingList = new VBox();
@@ -76,10 +74,6 @@ public class ConsoleView extends Pane{
 		clockDisplay.setMaxWidth(Double.MAX_VALUE);
 		clockDisplay.setPadding(new Insets(0,20,0,0));
 		clockDisplay.setTextFill(Color.WHITE);
-		
-		currentDisplay.setPrefWidth(600);
-		currentDisplay.setTextAlignment(TextAlignment.CENTER);
-		currentDisplay.setPrefHeight(25);
 
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy");
 		SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
@@ -109,6 +103,7 @@ public class ConsoleView extends Pane{
 		listDisplay.setFillHeight(true);
 		listDisplay.setPrefWidth(700);
 		listDisplay.setPadding(new Insets(0,0,0,0));
+		//listDisplay.getChildren().addAll(timedList, floatingList);
 		
 		scrollPane.setId("scrollPane");
 		scrollPane.setContent(listDisplay);
@@ -159,11 +154,12 @@ public class ConsoleView extends Pane{
 		}
 		if (endTime.getYear()!=0000) {
 			taskPreview.tempEndTime.setText(endTime.toLocalDateTime().toString("HHmm dd MMM yyyy"));
-		}
-		
-		
-		
+		}	
 	}
-	
+	public void clearTaskPreviewDetails() {
+		taskPreview.tempTitle.setText("");
+		taskPreview.tempStartTime.setText("");
+		taskPreview.tempEndTime.setText("");
+	}
 	
 }
