@@ -83,7 +83,7 @@ public class GUIService {
 					task.getEndingTime(),
 					task.getType(),
 					task.getStatus(),
-					task.getIsOverdue(),
+					task.isOverdue(),
 					index++);
 			assert task.getType()!=null;
 			if (task.getType().equalsIgnoreCase("task")) {
