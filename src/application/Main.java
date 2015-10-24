@@ -17,7 +17,7 @@ public class Main extends Application {
 		GUIService myGui = new GUIService(stage);
 		
 		myGui.showStage(); // Loads the GUI application window
-		HotKeyListener hkl = new HotKeyListener();
+		//HotKeyListener hkl = new HotKeyListener();
 		myGui.showTray(); // Loads the System Tray instance
 	}
 
