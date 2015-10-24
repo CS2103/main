@@ -13,7 +13,6 @@ public class Task {
 	private DateTime startingTime;
 	private DateTime endingTime;
 	private String type_tag;
-	private boolean[] recurring = new boolean[7];
 
 	public Task(Task task){
 		this.title = task.getTitle();
@@ -37,10 +36,19 @@ public class Task {
 		numberOfTask++;
 	}
 
-	public Task(String title, DateTime startingTime, DateTime endingTime){
+	public Task(String title, DateTime startingTime, DateTime endingTime) throws InvalidTimeException{
 		this.title= title;
 		this.startingTime = startingTime;
 		this.endingTime = endingTime;
+		try{
+			if(endingTime.isBefore(startingTime)){
+				InvalidTimeException e = new InvalidTimeException("The ending time is prior to the starting time");
+				throw e;
+			}
+		}
+		catch(InvalidTimeException e){
+			System.out.println("Error" + e);
+		}
 		setTag();
 	}
 
@@ -48,6 +56,15 @@ public class Task {
 		this();
 		this.startingTime = startingTime;
 		this.endingTime= endingTime;
+		try{
+			if(endingTime.isBefore(startingTime)){
+				InvalidTimeException e = new InvalidTimeException("The ending time is prior to the starting time");
+				throw e;
+			}
+		}
+		catch(InvalidTimeException e){
+			System.out.println("Error" + e);
+		}
 		setTag();
 	}
 
@@ -85,6 +102,10 @@ public class Task {
 	}
 	public boolean isAfterNow() {
 		return endingTime.isBeforeNow() && !type_tag.equals("task");
+	}
+	
+	public boolean isOverDue(){
+		return endingTime.isBeforeNow() && !type_tag.equals("task") && (!isFinished);
 	}
 
 	//Mutators

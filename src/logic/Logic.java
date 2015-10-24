@@ -20,7 +20,7 @@ public class Logic {
 		bin.init();
 	}
 
-	public ArrayList<Task> inputHandler(String input) throws ParseException{
+	public ArrayList<Task> inputHandler(String input) throws ParseException, InvalidTimeException{
 		String command = CommandParser.getCommand(input);
 		if(command.equalsIgnoreCase(("add"))){
 			addTask(input);
@@ -58,7 +58,7 @@ public class Logic {
 		return null;
 	}
 
-	public ArrayList<Task> addTask(String input) throws ParseException{
+	public ArrayList<Task> addTask(String input) throws ParseException, InvalidTimeException{
 		String title = parser.getTitle(input);
 		if (title.length()!=0) {
 		DateTime startTime = parser.getStartDateTime(input);
@@ -74,13 +74,8 @@ public class Logic {
 		return bin.returnDisplay();
 	}
 
-	public ArrayList<Task> addRecurTask(String input, DateTime endDate){
-		Task newTask = new Task(parser.getTitle(input), parser.getStartDateTime(input), parser.getEndDateTime(input));
-		//switch(TaskParser.getPeriod()){
-		//case "weekly":
-		bin.addWeeklyTask(newTask, endDate);
-		//break;
-		//}
+	public ArrayList<Task> addRecurTask(String input, DateTime endDate) throws InvalidTimeException{
+		
 		return startupDisplay();
 	}
 	public ArrayList<Task> displayHome(){

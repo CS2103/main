@@ -381,7 +381,7 @@ public class TaskBin implements editTaskInfo{
 	}
 
 	//New Method
-	public void addWeeklyTask(Task newTask, DateTime endTime){
+	/*public void addWeeklyTask(Task newTask, DateTime endTime){
 		ArrayList<Task> taskAdded = new ArrayList<Task>();
 		DateTime start = newTask.getEndingTime();
 		int i = 0;
@@ -430,7 +430,7 @@ public class TaskBin implements editTaskInfo{
 			taskList.add(tskcpy);
 		}
 		
-	}
+	}*/
 
 
 
