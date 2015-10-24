@@ -14,12 +14,12 @@ import java.awt.TrayIcon;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.logging.Logger;
 
 import application.Constants;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -36,14 +36,16 @@ import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import logic.Logic;
 import logic.Task;
+import parser.Parser;
+import parser.TitleParser;
 
 public class GUIService {
 
 	StackPane content;
 	ConsoleView consoleView;
-	DetailedView detailedView;
 	
 	Logic logic;
+	Parser parser;
 
 	int listIndex;
 	private TrayService trayService;
@@ -55,6 +57,7 @@ public class GUIService {
 	public GUIService(Stage stage) {
 		this.stage = stage;
 		this.logic = new Logic();
+		this.parser = new Parser();
 
 		content = new StackPane();
 		consoleView = new ConsoleView();
@@ -107,6 +110,18 @@ public class GUIService {
 			System.out.println("textfield changed from " + oldValue + " to " + newValue);//debug
 			if (newValue.equalsIgnoreCase("exit")) {
 				System.exit(0);
+			} else if (newValue.split(" ")[0].equalsIgnoreCase("add")) {
+			
+				consoleView.taskPreview.toFront();
+				consoleView.scrollPane.toBack();
+				consoleView.updateTaskPreviewDetails(TitleParser.getTitle(newValue), parser.getStartDateTime(newValue), parser.getEndDateTime(newValue), null);
+			
+			} else if (!newValue.split(" ")[0].equalsIgnoreCase("add")) {
+				populateList(logic.displayHome());
+				consoleView.taskPreview.toBack();
+				consoleView.scrollPane.toFront();
+				
+				updateStatusLabel(Constants.FEEDBACK_VIEW_TODAY);
 			}
 		});
 
@@ -152,17 +167,21 @@ public class GUIService {
 						consoleView.inputConsole.clear();
 					}
 				} else if (consoleView.inputConsole.getText().length() == 0 && event.getCode() == KeyCode.BACK_SPACE) {
+					
+					Logger logger = Logger.getLogger("TBALogger");
 					populateList(logic.displayHome());
+					
+					
 					updateStatusLabel(Constants.FEEDBACK_VIEW_TODAY);
 				} else if (event.getCode() == KeyCode.DOWN ){
 					
+					consoleView.scrollPane.setVvalue(consoleView.scrollPane.getVvalue()+0.2);
 				} else if (event.getCode() == KeyCode.UP ) {
-				
+					consoleView.scrollPane.setVvalue(consoleView.scrollPane.getVvalue()-0.2);
 				} else if (event.getCode() == KeyCode.TAB ) {
 					
 				} else if (event.getCode() == KeyCode.BACK_QUOTE) {
 					Node tempNode = consoleView.timedList.getChildren().get(0);
-
 					TranslateTransition translateTransition =
 							new TranslateTransition(Duration.millis(1000), tempNode);
 					translateTransition.setFromX(50);
@@ -212,7 +231,6 @@ public class GUIService {
 
 	public void showStage() {
 		Platform.setImplicitExit(false);
-		stage.setAlwaysOnTop(true);		
 		stage.setTitle(Constants.APP_NAME);
 		stage.initStyle(StageStyle.TRANSPARENT);
 		stage.setScene(buildScene(this.content));

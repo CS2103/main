@@ -66,8 +66,7 @@ public class TaskBin implements editTaskInfo{
 						isSorted = false;
 						isCompared = true;
 						break;
-					}
-					else if(inboxArr.get(i).getTitle().charAt(j) < inboxArr.get(i+1).getTitle().charAt(j)){
+					} else if(inboxArr.get(i).getTitle().charAt(j) < inboxArr.get(i+1).getTitle().charAt(j)){
 						isCompared = true;
 						break;
 					}
@@ -208,11 +207,10 @@ public class TaskBin implements editTaskInfo{
 			undoStack.push(redoComm);
 			taskList.remove(redoComm.returnOrigin());
 			activeList.remove(redoComm.returnOrigin());
-			if(taskList != activeList){
+			if (taskList != activeList) {
 				taskList.add(redoComm.returnMani());
 				activeList.add(redoComm.returnMani());
-			}
-			else{
+			} else {
 				taskList.add(redoComm.returnMani());
 			}
 			break;
@@ -610,7 +608,6 @@ public class TaskBin implements editTaskInfo{
 		return true;
 	}
 	
-	
 	public boolean isWithinOneWeek(Task t){
 		DateTime now = new DateTime();
 		if(t.getEndingTime().isAfter(now.plusWeeks(1))){
@@ -622,9 +619,3 @@ public class TaskBin implements editTaskInfo{
 	}
 		
 }
-
-
-
-
-
-
