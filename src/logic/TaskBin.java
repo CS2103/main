@@ -133,7 +133,7 @@ public class TaskBin implements editTaskInfo{
 		case delete_tag:
 			redoStack.push(previousComm);
 			taskList.add(previousComm.returnMani());
-			//activeList.add(previousComm.returnMani());
+			activeList.add(previousComm.returnMani());
 			break;
 		case replace_tag:
 			Command add = undoStack.pop();
@@ -495,7 +495,7 @@ public class TaskBin implements editTaskInfo{
 		redoStack.clear();
 	}
 
-	//	@Override
+
 	@Override
 	public void editEndingDate(Task task, DateTime date){
 		Task tar = taskList.get(taskList.indexOf(task));
