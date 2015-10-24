@@ -1,18 +1,19 @@
 package logic;
 
-
 import java.util.Calendar;
 
 import org.joda.time.DateTime;
 
-
 public class Task {
+	
 	private static int numberOfTask = 0;
 	private String title;
-	private boolean isFinished;
 	private DateTime startingTime;
 	private DateTime endingTime;
 	private String type_tag;
+	private boolean isFinished;
+	private boolean[] recurring = new boolean[7];
+
 
 	public Task(Task task){
 		this.title = task.getTitle();
@@ -80,7 +81,6 @@ public class Task {
 		setTag();
 	}
 
-
 	//Accessors
 	public String getTitle(){
 		return title;
@@ -107,17 +107,19 @@ public class Task {
 	public boolean isOverDue(){
 		return endingTime.isBeforeNow() && !type_tag.equals("task") && (!isFinished);
 	}
+	public boolean[] getRecurring() {
+		return recurring;
+	}
 
 	//Mutators
-	public void setTitle(String til){
-		title = til;
+	public void setTitle(String title){
+		this.title = title;
 	}
 
 	public boolean mark(){
 		numberOfTask--;
 		isFinished = true;
 		return isFinished;
-
 	}
 	public void unMark() {
 		isFinished = false;
@@ -138,11 +140,10 @@ public class Task {
 		if(isValidDate(endingTime) || isValidDate(startingTime)){
 			if(isValidDate(startingTime)){
 				this.type_tag = "event";			// Event Tasks (have start and end time)
-			}
-			else{
+			} else {
 				this.type_tag = "deadline";		// Deadline Tasks (have end but no start time)
 			}
-		} else{
+		} else {
 			this.type_tag = "task";				// Floating Tasks (no start and end date/time)
 		}
 	}
@@ -169,5 +170,3 @@ public class Task {
 		}
 	}
 }
-
-

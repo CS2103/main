@@ -2,6 +2,10 @@
 		
 }
 
+#dateDisplay {
+	
+}
+
 #timeDisplay {
 	-fx-background-color: rgba(140,140,140, 0.3);
 }
@@ -13,6 +17,24 @@
 	-fx-border-color:transparent;
 	-fx-background-radius: 0em;
 	-fx-padding:0 0 0 0;
+}
+
+#scrollPane .scroll-bar:vertical .track{
+     -fx-background-color: transparent;
+     -fx-border-color:derive(gray,80%);
+     -fx-background-radius: 0em;
+}
+
+#scrollPane .scroll-bar:vertical .thumb {
+    -fx-background-color: derive(black,90%);
+    -fx-background-insets: 0, 0, 0;
+    -fx-background-radius: 0em;
+}
+
+#scrollPane .scroll-bar:vertical .increment-button ,
+#scrollPane .scroll-bar:vertical .decrement-button {
+    -fx-background-color:transparent;
+    -fx-border-color:derive(gray,80%);
 }
 
 #scrollPane {
@@ -41,4 +63,20 @@
 
 #statusIcon {
 	
+}
+
+#taskPreviewLabel {
+	-fx-pref-width: 80px;
+	-fx-pref-height: 30px;
+	-fx-font-size: 10pt;
+	-fx-padding: 0 0 0 0; 
+	-fx-text-fill: lightskyblue ;
+	-fx-font-family: SansSerif;
+	-fx-font-weight: bold;
+}
+
+#taskPreviewDetails {
+	-fx-text-fill: antiquewhite ;
+	-fx-font-family: SansSerif;
+	-fx-font-size: 11pt;
 }

@@ -6,6 +6,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -20,7 +21,6 @@ public class ListItem extends StackPane{
 	private Circle statusIcon;
 	private Label index;
 	private Label title;
-	//private Label isDone;
 	private Label taskDuration;
 	//private Label isOverDue;
 
@@ -30,14 +30,14 @@ public class ListItem extends StackPane{
 		title.setId("title");
 		title.setFont(Font.font("SansSerif",FontWeight.BOLD,16));
 		title.setPadding(new Insets(0,0,0,5));
+		title.setMaxWidth(Double.MAX_VALUE);
 		if (isOverdue) {
 			
 			title.setTextFill(Color.PALEVIOLETRED);
 			title.setFont(Font.font("SansSerif", FontWeight.BOLD, FontPosture.ITALIC, 16));
 		} else {
 			title.setTextFill(Color.ANTIQUEWHITE);	
-		}
-		
+		}		
 
 		index = new Label(String.valueOf(taskIndex));
 		index.setId("index");
@@ -45,7 +45,7 @@ public class ListItem extends StackPane{
 		index.setTextFill(Color.WHITESMOKE);
 		index.setTextAlignment(TextAlignment.RIGHT);
 		index.setAlignment(Pos.CENTER_RIGHT);
-		index.setPadding(new Insets(0,0,0,0));
+		index.setPadding(new Insets(0,20,0,0));
 		index.setMinWidth(50);
 
 		statusIcon = new Circle();
@@ -83,7 +83,6 @@ public class ListItem extends StackPane{
 		timeLayout.getChildren().addAll(taskDuration);
 
 		VBox detailsLayout = new VBox();
-		detailsLayout.setPrefWidth(700);
 
 		if (taskType.equals("task")) {
 			detailsLayout.getChildren().addAll(titleNstatus);
@@ -101,10 +100,10 @@ public class ListItem extends StackPane{
 		statusLayout.getChildren().addAll(this.index);
 
 		HBox consoleLayout = new HBox();
+		HBox.setHgrow(detailsLayout, Priority.ALWAYS);
 		consoleLayout.getChildren().addAll(detailsLayout, statusLayout);
 		this.setId("listItem");
 		this.getChildren().add(consoleLayout);
-		//this.setPrefWidth(600);
 		this.setPadding(new Insets(2, 10, 2, 2));
 		this.setMinHeight(40);
 	}

@@ -73,13 +73,14 @@ public class AutoCompleteTextField extends TextField {
 				}
 			}
 		});
-
+/*
 		focusedProperty().addListener(new ChangeListener<Boolean>() {
 			@Override
 			public void changed(ObservableValue<? extends Boolean> observableValue, Boolean aBoolean, Boolean aBoolean2) {
 				entriesPopup.hide();
 			}
 		});
+	*/
 	}
 
 	/**
