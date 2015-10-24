@@ -277,8 +277,8 @@ public class Constants {
 	//public static final String[] TASK_START_DATE = {};
 	//public static final String[] TASK_END_DATE = {};
 
-	public static final String[] TASK_START_DATETIME = {"from", "on", "between"};
-	public static final String[] TASK_END_DATETIME = {"by", "until", "till", "before", "to"};
+	public static final String[] TASK_START_DATETIME = {" from ", " on ", " between "};
+	public static final String[] TASK_END_DATETIME = {" by ", " until ", " till ", " before ", " to "};
 	public static final String[] TASK_RECURRING = {"daily", "weekly", "monthly", "yearly"};
 
 	//public static final String[] TASK_START = {"from"};
