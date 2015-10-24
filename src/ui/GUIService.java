@@ -101,6 +101,8 @@ public class GUIService {
 			consoleView.listDisplay.getChildren().setAll(consoleView.timedList);
 		} else if (timedTasks.isEmpty() && !floatingTasks.isEmpty()) {
 			consoleView.listDisplay.getChildren().setAll(consoleView.floatingList);
+		} else if (floatingTasks.isEmpty() && timedTasks.isEmpty()) {
+			consoleView.listDisplay.getChildren().setAll(consoleView.timedList);
 		} else {
 			consoleView.listDisplay.getChildren().setAll(consoleView.timedList, consoleView.floatingList);
 		}
@@ -123,11 +125,8 @@ public class GUIService {
 				consoleView.updateTaskPreviewDetails(TitleParser.getTitle(newValue), parser.getStartDateTime(newValue), parser.getEndDateTime(newValue), null);
 			
 			} else if (!newValue.split(" ")[0].equalsIgnoreCase("add")) {
-				//populateList(logic.displayHome());
 				consoleView.taskPreview.toBack();
 				consoleView.scrollPane.toFront();
-				
-				updateStatusLabel(Constants.FEEDBACK_VIEW_TODAY);
 			}
 		});
 
