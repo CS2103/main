@@ -46,7 +46,7 @@ public class TrayService {
 
 		if (SystemTray.isSupported()) {
 			SystemTray tray = SystemTray.getSystemTray();
-			java.awt.Image image = Toolkit.getDefaultToolkit().getImage(TrayService.class.getResource("/resource/icon1.png"));
+			java.awt.Image image = Toolkit.getDefaultToolkit().getImage(TrayService.class.getResource("/resource/icon.png"));
 			stage.getIcons().add(new Image("/resource/icon.png"));
 
 			stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
