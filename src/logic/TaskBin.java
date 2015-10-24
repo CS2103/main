@@ -484,7 +484,7 @@ public class TaskBin implements editTaskInfo{
 	public void editStartingDate(Task task, DateTime date){
 		Task tar = taskList.get(taskList.indexOf(task));
 		Task tarDis = activeList.get(activeList.indexOf(tar));
-		Task buffer = task;
+		Task buffer = new Task(task);
 		tar.setStartingDate(date);
 		tarDis.setStartingDate(date);
 		Command editDate = new Command(alter_tag, tar, buffer);
@@ -500,7 +500,7 @@ public class TaskBin implements editTaskInfo{
 	public void editEndingDate(Task task, DateTime date){
 		Task tar = taskList.get(taskList.indexOf(task));
 		Task tarDis = activeList.get(activeList.indexOf(tar));
-		Task buffer = task;
+		Task buffer = new Task(task);
 		tar.setEndingDate(date);
 		tarDis.setEndingDate(date);
 		Command editDate = new Command(alter_tag, tar, buffer);
