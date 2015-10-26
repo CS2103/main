@@ -37,6 +37,7 @@ import javafx.util.Duration;
 import logic.InvalidTimeException;
 import logic.Logic;
 import logic.Task;
+import parser.CommandParser;
 import parser.Parser;
 import parser.TitleParser;
 
@@ -44,7 +45,7 @@ public class GUIService {
 
 	StackPane content;
 	ConsoleView consoleView;
-	
+
 	Logic logic;
 	Parser parser;
 
@@ -60,78 +61,83 @@ public class GUIService {
 		this.logic = new Logic();
 		this.parser = new Parser();
 
-		content = new StackPane();
-		consoleView = new ConsoleView();
+		this.content = new StackPane();
+		this.consoleView = new ConsoleView();
 
-		content.setStyle("-fx-background-color: rgba(255,255,255, 0); -fx-background-radius: 10px;");
+		this.content.setStyle("-fx-background-color: rgba(255,255,255, 0); -fx-background-radius: 10px;");
 		DropShadow dropShadow = new DropShadow();
 		dropShadow.setRadius(5.0);
 		dropShadow.setOffsetX(4.0);
 		dropShadow.setOffsetY(3.0);
 		dropShadow.setColor(Color.color(0.4, 0.5, 0.5));
-		content.setEffect(dropShadow);
-		addListenersToConsoleView(stage);
-		populateList(logic.displayHome());
-		content.getChildren().addAll(consoleView);
+		this.content.setEffect(dropShadow);
+		this.addListenersToConsoleView(stage);
+		this.populateList(this.logic.displayHome());
+		this.content.getChildren().addAll(this.consoleView);
 	}
 
 	private void populateList(ArrayList<Task> tasksArr) {
 		int index = 1;
-		ObservableList<ListItem> timedTasks =FXCollections.observableArrayList ();
-		ObservableList<ListItem> floatingTasks=FXCollections.observableArrayList ();
+		ObservableList<ListItem> timedTasks = FXCollections.observableArrayList();
+		ObservableList<ListItem> floatingTasks = FXCollections.observableArrayList();
 		for (Task task : tasksArr) {
-			ListItem newListItem = new ListItem(
-					task.getTitle(),
-					task.getStartingTime(),
-					task.getEndingTime(),
-					task.getType(),
-					task.getStatus(),
-					task.isOverDue(),
-					index++);
-			assert task.getType()!=null;
+			ListItem newListItem = new ListItem(task.getTitle(), task.getStartingTime(), task.getEndingTime(),
+					task.getType(), task.getStatus(), task.isOverDue(), index++);
+			assert task.getType() != null;
 			if (task.getType().equalsIgnoreCase("task")) {
 				floatingTasks.add(newListItem);
 			} else {
 				timedTasks.add(newListItem);
 			}
 		}
-		consoleView.timedList.getChildren().setAll(timedTasks);
-		consoleView.floatingList.getChildren().setAll(floatingTasks);
+		this.consoleView.timedList.getChildren().setAll(timedTasks);
+		this.consoleView.floatingList.getChildren().setAll(floatingTasks);
 
 		if (floatingTasks.isEmpty() && !timedTasks.isEmpty()) {
-			consoleView.listDisplay.getChildren().setAll(consoleView.timedList);
+			this.consoleView.listDisplay.getChildren().setAll(this.consoleView.timedList);
 		} else if (timedTasks.isEmpty() && !floatingTasks.isEmpty()) {
-			consoleView.listDisplay.getChildren().setAll(consoleView.floatingList);
+			this.consoleView.listDisplay.getChildren().setAll(this.consoleView.floatingList);
 		} else if (floatingTasks.isEmpty() && timedTasks.isEmpty()) {
-			consoleView.listDisplay.getChildren().setAll(consoleView.timedList);
+			this.consoleView.listDisplay.getChildren().setAll(this.consoleView.timedList);
 		} else {
-			consoleView.listDisplay.getChildren().setAll(consoleView.timedList, consoleView.floatingList);
+			this.consoleView.listDisplay.getChildren().setAll(this.consoleView.timedList,
+					this.consoleView.floatingList);
 		}
-		
-		consoleView.taskPreview.toBack();
-		consoleView.scrollPane.toFront();
-		
+		this.consoleView.addTaskPreview.toBack();
+		this.consoleView.scrollPane.toFront();
 	}
 
 	private void addListenersToConsoleView(Stage stage) {
-		consoleView.inputConsole.textProperty().addListener((observable, oldValue, newValue) -> {
-			System.out.println("textfield changed from " + oldValue + " to " + newValue);//debug
+		this.consoleView.inputConsole.textProperty().addListener((observable, oldValue, newValue) -> {
+			System.out.println("textfield changed from " + oldValue + " to " + newValue);// debug
 			if (newValue.equalsIgnoreCase("exit")) {
 				System.exit(0);
-			} else if (newValue.split(" ")[0].equalsIgnoreCase("add")) {
-			
-				consoleView.taskPreview.toFront();
-				consoleView.scrollPane.toBack();
-				consoleView.clearTaskPreviewDetails();
-				consoleView.updateTaskPreviewDetails(TitleParser.getTitle(newValue), parser.getStartDateTime(newValue), parser.getEndDateTime(newValue), null);
-			
-			} else if (!newValue.split(" ")[0].equalsIgnoreCase("add")) {
-				consoleView.taskPreview.toBack();
-				consoleView.scrollPane.toFront();
+			} else if (CommandParser.getCommand(newValue).equalsIgnoreCase("add")) {
+
+				this.consoleView.addTaskPreview.toFront();
+				this.consoleView.scrollPane.toBack();
+				this.consoleView.editTaskPreview.toBack();
+				this.consoleView.updateAddTaskPreviewDetails(TitleParser.getTitle(newValue),
+						this.parser.getStartDateTime(newValue), this.parser.getEndDateTime(newValue), null);
+
+			} else if (CommandParser.getCommand(newValue).equalsIgnoreCase(Constants.COMMAND_INVALID)) {
+				this.consoleView.addTaskPreview.toBack();
+				this.consoleView.scrollPane.toFront();
+			} else if (CommandParser.getCommand(newValue).equalsIgnoreCase("delete")) {
+
+			} else if (CommandParser.getCommand(newValue).equalsIgnoreCase("edit")
+					&& newValue.matches("\\D+\\s\\d+\\s\\D+.+\\z")) {
+				this.consoleView.editTaskPreview.toFront();
+				this.consoleView.scrollPane.toBack();
+				this.consoleView.addTaskPreview.toBack();
+				Task toEdit = this.logic.displayCurrent().get(this.parser.getIndex(newValue) - 1);
+				this.consoleView.updateEditTaskPreviewDetails(toEdit.getTitle(), toEdit.getStartingTime(),
+						toEdit.getEndingTime(), this.parser.getField(newValue), TitleParser.getEditTitle(newValue),
+						this.parser.getDateTime(TitleParser.getEditTitle(newValue)));
 			}
 		});
 
-		consoleView.addEventHandler(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent> (){
+		this.consoleView.addEventHandler(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
 				xOffset = stage.getX() - event.getScreenX();
@@ -139,13 +145,13 @@ public class GUIService {
 			}
 		});
 
-		consoleView.floatingList.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent> (){
+		this.consoleView.floatingList.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
 			}
 		});
-		
-		consoleView.addEventHandler(MouseEvent.MOUSE_DRAGGED, new EventHandler<MouseEvent> (){
+
+		this.consoleView.addEventHandler(MouseEvent.MOUSE_DRAGGED, new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
 				stage.setX(event.getScreenX() + xOffset);
@@ -153,117 +159,109 @@ public class GUIService {
 			}
 		});
 
-		consoleView.scrollPane.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>(){
+		this.consoleView.scrollPane.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
 			@Override
 			public void handle(KeyEvent event) {
-				if(event.getCode() == KeyCode.ESCAPE) {
+				if (event.getCode() == KeyCode.ESCAPE) {
 					System.exit(0);
 				}
 			}
 		});
 
-		consoleView.inputConsole.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>(){
+		this.consoleView.inputConsole.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
 			@Override
 			public void handle(KeyEvent event) {
 				System.err.println(event.getCode());
-				if(event.getCode() == KeyCode.ESCAPE) {
-					if (consoleView.inputConsole.getText().length() == 0) {
+				if (event.getCode() == KeyCode.ESCAPE) {
+					if (GUIService.this.consoleView.inputConsole.getText().length() == 0) {
 						System.exit(0);
 					} else {
-						consoleView.inputConsole.clear();
+						GUIService.this.consoleView.inputConsole.clear();
 					}
-				} else if (consoleView.inputConsole.getText().length() == 0 && event.getCode() == KeyCode.BACK_SPACE) {
-					
+				} else if (GUIService.this.consoleView.inputConsole.getText().length() == 0
+						&& event.getCode() == KeyCode.BACK_SPACE) {
 					Logger logger = Logger.getLogger("TBALogger");
-					populateList(logic.displayHome());
-					
-					
-					updateStatusLabel(Constants.FEEDBACK_VIEW_TODAY);
-				} else if (event.getCode() == KeyCode.DOWN ){
-					
-					consoleView.scrollPane.setVvalue(consoleView.scrollPane.getVvalue()+0.2);
-				} else if (event.getCode() == KeyCode.UP ) {
-					consoleView.scrollPane.setVvalue(consoleView.scrollPane.getVvalue()-0.2);
-				} else if (event.getCode() == KeyCode.TAB ) {
-					
+					GUIService.this.populateList(GUIService.this.logic.displayHome());
+					GUIService.this.updateStatusLabel(Constants.FEEDBACK_VIEW_TODAY);
+				} else if (event.getCode() == KeyCode.DOWN) {
+					GUIService.this.consoleView.scrollPane
+							.setVvalue(GUIService.this.consoleView.scrollPane.getVvalue() + 0.2);
+				} else if (event.getCode() == KeyCode.UP) {
+					GUIService.this.consoleView.scrollPane
+							.setVvalue(GUIService.this.consoleView.scrollPane.getVvalue() - 0.2);
+				} else if (event.getCode() == KeyCode.TAB) {
+
 				} else if (event.getCode() == KeyCode.BACK_QUOTE) {
-					Node tempNode = consoleView.timedList.getChildren().get(0);
-					TranslateTransition translateTransition =
-							new TranslateTransition(Duration.millis(1000), tempNode);
+					Node tempNode = GUIService.this.consoleView.timedList.getChildren().get(0);
+					TranslateTransition translateTransition = new TranslateTransition(Duration.millis(1000), tempNode);
 					translateTransition.setFromX(50);
 					translateTransition.setToX(700);
 					translateTransition.setCycleCount(1);
 					translateTransition.setAutoReverse(false);
 					translateTransition.play();
 				}
-				System.out.println(listIndex);
 			}
 		});
 
-		consoleView.inputConsole.setOnAction(new EventHandler<ActionEvent>() {
+		this.consoleView.inputConsole.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				String input = consoleView.inputConsole.getText();
+				String input = GUIService.this.consoleView.inputConsole.getText();
 				try {
-					populateList(logic.inputHandler(input));
-					
-					//updateInterface(input, logic.inputHandler(input));
-					//System.out.println(logic.inputHandler(input).size());
-					updateStatusLabel(logic.getStatusBarText(input));
-					consoleView.inputConsole.clear();
+					GUIService.this.populateList(GUIService.this.logic.inputHandler(input));
+					GUIService.this.updateStatusLabel(GUIService.this.logic.getStatusBarText(input));
+					GUIService.this.consoleView.inputConsole.clear();
 				} catch (ParseException e) {
 					System.err.println("Input error!");
 				} catch (InvalidTimeException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				
 			}
 		});
 	}
 
 	public Scene buildScene(StackPane content) {
-		Scene myScene  = new Scene(content, 700, 600);
+		Scene myScene = new Scene(content, 700, 600);
 		myScene.setFill(Color.TRANSPARENT);
 		myScene.getStylesheets().clear();
 		myScene.getStylesheets().add(this.getClass().getResource("style.css").toExternalForm());
-		showConsolePane();
+		this.showConsolePane();
 		return myScene;
 	}
 
 	public void showConsolePane() {
-		consoleView.toFront();
-		consoleView.setVisible(true);
-		consoleView.setDisable(false);
+		this.consoleView.toFront();
+		this.consoleView.setVisible(true);
+		this.consoleView.setDisable(false);
 	}
 
-	public void addAutocompleteEntries (ArrayList<String> stringArrayList) {
+	public void addAutocompleteEntries(ArrayList<String> stringArrayList) {
 		String[] stringArray = (String[]) stringArrayList.toArray();
-		Collections.addAll(consoleView.inputConsole.entries, stringArray);
+		Collections.addAll(this.consoleView.inputConsole.entries, stringArray);
 	}
 
 	public void showStage() {
 		Platform.setImplicitExit(false);
-		stage.setTitle(Constants.APP_NAME);
-		stage.initStyle(StageStyle.TRANSPARENT);
-		stage.setScene(buildScene(this.content));
-		stage.sizeToScene();
-		stage.show();
+		this.stage.setTitle(Constants.APP_NAME);
+		this.stage.initStyle(StageStyle.TRANSPARENT);
+		this.stage.setScene(this.buildScene(this.content));
+		this.stage.sizeToScene();
+		this.stage.show();
 	}
 
 	public TrayIcon showTray() {
-		trayService = new TrayService(this.stage);
-		return trayService.createTrayIcon(this.stage);
+		this.trayService = new TrayService(this.stage);
+		return this.trayService.createTrayIcon(this.stage);
 	}
 
 	public void onEscapePressed() {
 	}
 
 	public void updateStatusLabel(String text) {
-		consoleView.status.setText(text);
+		this.consoleView.status.setText(text);
 	}
 
 	public void updateInterface(String input, ArrayList<Task> taskArray) {
-		populateList(taskArray);
+		this.populateList(taskArray);
 	}
 }
