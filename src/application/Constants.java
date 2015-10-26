@@ -10,8 +10,6 @@ import javafx.scene.text.FontWeight;
 
 public class Constants {
 
-	public enum COMMAND_TYPE { ADD, DELETE, SEARCH, EDIT, MARK, UNMARK, UNDO, REDO, SETPATH, INVALID };
-	
 	public static final String APP_NAME = "TBA";
 
 	public static final String WELCOME_MESSAGE = "Welcome to TaskBuddyAwesome. \n"
@@ -138,11 +136,14 @@ public class Constants {
 	public static final int MILLISECONDS_IN_A_DAY = 1000 * 60 * 60 * 24;
 
 	// parameters
-	public static final String PARAMETER_TITLE = "title";
-	public static final String PARAMETER_START = "start";
-	public static final String PARAMETER_END = "end";
+	public static final String PARAMETER_LOCATION = "location";
+	public static final String PARAMETER_LOC = "loc";
+	public static final String PARAMETER_DATE = "date";
 	public static final String PARAMETER_START_DATE = "startdate";
 	public static final String PARAMETER_END_DATE = "enddate";
+	public static final String PARAMETER_SD = "sd";
+	public static final String PARAMETER_ED = "ed";
+	public static final String PARAMETER_TIME = "time";
 	public static final String PARAMETER_START_TIME = "starttime";
 	public static final String PARAMETER_END_TIME = "endtime";
 	public static final String PARAMETER_ST = "st";
@@ -221,7 +222,7 @@ public class Constants {
 	public static final String FEEDBACK_MASS_NOT_DONE_FAILURE = "Invalid task ID specified!";
 	public static final String FEEDBACK_UNDO_SUCCESS = "Last action has been undone!";
 	public static final String FEEDBACK_UNDO_FAILURE = "Nothing to undo!";
-	public static final String FEEDBACK_REDO_SUCCESS = "Redone!";
+	public static final String FEEDBACK_REDO_SUCCESS = "Redone!!";
 	public static final String FEEDBACK_REDO_FAILURE = "Nothing to redo!";
 	public static final String FEEDBACK_VIEW_HOMESCREEN = "Displaying Home-Screen!";
 	public static final String FEEDBACK_VIEW_TODAY = "Displaying agenda for this week";
@@ -318,7 +319,7 @@ public class Constants {
 	public static final String STRING_M_LOWERCASE = "m";
 
 	// logging
-	public static final String LOGGER_PARSER = "TBAParser";
+	public static final String LOGGER_PARSER = "LOLParser";
 	public static final String LOGGER_FILE_NAME = "C:\\ParserLogFile%g.txt";
 
 	// error messages
@@ -384,10 +385,8 @@ public class Constants {
 	final static String MSG_ALREADY_RUNNING = APP_NAME + " is Already Running!" ;
 	final static String MSG_RESTORE = "CTRL + L to Restore";
 	final static String MSG_ERROR = "Error occured";
-	public static final String MSG_STILL_RUNNING = APP_NAME + " is still running. You can access it here.";
 	public final static String MSG_ABOUT = APP_NAME + " 2015 \nCreated by Andy, Hung, Jun Ren, Xiaoming";
-	public final static String MENU_ITEM_SHOW = "Show";
-	public final static String MENU_ITEM_ABOUT = "About";
-	public final static String MENU_ITEM_EXIT = "Exit";
-	
+
+	// Separator between today's tasks and upcoming tasks in gui
+	final static String GUI_SEPARATOR = "===========================";
 }
