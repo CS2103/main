@@ -34,11 +34,11 @@ public class TitleParser {
 		return text;
 	}
 
-	public static String getEditTitle(String input){
-		for (int i = 0; i < 3; i++){
+	public static String getEditTitle(String input) {
+		for (int i = 0; i < 3; i++) {
 			input = excludeFirstWord(input);
 		}
-		return input;
+		return input.trim();
 	}
 
 	public static String splitInputWithDictionary(String[] dictionary, String input) {
@@ -56,8 +56,8 @@ public class TitleParser {
 		}
 
 		ArrayList<String> taskKeywords = new ArrayList<String>();
-		//taskKeywords.addAll(Arrays.asList(Constants.TASK_END_DATE));
-		//taskKeywords.addAll(Arrays.asList(Constants.TASK_START_DATE));
+		// taskKeywords.addAll(Arrays.asList(Constants.TASK_END_DATE));
+		// taskKeywords.addAll(Arrays.asList(Constants.TASK_START_DATE));
 		taskKeywords.addAll(Arrays.asList(Constants.TASK_START_DATETIME));
 		taskKeywords.addAll(Arrays.asList(Constants.TASK_END_DATETIME));
 		taskKeywords.removeAll(Arrays.asList(dictionary));
@@ -81,6 +81,5 @@ public class TitleParser {
 	static String excludeFirstWord(String input) {
 		return input.substring(extractFirstWord(input).length()).trim();
 	}
-	
-	
+
 }
