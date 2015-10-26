@@ -180,5 +180,4 @@ public class ConsoleView extends Pane {
 			return "N/A";
 		}
 	}
-
 }
