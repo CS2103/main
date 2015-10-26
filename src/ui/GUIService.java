@@ -78,18 +78,21 @@ public class GUIService {
 
 	private void populateList(ArrayList<Task> tasksArr) {
 		int index = 1;
+
 		ObservableList<ListItem> timedTasks = FXCollections.observableArrayList();
 		ObservableList<ListItem> floatingTasks = FXCollections.observableArrayList();
 		for (Task task : tasksArr) {
 			ListItem newListItem = new ListItem(task.getTitle(), task.getStartingTime(), task.getEndingTime(),
 					task.getType(), task.getStatus(), task.isOverDue(), index++);
 			assert task.getType() != null;
+
 			if (task.getType().equalsIgnoreCase("task")) {
 				floatingTasks.add(newListItem);
 			} else {
 				timedTasks.add(newListItem);
 			}
 		}
+
 		this.consoleView.timedList.getChildren().setAll(timedTasks);
 		this.consoleView.floatingList.getChildren().setAll(floatingTasks);
 
@@ -99,10 +102,12 @@ public class GUIService {
 			this.consoleView.listDisplay.getChildren().setAll(this.consoleView.floatingList);
 		} else if (floatingTasks.isEmpty() && timedTasks.isEmpty()) {
 			this.consoleView.listDisplay.getChildren().setAll(this.consoleView.timedList);
+
 		} else {
 			this.consoleView.listDisplay.getChildren().setAll(this.consoleView.timedList,
 					this.consoleView.floatingList);
 		}
+
 		this.consoleView.addTaskPreview.toBack();
 		this.consoleView.scrollPane.toFront();
 	}
@@ -208,14 +213,17 @@ public class GUIService {
 			public void handle(ActionEvent event) {
 				String input = GUIService.this.consoleView.inputConsole.getText();
 				try {
+
 					GUIService.this.populateList(GUIService.this.logic.inputHandler(input));
 					GUIService.this.updateStatusLabel(GUIService.this.logic.getStatusBarText(input));
 					GUIService.this.consoleView.inputConsole.clear();
+
 				} catch (ParseException e) {
 					System.err.println("Input error!");
 				} catch (InvalidTimeException e) {
 					e.printStackTrace();
 				}
+
 			}
 		});
 	}
@@ -258,10 +266,12 @@ public class GUIService {
 	}
 
 	public void updateStatusLabel(String text) {
+
 		this.consoleView.status.setText(text);
 	}
 
 	public void updateInterface(String input, ArrayList<Task> taskArray) {
 		this.populateList(taskArray);
+
 	}
 }
