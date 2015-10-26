@@ -34,11 +34,11 @@ public class TitleParser {
 		return text;
 	}
 
-	public static String getEditTitle(String input) {
-		for (int i = 0; i < 3; i++) {
+	public static String getEditTitle(String input){
+		for (int i = 0; i < 3; i++){
 			input = excludeFirstWord(input);
 		}
-		return input.trim();
+		return input;
 	}
 
 	public static String splitInputWithDictionary(String[] dictionary, String input) {
@@ -46,8 +46,8 @@ public class TitleParser {
 		int lastIndex = input.length();
 
 		for (String regex : dictionary) {
-			if (input.toLowerCase().indexOf(regex + " ") > firstIndex) {
-				firstIndex = input.toLowerCase().indexOf(regex + " ");
+			if (input.toLowerCase().indexOf(regex) > firstIndex) {
+				firstIndex = input.toLowerCase().indexOf(regex);
 			}
 		}
 
@@ -56,15 +56,15 @@ public class TitleParser {
 		}
 
 		ArrayList<String> taskKeywords = new ArrayList<String>();
-		// taskKeywords.addAll(Arrays.asList(Constants.TASK_END_DATE));
-		// taskKeywords.addAll(Arrays.asList(Constants.TASK_START_DATE));
+		//taskKeywords.addAll(Arrays.asList(Constants.TASK_END_DATE));
+		//taskKeywords.addAll(Arrays.asList(Constants.TASK_START_DATE));
 		taskKeywords.addAll(Arrays.asList(Constants.TASK_START_DATETIME));
 		taskKeywords.addAll(Arrays.asList(Constants.TASK_END_DATETIME));
 		taskKeywords.removeAll(Arrays.asList(dictionary));
 
 		for (String regex : taskKeywords) {
-			if (input.toLowerCase().indexOf(" " + regex) < lastIndex && input.toLowerCase().indexOf(" " + regex) > 0) {
-				lastIndex = input.toLowerCase().indexOf(regex + " ");
+			if (input.toLowerCase().indexOf(regex) < lastIndex && input.toLowerCase().indexOf(regex) > 0) {
+				lastIndex = input.toLowerCase().indexOf(regex);
 			}
 		}
 		if (lastIndex <= firstIndex) {
@@ -81,5 +81,6 @@ public class TitleParser {
 	static String excludeFirstWord(String input) {
 		return input.substring(extractFirstWord(input).length()).trim();
 	}
-
+	
+	
 }
