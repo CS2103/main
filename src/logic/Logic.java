@@ -23,7 +23,12 @@ public class Logic {
 	public ArrayList<Task> inputHandler(String input) throws ParseException, InvalidTimeException{
 		String command = CommandParser.getCommand(input);
 		if(command.equalsIgnoreCase(("add"))){
-			addTask(input);
+			if(parser.getRecurValue(input).equals(null)){
+				addTask(input);
+			}
+			else{
+				addRecur(input);
+			}
 			return bin.returnDisplay();
 		} else if (command.equalsIgnoreCase("home")){
 			return displayHome();
@@ -56,6 +61,27 @@ public class Logic {
 			return bin.returnDisplay();
 		}
 		return null;
+	}
+
+	private ArrayList<Task> addRecur(String input) throws InvalidTimeException {
+		DateTime now = new DateTime();
+		DateTime endDate =  now.plusYears(1);
+		String recurValue = parser.getRecurValue(input);
+		String title = parser.getTitle(input);
+		if (title.length()!=0) {
+			DateTime startTime = parser.getStartDateTime(input);
+			DateTime endTime = parser.getEndDateTime(input);
+			System.out.println("Title: " + title);
+			System.out.println("StartTime: " + startTime);
+			System.out.println("EndTime: " + endTime);
+			RecurTask newTask = new RecurTask(title, startTime, endTime, endDate, recurValue);
+			bin.add(newTask);
+			bin.setDisplay();
+		}
+		return bin.returnDisplay();
+
+		// TODO Auto-generated method stub
+		
 	}
 
 	public ArrayList<Task> addTask(String input) throws ParseException, InvalidTimeException{
