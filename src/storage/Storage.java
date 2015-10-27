@@ -25,7 +25,7 @@ public class Storage {
 	// formats
 	final static Gson gson = Converters.registerDateTime(new GsonBuilder().setPrettyPrinting().serializeNulls()).create();
 	final DateTime original = new DateTime();
-	String json = gson.toJson(original);
+	final String json = gson.toJson(original);
 	final DateTime reconstituted = gson.fromJson(json, DateTime.class);
 
 	// attributes
@@ -44,6 +44,7 @@ public class Storage {
 		if (!file.exists()) {
 			System.out.println("file not exists");
 		}
+		
 		Storage.currentTaskList = read();
 
 		if (file.isDirectory()) {
@@ -67,6 +68,10 @@ public class Storage {
 		tempSavedTask.delete();
 	}
 
+	public static String enquirePath() {
+		return Storage.path;
+	}
+	
 	public static void write(ArrayList<Task> tasks) {
 		try {
 			if (path == null) {
