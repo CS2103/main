@@ -5,6 +5,7 @@ import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import ui.GUIService;
+import ui.HotKeyListener;
 
 public class Main extends Application {
 
@@ -16,7 +17,7 @@ public class Main extends Application {
 		GUIService myGui = new GUIService(stage);
 
 		myGui.showStage(); // Loads the GUI application window
-		// HotKeyListener hkl = new HotKeyListener(stage);
+		HotKeyListener hkl = new HotKeyListener(stage);
 		myGui.showTray(); // Loads the System Tray instance
 	}
 

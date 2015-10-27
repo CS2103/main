@@ -29,7 +29,6 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import javafx.util.Duration;
 
 public class ConsoleView extends Pane {
@@ -41,6 +40,7 @@ public class ConsoleView extends Pane {
 
 	HBox listDisplay;
 	AddTaskPreview addTaskPreview;
+	EditTaskPreview editTaskPreview;
 
 	VBox timedList;
 	VBox floatingList;
@@ -61,14 +61,12 @@ public class ConsoleView extends Pane {
 		status = new Label();
 
 		dateDisplay.setId("timeDisplay");
-		dateDisplay.setFont(new Font("SansSerif", 30));
 		dateDisplay.setAlignment(Pos.CENTER_LEFT);
 		dateDisplay.setMaxWidth(Double.MAX_VALUE);
 		dateDisplay.setPadding(new Insets(0, 0, 0, 20));
 		dateDisplay.setTextFill(Color.WHITE);
 
 		clockDisplay.setId("timeDisplay");
-		clockDisplay.setFont(new Font("SansSerif", 30));
 		clockDisplay.setAlignment(Pos.CENTER_RIGHT);
 		clockDisplay.setMaxWidth(Double.MAX_VALUE);
 		clockDisplay.setPadding(new Insets(0, 20, 0, 0));
@@ -98,6 +96,7 @@ public class ConsoleView extends Pane {
 				"-fx-background-color: linear-gradient( from 100.0% 0.0% to 100.0% 100.0%, rgb(46,50,68) 0.0, rgb(51,51,51) 40.0, rgb(39,41,54) 100.0)");
 		floatingList.setFocusTraversable(false);
 		floatingList.setFillWidth(true);
+
 		HBox.setHgrow(floatingList, Priority.ALWAYS);
 		HBox.setHgrow(timedList, Priority.ALWAYS);
 
@@ -105,7 +104,6 @@ public class ConsoleView extends Pane {
 		listDisplay.setFillHeight(true);
 		listDisplay.setPrefWidth(700);
 		listDisplay.setPadding(new Insets(0, 0, 0, 0));
-		// listDisplay.getChildren().addAll(timedList, floatingList);
 
 		scrollPane.setId("scrollPane");
 		scrollPane.setContent(listDisplay);
@@ -120,20 +118,16 @@ public class ConsoleView extends Pane {
 		scrollPane.setPickOnBounds(false);
 
 		mainDisplay = new StackPane();
-		addTaskPreview = new AddTaskPreview("", DateTime.now(), DateTime.now());
 
-		mainDisplay.getChildren().addAll(addTaskPreview, scrollPane);
+		addTaskPreview = new AddTaskPreview("", DateTime.now(), DateTime.now());
+		editTaskPreview = new EditTaskPreview("", DateTime.now(), DateTime.now(), "");
+		mainDisplay.getChildren().addAll(editTaskPreview, addTaskPreview, scrollPane);
 
 		inputConsole.setId("inputConsole");
 		inputConsole.setEditable(true);
-		inputConsole.setPrefHeight(25);
-		inputConsole.setPrefWidth(700);
-		inputConsole
-				.setStyle("-fx-background-color: rgba(255,255,255, 0.7);-fx-text-inner-color: black;-fx-font-size:15");
 		inputConsole.setFocusTraversable(true);
 
 		status.setMaxWidth(Double.MAX_VALUE);
-		status.setPrefHeight(30);
 		status.setId("statusBar");
 		status.setAlignment(Pos.CENTER_LEFT);
 
@@ -151,20 +145,29 @@ public class ConsoleView extends Pane {
 	}
 
 	public void updateAddTaskPreviewDetails(String title, DateTime startTime, DateTime endTime, String recurring) {
+		addTaskPreview.clearAllDetails();
 		addTaskPreview.tempTitle.setText(title);
-		;
-		if (startTime.getYear() != 0000) {
-			addTaskPreview.tempStartTime.setText(startTime.toLocalDateTime().toString("HHmm dd MMM yyyy"));
-		}
-		if (endTime.getYear() != 0000) {
-			addTaskPreview.tempEndTime.setText(endTime.toLocalDateTime().toString("HHmm dd MMM yyyy"));
-		}
+		addTaskPreview.tempStartTime.setText(this.showIfValidDate(startTime));
+		addTaskPreview.tempEndTime.setText(this.showIfValidDate(endTime));
 	}
 
-	public void clearAddTaskPreviewDetails() {
-		addTaskPreview.tempTitle.setText("");
-		addTaskPreview.tempStartTime.setText("");
-		addTaskPreview.tempEndTime.setText("");
+	public void updateEditTaskPreviewDetails(String oldTitle, DateTime startTime, DateTime endTime, String field,
+			String newTitle, DateTime newDateTime) {
+		editTaskPreview.clearAllDetails();
+		editTaskPreview.oldTitle.setText(oldTitle);
+		editTaskPreview.oldStartTime.setText(showIfValidDate(startTime));
+		editTaskPreview.oldEndTime.setText(showIfValidDate(endTime));
+		editTaskPreview.detailsToShow("", field);
+		editTaskPreview.newTitleField.setText(newTitle);
+		editTaskPreview.newStartTimeField.setText(showIfValidDate(newDateTime));
+		editTaskPreview.newEndTimeField.setText(showIfValidDate(newDateTime));
 	}
 
+	private String showIfValidDate(DateTime dateTime) {
+		if (dateTime.getYear() != 0000) {
+			return dateTime.toLocalDateTime().toString("HHmm dd MMM yyyy");
+		} else {
+			return "N/A";
+		}
+	}
 }

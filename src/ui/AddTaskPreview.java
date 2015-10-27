@@ -2,6 +2,7 @@ package ui;
 
 import org.joda.time.DateTime;
 
+import application.Constants;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
@@ -70,6 +71,13 @@ public class AddTaskPreview extends StackPane {
 		this.setPrefSize(700, 50);
 		this.setStyle("-fx-background-color: rgba(255,255,255,0.3)");
 		this.setPadding(new Insets(200, 50, 100, 50));
+	}
+
+	public void clearAllDetails() {
+		this.tempTitle.setText(Constants.EMPTY_STRING);
+		this.tempStartTime.setText(Constants.EMPTY_STRING);
+		this.tempEndTime.setText(Constants.EMPTY_STRING);
+		this.tempRecurring.setText(Constants.EMPTY_STRING);
 	}
 
 }
