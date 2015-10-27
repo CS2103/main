@@ -37,6 +37,7 @@ import javafx.util.Duration;
 import logic.InvalidTimeException;
 import logic.Logic;
 import logic.Task;
+import parser.CommandParser;
 import parser.Parser;
 import parser.TitleParser;
 
@@ -64,12 +65,14 @@ public class GUIService {
 		consoleView = new ConsoleView();
 
 		content.setStyle("-fx-background-color: rgba(255,255,255, 0); -fx-background-radius: 10px;");
+
 		DropShadow dropShadow = new DropShadow();
 		dropShadow.setRadius(5.0);
 		dropShadow.setOffsetX(4.0);
 		dropShadow.setOffsetY(3.0);
 		dropShadow.setColor(Color.color(0.4, 0.5, 0.5));
 		content.setEffect(dropShadow);
+
 		addListenersToConsoleView(stage);
 		populateList(logic.displayHome());
 		content.getChildren().addAll(consoleView);
@@ -110,19 +113,29 @@ public class GUIService {
 	private void addListenersToConsoleView(Stage stage) {
 		consoleView.inputConsole.textProperty().addListener((observable, oldValue, newValue) -> {
 			System.out.println("textfield changed from " + oldValue + " to " + newValue);// debug
-			if (newValue.equalsIgnoreCase("exit")) {
+			if (newValue.equalsIgnoreCase(Constants.COMMAND_EXIT)) {
 				System.exit(0);
-			} else if (newValue.split(" ")[0].equalsIgnoreCase("add")) {
+			} else if (newValue.split(" ")[0].equalsIgnoreCase(Constants.COMMAND_ADD)) {
 
 				consoleView.addTaskPreview.toFront();
 				consoleView.scrollPane.toBack();
-				consoleView.clearAddTaskPreviewDetails();
+				consoleView.editTaskPreview.toBack();
 				consoleView.updateAddTaskPreviewDetails(TitleParser.getTitle(newValue),
-						parser.getStartDateTime(newValue), parser.getEndDateTime(newValue), null);
-
-			} else if (!newValue.split(" ")[0].equalsIgnoreCase("add")) {
+						parser.getStartDateTime(newValue), this.parser.getEndDateTime(newValue), null);
+			} else if (CommandParser.getCommand(newValue).equalsIgnoreCase(Constants.COMMAND_INVALID)) {
 				consoleView.addTaskPreview.toBack();
 				consoleView.scrollPane.toFront();
+			} else if (CommandParser.getCommand(newValue).equalsIgnoreCase(Constants.COMMAND_DELETE)) {
+
+			} else if (CommandParser.getCommand(newValue).equalsIgnoreCase(Constants.COMMAND_EDIT)
+					&& newValue.matches("\\D+\\s\\d+\\s\\D+.+\\z")) {
+				consoleView.editTaskPreview.toFront();
+				consoleView.scrollPane.toBack();
+				consoleView.addTaskPreview.toBack();
+				Task toEdit = this.logic.displayCurrent().get(this.parser.getIndex(newValue) - 1);
+				consoleView.updateEditTaskPreviewDetails(toEdit.getTitle(), toEdit.getStartingTime(),
+						toEdit.getEndingTime(), this.parser.getField(newValue), TitleParser.getEditTitle(newValue),
+						this.parser.getDateTime(TitleParser.getEditTitle(newValue)));
 			}
 		});
 
@@ -168,7 +181,6 @@ public class GUIService {
 						consoleView.inputConsole.clear();
 					}
 				} else if (consoleView.inputConsole.getText().length() == 0 && event.getCode() == KeyCode.BACK_SPACE) {
-
 					Logger logger = Logger.getLogger("TBALogger");
 					populateList(logic.displayHome());
 
@@ -199,9 +211,6 @@ public class GUIService {
 				String input = consoleView.inputConsole.getText();
 				try {
 					populateList(logic.inputHandler(input));
-
-					// updateInterface(input, logic.inputHandler(input));
-					// System.out.println(logic.inputHandler(input).size());
 					updateStatusLabel(logic.getStatusBarText(input));
 					consoleView.inputConsole.clear();
 				} catch (ParseException e) {
@@ -248,9 +257,6 @@ public class GUIService {
 	public TrayIcon showTray() {
 		trayService = new TrayService(this.stage);
 		return trayService.createTrayIcon(this.stage);
-	}
-
-	public void onEscapePressed() {
 	}
 
 	public void updateStatusLabel(String text) {
