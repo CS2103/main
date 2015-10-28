@@ -110,7 +110,7 @@ public class Storage {
 				stringBuilder.append(line).append("\n");
 			}
 			br.close();
-			String jsonString = stringBuilder.toString();		
+			String jsonString = stringBuilder.toString();
 			taskList = gson.fromJson(jsonString, new TypeToken<ArrayList<Task>>(){}.getType());
 		} catch (FileNotFoundException e) {
 		} catch (IOException e) {
