@@ -1,5 +1,7 @@
 package logic;
 
+import java.util.ArrayList;
+
 import org.joda.time.DateTime;
 
 public class RecurTask extends Task {
@@ -9,7 +11,7 @@ public class RecurTask extends Task {
 	private static final String tag_yearly = "yearly";
 	
 	
-	private DateTime[] recurDate = new DateTime[366];
+	private ArrayList<DateTime> recurDate = new ArrayList<DateTime>();
 	private DateTime recurStart;
 	private DateTime recurEnd;
 	private String recurTag; 
@@ -18,38 +20,42 @@ public class RecurTask extends Task {
 		super(title,startingTime, endingTime);
 		this.recurEnd = recurEnding;
 		DateTime begin = new DateTime(startingTime);
-		int index = 1;
+		
 		this.recurTag = recurTag;
-		recurDate[0] = begin;
+		recurDate.add(begin);
 		switch (recurTag){
 		case tag_weekly:
 			while(begin.plusWeeks(1).isBefore(recurEnding)){
-				recurDate[index] = begin;
-				index++;
-		
+				begin = new DateTime(begin.plusWeeks(1));
+				recurDate.add(begin);
+			
 			}
 			break;
 		case tag_daily:
 			while(begin.plusDays(1).isBefore(recurEnding)){
-				recurDate[index] = begin;
-				index++;
+				begin = new DateTime(begin.plusDays(1));
+				recurDate.add(begin);	
 			}
 			break;
 		case tag_monthly:
 			while(begin.plusMonths(1).isBefore(recurEnding)){
-				recurDate[index] = begin;
-				index++;
+				begin = new DateTime(begin.plusMonths(1));
+				recurDate.add(begin);
 			}
 			break;
 		case tag_yearly:
 			while(begin.plusMonths(1).isBefore(recurEnding)){
-				recurDate[index] = begin;
-				index++;
+				begin = new DateTime(begin.plusYears(1));
+				recurDate.add(begin);
 			}
 			break;
 		}
 		
 		
+	}
+	
+	public ArrayList<DateTime> returnTime(){
+		return recurDate;
 	}
 	
 	public boolean isRecur(DateTime today){

@@ -10,14 +10,14 @@ import ui.HotKeyListener;
 public class Main extends Application {
 
 	public static Logger logger = Logger.getLogger("TBALog");
-	
+
 	@Override
 	public void start(Stage stage) {
-		
+
 		GUIService myGui = new GUIService(stage);
-		
+
 		myGui.showStage(); // Loads the GUI application window
-//		HotKeyListener hkl = new HotKeyListener();
+		HotKeyListener hkl = new HotKeyListener(stage);
 		myGui.showTray(); // Loads the System Tray instance
 	}
 
@@ -25,6 +25,6 @@ public class Main extends Application {
 		launch(args);
 	}
 
-	public void setAllowOnlyOneInstance () {
+	public void setAllowOnlyOneInstance() {
 	}
 }

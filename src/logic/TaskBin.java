@@ -20,6 +20,7 @@ class NoResultFound extends Exception{
 
 public class TaskBin implements editTaskInfo{
 	ArrayList<Task> taskList;
+	ArrayList<RecurTask> recurList;
 	ArrayList<Task> activeList;
 	Storage taskStorage;
 	Stack<Command> undoStack;
@@ -36,16 +37,18 @@ public class TaskBin implements editTaskInfo{
 	/********************************Construction Methods************************************/
 
 	//This construction is used to success the past data from the storage file when the program is reopened
-	public TaskBin(ArrayList<Task> taskList){
+	public TaskBin(ArrayList<Task> taskList, ArrayList<RecurTask> recurList){
 		undoStack = new Stack<Command>();
 		redoStack = new Stack<Command>();
 		this.taskList = taskList;
+		this.recurList = recurList;
 	}
 
 	public TaskBin(){
 		undoStack = new Stack<Command>();
 		redoStack = new Stack<Command>();
 		taskList = new ArrayList<Task>();
+		recurList = new ArrayList<RecurTask>();
 	}
 	/*******************************************initialization*************************************/
 	public void init(){
@@ -377,6 +380,16 @@ public class TaskBin implements editTaskInfo{
 		Storage.write(taskList);
 		redoStack.clear();
 	}
+	
+	public void add(RecurTask newTask){
+		Command add = new Command(add_tag, newTask);
+		this.undoStack.push(add);
+		System.out.println(undoStack.size());
+		this.taskList.add(newTask);
+		taskList = sortArrayByTime(taskList);
+		Storage.write(taskList);
+		redoStack.clear();
+	}
 
 	//New Method
 	/*public void addWeeklyTask(Task newTask, DateTime endTime){
@@ -568,18 +581,43 @@ public class TaskBin implements editTaskInfo{
 	}
 
 	public void setDisplay(ArrayList<Task> list){
-		activeList = list;
-	}
+		DateTime now = new DateTime();
+		activeList = new ArrayList<Task>(list);
+		for(RecurTask t: recurList){
+			for(DateTime d: t.returnTime()){
+				if(d.dayOfYear().equals(now.dayOfYear())){
+					activeList.add(t);
+				}
+			}
+		}
+	} 
 	
 	public void setDisplayAll(){
-		activeList = taskList;
-	}
+		DateTime now = new DateTime();
+		activeList = new ArrayList<Task>(taskList);
+		for(RecurTask t: recurList){
+			for(DateTime d: t.returnTime()){
+				if(d.dayOfYear().equals(now.dayOfYear())){
+					activeList.add(t);
+				}
+			}
+		}
+	} 
+
 
 	public void setDisplay(){
+		DateTime now = new DateTime();
 		ArrayList<Task> dis = new ArrayList<Task>();
 		for(Task t:taskList){
 			if(isWithinOneWeek(t)){
 				dis.add(t);
+			}
+		}
+		for(RecurTask t: recurList){
+			for(DateTime d: t.returnTime()){
+				if(d.getWeekyear() == now.getWeekyear()){
+					activeList.add(t);
+				}
 			}
 		}
 		dis = sortArrayByTime(dis);
@@ -588,6 +626,7 @@ public class TaskBin implements editTaskInfo{
 
 	public ArrayList<Task> returnDisplay(){
 		activeList = sortArrayByTime(activeList);
+		
 		return activeList;
 	}
 	/******************************************Used Methods***************************************************/

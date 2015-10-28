@@ -37,6 +37,7 @@ import javafx.util.Duration;
 import logic.InvalidTimeException;
 import logic.Logic;
 import logic.Task;
+import parser.CommandParser;
 import parser.Parser;
 import parser.TitleParser;
 
@@ -44,7 +45,7 @@ public class GUIService {
 
 	StackPane content;
 	ConsoleView consoleView;
-	
+
 	Logic logic;
 	Parser parser;
 
@@ -64,12 +65,14 @@ public class GUIService {
 		consoleView = new ConsoleView();
 
 		content.setStyle("-fx-background-color: rgba(255,255,255, 0); -fx-background-radius: 10px;");
+
 		DropShadow dropShadow = new DropShadow();
 		dropShadow.setRadius(5.0);
 		dropShadow.setOffsetX(4.0);
 		dropShadow.setOffsetY(3.0);
 		dropShadow.setColor(Color.color(0.4, 0.5, 0.5));
 		content.setEffect(dropShadow);
+
 		addListenersToConsoleView(stage);
 		populateList(logic.displayHome());
 		content.getChildren().addAll(consoleView);
@@ -77,18 +80,12 @@ public class GUIService {
 
 	private void populateList(ArrayList<Task> tasksArr) {
 		int index = 1;
-		ObservableList<ListItem> timedTasks =FXCollections.observableArrayList ();
-		ObservableList<ListItem> floatingTasks=FXCollections.observableArrayList ();
+		ObservableList<ListItem> timedTasks = FXCollections.observableArrayList();
+		ObservableList<ListItem> floatingTasks = FXCollections.observableArrayList();
 		for (Task task : tasksArr) {
-			ListItem newListItem = new ListItem(
-					task.getTitle(),
-					task.getStartingTime(),
-					task.getEndingTime(),
-					task.getType(),
-					task.getStatus(),
-					task.isOverDue(),
-					index++);
-			assert task.getType()!=null;
+			ListItem newListItem = new ListItem(task.getTitle(), task.getStartingTime(), task.getEndingTime(),
+					task.getType(), task.getStatus(), task.isOverDue(), index++);
+			assert task.getType() != null;
 			if (task.getType().equalsIgnoreCase("task")) {
 				floatingTasks.add(newListItem);
 			} else {
@@ -107,31 +104,42 @@ public class GUIService {
 		} else {
 			consoleView.listDisplay.getChildren().setAll(consoleView.timedList, consoleView.floatingList);
 		}
-		
-		consoleView.taskPreview.toBack();
+
+		consoleView.addTaskPreview.toBack();
 		consoleView.scrollPane.toFront();
-		
+
 	}
 
 	private void addListenersToConsoleView(Stage stage) {
 		consoleView.inputConsole.textProperty().addListener((observable, oldValue, newValue) -> {
-			System.out.println("textfield changed from " + oldValue + " to " + newValue);//debug
-			if (newValue.equalsIgnoreCase("exit")) {
+			System.out.println("textfield changed from " + oldValue + " to " + newValue);// debug
+			if (newValue.equalsIgnoreCase(Constants.COMMAND_EXIT)) {
 				System.exit(0);
-			} else if (newValue.split(" ")[0].equalsIgnoreCase("add")) {
-			
-				consoleView.taskPreview.toFront();
+			} else if (newValue.split(" ")[0].equalsIgnoreCase(Constants.COMMAND_ADD)) {
+
+				consoleView.addTaskPreview.toFront();
 				consoleView.scrollPane.toBack();
-				consoleView.clearTaskPreviewDetails();
-				consoleView.updateTaskPreviewDetails(TitleParser.getTitle(newValue), parser.getStartDateTime(newValue), parser.getEndDateTime(newValue), null);
-			
-			} else if (!newValue.split(" ")[0].equalsIgnoreCase("add")) {
-				consoleView.taskPreview.toBack();
+				consoleView.editTaskPreview.toBack();
+				consoleView.updateAddTaskPreviewDetails(TitleParser.getTitle(newValue),
+						parser.getStartDateTime(newValue), this.parser.getEndDateTime(newValue), null);
+			} else if (CommandParser.getCommand(newValue).equalsIgnoreCase(Constants.COMMAND_INVALID)) {
+				consoleView.addTaskPreview.toBack();
 				consoleView.scrollPane.toFront();
+			} else if (CommandParser.getCommand(newValue).equalsIgnoreCase(Constants.COMMAND_DELETE)) {
+
+			} else if (CommandParser.getCommand(newValue).equalsIgnoreCase(Constants.COMMAND_EDIT)
+					&& newValue.matches("\\D+\\s\\d+\\s\\D+.+\\z")) {
+				consoleView.editTaskPreview.toFront();
+				consoleView.scrollPane.toBack();
+				consoleView.addTaskPreview.toBack();
+				Task toEdit = this.logic.displayCurrent().get(this.parser.getIndex(newValue) - 1);
+				consoleView.updateEditTaskPreviewDetails(toEdit.getTitle(), toEdit.getStartingTime(),
+						toEdit.getEndingTime(), this.parser.getField(newValue), TitleParser.getEditTitle(newValue),
+						this.parser.getDateTime(TitleParser.getEditTitle(newValue)));
 			}
 		});
 
-		consoleView.addEventHandler(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent> (){
+		consoleView.addEventHandler(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
 				xOffset = stage.getX() - event.getScreenX();
@@ -139,13 +147,13 @@ public class GUIService {
 			}
 		});
 
-		consoleView.floatingList.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent> (){
+		consoleView.floatingList.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
 			}
 		});
-		
-		consoleView.addEventHandler(MouseEvent.MOUSE_DRAGGED, new EventHandler<MouseEvent> (){
+
+		consoleView.addEventHandler(MouseEvent.MOUSE_DRAGGED, new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
 				stage.setX(event.getScreenX() + xOffset);
@@ -153,43 +161,40 @@ public class GUIService {
 			}
 		});
 
-		consoleView.scrollPane.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>(){
+		consoleView.scrollPane.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
 			@Override
 			public void handle(KeyEvent event) {
-				if(event.getCode() == KeyCode.ESCAPE) {
+				if (event.getCode() == KeyCode.ESCAPE) {
 					System.exit(0);
 				}
 			}
 		});
 
-		consoleView.inputConsole.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>(){
+		consoleView.inputConsole.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
 			@Override
 			public void handle(KeyEvent event) {
 				System.err.println(event.getCode());
-				if(event.getCode() == KeyCode.ESCAPE) {
+				if (event.getCode() == KeyCode.ESCAPE) {
 					if (consoleView.inputConsole.getText().length() == 0) {
 						System.exit(0);
 					} else {
 						consoleView.inputConsole.clear();
 					}
 				} else if (consoleView.inputConsole.getText().length() == 0 && event.getCode() == KeyCode.BACK_SPACE) {
-					
 					Logger logger = Logger.getLogger("TBALogger");
 					populateList(logic.displayHome());
-					
-					
+
 					updateStatusLabel(Constants.FEEDBACK_VIEW_TODAY);
-				} else if (event.getCode() == KeyCode.DOWN ){
-					
-					consoleView.scrollPane.setVvalue(consoleView.scrollPane.getVvalue()+0.2);
-				} else if (event.getCode() == KeyCode.UP ) {
-					consoleView.scrollPane.setVvalue(consoleView.scrollPane.getVvalue()-0.2);
-				} else if (event.getCode() == KeyCode.TAB ) {
-					
+				} else if (event.getCode() == KeyCode.DOWN) {
+
+					consoleView.scrollPane.setVvalue(consoleView.scrollPane.getVvalue() + 0.2);
+				} else if (event.getCode() == KeyCode.UP) {
+					consoleView.scrollPane.setVvalue(consoleView.scrollPane.getVvalue() - 0.2);
+				} else if (event.getCode() == KeyCode.TAB) {
+
 				} else if (event.getCode() == KeyCode.BACK_QUOTE) {
 					Node tempNode = consoleView.timedList.getChildren().get(0);
-					TranslateTransition translateTransition =
-							new TranslateTransition(Duration.millis(1000), tempNode);
+					TranslateTransition translateTransition = new TranslateTransition(Duration.millis(1000), tempNode);
 					translateTransition.setFromX(50);
 					translateTransition.setToX(700);
 					translateTransition.setCycleCount(1);
@@ -206,9 +211,6 @@ public class GUIService {
 				String input = consoleView.inputConsole.getText();
 				try {
 					populateList(logic.inputHandler(input));
-					
-					//updateInterface(input, logic.inputHandler(input));
-					//System.out.println(logic.inputHandler(input).size());
 					updateStatusLabel(logic.getStatusBarText(input));
 					consoleView.inputConsole.clear();
 				} catch (ParseException e) {
@@ -217,13 +219,13 @@ public class GUIService {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				
+
 			}
 		});
 	}
 
 	public Scene buildScene(StackPane content) {
-		Scene myScene  = new Scene(content, 700, 600);
+		Scene myScene = new Scene(content, 700, 600);
 		myScene.setFill(Color.TRANSPARENT);
 		myScene.getStylesheets().clear();
 		myScene.getStylesheets().add(this.getClass().getResource("style.css").toExternalForm());
@@ -237,7 +239,7 @@ public class GUIService {
 		consoleView.setDisable(false);
 	}
 
-	public void addAutocompleteEntries (ArrayList<String> stringArrayList) {
+	public void addAutocompleteEntries(ArrayList<String> stringArrayList) {
 		String[] stringArray = (String[]) stringArrayList.toArray();
 		Collections.addAll(consoleView.inputConsole.entries, stringArray);
 	}
@@ -255,9 +257,6 @@ public class GUIService {
 	public TrayIcon showTray() {
 		trayService = new TrayService(this.stage);
 		return trayService.createTrayIcon(this.stage);
-	}
-
-	public void onEscapePressed() {
 	}
 
 	public void updateStatusLabel(String text) {
