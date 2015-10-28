@@ -8,6 +8,25 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+
+// import Joda Time library
+import org.joda.time.DateTime;
+
+// import Google Gson library
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+
+import com.google.gson.reflect.TypeToken;
+
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -18,6 +37,12 @@ import logic.Task;
 import logic.TaskBin;
 
 public class StorageTest {
+	// initial methods to serialise/deserialise savedTask.json with DateTime
+	// formats
+	final static Gson gson = Converters.registerDateTime(new GsonBuilder().setPrettyPrinting().serializeNulls()).create();
+	final DateTime original = new DateTime();
+	final String json = gson.toJson(original);
+	final DateTime reconstituted = gson.fromJson(json, DateTime.class);
 
 	private static ArrayList<Task> taskList = new ArrayList<Task>();
 
@@ -90,7 +115,34 @@ public class StorageTest {
 
 	@Test
 	public void testWrite1() {
+		System.out.println("taskList " + taskList.toString());
 		Storage.write(taskList);
+		String line = "";
+		boolean pass = true;
+		try {
+			FileReader fr = new FileReader(Storage.path);
+			BufferedReader br = new BufferedReader(fr);
+			StringBuilder stringBuilder = new StringBuilder();
+			while ((line = br.readLine()) != null) {
+				stringBuilder.append(line).append("\n");
+			}
+			br.close();
+			String jsonString = stringBuilder.toString();
+			System.out.println("jsonString " + jsonString);
+			taskList = gson.fromJson(jsonString, new TypeToken<ArrayList<Task>>(){}.getType());
+
+			for (int i = 0; i < taskList.size(); i++){
+				System.out.println(taskList.get(i).getTitle());
+				if(!jsonString.equals(taskList.get(i))){
+					pass = false;
+				}
+			}
+		} catch (FileNotFoundException e) {
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		assertTrue(pass);
+
 	}
 
 	@Test

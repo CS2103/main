@@ -29,8 +29,8 @@ public class Storage {
 	final DateTime reconstituted = gson.fromJson(json, DateTime.class);
 
 	// attributes
-	private static File tempSavedTask = new File("savedTask.json");
-	private static File savedPath = new File("savedPath.txt");
+	public static File tempSavedTask = new File("savedTask.json"); // public for testing, change after done
+	public static File savedPath = new File("savedPath.txt"); // public for testing, change after done
 
 	public static String path; // public for testing, change after done
 	private static ArrayList<Task> currentTaskList = new ArrayList<Task>();
