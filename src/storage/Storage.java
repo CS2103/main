@@ -75,7 +75,7 @@ public class Storage {
 	public static void write(ArrayList<Task> tasks) {
 		try {
 			if (path == null) {
-				setPath(savedPath.getAbsolutePath());
+				path = savedPath.getAbsolutePath();
 			}
 			File file = new File(path);
 			FileWriter fw = new FileWriter(file);

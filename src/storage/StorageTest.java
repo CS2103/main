@@ -45,6 +45,7 @@ public class StorageTest {
 	final DateTime reconstituted = gson.fromJson(json, DateTime.class);
 
 	private static ArrayList<Task> taskList = new ArrayList<Task>();
+	private static ArrayList<Task> taskListForTest = new ArrayList<Task>();
 
 	@Before
 	public void setUp() throws Exception {
@@ -114,8 +115,8 @@ public class StorageTest {
 	}
 
 	@Test
-	public void testWrite1() {
-		System.out.println("taskList " + taskList.toString());
+	public void testWrite() {
+		//System.out.println("taskList " + taskList.toString());
 		Storage.write(taskList);
 		String line = "";
 		boolean pass = true;
@@ -128,12 +129,11 @@ public class StorageTest {
 			}
 			br.close();
 			String jsonString = stringBuilder.toString();
-			System.out.println("jsonString " + jsonString);
-			taskList = gson.fromJson(jsonString, new TypeToken<ArrayList<Task>>(){}.getType());
+			//System.out.println("jsonString " + jsonString);
+			taskListForTest = gson.fromJson(jsonString, new TypeToken<ArrayList<Task>>(){}.getType());
 
-			for (int i = 0; i < taskList.size(); i++){
-				System.out.println(taskList.get(i).getTitle());
-				if(!jsonString.equals(taskList.get(i))){
+			for (int i = 0; i < taskList.size(); i++) {
+				if(!taskListForTest.get(i).equals(taskList.get(i))){
 					pass = false;
 				}
 			}
