@@ -260,9 +260,52 @@ public class TaskBin implements editTaskInfo{
 		Storage.write(taskList);
 		return activeList;
 	}
+	
+	public ArrayList<Task> markTaskInstance(RecurTask task) {
+		for (RecurTask obj : recurList) {
+			if (obj.equals(task)) {
+				System.out.println("ADSSADAD");
+				System.out.println(obj.getTitle());
+				obj.mark();
+				Command mark = new Command(mark_tag, obj);
+				undoStack.push(mark);
+			}
+		}
+		for(Task obj : activeList){
+			if (obj.equals(task)) {
+				System.out.println("ADSSADAD");
+				System.out.println(obj.getTitle());
+				obj.mark();
+			}
+		}
+		Storage.write(taskList);
+		return activeList;
+		
+	}
 
 	public ArrayList<Task> unMarkTaskInstance(Task task) {
 		for (Task obj : taskList) {
+			if (obj.equals(task)) {
+				System.out.println("ADSSADAD");
+				System.out.println(obj.getTitle());
+				obj.unMark();
+				Command mark = new Command(unmark_tag, obj);
+				undoStack.push(mark);
+			}
+		}
+		for(Task obj : activeList){
+			if (obj.equals(task)) {
+				System.out.println("ADSSADAD");
+				System.out.println(obj.getTitle());
+				obj.unMark();
+			}
+		}
+		Storage.write(taskList);
+		return activeList;
+	}
+	
+	public ArrayList<Task> unMarkTaskInstance(RecurTask task) {
+		for (RecurTask obj : recurList) {
 			if (obj.equals(task)) {
 				System.out.println("ADSSADAD");
 				System.out.println(obj.getTitle());
@@ -391,57 +434,6 @@ public class TaskBin implements editTaskInfo{
 		redoStack.clear();
 	}
 
-	//New Method
-	/*public void addWeeklyTask(Task newTask, DateTime endTime){
-		ArrayList<Task> taskAdded = new ArrayList<Task>();
-		DateTime start = newTask.getEndingTime();
-		int i = 0;
-		while(newTask.getEndingTime().isBefore(endTime.getMillis())){
-			Task tskcpy = new Task(newTask);
-			tskcpy.setEndingDate(start.plusWeeks(i));
-			if(newTask.getStartingTime()!=null){
-				tskcpy.setStartingDate(tskcpy.getStartingTime().plusWeeks(1));
-			}
-			i++;
-			taskList.add(tskcpy);
-			taskAdded.add(tskcpy);
-		}
-		Storage.write(taskList);
-		Command redoRecur = new Command(recur_tag, taskAdded);
-		redoStack.push(redoRecur);
-	}
-
-	public void addMonthlyTask(Task newTask, DateTime endTime){
-		DateTime start = newTask.getEndingTime();
-		int i = 0;
-		while(newTask.getEndingTime().isBefore(endTime.getMillis())){
-			Task tskcpy = new Task(newTask);
-
-			tskcpy.setEndingDate(start.plusMonths(i));
-			if(newTask.getStartingTime()!=null){
-				tskcpy.setStartingDate(tskcpy.getStartingTime().plusWeeks(1));
-			}
-			i++;
-			taskList.add(tskcpy);
-		}
-		Storage.write(taskList);
-	}
-
-	public void addYearlyTask(Task newTask, DateTime endTime){
-		DateTime start = newTask.getEndingTime();
-		int i = 0;
-		while(newTask.getEndingTime().isBefore(endTime.getMillis())){
-			Task tskcpy = new Task(newTask);
-
-			tskcpy.setEndingDate(start.plusYears(i));
-			if(newTask.getStartingTime()!=null){
-				tskcpy.setStartingDate(tskcpy.getStartingTime().plusWeeks(1));
-			}
-			i++;
-			taskList.add(tskcpy);
-		}
-		
-	}*/
 
 
 
@@ -458,7 +450,19 @@ public class TaskBin implements editTaskInfo{
 		}
 		redoStack.clear();
 	}
-
+	
+	public void delete(RecurTask task, DateTime time){
+		for(int i = 0; i< recurList.size(); i++){
+			if(recurList.get(i).equals(task)){
+				Command delete = new Command(delete_tag, recurList.get(i));
+				undoStack.push(delete);
+				recurList.get(i).delete(time);
+				//Storage.write(recurList);
+				break;
+			}
+		}
+		redoStack.clear();
+	}
 
 
 	public ArrayList<Task> getUnfinished(){
