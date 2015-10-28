@@ -8,9 +8,6 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 
 public class EditTaskPreview extends StackPane {
 
@@ -47,41 +44,50 @@ public class EditTaskPreview extends StackPane {
 	public EditTaskPreview(String title, DateTime startTime, DateTime endTime, String taskType) {
 
 		header = new Label("Edit task");
-		header.setTextFill(Color.LIGHTGREEN);
-		header.setPrefHeight(30);
-		header.setFont(Font.font("SansSerif", FontWeight.BOLD, 16));
+		header.setId("taskPreviewHeader");
 
 		oldTitleLabel = new Label("Title:");
 		oldTitleLabel.setId("taskPreviewLabel");
+
 		oldStartTimeLabel = new Label("Current Start Time:");
 		oldStartTimeLabel.setId("taskPreviewLabel");
+
 		oldEndTimeLabel = new Label("Current End Time:");
 		oldEndTimeLabel.setId("taskPreviewLabel");
+
 		oldRecurringLabel = new Label("Currently Repeating:");
 		oldRecurringLabel.setId("taskPreviewLabel");
 
 		oldTitle = new Label(Constants.COMMAND_INVALID);
 		oldTitle.setId("taskPreviewDetails");
+
 		oldStartTime = new Label();
 		oldStartTime.setId("taskPreviewDetails");
+
 		oldEndTime = new Label();
 		oldEndTime.setId("taskPreviewDetails");
+
 		oldRecurring = new Label();
 		oldRecurring.setId("taskPreviewDetails");
 
 		newTitleLabel = new Label("New Title: ");
 		newTitleLabel.setId("taskPreviewLabel");
+
 		newStartTimeLabel = new Label("New Start Time: ");
 		newStartTimeLabel.setId("taskPreviewLabel");
+
 		newEndTimeLabel = new Label("New End Time: ");
 		newEndTimeLabel.setId("taskPreviewLabel");
+
 		newRecurringLabel = new Label("New Repeating: ");
 		newRecurringLabel.setId("taskPreviewLabel");
 
 		newTitleField = new Label();
 		newTitleField.setId("taskPreviewDetails");
+
 		newStartTimeField = new Label();
 		newStartTimeField.setId("taskPreviewDetails");
+
 		newEndTimeField = new Label();
 		newEndTimeField.setId("taskPreviewDetails");
 
@@ -123,13 +129,9 @@ public class EditTaskPreview extends StackPane {
 		taskPreviewLayout.setPrefSize(700, 50);
 		taskPreviewLayout.setPadding(new Insets(20, 20, 20, 20));
 		taskPreviewLayout.setStyle("-fx-background-color: rgba(0,0,0,0.3); -fx-background-radius:20");
-		//
+
 		taskPreviewLayout.getColumnConstraints().add(columnConstraint);
 		taskPreviewLayout.getChildren().addAll(header, oldTitleLabel, oldTitle, newDetailsLayout);
-
-		// taskPreviewLayout.getChildren().addAll(header, titleLabel,
-		// startLabel, endLabel, recurringLabel, newTitle, newStartTime,
-		// newEndTime, newRecurring);
 
 		getChildren().addAll(taskPreviewLayout);
 		setPrefSize(700, 50);

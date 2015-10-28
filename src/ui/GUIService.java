@@ -1,19 +1,10 @@
-/**
- * This class:
- * Instantiates all UI views
- * Add listeners to UI components
- * Listeners will call the corresponding logic methods on event received
- *
- * void printToConsole(String, Font);
- * void addAutoCompleteEntries(ArrayList<String>);
- */
-
 package ui;
 
 import java.awt.TrayIcon;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import application.Constants;
@@ -45,6 +36,8 @@ public class GUIService {
 
 	StackPane content;
 	ConsoleView consoleView;
+
+	Logger LOGGER = Logger.getLogger("GUILog");
 
 	Logic logic;
 	Parser parser;
@@ -112,7 +105,7 @@ public class GUIService {
 
 	private void addListenersToConsoleView(Stage stage) {
 		consoleView.inputConsole.textProperty().addListener((observable, oldValue, newValue) -> {
-			System.out.println("textfield changed from " + oldValue + " to " + newValue);// debug
+			LOGGER.log(Level.FINEST, "Textfield changed from " + oldValue + " to " + newValue);
 			if (newValue.equalsIgnoreCase(Constants.COMMAND_EXIT)) {
 				System.exit(0);
 			} else if (newValue.split(" ")[0].equalsIgnoreCase(Constants.COMMAND_ADD)) {
@@ -173,7 +166,6 @@ public class GUIService {
 		consoleView.inputConsole.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
 			@Override
 			public void handle(KeyEvent event) {
-				System.err.println(event.getCode());
 				if (event.getCode() == KeyCode.ESCAPE) {
 					if (consoleView.inputConsole.getText().length() == 0) {
 						System.exit(0);
@@ -181,7 +173,6 @@ public class GUIService {
 						consoleView.inputConsole.clear();
 					}
 				} else if (consoleView.inputConsole.getText().length() == 0 && event.getCode() == KeyCode.BACK_SPACE) {
-					Logger logger = Logger.getLogger("TBALogger");
 					populateList(logic.displayHome());
 
 					updateStatusLabel(Constants.FEEDBACK_VIEW_TODAY);
@@ -201,7 +192,6 @@ public class GUIService {
 					translateTransition.setAutoReverse(false);
 					translateTransition.play();
 				}
-				System.out.println(listIndex);
 			}
 		});
 
@@ -214,12 +204,11 @@ public class GUIService {
 					updateStatusLabel(logic.getStatusBarText(input));
 					consoleView.inputConsole.clear();
 				} catch (ParseException e) {
-					System.err.println("Input error!");
+					LOGGER.log(Level.SEVERE, "Unable to parse user input");
 				} catch (InvalidTimeException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				} catch (NullPointerException e) {
+					LOGGER.log(Level.SEVERE, "Current user input not returning anything for GUI to display");
 				}
-
 			}
 		});
 	}

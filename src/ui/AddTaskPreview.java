@@ -7,7 +7,6 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
@@ -27,8 +26,8 @@ public class AddTaskPreview extends StackPane {
 	public AddTaskPreview(String title, DateTime startTime, DateTime endTime) {
 
 		header = new Label("Add new task");
-		header.setTextFill(Color.LIGHTGREEN);
-		header.setPrefHeight(30);
+		header.setId("taskPreviewHeader");
+
 		titleLabel = new Label("Title:");
 		titleLabel.setId("taskPreviewLabel");
 		startLabel = new Label("Start:");

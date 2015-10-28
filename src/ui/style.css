@@ -5,12 +5,14 @@
 #dateDisplay {
 	-fx-font-family: "sans-serif";
 	-fx-font-size: 30px;
+	
 }
 
 #timeDisplay {
 	-fx-font-family: "sans-serif";
 	-fx-background-color: rgba(140,140,140, 0.3);
 	-fx-font-size: 30px;
+	
 }
 
 #scrollPane .scroll-bar:horizontal .track,
@@ -78,6 +80,15 @@
 	
 }
 
+#taskPreviewHeader {
+	-fx-text-fill: lightgreen ;
+	-fx-pref-height: 30px ;
+	-fx-font-family: SansSerif ;
+	-fx-font-weight: bold ;
+	-fx-font-size: 16px ;
+	-fx-effect: dropshadow( gaussian , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 2 );
+}
+
 #taskPreviewLabel {
 	-fx-pref-width: 80px;
 	-fx-pref-height: 30px;
@@ -86,6 +97,7 @@
 	-fx-text-fill: lightskyblue ;
 	-fx-font-family: SansSerif;
 	-fx-font-weight: bold;
+	-fx-effect: dropshadow( gaussian , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 2 );
 }
 
 #taskPreviewDetails {
