@@ -8,33 +8,18 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-
-// import Joda Time library
-import org.joda.time.DateTime;
 
 // import Google Gson library
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
-import com.google.gson.reflect.TypeToken;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-
 import logic.Task;
-import logic.TaskBin;
 
 public class StorageTest {
 	// initial methods to serialise/deserialise savedTask.json with DateTime
@@ -62,7 +47,7 @@ public class StorageTest {
 		t[3] = new Task("Go fishing" ,d5, d2);
 		t[4] = new Task("Do homework", d3, d4);
 		t[5] = new Task ("Love no War", d5, d3);
-		for(int i = 0; i< t.length; i++){
+		for(int i = 0; i< t.length; i++) {
 			taskList.add(t[i]);
 		}
 	}
@@ -115,7 +100,7 @@ public class StorageTest {
 	}
 
 	@Test
-	public void testWrite() {
+	public void testWriteAndRead() {
 		//System.out.println("taskList " + taskList.toString());
 		Storage.write(taskList);
 		String line = "";
@@ -133,7 +118,7 @@ public class StorageTest {
 			taskListForTest = gson.fromJson(jsonString, new TypeToken<ArrayList<Task>>(){}.getType());
 
 			for (int i = 0; i < taskList.size(); i++) {
-				if(!taskListForTest.get(i).equals(taskList.get(i))){
+				if (!taskListForTest.get(i).equals(taskList.get(i))) {
 					pass = false;
 				}
 			}
@@ -144,11 +129,5 @@ public class StorageTest {
 		assertTrue(pass);
 
 	}
-
-	@Test
-	public void testRead() {
-		fail("Not yet implemented");
-	}
-
 
 }
