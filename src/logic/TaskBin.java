@@ -609,7 +609,7 @@ public class TaskBin implements editTaskInfo{
 		DateTime now = new DateTime();
 		ArrayList<Task> dis = new ArrayList<Task>();
 		for(Task t:taskList){
-			if(isWithinOneWeek(t)){
+			if(isWithinOneWeek(t) && (t.getStatus()==false)){
 				dis.add(t);
 			}
 		}
