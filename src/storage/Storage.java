@@ -30,15 +30,16 @@ public class Storage {
 	final DateTime reconstituted = gson.fromJson(json, DateTime.class);
 
 	// attributes
-	public static File tempSavedTask = new File("savedTask.json"); // public for testing, change after done
+	public static File normalTask = new File("savedTaskNormal.json"); // public for testing, change after done
+	public static File recurTask = new File("savedTaskRecur.json"); // public for testing, change after done
+
 	public static File savedPath = new File("savedPath.txt"); // public for testing, change after done
 
 	public static String path; // public for testing, change after done
+	
 	private static ArrayList<Task> currentTaskList = new ArrayList<Task>();
 
-	public Storage() {
-
-	}
+	public Storage() { }
 
 	public static void setPath(String path) {
 		File file = new File(path);
@@ -66,7 +67,8 @@ public class Storage {
 
 		write(currentTaskList);
 
-		tempSavedTask.delete();
+		normalTask.delete();
+		recurTask.delete();
 	}
 
 	public static String enquirePath() {
@@ -101,7 +103,7 @@ public class Storage {
 		ArrayList<Task> taskList = new ArrayList<Task>();
 		String line = "";
 		if (path == null) {
-			path = tempSavedTask.getAbsolutePath();
+			path = normalTask.getAbsolutePath();
 		}
 		try {
 			FileReader fr = new FileReader(path);
@@ -135,7 +137,7 @@ public class Storage {
 		}
 	}
 
-	public static ArrayList<Task> readRecur() {
+	public static ArrayList<RecurTask> readRecur() {
 		try {
 			FileReader fr = new FileReader(savedPath);
 			BufferedReader br = new BufferedReader(fr);
@@ -145,10 +147,10 @@ public class Storage {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		ArrayList<Task> taskList = new ArrayList<Task>();
+		ArrayList<RecurTask> taskList = new ArrayList<RecurTask>();
 		String line = "";
 		if (path == null) {
-			path = tempSavedTask.getAbsolutePath();
+			path = recurTask.getAbsolutePath();
 		}
 		try {
 			FileReader fr = new FileReader(path);
@@ -159,7 +161,7 @@ public class Storage {
 			}
 			br.close();
 			String jsonString = stringBuilder.toString();
-			taskList = gson.fromJson(jsonString, new TypeToken<ArrayList<Task>>(){}.getType());
+			taskList = gson.fromJson(jsonString, new TypeToken<ArrayList<RecurTask>>(){}.getType());
 		} catch (FileNotFoundException e) {
 		} catch (IOException e) {
 			e.printStackTrace();
