@@ -128,14 +128,14 @@ public class EditTaskPreview extends StackPane {
 
 		taskPreviewLayout.setPrefSize(700, 50);
 		taskPreviewLayout.setPadding(new Insets(20, 20, 20, 20));
-		taskPreviewLayout.setStyle("-fx-background-color: rgba(0,0,0,0.3); -fx-background-radius:20");
+		taskPreviewLayout.setStyle("-fx-background-color: rgba(0,0,0,0.5); -fx-background-radius:20");
 
 		taskPreviewLayout.getColumnConstraints().add(columnConstraint);
 		taskPreviewLayout.getChildren().addAll(header, oldTitleLabel, oldTitle, newDetailsLayout);
 
 		getChildren().addAll(taskPreviewLayout);
 		setPrefSize(700, 50);
-		setStyle("-fx-background-color: rgba(255,255,255,0.3)");
+		setStyle("-fx-background-color: rgba(255,255,255,0.5)");
 		setPadding(new Insets(200, 50, 100, 50));
 	}
 

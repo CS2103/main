@@ -62,13 +62,13 @@ public class AddTaskPreview extends StackPane {
 
 		taskPreviewLayout.setPrefSize(700, 50);
 		taskPreviewLayout.setPadding(new Insets(20, 20, 20, 20));
-		taskPreviewLayout.setStyle("-fx-background-color: rgba(0,0,0,0.3); -fx-background-radius:20");
+		taskPreviewLayout.setStyle("-fx-background-color: rgba(0,0,0,0.5); -fx-background-radius:20");
 		taskPreviewLayout.getChildren().addAll(header, titleLabel, startLabel, endLabel, recurringLabel, tempTitle,
 				tempStartTime, tempEndTime, tempRecurring);
 
 		this.getChildren().addAll(taskPreviewLayout);
 		this.setPrefSize(700, 50);
-		this.setStyle("-fx-background-color: rgba(255,255,255,0.3)");
+		this.setStyle("-fx-background-color: rgba(255,255,255,0.5)");
 		this.setPadding(new Insets(200, 50, 100, 50));
 	}
 
