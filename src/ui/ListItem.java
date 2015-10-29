@@ -16,36 +16,37 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
 
-public class ListItem extends StackPane{
+public class ListItem extends StackPane {
 
 	private Circle statusIcon;
 	private Label index;
 	private Label title;
 	private Label taskDuration;
-	//private Label isOverDue;
+	// private Label isOverDue;
 
-	public ListItem(String taskTitle, DateTime taskStartTime, DateTime taskEndTime, String taskType, boolean isDone, boolean isOverdue, int taskIndex) {
+	public ListItem(String taskTitle, DateTime taskStartTime, DateTime taskEndTime, String taskType, boolean isDone,
+			boolean isOverdue, int taskIndex) {
 
 		title = new Label(taskTitle);
 		title.setId("title");
-		title.setFont(Font.font("SansSerif",FontWeight.BOLD,16));
-		title.setPadding(new Insets(0,0,0,5));
+		title.setFont(Font.font("SansSerif", FontWeight.BOLD, 16));
+		title.setPadding(new Insets(0, 0, 0, 5));
 		title.setMaxWidth(Double.MAX_VALUE);
 		if (isOverdue) {
-			
+
 			title.setTextFill(Color.PALEVIOLETRED);
 			title.setFont(Font.font("SansSerif", FontWeight.BOLD, FontPosture.ITALIC, 16));
 		} else {
-			title.setTextFill(Color.ANTIQUEWHITE);	
-		}		
+			title.setTextFill(Color.ANTIQUEWHITE);
+		}
 
 		index = new Label(String.valueOf(taskIndex));
 		index.setId("index");
-		index.setFont(Font.font("SansSerif",FontWeight.LIGHT,22));
+		index.setFont(Font.font("SansSerif", FontWeight.LIGHT, 22));
 		index.setTextFill(Color.WHITESMOKE);
 		index.setTextAlignment(TextAlignment.RIGHT);
 		index.setAlignment(Pos.CENTER_RIGHT);
-		index.setPadding(new Insets(0,20,0,0));
+		index.setPadding(new Insets(0, 20, 0, 0));
 		index.setMinWidth(50);
 
 		statusIcon = new Circle();
@@ -58,22 +59,29 @@ public class ListItem extends StackPane{
 			statusIcon.setFill(Color.RED);
 		}
 
-		String startDate = (taskStartTime.getYear() == DateTime.now().getYear()) ? 
-				taskStartTime.toLocalDate().toString("EEE dd MMM") : taskStartTime.toLocalDate().toString("EEE dd MMM YYYY");
+		String startDate = (taskStartTime.getYear() == DateTime.now().getYear())
+				? taskStartTime.toLocalDate().toString("EEE dd MMM")
+				: taskStartTime.toLocalDate().toString("EEE dd MMM YYYY");
 		String startTime = taskStartTime.toLocalTime().toString("HHmm");
-		String endDate = (taskEndTime.getYear() == DateTime.now().getYear()) ?
-				taskEndTime.toLocalDate().toString("EEE dd MMM") : taskEndTime.toLocalDate().toString("EEE dd MMM YYYY");
+		String endDate = (taskEndTime.getYear() == DateTime.now().getYear())
+				? taskEndTime.toLocalDate().toString("EEE dd MMM")
+				: taskEndTime.toLocalDate().toString("EEE dd MMM YYYY");
 		String endTime = taskEndTime.toLocalTime().toString("HHmm");
+
+		if (taskEndTime.isBefore(taskStartTime)) {
+			endDate = "????";
+			endTime = "????";
+		}
 
 		taskDuration = new Label();
 		if (taskType.equals("deadline")) {
 			taskDuration.setText("By [" + endDate + "] " + endTime + " hrs");
-		} else if (taskType.equals("event")){
+		} else if (taskType.equals("event")) {
 			taskDuration.setText("[" + startDate + "] " + startTime + " hrs  -  [" + endDate + "] " + endTime + " hrs");
 		}
 		taskDuration.setTextFill(Color.LIGHTGRAY);
 		taskDuration.setFont(Font.font("SansSerif", FontPosture.ITALIC, 11));
-		taskDuration.setPadding(new Insets(0,0,0,15));
+		taskDuration.setPadding(new Insets(0, 0, 0, 15));
 
 		HBox titleNstatus = new HBox();
 		titleNstatus.setAlignment(Pos.CENTER_LEFT);
@@ -90,11 +98,11 @@ public class ListItem extends StackPane{
 			detailsLayout.getChildren().addAll(titleNstatus, timeLayout);
 		}
 
-		detailsLayout.setPadding(new Insets(0,0,0,5));
+		detailsLayout.setPadding(new Insets(0, 0, 0, 5));
 		detailsLayout.setAlignment(Pos.CENTER);
 
 		VBox statusLayout = new VBox();
-		statusLayout.setPadding(new Insets(0,0,0,0));
+		statusLayout.setPadding(new Insets(0, 0, 0, 0));
 		statusLayout.setAlignment(Pos.CENTER_RIGHT);
 		statusLayout.setPrefWidth(30);
 		statusLayout.getChildren().addAll(this.index);
@@ -107,9 +115,11 @@ public class ListItem extends StackPane{
 		this.setPadding(new Insets(2, 10, 2, 2));
 		this.setMinHeight(40);
 	}
+
 	public String getTitle() {
 		return this.title.getText();
 	}
+
 	public String getIsOverdue() {
 		return this.title.getText();
 	}
