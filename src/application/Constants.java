@@ -32,7 +32,7 @@ public class Constants {
 	// double quote
 	public static final String DOUBLE_QUOTE = "\"";
 
-	//dot
+	// dot
 	public static final String DOT = ".";
 
 	// Dictionaries
@@ -41,33 +41,31 @@ public class Constants {
 	public static final String[] DICTIONARY_SHOW = { "show", "display", "sh" };
 	public static final String[] DICTIONARY_SEARCH = { "search", "find", "sr" };
 	public static final String[] DICTIONARY_EDIT = { "edit", "change", "e", "modify" };
-	public static final String[] DICTIONARY_MARK = {"mark", "m"};
-	public static final String[] DICTIONARY_UNMARK = {"unmark", "um"};
+	public static final String[] DICTIONARY_MARK = { "mark", "m" };
+	public static final String[] DICTIONARY_UNMARK = { "unmark", "um" };
 	public static final String[] DICTIONARY_UNDO = { "undo", "un" };
 	public static final String[] DICTIONARY_REDO = { "redo", "re" };
 	public static final String[] DICTIONARY_VIEW_HOMESCREEN = { "home", "h" };
-	public static final String[] DICTIONARY_SETPATH = {"setpath", "set"};
+	public static final String[] DICTIONARY_SETPATH = { "setpath", "set" };
 	public static final String[] DICTIONARY_HELP = { "help" };
 	public static final String[] DICTIONARY_EXIT = { "exit", "ex", "quit" };
-	public static final String[] DICTIONARY_PARAMETERS = { "location", "loc",
-			"date", "startdate", "enddate", "sd", "ed", "time", "starttime",
-			"endtime", "st", "et" , "from", "to"};
+	public static final String[] DICTIONARY_ENQUIREPATH = { "enquirepath", "en" };
+	public static final String[] DICTIONARY_PARAMETERS = { "location", "loc", "date", "startdate", "enddate", "sd",
+			"ed", "time", "starttime", "endtime", "st", "et", "from", "to" };
 
 	// Months
-	public static final String[] MONTHS_SHORT = { "jan", "feb", "mar", "apr",
-			"may", "jun", "jul", "aug", "sep", "oct", "nov", "dec" };
-	public static final String[] MONTHS_LONG = { "january", "february",
-			"march", "april", "may", "june", "july", "august", "september",
-			"october", "november", "december" };
+	public static final String[] MONTHS_SHORT = { "jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct",
+			"nov", "dec" };
+	public static final String[] MONTHS_LONG = { "january", "february", "march", "april", "may", "june", "july",
+			"august", "september", "october", "november", "december" };
 	public static final String[] MONTHS_1ST_LETTER_CAPS_SHORT = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul",
 			"Aug", "Sep", "Oct", "Nov", "Dec" };
-	public static final String[] MONTHS_1ST_LETTER_CAPS_LONG = { "January", "February", "March", "April", "May",
-			"June", "July", "August", "September", "October", "November",
-	"December" };
+	public static final String[] MONTHS_1ST_LETTER_CAPS_LONG = { "January", "February", "March", "April", "May", "June",
+			"July", "August", "September", "October", "November", "December" };
 
 	// Day Keywords
-	public static final String[] DICTIONARY_TOMORROW = {"tomorrow", "tmr"};
-	public static final String[] DICTIONARY_TODAY = {"today", "tdy"};
+	public static final String[] DICTIONARY_TOMORROW = { "tomorrow", "tmr" };
+	public static final String[] DICTIONARY_TODAY = { "today", "tdy" };
 
 	// Commands
 	public static final String COMMAND_ADD = "add";
@@ -86,6 +84,7 @@ public class Constants {
 	public static final String COMMAND_ALERT = "alert";
 	public static final String COMMAND_CLEAR = "clear";
 	public static final String COMMAND_SETPATH = "setpath";
+	public static final String COMMAND_ENQUIREPATH = "enquirepath";
 
 	// year
 	public static final int YEAR_2000 = 2000;
@@ -139,37 +138,43 @@ public class Constants {
 	public static final String FEEDBACK_INVALID = "That is an invalid action!";
 	public static final String FEEDBACK_INVALID_NUMBER_OF_QUOTES = "Invaild number of quotes";
 	public static final String FEEDBACK_INVALID_PARAMETERS_FOR_EDIT = "Invalid parameters for edit command";
-	public static final String FEEDBACK_SETPATH_SUCCESS= "New save location is: ";
+	public static final String FEEDBACK_SETPATH_SUCCESS = "New save location is: ";
 
 	// date formats
-	public static String[] dateFormats = {"dd MMM yy", "d/M/yy", "d/M", "d-M-yy", "d MMM", "dd MMMM", "dd.MM.yy",
-			"d-M", "dd.M"};
+	public static String[] dateFormats = { "dd MMM yy", "d/M/yy", "d/M", "d-M-yy", "d MMM", "dd MMMM", "dd.MM.yy",
+			"d-M", "dd.M" };
 
 	// time formats
-	public static String[] timeFormats = {"HHmm", "H mm", "HH:mm", "HH", "HH.mm", "H.mm", "H:mm", "H"};
+	public static String[] timeFormats = { "HHmm", "H mm", "HH:mm", "HH", "HH.mm", "H.mm", "H:mm", "H" };
 
 	// date-time formats
-	public static String[] dateTimeFormats = {"d MMM yyyy HHmm", "d/M/yy", "d/M", "d-M-y", "d MMM", "d MMMM", "dd.MM.yyyy",
-			"d-M", "dd.M"};
+	public static String[] dateTimeFormats = { "d MMM yyyy HHmm", "d/M/yy", "d/M", "d-M-y", "d MMM", "d MMMM",
+			"dd.MM.yyyy", "d-M", "dd.M" };
 
-	public static String[] dateRegex = {
-			"(3[0-1]|2[0-9]|1[0-9]|[1-9])[\\s]\\D+[\\s][0-9]{2}(\\s|$)",				// 10 dec+ 2015
-			"(3[0-1]|2[0-9]|1[0-9]|[1-9])[.|/|-](1[0-2]|[1-9])[.|/|-]\\d{1,4}",	// 10.12.2015 OR 10/12/2015 OR 10-12-2015
-			"(3[0-1]|2[0-9]|1[0-9]|[1-9])[\\s]\\D+",							// 10 dec+
-			"(3[0-1]|2[0-9]|(1[0-9])|[1-9])[.|/|-]((1[0-2]|[1-9]))"				// 10.12 OR 10/12
-			//			"\b(0?[1-9]|[1-2][0-9]|3[0-1])[- /.](0?[1-9]|1[0-2])[- /.](19|20)?[0-9]{2}\b"
+	public static String[] dateRegex = { "(3[0-1]|2[0-9]|1[0-9]|[1-9])[\\s]\\D+[\\s][0-9]{2}(\\s|$)", // 10
+																										// dec+
+																										// 2015
+			"(3[0-1]|2[0-9]|1[0-9]|[1-9])[.|/|-](1[0-2]|[1-9])[.|/|-]\\d{1,4}", // 10.12.2015
+																				// OR
+																				// 10/12/2015
+																				// OR
+																				// 10-12-2015
+			"(3[0-1]|2[0-9]|1[0-9]|[1-9])[\\s]\\D+", // 10 dec+
+			"(3[0-1]|2[0-9]|(1[0-9])|[1-9])[.|/|-]((1[0-2]|[1-9]))" // 10.12 OR
+																	// 10/12
+			// "\b(0?[1-9]|[1-2][0-9]|3[0-1])[- /.](0?[1-9]|1[0-2])[-
+			// /.](19|20)?[0-9]{2}\b"
 	};
-	
-	public static String[] timeRegex = {
-			"[(2[0-3]|1[0-9]|[0-9])]{2}[[1-5]?[0-9]]{2}",						// 2345
-			"(2[0-3]|1[0-9]|[0-9]):([1-5]?[0-9])"//,							// 23:45
-			//"\\d{1,2}[^/][0-5]{1,2}\\d"
+
+	public static String[] timeRegex = { "[(2[0-3]|1[0-9]|[0-9])]{2}[[1-5]?[0-9]]{2}", // 2345
+			"(2[0-3]|1[0-9]|[0-9]):([1-5]?[0-9])"// , // 23:45
+			// "\\d{1,2}[^/][0-5]{1,2}\\d"
 	};
 
 	// keywords
-	public static final String[] TASK_START_DATETIME = {" from ", " on ", " between "};
-	public static final String[] TASK_END_DATETIME = {" by ", " until ", " till ", " before ", " to "};
-	public static final String[] TASK_RECURRING = {"daily", "weekly", "monthly", "yearly"};
+	public static final String[] TASK_START_DATETIME = { " from ", " on ", " between " };
+	public static final String[] TASK_END_DATETIME = { " by ", " until ", " till ", " before ", " to " };
+	public static final String[] TASK_RECURRING = { "daily", "weekly", "monthly", "yearly" };
 
 	// space
 	public static final String SPACE = " ";
@@ -182,7 +187,7 @@ public class Constants {
 	public static final String EMPTY_STRING = "";
 
 	// Tray icon display messages
-	final static String MSG_ALREADY_RUNNING = APP_NAME + " is Already Running!" ;
+	final static String MSG_ALREADY_RUNNING = APP_NAME + " is Already Running!";
 	final static String MSG_RESTORE = "CTRL + L to Restore";
 	final static String MSG_ERROR = "Error occured";
 	public final static String MSG_ABOUT = APP_NAME + " 2015 \nCreated by Andy, Hung, Jun Ren, Xiaoming";

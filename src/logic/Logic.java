@@ -58,6 +58,8 @@ public class Logic {
 		} else if (command.equalsIgnoreCase("redo")) {
 			bin.redo();
 			return bin.returnDisplay();
+		} else if (command.equalsIgnoreCase("enquirepath")) {
+			return bin.returnDisplay();
 		}
 		return null;
 	}
@@ -235,6 +237,8 @@ public class Logic {
 			return bin.undoStack.peek().returnMani().getTitle() + Constants.FEEDBACK_EDIT_SUCCESS;
 		case Constants.COMMAND_SETPATH:
 			return Constants.FEEDBACK_SETPATH_SUCCESS + input.split(" ")[1].trim();
+		case Constants.COMMAND_ENQUIREPATH:
+			return Storage.enquirePath();
 		default:
 			return Constants.FEEDBACK_INVALID;
 		}
