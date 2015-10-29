@@ -28,6 +28,8 @@ public class CommandParser {
 			return Constants.DICTIONARY_MARK[0];
 		} else if (checkForWordInDictionary(Constants.DICTIONARY_UNMARK, command)) {
 			return Constants.DICTIONARY_UNMARK[0];
+		} else if (checkForWordInDictionary(Constants.DICTIONARY_ENQUIREPATH, command)) {
+			return Constants.DICTIONARY_ENQUIREPATH[0];
 		} else {
 			return Constants.COMMAND_INVALID;
 		}
@@ -40,6 +42,7 @@ public class CommandParser {
 			return false;
 		}
 	}
+
 	static String extractFirstWord(String input) {
 		return input.split(" ")[0].trim();
 	}
