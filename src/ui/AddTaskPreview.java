@@ -78,5 +78,4 @@ public class AddTaskPreview extends StackPane {
 		this.tempEndTime.setText(Constants.EMPTY_STRING);
 		this.tempRecurring.setText(Constants.EMPTY_STRING);
 	}
-
 }
