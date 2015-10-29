@@ -2,19 +2,14 @@ package parser;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+
 import application.Constants;
 
-public class TaskParser {
-
-
-	static String getEdit(String input) {
-		return "";
-	}
+public class TitleParser {
 
 	public static String getTitle(String input) {
 		String text = new String();
 		text = splitInputWithDictionary(Constants.DICTIONARY_ADD, input);
-
 		if (text == null) {
 			text = splitInputWithDictionary(Constants.DICTIONARY_DELETE, input);
 		}
@@ -36,8 +31,14 @@ public class TaskParser {
 		if (text == null) {
 			text = splitInputWithDictionary(Constants.DICTIONARY_SETPATH, input);
 		}
-
 		return text;
+	}
+
+	public static String getEditTitle(String input){
+		for (int i = 0; i < 3; i++){
+			input = excludeFirstWord(input);
+		}
+		return input;
 	}
 
 	public static String splitInputWithDictionary(String[] dictionary, String input) {
@@ -45,10 +46,9 @@ public class TaskParser {
 		int lastIndex = input.length();
 
 		for (String regex : dictionary) {
-			if (input.indexOf(regex + " ") > firstIndex) {
-				firstIndex = input.indexOf(regex + " ");
+			if (input.toLowerCase().indexOf(regex) > firstIndex) {
+				firstIndex = input.toLowerCase().indexOf(regex);
 			}
-			// System.out.println(firstIndex);
 		}
 
 		if (firstIndex < 0) {
@@ -56,42 +56,31 @@ public class TaskParser {
 		}
 
 		ArrayList<String> taskKeywords = new ArrayList<String>();
-		taskKeywords.addAll(Arrays.asList(Constants.TASK_END_DATE));
-		taskKeywords.addAll(Arrays.asList(Constants.TASK_START_DATE));
-		taskKeywords.addAll(Arrays.asList(Constants.TASK_START_TIME));
-		taskKeywords.addAll(Arrays.asList(Constants.TASK_END_TIME));
+		//taskKeywords.addAll(Arrays.asList(Constants.TASK_END_DATE));
+		//taskKeywords.addAll(Arrays.asList(Constants.TASK_START_DATE));
+		taskKeywords.addAll(Arrays.asList(Constants.TASK_START_DATETIME));
+		taskKeywords.addAll(Arrays.asList(Constants.TASK_END_DATETIME));
 		taskKeywords.removeAll(Arrays.asList(dictionary));
 
-		// System.out.println(taskKeywords);
-
 		for (String regex : taskKeywords) {
-			if (input.indexOf(" " + regex) < lastIndex && input.indexOf(" " + regex) > 0) {
-				lastIndex = input.indexOf(regex + " ");
+			if (input.toLowerCase().indexOf(regex) < lastIndex && input.toLowerCase().indexOf(regex) > 0) {
+				lastIndex = input.toLowerCase().indexOf(regex);
 			}
-			// System.out.println(lastIndex);
 		}
 		if (lastIndex <= firstIndex) {
 			lastIndex = input.length();
 		}
 
-		return Parser.excludeFirstWord(input.substring(firstIndex, lastIndex)).trim();
-	}
-	
-	public static int getIndex(String input) {
-		input = input.split(" ")[1];		//replace with constant
-		
-		return Integer.parseInt(input);
-	}
-	
-	public static String getAttribute(String input){
-		return input.split(" ")[2].toLowerCase();
-	}
-	
-	public static String getEditTitle(String input){
-		for (int i = 0; i < 3; i++){
-			input = Parser.excludeFirstWord(input);
-		}
-		return input;
+		return excludeFirstWord(input.substring(firstIndex, lastIndex)).trim();
 	}
 
+	static String extractFirstWord(String input) {
+		return input.split(" ")[0].trim();
+	}
+
+	static String excludeFirstWord(String input) {
+		return input.substring(extractFirstWord(input).length()).trim();
+	}
+	
+	
 }

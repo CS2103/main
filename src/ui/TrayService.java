@@ -8,6 +8,7 @@
 package ui;
 
 import java.awt.AWTException;
+
 import java.awt.MenuItem;
 import java.awt.PopupMenu;
 import java.awt.SystemTray;
@@ -25,6 +26,9 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
+import com.melloware.jintellitype.HotkeyListener;
+import com.melloware.jintellitype.JIntellitype;
+
 public class TrayService {
 
 	public TrayIcon trayIcon;
@@ -36,14 +40,14 @@ public class TrayService {
 		this.stage = stage;
 	}
 
-	public void createTrayIcon(final Stage stage) {
+	public TrayIcon createTrayIcon(final Stage stage) {
 
 		PopUp about = new PopUp("About", Constants.MSG_ABOUT);
 
 		if (SystemTray.isSupported()) {
 			SystemTray tray = SystemTray.getSystemTray();
-			java.awt.Image image = Toolkit.getDefaultToolkit().getImage(TrayService.class.getResource("/resource/icon1.png"));
-			stage.getIcons().add(new Image("/resource/icon1.png"));
+			java.awt.Image image = Toolkit.getDefaultToolkit().getImage(TrayService.class.getResource("/resource/icon.png"));
+			stage.getIcons().add(new Image("/resource/icon.png"));
 
 			stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 				@Override
@@ -135,6 +139,7 @@ public class TrayService {
 				System.err.println(e);
 			}
 		}
+		return trayIcon;
 	}
 
 	public void showProgramIsMinimizedMsg() {

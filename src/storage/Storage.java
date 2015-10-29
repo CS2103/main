@@ -9,23 +9,48 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
+// import Joda Time library
+import org.joda.time.DateTime;
+
+// import Google Gson library
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
 import logic.Task;
 
 public class Storage {
 
-	private static Gson gson = new Gson();
-	private static File tempFile = new File("tempFile.json");
-	private static File savedPath = new File("savedPath.txt");
-	private static String path;
-	private static BufferedReader br;
+	// initial methods to serialise/deserialise savedTask.json with DateTime
+	// formats
+	final static Gson gson = Converters.registerDateTime(new GsonBuilder().setPrettyPrinting().serializeNulls()).create();
+	final DateTime original = new DateTime();
+	final String json = gson.toJson(original);
+	final DateTime reconstituted = gson.fromJson(json, DateTime.class);
+
+	// attributes
+	public static File tempSavedTask = new File("savedTask.json"); // public for testing, change after done
+	public static File savedPath = new File("savedPath.txt"); // public for testing, change after done
+
+	public static String path; // public for testing, change after done
+	private static ArrayList<Task> currentTaskList = new ArrayList<Task>();
 
 	public Storage() {
 
 	}
 
 	public static void setPath(String path) {
+		File file = new File(path);
+		if (!file.exists()) {
+			System.out.println("file not exists");
+		}
+		
+		Storage.currentTaskList = read();
+
+		if (file.isDirectory()) {
+			path = path + "/TBAsave.txt"; // this is for mac or "\\TBAsave.txt" for windows
+		}
+
 		try {
 			FileWriter fw = new FileWriter(savedPath.getAbsoluteFile());
 			BufferedWriter bw = new BufferedWriter(fw);
@@ -35,24 +60,29 @@ public class Storage {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
 		Storage.path = path;
+
+		write(currentTaskList);
+
+		tempSavedTask.delete();
 	}
 
-	public static void write(ArrayList<Task> tasks){
+	public static String enquirePath() {
+		return Storage.path;
+	}
+	
+	public static void write(ArrayList<Task> tasks) {
 		try {
 			if (path == null) {
-				setPath(savedPath.getAbsolutePath());
+				path = savedPath.getAbsolutePath();
 			}
 			File file = new File(path);
 			FileWriter fw = new FileWriter(file);
 			BufferedWriter bw = new BufferedWriter(fw);
-			for (Task task: tasks) {
-				String json = gson.toJson(task) + "\n";
-				bw.write(json);
-			}
+			bw.write(gson.toJson(tasks));
 			bw.close();
-		}
-		catch (IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
@@ -60,30 +90,30 @@ public class Storage {
 	public static ArrayList<Task> read() {
 		try {
 			FileReader fr = new FileReader(savedPath);
-			br = new BufferedReader(fr);
+			BufferedReader br = new BufferedReader(fr);
 			Storage.path = br.readLine();
-		} 
-		catch (FileNotFoundException e) {
-		} 
-		catch (IOException e) {
+			br.close();
+		} catch (FileNotFoundException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		ArrayList<Task> taskList = new ArrayList<Task>();
 		String line = "";
 		if (path == null) {
-			setPath(tempFile.getAbsolutePath());
+			path = tempSavedTask.getAbsolutePath();
 		}
 		try {
 			FileReader fr = new FileReader(path);
 			BufferedReader br = new BufferedReader(fr);
-			while((line = br.readLine()) != null) {
-				taskList.add(gson.fromJson(line, Task.class));
+			StringBuilder stringBuilder = new StringBuilder();
+			while ((line = br.readLine()) != null) {
+				stringBuilder.append(line).append("\n");
 			}
 			br.close();
-		} 
-		catch (FileNotFoundException e) {
-		} 
-		catch (IOException e) {
+			String jsonString = stringBuilder.toString();
+			taskList = gson.fromJson(jsonString, new TypeToken<ArrayList<Task>>(){}.getType());
+		} catch (FileNotFoundException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return taskList;

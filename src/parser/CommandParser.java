@@ -1,25 +1,13 @@
 package parser;
 
 import java.util.Arrays;
+
 import application.Constants;
 
 public class CommandParser {
 
-
-	/*	public static void main(String[] args) {
-		Scanner sc = new Scanner(System.in);
-		String rawInput = sc.nextLine();
-		System.err.println(rawInput);
-		System.err.println(extractFirstWord(rawInput));
-		System.err.println(excludeFirstWord(rawInput));
-		System.err.println(getCommand(rawInput));
-		sc.close();
-	}
-	 */
-
 	public static String getCommand(String input) {
-		String command;
-		command = Parser.extractFirstWord(input);
+		String command = extractFirstWord(input).toLowerCase();
 		if (checkForWordInDictionary(Constants.DICTIONARY_ADD, command)) {
 			return Constants.DICTIONARY_ADD[0];
 		} else if (checkForWordInDictionary(Constants.DICTIONARY_DELETE, command)) {
@@ -40,8 +28,9 @@ public class CommandParser {
 			return Constants.DICTIONARY_MARK[0];
 		} else if (checkForWordInDictionary(Constants.DICTIONARY_UNMARK, command)) {
 			return Constants.DICTIONARY_UNMARK[0];
+		} else if (checkForWordInDictionary(Constants.DICTIONARY_ENQUIREPATH, command)) {
+			return Constants.DICTIONARY_ENQUIREPATH[0];
 		} else {
-
 			return Constants.COMMAND_INVALID;
 		}
 	}
@@ -52,5 +41,13 @@ public class CommandParser {
 		} else {
 			return false;
 		}
+	}
+
+	static String extractFirstWord(String input) {
+		return input.split(" ")[0].trim();
+	}
+
+	static String excludeFirstWord(String input) {
+		return input.substring(extractFirstWord(input).length()).trim();
 	}
 }

@@ -11,143 +11,163 @@ package ui;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import org.joda.time.DateTime;
+
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.scene.control.ContentDisplay;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 
-public class ConsoleView extends Pane{
+public class ConsoleView extends Pane {
 
-	Pane consolePane;
-
-	Label applicationName;
-	Label dateLabel;
-	Label clock;
-	ListView<ListItem> listView;
+	Label dateDisplay;
+	Label clockDisplay;
 	AutoCompleteTextField inputConsole;
 	Label status;
 
+	HBox listDisplay;
+	AddTaskPreview addTaskPreview;
+	EditTaskPreview editTaskPreview;
+
+	VBox timedList;
+	VBox floatingList;
+	ScrollPane scrollPane;
+	StackPane mainDisplay;
+
 	public ConsoleView() {
 
-		consolePane = new Pane();
+		dateDisplay = new Label();
+		clockDisplay = new Label();
 
-		applicationName = new Label();
-		applicationName.setText("TextBuddyAwesome");
-		applicationName.setContentDisplay(ContentDisplay.CENTER);
-		applicationName.setPrefHeight(25);
-		applicationName.setPrefWidth(600);
-		applicationName.setPadding(new Insets(0 ,0 , 0, 20));
-<<<<<<< HEAD
-		applicationName.setStyle("-fx-background-color: orange; -fx-background-radius: 30 30 0 0;");
-=======
-		applicationName.setStyle("-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%), linear-gradient(#020b02, #3a3a3a), linear-gradient(#9d9e9d 0%, #6b6a6b 20%, #343534 80%, #242424 100%),linear-gradient(#8a8a8a 0%, #6b6a6b 20%, #343534 80%, #262626 100%); -fx-background-radius: 30 30 0 0;");
->>>>>>> f1408057840addec287f7fac076bfe841975c2fe
-		applicationName.setFont(Font.font("Georgia", 20));
-		applicationName.setTextFill(Color.WHITE);
+		timedList = new VBox();
+		floatingList = new VBox();
+		listDisplay = new HBox();
+		scrollPane = new ScrollPane();
 
-		dateLabel = new Label();
-		dateLabel.setStyle("-fx-background-color: rgba(255,255,255, 0.6); ");
-		dateLabel.setFont(new Font("Arial", 30));
-		dateLabel.setPrefWidth(300);
-		dateLabel.setPadding(new Insets(0,0,0,20));
+		inputConsole = new AutoCompleteTextField();
+		status = new Label();
 
-		clock = new Label();
-		clock.setStyle("-fx-background-color: rgba(255,255,255, 0.6); ");
-		clock.setFont(new Font("Arial", 30));
-		clock.setTextAlignment(TextAlignment.CENTER);
-		clock.setPrefWidth(300);
-		clock.setPadding(new Insets(0,0,0,90));
+		dateDisplay.setId("timeDisplay");
+		dateDisplay.setAlignment(Pos.CENTER_LEFT);
+		dateDisplay.setMaxWidth(Double.MAX_VALUE);
+		dateDisplay.setPadding(new Insets(0, 0, 0, 20));
+		dateDisplay.setTextFill(Color.WHITE);
 
-<<<<<<< HEAD
-		dateLabel = new Label();
-		dateLabel.setStyle("-fx-background-color: rgba(255,255,255, 0.8); ");
-		dateLabel.setFont(new Font("Arial", 30));
-		dateLabel.setPrefWidth(300);
-		dateLabel.setPadding(new Insets(0,0,0,20));
+		clockDisplay.setId("timeDisplay");
+		clockDisplay.setAlignment(Pos.CENTER_RIGHT);
+		clockDisplay.setMaxWidth(Double.MAX_VALUE);
+		clockDisplay.setPadding(new Insets(0, 20, 0, 0));
+		clockDisplay.setTextFill(Color.WHITE);
 
-
-		clock = new Label();
-		clock.setStyle("-fx-background-color: rgba(255,255,255, 0.8); ");
-		clock.setFont(new Font("Arial", 30));
-		clock.setTextAlignment(TextAlignment.CENTER);
-		clock.setPrefWidth(300);
-		clock.setPadding(new Insets(0,0,0,90));
-
-=======
->>>>>>> f1408057840addec287f7fac076bfe841975c2fe
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy");
 		SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
 		Timeline timeline = new Timeline();
 		EventHandler<ActionEvent> onFinished = new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent t) {
-				dateLabel.setText(Calendar.getInstance().getTime().toString().split(" ")[0].trim() + ", " + dateFormat.format(Calendar.getInstance().getTime()));
-				clock.setText(timeFormat.format(Calendar.getInstance().getTime()));
+				dateDisplay.setText(Calendar.getInstance().getTime().toString().split(" ")[0].trim() + ", "
+						+ dateFormat.format(Calendar.getInstance().getTime()));
+				clockDisplay.setText(timeFormat.format(Calendar.getInstance().getTime()));
 			}
 		};
 		timeline.getKeyFrames().add(new KeyFrame(Duration.millis(500), onFinished));
 		timeline.setCycleCount(Animation.INDEFINITE);
 		timeline.play();
 
-		listView = new ListView<ListItem>();
-		listView.setPrefHeight(470);
-		listView.setPrefWidth(600);
-<<<<<<< HEAD
-<<<<<<< HEAD
-		listView.setStyle("-fx-background-color: transparent;");
-=======
-		listView.setStyle("-fx-background-color: gray;");
-		listView.setFocusTraversable(false);
-		//listView.setStyle("-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%), linear-gradient(#020b02, #3a3a3a), linear-gradient(#9d9e9d 0%, #6b6a6b 20%, #343534 80%, #242424 100%),linear-gradient(#8a8a8a 0%, #6b6a6b 20%, #343534 80%, #262626 100%;");
->>>>>>> f1408057840addec287f7fac076bfe841975c2fe
-=======
-		listView.setStyle("-fx-background-color: rgba(255,255,255, 0.6);");
-		listView.setFocusTraversable(false);
->>>>>>> master
+		timedList.setStyle(
+				"-fx-background-color:linear-gradient( from 100.0% 0.0% to 100.0% 100.0%, rgb(51,51,51) 0.0, rgb(179,179,179) 40.0, rgb(51,51,51) 100.0)");
+		timedList.setFocusTraversable(false);
+		timedList.setFillWidth(true);
 
-		inputConsole = new AutoCompleteTextField();
+		floatingList.setStyle(
+				"-fx-background-color: linear-gradient( from 100.0% 0.0% to 100.0% 100.0%, rgb(46,50,68) 0.0, rgb(51,51,51) 40.0, rgb(39,41,54) 100.0)");
+		floatingList.setFocusTraversable(false);
+		floatingList.setFillWidth(true);
+
+		HBox.setHgrow(floatingList, Priority.ALWAYS);
+		HBox.setHgrow(timedList, Priority.ALWAYS);
+
+		listDisplay.setSpacing(0);
+		listDisplay.setFillHeight(true);
+		listDisplay.setPrefWidth(700);
+		listDisplay.setPadding(new Insets(0, 0, 0, 0));
+
+		scrollPane.setId("scrollPane");
+		scrollPane.setContent(listDisplay);
+		scrollPane.setFitToHeight(true);
+		scrollPane.setFitToWidth(true);
+		scrollPane.setMaxHeight(470);
+		scrollPane.setMinHeight(470);
+		scrollPane.setPrefWidth(700);
+		scrollPane.setHbarPolicy(ScrollBarPolicy.NEVER);
+		scrollPane.setFocusTraversable(false);
+		scrollPane.setBorder(null);
+		scrollPane.setPickOnBounds(false);
+
+		mainDisplay = new StackPane();
+
+		addTaskPreview = new AddTaskPreview("", DateTime.now(), DateTime.now());
+		editTaskPreview = new EditTaskPreview("", DateTime.now(), DateTime.now(), "");
+		mainDisplay.getChildren().addAll(editTaskPreview, addTaskPreview, scrollPane);
+
+		inputConsole.setId("inputConsole");
 		inputConsole.setEditable(true);
-		inputConsole.setPrefHeight(25);
-		inputConsole.setPrefWidth(600);
-<<<<<<< HEAD
-		inputConsole.setStyle("-fx-background-color: lightgray;");
 		inputConsole.setFocusTraversable(true);
 
-=======
-		//inputConsole.setFont(value);
-		inputConsole.setStyle("-fx-background-color: rgba(255,255,255, 0.6);-fx-text-inner-color: black;-fx-font-size:15");
-		inputConsole.setFocusTraversable(true);
-
-
->>>>>>> f1408057840addec287f7fac076bfe841975c2fe
-		status = new Label();
-		status.setPrefWidth(600);
-		status.setPrefHeight(25);
-		status.setPadding(new Insets(0,0,0, 80));
-<<<<<<< HEAD
-		status.setStyle("-fx-background-color: white; -fx-background-radius: 0 0 30 30;");
-=======
-		//status.setStyle("-fx-background-color: rgba(255,255,255, 0.8); -fx-background-radius: 0 0 30 30;");
-		status.setStyle("-fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%), linear-gradient(#020b02, #3a3a3a), linear-gradient(#9d9e9d 0%, #6b6a6b 20%, #343534 80%, #242424 100%),linear-gradient(#8a8a8a 0%, #6b6a6b 20%, #343534 80%, #262626 100%); -fx-background-radius: 0 0 30 30;");
->>>>>>> f1408057840addec287f7fac076bfe841975c2fe
+		status.setMaxWidth(Double.MAX_VALUE);
+		status.setId("statusBar");
+		status.setAlignment(Pos.CENTER_LEFT);
 
 		HBox dateTime = new HBox();
-		dateTime.getChildren().addAll(dateLabel, clock);
+		HBox.setHgrow(clockDisplay, Priority.ALWAYS);
+		dateTime.setMaxWidth(Double.MAX_VALUE);
+		dateTime.setSpacing(0);
+		dateTime.setPadding(new Insets(0, 0, 0, 0));
+		dateTime.getChildren().addAll(dateDisplay, clockDisplay);
+
 		VBox consoleLayout = new VBox();
-		consoleLayout.setSpacing(1);
-		consoleLayout.getChildren().addAll(applicationName, dateTime, listView, inputConsole, status);
-		consolePane.getChildren().add(consoleLayout);
+		VBox.setVgrow(consoleLayout, Priority.ALWAYS);
+		consoleLayout.getChildren().addAll(dateTime, mainDisplay, inputConsole, status);
+		this.getChildren().add(consoleLayout);
+	}
+
+	public void updateAddTaskPreviewDetails(String title, DateTime startTime, DateTime endTime, String recurring) {
+		addTaskPreview.clearAllDetails();
+		addTaskPreview.tempTitle.setText(title);
+		addTaskPreview.tempStartTime.setText(this.showIfValidDate(startTime));
+		addTaskPreview.tempEndTime.setText(this.showIfValidDate(endTime));
+	}
+
+	public void updateEditTaskPreviewDetails(String oldTitle, DateTime startTime, DateTime endTime, String field,
+			String newTitle, DateTime newDateTime) {
+		editTaskPreview.clearAllDetails();
+		editTaskPreview.oldTitle.setText(oldTitle);
+		editTaskPreview.oldStartTime.setText(showIfValidDate(startTime));
+		editTaskPreview.oldEndTime.setText(showIfValidDate(endTime));
+		editTaskPreview.detailsToShow("", field);
+		editTaskPreview.newTitleField.setText(newTitle);
+		editTaskPreview.newStartTimeField.setText(showIfValidDate(newDateTime));
+		editTaskPreview.newEndTimeField.setText(showIfValidDate(newDateTime));
+	}
+
+	private String showIfValidDate(DateTime dateTime) {
+		if (dateTime.getYear() != 0000) {
+			return dateTime.toLocalDateTime().toString("HHmm dd MMM yyyy");
+		} else {
+			return "N/A";
+		}
 	}
 }

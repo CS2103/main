@@ -1,128 +1,98 @@
 package parser;
 
+import java.util.ArrayList;
 
+import org.joda.time.DateTime;
 
-public class Parser {
+import application.Constants;
 
-<<<<<<< HEAD
+public class Parser implements ParserInterface {
 
-	public Parser(){
-
+	@Override
+	public String getCommand(String input) {
+		return CommandParser.getCommand(input);
 	}
 
-	// Methods
-	public String getCommandName(String input) {
-		String[] words;
-		words = input.split(" ");
-		String command = new String(words[0].trim());
-
-		return command;
-
+	@Override
+	public String getStart(String input) {
+		return TitleParser.splitInputWithDictionary(Constants.TASK_START_DATETIME, input);
 	}
 
-	public String getDescription(String input) {
-
-		String command = new String(getCommandName(input));
-		String parameter = input;
-
-		// from
-		Pattern patternFrom = Pattern.compile(Constants.REGEX_KEYWORDS[Constants.INDEX_KEYWORD_FROM]);
-		Matcher matchFrom = patternFrom.matcher(input);
-
-		while (matchFrom.find()) {
-			parameter = parameter.substring(0, matchFrom.end());
-		}
-		parameter = parameter.replaceFirst("from", "");
-
-		// on
-		Pattern patternOn = Pattern.compile(Constants.REGEX_KEYWORDS[Constants.INDEX_KEYWORD_ON]);
-		Matcher matchOn = patternOn.matcher(input);
-
-		while (matchOn.find()) {
-			parameter = parameter.substring(0, matchOn.end());
-		}
-		parameter = parameter.replaceFirst("on", "");
-
-		// by
-		Pattern patternBy = Pattern.compile(Constants.REGEX_KEYWORDS[Constants.INDEX_KEYWORD_BY]);
-		Matcher matchBy = patternBy.matcher(input);
-
-		while (matchBy.find()) {
-			parameter = parameter.substring(0, matchBy.end());
-		}
-		parameter = parameter.replaceFirst("by", "");
-
-		// till
-		Pattern patternTill = Pattern.compile(Constants.REGEX_KEYWORDS[Constants.INDEX_KEYWORD_TILL]);
-		Matcher matchTill = patternTill.matcher(input);
-
-		while (matchTill.find()) {
-			parameter = parameter.substring(0, matchTill.end());
-		}
-		parameter = parameter.replaceFirst("till", "");
-
-		parameter = parameter.replaceFirst(command, "");
-		parameter = cleanUp(parameter);
-
-		return parameter;
-
+	@Override
+	public String getEnd(String input) {
+		return TitleParser.splitInputWithDictionary(Constants.TASK_END_DATETIME, input);
 	}
 
-	// public String getKeywordsForSearchCommand(String input) {
-
-	// }
-
-	public static int countWords(String input) {
-		input = cleanUp(input);
-		return input.split(Constants.SPACE).length;
+	@Override
+	public String getField(String input) {
+		return input.split(Constants.SPACE)[2].trim().toLowerCase();
 	}
 
-	public static String cleanUp(String input) {
-		input = input.trim();
-		input = input.replaceAll(Constants.REGEX_ONE_OR_MORE_SPACES, Constants.SPACE);
-		return input;
+	@Override
+	public DateTime getDateTime(String input) {
+		return DateParser.getDateTime(input);
+	}
+	
+	@Override
+	public DateTime getStartDateTime(String input) {
+		return DateParser.getDateTime(getStart(input));
 	}
 
-	public String getStartDate(String input) throws ParseException {
-
-		Date startDate;
-		String parameter = input;
-		SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
-
-		// from
-		Pattern patternFrom = Pattern.compile(Constants.REGEX_KEYWORDS[Constants.INDEX_KEYWORD_FROM]);
-		Matcher matchFrom = patternFrom.matcher(input);
-
-		while (matchFrom.find()) {
-			parameter = parameter.substring(matchFrom.end());
-		}
-
-		startDate = sdf.parse(parameter);
-
-		startDate = sdf.parse(parameter.trim());
-
-		startDate = sdf.parse(parameter.trim());
+	@Override
+	public DateTime getEndDateTime(String input) {
+		DateTime endDate = DateParser.getDateTime(getEnd(input));
 		
-
-
-		return sdf.format(startDate);
-
-=======
-	static String extractFirstWord(String input) {
-		input = input.split(" ")[0];
-		return input.trim();
+		if (endDate.getHourOfDay() == 0 && endDate.getMinuteOfHour() == 0)
+			endDate = endDate.withHourOfDay(23).withMinuteOfHour(59);
+		
+		return endDate;
+		
 	}
 
-	static String excludeFirstWord(String input) {
-		input = input.substring(extractFirstWord(input).length());
-		return input.trim();
->>>>>>> f1408057840addec287f7fac076bfe841975c2fe
+	@Override
+	public String getTitle(String input) {
+		return TitleParser.getTitle(input);
+	}
+	
+	@Override
+	public int getIndex(String input) {
+		input = input.split(Constants.SPACE)[1].trim();
+		
+			return Integer.parseInt(input);
+		
+	}
+	
+	public ArrayList<Integer> getIndexes(String input) {
+		ArrayList<Integer> indexArray = new ArrayList<Integer>();
+		input = input.split(Constants.SPACE)[1].trim();
+		if (input.length() == 1) {
+			 indexArray.add(Integer.parseInt(input));
+			 return indexArray;
+		} else {
+			String[] indexStringArray = input.split(Constants.COMMA);
+			for (String indexString : indexStringArray) {
+				indexArray.add(Integer.parseInt(indexString));
+			}
+			return indexArray;
+		}
+	}
+	
+	@Override
+	public boolean isValidEndingTime(DateTime startTime, DateTime endTime) {
+		return startTime.isBefore(endTime);
 	}
 
-	public static int getIndex(String input) {
-		int index;
-		input = input.split(" ")[1].trim();
-		index = Integer.parseInt(input);
-		return index;
+	public String getRecurValue(String input) {
+		
+		String recurValue = new String();
+		
+		for (int i=0; i<Constants.TASK_RECURRING.length; i++){
+			if (input.toLowerCase().contains(Constants.TASK_RECURRING[i])){
+				recurValue = Constants.TASK_RECURRING[i];
+			}
+		}
+		return recurValue;
 	}
+
+	
 }

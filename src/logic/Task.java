@@ -1,156 +1,89 @@
 package logic;
 
-<<<<<<< HEAD
-
-import java.util.Calendar;
-
-//Storage class should store the static int numberOfTask; 
-=======
-
 import java.util.Calendar;
 
 import org.joda.time.DateTime;
 
-//Storage class should store the static int numberOfTask;
->>>>>>> f1408057840addec287f7fac076bfe841975c2fe
 public class Task {
+	
 	private static int numberOfTask = 0;
 	private String title;
-	private String description;
-	private boolean isFinished;
-<<<<<<< HEAD
-	/*private Date startingDate;
-	private Date endingDate;
-	private Time startingTime;
-	private Time endingTime;*/
-	private Calendar startingDate;
-	private Calendar endingDate;
-	//private Calendar startingTime;
-	//private Calendar endingTime;
-	private static String type_tag;
-	//private int index; 
-	
-=======
 	private DateTime startingTime;
 	private DateTime endingTime;
-	private DateTime startingDate;
-	private DateTime endingDate;
-	private static String type_tag;
-	//private int index;
+	private String type_tag;
+	private boolean isFinished;
+	private boolean[] recurring = new boolean[7];
 
->>>>>>> f1408057840addec287f7fac076bfe841975c2fe
+
+	public Task(Task task){
+		this.title = task.getTitle();
+		this.isFinished = task.getStatus();
+		this.startingTime = task.getStartingTime();
+		this.endingTime = task.getEndingTime();
+		setTag();
+	}
+
 	public Task(String title){
 		this.title = title;
-		description = new String();
 		numberOfTask++;
 		isFinished = false;
-		type_tag = "task";
-		//index = numberOfTask;
+		setTag();
 	}
 
 	public Task(){
 		String time = Calendar.getInstance().toString();
-		title = "Untitled " + time;
-		description = new String();
+		this.title = "Untitled " + time;
+		this.isFinished = false;
 		numberOfTask++;
-		isFinished = false;
-		type_tag = "task";
-		//index = numberOfTask;
-	}
-<<<<<<< HEAD
-	
-=======
-
-<<<<<<< HEAD
->>>>>>> f1408057840addec287f7fac076bfe841975c2fe
-	/*public Task(String title, Calendar sdate, Time stime, Date edate, Time etime){
-=======
-	public Task(String title, DateTime sdate, DateTime stime, DateTime edate, DateTime etime){
->>>>>>> master
-		this(title);
-		startingDate= sdate;
-		startingTime = stime;
-		endingTime = etime;
-		endingDate = edate;
-		type_tag = "event";
 	}
 
-	/*public Task(DateTime sdate, DateTime stime, DateTime edate, DateTime etime){
+	public Task(String title, DateTime startingTime, DateTime endingTime) throws InvalidTimeException{
+		this.title= title;
+		this.startingTime = startingTime;
+		this.endingTime = endingTime;
+		try{
+			if(endingTime.isBefore(startingTime)){
+				InvalidTimeException e = new InvalidTimeException("The ending time is prior to the starting time");
+				throw e;
+			}
+		}
+		catch(InvalidTimeException e){
+			System.out.println("Error" + e);
+		}
+		setTag();
+	}
+
+	public Task(DateTime startingTime, DateTime endingTime){
 		this();
-		startingDate= sdate;
-		startingTime = stime;
-		endingTime = etime;
-		endingDate = edate;
-		type_tag = "event";
-	}*/
-<<<<<<< HEAD
-	
-	public Task(String title, Calendar startingDate, Calendar endingDate){
-=======
-
-	public Task(String title, DateTime startingDate, DateTime endingDate){
->>>>>>> f1408057840addec287f7fac076bfe841975c2fe
-		this(title);
-		this.startingDate = startingDate;
-		this.endingDate = endingDate;
-		type_tag = "event";
-	}
-<<<<<<< HEAD
-	
-	public Task(Calendar sdate, Calendar edate){
-=======
-
-	public Task(DateTime sdate, DateTime edate){
->>>>>>> f1408057840addec287f7fac076bfe841975c2fe
-		this();
-		startingDate = sdate;
-		endingDate = edate;
-		type_tag = "event";
-	}
-<<<<<<< HEAD
-	
-=======
-
->>>>>>> f1408057840addec287f7fac076bfe841975c2fe
-	/*public Task(String title, Date date, Time time){
-		this(title);
-		endingTime = time;
-		endingDate = date;
+		this.startingTime = startingTime;
+		this.endingTime= endingTime;
+		try{
+			if(endingTime.isBefore(startingTime)){
+				InvalidTimeException e = new InvalidTimeException("The ending time is prior to the starting time");
+				throw e;
+			}
+		}
+		catch(InvalidTimeException e){
+			System.out.println("Error" + e);
+		}
+		setTag();
 	}
 
-	public Task(Date date, Time time){
-		this();
-		endingTime = time;
-		endingDate = date;
-	}*/
-<<<<<<< HEAD
-	
-	public Task(String title, Calendar date){
+	public Task(String title, DateTime endingTime){
 		this(title);
-		endingDate = date;
-	}
-	
-	public Task(Calendar date){
-=======
-
-	public Task(String title, DateTime date){
-		this(title);
-		endingDate = date;
+		this.endingTime= endingTime;
+		setTag();
 	}
 
 	public Task(DateTime date){
->>>>>>> f1408057840addec287f7fac076bfe841975c2fe
 		this();
-		endingDate = date;
+		this.endingTime= date;
+		setTag();
 	}
-
 
 	//Accessors
 	public String getTitle(){
 		return title;
-	}
-	public String getDescription(){
-		return description;
 	}
 	public boolean getStatus(){
 		return isFinished;
@@ -161,132 +94,79 @@ public class Task {
 	public String getType(){
 		return type_tag;
 	}
-<<<<<<< HEAD
-	public Calendar getStartingDate(){
-		return startingDate;
-	}
-	/*public Time getStartingTime(){
-=======
-	public DateTime getStartingDate(){
-		return startingDate;
-	}
-<<<<<<< HEAD
-	/*public DateTime getStartingTime(){
->>>>>>> f1408057840addec287f7fac076bfe841975c2fe
-=======
 	public DateTime getStartingTime(){
->>>>>>> master
 		return startingTime;
 	}
 	public DateTime getEndingTime(){
 		return endingTime;
-<<<<<<< HEAD
-	}*/
-<<<<<<< HEAD
-	public Calendar getEndingDate(){
-=======
-=======
 	}
->>>>>>> master
-	public DateTime getEndingDate(){
->>>>>>> f1408057840addec287f7fac076bfe841975c2fe
-		return endingDate;
+	public boolean isAfterNow() {
+		return endingTime.isBeforeNow() && !type_tag.equals("task");
 	}
-	/*public int getIndex(){
-		return index;
-	}*/
-
+	
+	public boolean isOverDue(){
+		return endingTime.isBeforeNow() && !type_tag.equals("task") && (!isFinished);
+	}
+	public boolean[] getRecurring() {
+		return recurring;
+	}
 
 	//Mutators
-	public void setDescription(String des){
-		description = des;
-	}
-	public void setTitle(String til){
-		title = til;
+	public void setTitle(String title){
+		this.title = title;
 	}
 
 	public boolean mark(){
 		numberOfTask--;
 		isFinished = true;
 		return isFinished;
-
 	}
 	public void unMark() {
 		isFinished = false;
 		numberOfTask++;
 	}
-<<<<<<< HEAD
-	
-	public void setStartingDate(Calendar date){
-=======
 
-	public void setStartingDate(DateTime date){
->>>>>>> f1408057840addec287f7fac076bfe841975c2fe
-		startingDate = date;
+	public void setStartingDate(DateTime startingTime){
+		this.startingTime = startingTime;
 		setTag();
 	}
 
-<<<<<<< HEAD
-	public void setEndingDate(Calendar date){
-=======
-	public void setEndingDate(DateTime date){
->>>>>>> f1408057840addec287f7fac076bfe841975c2fe
-		endingDate = date;
+	public void setEndingDate(DateTime endingTime){
+		this.endingTime = endingTime;
 		setTag();
 	}
-
-
-	//decide on the tag
 
 	public void setTag(){
-		if((startingDate == null)){
-			if(endingDate == null){
-				type_tag = "task";
+		if(isValidDate(endingTime) || isValidDate(startingTime)){
+			if(isValidDate(startingTime)){
+				this.type_tag = "event";			// Event Tasks (have start and end time)
+			} else {
+				this.type_tag = "deadline";		// Deadline Tasks (have end but no start time)
 			}
-			else{
-				type_tag = "deadline";
-			}
-		}
-		else{
-			type_tag = "event";
+		} else {
+			this.type_tag = "task";				// Floating Tasks (no start and end date/time)
 		}
 	}
-<<<<<<< HEAD
 	
-	//override
-	public boolean equals(Task task){
-		if (title.equals(task.getTitle()) 
-				&& description.equals(task.getDescription()) 
-				&& (isFinished == task.getStatus()
-				&& (startingDate.equals(task.getStartingDate()))
-				&& (endingDate.equals(task.getEndingDate()))
-				&& type_tag.equals(task.getType()))){
-			return true;
+	public boolean isValidDate(DateTime date) {
+		if (date.getYear() == 0){
+			return false;
 		}
-		else{
-=======
+		return true;
+	}
 
 	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof Task) {
 			Task task = (Task) obj;
-			return (this.getDescription().equals(task.getDescription())) &&
-					(this.getTitle().equals(task.getTitle())) &&
+			return	(this.getTitle().equals(task.getTitle())) &&
 					(this.getStatus() == task.getStatus()) &&
-					(this.getEndingDate().equals(task.getEndingDate())) &&
-					(this.getStartingDate().equals(task.getStartingDate()));
+					(this.getEndingTime().equals(task.getEndingTime())) &&
+					(this.getStartingTime().equals(task.getStartingTime())) &&
+					(this.getType().equals(task.getType())
+							);
 		} else {
->>>>>>> f1408057840addec287f7fac076bfe841975c2fe
 			return false;
 		}
 	}
-
-<<<<<<< HEAD
-	
-=======
-
->>>>>>> f1408057840addec287f7fac076bfe841975c2fe
-
 }
-
-

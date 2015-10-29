@@ -1,3 +1,7 @@
 *.class
-.classpath
-bin/parser/Parser.class
+
+savedPath.txt
+tempFile.json
+
+/bin/
+savedTask.json

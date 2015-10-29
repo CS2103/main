@@ -21,19 +21,29 @@ import javafx.scene.control.TextField;
  */
 public class AutoCompleteTextField extends TextField {
 
-	/** The existing autocomplete entries. */
 	public final SortedSet<String> entries;
-	/** The popup used to select an entry. */
 	private ContextMenu entriesPopup;
 
-	/** Construct a new AutoCompleteTextField. */
 	public AutoCompleteTextField() {
 		super();
 		entries = new TreeSet<>();
-		Collections.addAll(entries, "Singapore", "Sierra Leone");
+		Collections.addAll(
+				entries, 
+				"add [taskname] from [day] [time] to [day] [time]", 
+				"add [taskname] from [time] to [time]", 
+				"add [taskname]", 
+				//"undo",
+				//"redo",
+				"exit",
+				"delete [index]", 
+				"mark [index]", 
+				"search [keyword]", 
+				"unmark [index]", 
+				"edit [index] title/start/end [newvalue]"
+				);
 
 		entriesPopup = new ContextMenu();
-
+		entriesPopup.setAutoHide(true);
 
 		textProperty().addListener(new ChangeListener<String>()
 		{
@@ -57,19 +67,20 @@ public class AutoCompleteTextField extends TextField {
 					{
 						entriesPopup.hide();
 					}
+					if (searchResult.size() == 0) {
+						entriesPopup.hide();
+					}
 				}
 			}
 		});
-
+/*
 		focusedProperty().addListener(new ChangeListener<Boolean>() {
 			@Override
 			public void changed(ObservableValue<? extends Boolean> observableValue, Boolean aBoolean, Boolean aBoolean2) {
 				entriesPopup.hide();
 			}
 		});
-
-
-
+	*/
 	}
 
 	/**
@@ -84,7 +95,6 @@ public class AutoCompleteTextField extends TextField {
 	 */
 	private void populatePopup(List<String> searchResult) {
 		List<CustomMenuItem> menuItems = new LinkedList<>();
-		// If you'd like more entries, modify this line.
 		int maxEntries = 10;
 		int count = Math.min(searchResult.size(), maxEntries);
 		for (int i = 0; i < count; i++)
@@ -92,14 +102,15 @@ public class AutoCompleteTextField extends TextField {
 			final String result = searchResult.get(i);
 			Label entryLabel = new Label(result);
 			CustomMenuItem item = new CustomMenuItem(entryLabel, true);
-			item.setOnAction(new EventHandler<ActionEvent>()
-			{
+			/*
+			item.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent actionEvent) {
 					setText(result);
 					entriesPopup.hide();
 				}
 			});
+			*/
 			menuItems.add(item);
 		}
 		entriesPopup.getItems().clear();

@@ -1,39 +1,10 @@
 package logic;
 
-<<<<<<< HEAD
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-=======
->>>>>>> f1408057840addec287f7fac076bfe841975c2fe
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Stack;
 
 import org.joda.time.DateTime;
 
-<<<<<<< HEAD
-class NoResultFound extends Exception{
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	public NoResultFound(){}
-	public NoResultFound(String message){
-		super(message);
-	}
-}
-
-public class TaskBin implements editTaskInfo{
-	ArrayList<Task> taskList;
-	ArrayList<Task> activeList;
- 	Storage taskStorage;
-	Stack<Command> undoStack;
-	Stack<Command> redoStack;
-	Task buffer; 
-	
-=======
 import storage.Storage;
 
 class NoResultFound extends Exception{
@@ -49,31 +20,36 @@ class NoResultFound extends Exception{
 
 public class TaskBin implements editTaskInfo{
 	ArrayList<Task> taskList;
+	ArrayList<RecurTask> recurList;
 	ArrayList<Task> activeList;
 	Storage taskStorage;
 	Stack<Command> undoStack;
 	Stack<Command> redoStack;
-	Task buffer;
+	
 
->>>>>>> f1408057840addec287f7fac076bfe841975c2fe
 	private static final String add_tag = "ADD";
 	private static final String delete_tag = "DELETE";
 	private static final String replace_tag = "REPLACE";
 	private static final String alter_tag = "ALTER";
+	private static final String mark_tag = "MARK";
+	private static final String unmark_tag = "UNMARK";
+	private static final String recur_tag = "ADD_RECUR";
 
 	/********************************Construction Methods************************************/
 
 	//This construction is used to success the past data from the storage file when the program is reopened
-	public TaskBin(ArrayList<Task> taskList){
+	public TaskBin(ArrayList<Task> taskList, ArrayList<RecurTask> recurList){
 		undoStack = new Stack<Command>();
 		redoStack = new Stack<Command>();
 		this.taskList = taskList;
+		this.recurList = recurList;
 	}
 
 	public TaskBin(){
 		undoStack = new Stack<Command>();
 		redoStack = new Stack<Command>();
 		taskList = new ArrayList<Task>();
+		recurList = new ArrayList<RecurTask>();
 	}
 	/*******************************************initialization*************************************/
 	public void init(){
@@ -94,8 +70,7 @@ public class TaskBin implements editTaskInfo{
 						isSorted = false;
 						isCompared = true;
 						break;
-					}
-					else if(inboxArr.get(i).getTitle().charAt(j) < inboxArr.get(i+1).getTitle().charAt(j)){
+					} else if(inboxArr.get(i).getTitle().charAt(j) < inboxArr.get(i+1).getTitle().charAt(j)){
 						isCompared = true;
 						break;
 					}
@@ -114,24 +89,17 @@ public class TaskBin implements editTaskInfo{
 		if(inboxArr.size() <= 1){
 			return inboxArr;
 		}
-<<<<<<< HEAD
-		
-		for(int m = 1; m < inboxArr.size() - 1; m++){
-			boolean isSorted = true;
-			for(int i = 0; (i < inboxArr.size() - m); i++){   
-=======
 
 		for(int m = 1; m < inboxArr.size() - 1; m++){
 			boolean isSorted = true;
 			for(int i = 0; (i < inboxArr.size() - m); i++){
->>>>>>> f1408057840addec287f7fac076bfe841975c2fe
-				if(inboxArr.get(i).getEndingDate() == null){
+				if(inboxArr.get(i).getEndingTime() == null){
 					timeUndefined.add(inboxArr.get(i));
 					inboxArr.remove(inboxArr.get(i));
 					isSorted = false;
 					break;
 				}
-				if(inboxArr.get(i).getEndingDate().compareTo(inboxArr.get(i+1).getEndingDate()) > 0){
+				if(inboxArr.get(i).getEndingTime().compareTo(inboxArr.get(i+1).getEndingTime()) > 0){
 					Task buffer = inboxArr.get(i);
 					inboxArr.set(i, inboxArr.get(i+1));
 					inboxArr.set(i+1, buffer);
@@ -146,7 +114,7 @@ public class TaskBin implements editTaskInfo{
 		}
 		/*Collections.sort(inboxArr, new Comparator<Task>(){
 			public int compare(Task task1, Task task2){
-				return task1.getStartingDate().compareTo(task2.getStartingDate());
+				return task1.getStartingTime().compareTo(task2.getStartingTime());
 			}
 		});*/
 		timeUndefined = sortArrayByAlpha(timeUndefined);
@@ -155,48 +123,12 @@ public class TaskBin implements editTaskInfo{
 	}
 	/********************************Undo Methods************************************/
 	public void undo(){
+		if (this.undoStack.isEmpty()) {
+			return;
+		}
 		Command previousComm = this.undoStack.pop();
 		String command = previousComm.returnCommand();
 		switch(command){
-<<<<<<< HEAD
-			case add_tag:
-				redoStack.push(previousComm);
-				taskList.remove(previousComm.returnMani());
-				setDisplay();
-				break;
-			case delete_tag:
-				redoStack.push(previousComm);
-				taskList.add(previousComm.returnMani());
-				activeList.add(previousComm.returnMani());
-				break;
-			case replace_tag:
-				Command add = undoStack.pop();
-				taskList.remove(add.returnMani());
-				activeList.remove(add.returnMani());
-				redoStack.push(add);
-				Command del = undoStack.pop();
-				taskList.add(del.returnMani());
-				activeList.add(del.returnMani());
-				redoStack.push(del);
-				redoStack.push(previousComm);
-				break;
-				
-			case alter_tag:
-				redoStack.push(previousComm);
-				taskList.remove(previousComm.returnMani());
-				taskList.add(previousComm.returnOrigin());
-				activeList.remove(previousComm.returnMani());
-				activeList.add(previousComm.returnOrigin());
-				break;
-	
-			default:
-				System.out.println("Error: Unable to identify the command type");
-		}
-		//update tag
-		Storage.write(taskList);
-	}
-	
-=======
 		case add_tag:
 			redoStack.push(previousComm);
 			taskList.remove(previousComm.returnMani());
@@ -205,7 +137,7 @@ public class TaskBin implements editTaskInfo{
 		case delete_tag:
 			redoStack.push(previousComm);
 			taskList.add(previousComm.returnMani());
-			//activeList.add(previousComm.returnMani());
+			activeList.add(previousComm.returnMani());
 			break;
 		case replace_tag:
 			Command add = undoStack.pop();
@@ -221,10 +153,35 @@ public class TaskBin implements editTaskInfo{
 
 		case alter_tag:
 			redoStack.push(previousComm);
-			taskList.remove(previousComm.returnMani());
+			System.out.println(previousComm.returnMani().getTitle() + previousComm.returnOrigin().getTitle());
+			System.out.println(taskList.get(activeList.indexOf(previousComm.returnMani())));
+			taskList.remove(taskList.get(taskList.indexOf(previousComm.returnMani())));
 			taskList.add(previousComm.returnOrigin());
-			activeList.remove(previousComm.returnMani());
-			activeList.add(previousComm.returnOrigin());
+			if(activeList != taskList){
+				System.out.println(activeList.get(activeList.indexOf(previousComm.returnMani())));
+				activeList.remove(activeList.get(activeList.indexOf(previousComm.returnMani())));
+				activeList.add(previousComm.returnOrigin());
+			}
+			break;
+
+		case recur_tag:
+			redoStack.push(previousComm);
+			ArrayList<Task> added = previousComm.returnListMani();
+			for(Task t: added){
+				taskList.remove(t);
+			}
+			break;
+
+		case mark_tag:
+			redoStack.push(previousComm);
+			taskList.get(taskList.indexOf(previousComm.returnMani())).unMark();
+			activeList.get(activeList.indexOf(previousComm.returnMani())).unMark();
+			break;
+
+		case unmark_tag:
+			redoStack.push(previousComm);
+			taskList.get(taskList.indexOf(previousComm.returnMani())).mark();
+			activeList.get(activeList.indexOf(previousComm.returnMani())).mark();
 			break;
 
 		default:
@@ -233,42 +190,13 @@ public class TaskBin implements editTaskInfo{
 		Storage.write(taskList);
 	}
 
->>>>>>> f1408057840addec287f7fac076bfe841975c2fe
 	public void redo(){
+		if (this.redoStack.isEmpty()) {
+			return;
+		}
 		Command redoComm = redoStack.pop();
 		String command = redoComm.returnCommand();
 		switch(command){
-<<<<<<< HEAD
-			case add_tag:
-				undoStack.push(redoComm);
-				taskList.add(redoComm.returnMani());
-				setDisplay();
-				break;
-			case delete_tag:
-				undoStack.push(redoComm);
-				taskList.remove(redoComm.returnMani());
-				activeList.remove(redoComm.taskManipulation);
-				break;
-			case alter_tag:
-				undoStack.push(redoComm);
-				taskList.remove(redoComm.returnOrigin());
-				activeList.remove(redoComm.returnOrigin());
-				taskList.add(redoComm.returnMani());
-				activeList.add(redoComm.returnMani());
-				break;
-				
-			
-			default:
-				System.out.println("Error: Unable to identify the command type");
-		
-		}
-				
-	}
-	
-				
-	/*********************************Search Methods************************************************/
-	
-=======
 		case add_tag:
 			undoStack.push(redoComm);
 			taskList.add(redoComm.returnMani());
@@ -283,10 +211,25 @@ public class TaskBin implements editTaskInfo{
 			undoStack.push(redoComm);
 			taskList.remove(redoComm.returnOrigin());
 			activeList.remove(redoComm.returnOrigin());
-			taskList.add(redoComm.returnMani());
-			activeList.add(redoComm.returnMani());
+			if (taskList != activeList) {
+				taskList.add(redoComm.returnMani());
+				activeList.add(redoComm.returnMani());
+			} else {
+				taskList.add(redoComm.returnMani());
+			}
+			break;
+			
+		case mark_tag:
+			undoStack.push(redoComm);
+			taskList.get(taskList.indexOf(redoComm.returnMani())).mark();
+			activeList.get(activeList.indexOf(redoComm.returnMani())).mark();
 			break;
 
+		case unmark_tag:
+			undoStack.push(redoComm);
+			taskList.get(taskList.indexOf(redoComm.returnMani())).unMark();
+			activeList.get(activeList.indexOf(redoComm.returnMani())).unMark();
+			break;
 
 		default:
 			System.out.println("Error: Unable to identify the command type");
@@ -304,10 +247,41 @@ public class TaskBin implements editTaskInfo{
 				System.out.println("ADSSADAD");
 				System.out.println(obj.getTitle());
 				obj.mark();
+				Command mark = new Command(mark_tag, obj);
+				undoStack.push(mark);
+			}
+		}
+		for(Task obj : activeList){
+			if (obj.equals(task)) {
+				System.out.println("ADSSADAD");
+				System.out.println(obj.getTitle());
+				obj.mark();
 			}
 		}
 		Storage.write(taskList);
-		return taskList;
+		return activeList;
+	}
+	
+	public ArrayList<Task> markTaskInstance(RecurTask task) {
+		for (RecurTask obj : recurList) {
+			if (obj.equals(task)) {
+				System.out.println("ADSSADAD");
+				System.out.println(obj.getTitle());
+				obj.mark(new DateTime());
+				Command mark = new Command(mark_tag, obj);
+				undoStack.push(mark);
+			}
+		}
+		for(Task obj : activeList){
+			if (obj.equals(task)) {
+				System.out.println("ADSSADAD");
+				System.out.println(obj.getTitle());
+				obj.mark();
+			}
+		}
+		Storage.write(taskList);
+		return activeList;
+		
 	}
 
 	public ArrayList<Task> unMarkTaskInstance(Task task) {
@@ -316,101 +290,130 @@ public class TaskBin implements editTaskInfo{
 				System.out.println("ADSSADAD");
 				System.out.println(obj.getTitle());
 				obj.unMark();
+				Command mark = new Command(unmark_tag, obj);
+				undoStack.push(mark);
+			}
+		}
+		for(Task obj : activeList){
+			if (obj.equals(task)) {
+				System.out.println("ADSSADAD");
+				System.out.println(obj.getTitle());
+				obj.unMark();
 			}
 		}
 		Storage.write(taskList);
-		return taskList;
+		return activeList;
+	}
+	
+	public ArrayList<Task> unMarkTaskInstance(RecurTask task) {
+		for (RecurTask obj : recurList) {
+			if (obj.equals(task)) {
+				System.out.println("ADSSADAD");
+				System.out.println(obj.getTitle());
+				obj.unmark(new DateTime());
+				Command mark = new Command(unmark_tag, obj);
+				undoStack.push(mark);
+			}
+		}
+		for(Task obj : activeList){
+			if (obj.equals(task)) {
+				System.out.println("ADSSADAD");
+				System.out.println(obj.getTitle());
+				obj.unMark();
+			}
+		}
+		Storage.write(taskList);
+		return activeList;
 	}
 
 
 
->>>>>>> f1408057840addec287f7fac076bfe841975c2fe
 	public ArrayList<Task> findTaskByTitle(String title){
 		ArrayList<Task> result = new ArrayList<Task>();
+		String[] keywords = title.split(" ");
 		for(Task task:taskList){
-			if (task.getTitle().indexOf(title)>=0) {
+			String[] listOfWord = task.getTitle().split(" ");
+			if(includeAllWords(keywords, listOfWord)){
 				result.add(task);
 			}
-			/*
-			if(title.equals(task.getTitle())){
-				result.add(task);
-			}
-<<<<<<< HEAD
-			*/
-		}
-		sortArrayByTime(result);
-		return result;			
-		
-	}
-	
-=======
-			 */
 		}
 		sortArrayByTime(result);
 		return result;
 
 	}
 
->>>>>>> f1408057840addec287f7fac076bfe841975c2fe
+	public ArrayList<Task> returnTaskByType(String type_tag){
+		ArrayList<Task> result = new ArrayList<Task>();
+		for(Task t: taskList){
+			if(t.getType().equals(type_tag)){
+				result.add(t);
+			}
+		}
+		return result;
+	}
+
 	public ArrayList<Task> findTaskByTitle(ArrayList<Task> list, String title){
 		ArrayList<Task> result = new ArrayList<Task>();
+		String[] keywords = title.split(" ");
 		for(Task task:list){
-			if(title.equals(task.getTitle())){
+			String[] listOfWord = task.getTitle().split(" ");
+			if(includeAllWords(keywords, listOfWord)){
 				result.add(task);
 			}
 		}
 		sortArrayByTime(result);
-<<<<<<< HEAD
-		return result;					
-	}
-	
-	public ArrayList<Task> findTaskByDate(Calendar date){
-		ArrayList<Task> result = new ArrayList<Task>();
-		for(Task task:taskList){
-			if((date.get(Calendar.MONTH) == task.getEndingDate().get(Calendar.MONTH))&& (date.get(Calendar.DATE) == task.getEndingDate().get(Calendar.DATE)) && (date.get(Calendar.YEAR) == task.getEndingDate().get(Calendar.YEAR))){
-=======
 		return result;
 	}
+
+	public DateTime returnToday(){
+		DateTime date = DateTime.now();
+		int day = date.getDayOfMonth();
+		int year = date.getYear();
+		int month = date.getMonthOfYear();
+		DateTime today = new DateTime(year, month, day, 0, 0);
+		return today;
+
+	}
+
+	public ArrayList<Task> returnOverdue(){
+		ArrayList<Task> overdue = new ArrayList<Task>();
+		DateTime now = DateTime.now();
+		ArrayList<Task> undone = getUnfinished();
+		for(Task t:undone){
+			if((t.getEndingTime().isAfter(now))&&(!t.getType().equals("task"))){
+				overdue.add(t);
+			}
+		}
+		return overdue;
+
+	}
+
+
 
 	public ArrayList<Task> findTaskByDate(DateTime date){
 		ArrayList<Task> result = new ArrayList<Task>();
+		DateTime day = returnToday();
+
 		for(Task task:taskList){
-			if(date.equals(task.getEndingDate())){
->>>>>>> f1408057840addec287f7fac076bfe841975c2fe
+			if((day.isAfter(task.getEndingTime()))&&(day.isBefore(day.plusDays(1)))){
 				result.add(task);
 			}
 		}
 		sortArrayByTime(result);
-<<<<<<< HEAD
-		return result;	
-	}
-	
-	public ArrayList<Task> findTaskByDate(ArrayList<Task> list, Calendar date){
-		ArrayList<Task> result = new ArrayList<Task>();
-		for(Task task:list){
-			if((date.get(Calendar.MONTH) == task.getEndingDate().get(Calendar.MONTH))&& (date.get(Calendar.DATE) == task.getEndingDate().get(Calendar.DATE)) && (date.get(Calendar.YEAR) == task.getEndingDate().get(Calendar.YEAR))){
-=======
 		return result;
 	}
 
 	public ArrayList<Task> findTaskByDate(ArrayList<Task> list, DateTime date){
 		ArrayList<Task> result = new ArrayList<Task>();
 		for(Task task:list){
-			if(date.equals(task.getEndingDate())){
->>>>>>> f1408057840addec287f7fac076bfe841975c2fe
+			if(date.equals(task.getEndingTime())){
 				result.add(task);
 			}
 		}
 		sortArrayByTime(result);
-<<<<<<< HEAD
-		return result;	
-	}
-	
-=======
 		return result;
 	}
 
->>>>>>> f1408057840addec287f7fac076bfe841975c2fe
 	/*********************************************Manipulation Methods****************************************/
 	public void add(Task newTask){
 		Command add = new Command(add_tag, newTask);
@@ -421,10 +424,20 @@ public class TaskBin implements editTaskInfo{
 		Storage.write(taskList);
 		redoStack.clear();
 	}
-<<<<<<< HEAD
 	
-=======
->>>>>>> f1408057840addec287f7fac076bfe841975c2fe
+	public void add(RecurTask newTask){
+		Command add = new Command(add_tag, newTask);
+		this.undoStack.push(add);
+		System.out.println(undoStack.size());
+		this.taskList.add(newTask);
+		taskList = sortArrayByTime(taskList);
+		Storage.write(taskList);
+		redoStack.clear();
+	}
+
+
+
+
 
 	public void delete(Task task){
 		for(int i = 0; i< taskList.size(); i++){
@@ -438,12 +451,21 @@ public class TaskBin implements editTaskInfo{
 		}
 		redoStack.clear();
 	}
+	
+	public void delete(RecurTask task, DateTime time){
+		for(int i = 0; i< recurList.size(); i++){
+			if(recurList.get(i).equals(task)){
+				Command delete = new Command(delete_tag, recurList.get(i));
+				undoStack.push(delete);
+				recurList.get(i).delete(time);
+				//Storage.write(recurList);
+				break;
+			}
+		}
+		redoStack.clear();
+	}
 
-<<<<<<< HEAD
-	
-	
-=======
->>>>>>> f1408057840addec287f7fac076bfe841975c2fe
+
 	public ArrayList<Task> getUnfinished(){
 		ArrayList<Task> result = new ArrayList<Task>();
 		for(Task task:taskList){
@@ -453,11 +475,7 @@ public class TaskBin implements editTaskInfo{
 		}
 		return result;
 	}
-<<<<<<< HEAD
-	
-=======
 
->>>>>>> f1408057840addec287f7fac076bfe841975c2fe
 	public ArrayList<Task> getUnfinished(ArrayList<Task> list){
 		ArrayList<Task> result = new ArrayList<Task>();
 		for(Task task:list){
@@ -467,15 +485,10 @@ public class TaskBin implements editTaskInfo{
 		}
 		return result;
 	}
-<<<<<<< HEAD
-	
-	/***********************************Implementation*******************************************/
-=======
 
 
 	/***********************************Implementation*******************************************/
 	@Override
->>>>>>> f1408057840addec287f7fac076bfe841975c2fe
 	public void replace(Task original, Task updated){
 		Command repla = new Command(replace_tag, original);
 		undoStack.push(repla);
@@ -484,179 +497,211 @@ public class TaskBin implements editTaskInfo{
 		Storage.write(taskList);
 		redoStack.clear();
 	}
-<<<<<<< HEAD
-	
-	public void editStartingDate(Task task, Calendar date){
-=======
 
-//	@Override
+	@Override
 	public void editStartingDate(Task task, DateTime date){
->>>>>>> f1408057840addec287f7fac076bfe841975c2fe
 		Task tar = taskList.get(taskList.indexOf(task));
 		Task tarDis = activeList.get(activeList.indexOf(tar));
-		buffer = task;
+		Task buffer = new Task(task);
 		tar.setStartingDate(date);
-		tarDis.setEndingDate(date);
+		tarDis.setStartingDate(date);
 		Command editDate = new Command(alter_tag, tar, buffer);
 		undoStack.push(editDate);
 		taskList = sortArrayByTime(taskList);
-<<<<<<< HEAD
-		
-=======
 
->>>>>>> f1408057840addec287f7fac076bfe841975c2fe
 		Storage.write(taskList);
-		buffer = null;
 		redoStack.clear();
 	}
-<<<<<<< HEAD
-	
-	public void editEndingDate(Task task, Calendar date){
-=======
 
-//	@Override
+
+	@Override
 	public void editEndingDate(Task task, DateTime date){
->>>>>>> f1408057840addec287f7fac076bfe841975c2fe
 		Task tar = taskList.get(taskList.indexOf(task));
 		Task tarDis = activeList.get(activeList.indexOf(tar));
-		buffer = task;
+		Task buffer = new Task(task);
 		tar.setEndingDate(date);
 		tarDis.setEndingDate(date);
 		Command editDate = new Command(alter_tag, tar, buffer);
 		undoStack.push(editDate);
 		taskList = sortArrayByTime(taskList);
-<<<<<<< HEAD
-		
-=======
 
->>>>>>> f1408057840addec287f7fac076bfe841975c2fe
 		Storage.write(taskList);
-		buffer = null;
 		redoStack.clear();
 	}
-<<<<<<< HEAD
-		
-=======
 
 	@Override
->>>>>>> f1408057840addec287f7fac076bfe841975c2fe
 	public void editTitle(Task task, String newTitle){
 		Task tar = taskList.get(taskList.indexOf(task));
 		Task tarDis = activeList.get(activeList.indexOf(tar));
+		Task buffer = new Task(task);
 		tarDis.setTitle(newTitle);
-		buffer = task;
 		tar.setTitle(newTitle);
-<<<<<<< HEAD
-		
-=======
-
->>>>>>> f1408057840addec287f7fac076bfe841975c2fe
 		Command editTil = new Command(alter_tag, tar, buffer);
 		undoStack.push(editTil);
 		Storage.write(taskList);
-		buffer = null;
 		redoStack.clear();
 	}
-<<<<<<< HEAD
-		
-		
-=======
 
 
 	@Override
->>>>>>> f1408057840addec287f7fac076bfe841975c2fe
 	public void editDescription(Task task, String newDes){
 		Task tar = taskList.get(taskList.indexOf(task));
-		buffer = task;
-		tar.setDescription(newDes);
+		Task buffer = task;
+
 		Task tarDis = activeList.get(activeList.indexOf(tar));
 		tarDis.setTitle(newDes);
 		Command editDes = new Command(alter_tag, tar, buffer);
 		undoStack.push(editDes);
-<<<<<<< HEAD
-		
-=======
 
->>>>>>> f1408057840addec287f7fac076bfe841975c2fe
 		Storage.write(taskList);
-		buffer = null;
 		redoStack.clear();
 	}
 	/*****************************************Retrieve Different Displays**********************************/
 	public ArrayList<Task> displayInit(){
 		ArrayList<Task> result = new ArrayList<Task>();
-<<<<<<< HEAD
-		Calendar now = Calendar.getInstance();
-		for(Task task: taskList){
-			if((now.get(Calendar.MONTH) == task.getEndingDate().get(Calendar.MONTH))&& (now.get(Calendar.DATE) == task.getEndingDate().get(Calendar.DATE)) && (now.get(Calendar.YEAR) == task.getEndingDate().get(Calendar.YEAR)) && (task.getStatus() == false)){
-				result.add(task);
-			}
-		}
-		return result;	
-	}
-	
-	public void setDisplay(ArrayList<Task> list){
-		activeList = list;
-	}
-	
-=======
 		DateTime now = new DateTime();
+		DateTime startOfDay = now.withTimeAtStartOfDay();
+		DateTime endOfDay = startOfDay.plusHours(24);
 		for(Task task: taskList){
-			if(now.equals(task.getEndingDate())){
+			switch(task.getType()){
+			case "task":
 				result.add(task);
+				break;
+
+			case "event":
+				if(task.getEndingTime().isBefore(endOfDay) && (task.getEndingTime().isAfter(startOfDay))){
+					result.add(task);
+				}
+				break;
+
+			case "deadline":
+				if(task.getEndingTime().isBefore(endOfDay)){
+					result.add(task);
+				}
+				break;
 			}
 		}
+
 		return result;
 	}
 
 	public void setDisplay(ArrayList<Task> list){
-		activeList = list;
-	}
-
->>>>>>> f1408057840addec287f7fac076bfe841975c2fe
-	public void setDisplay(){
-		activeList = sortArrayByTime(activeList);
-		activeList = taskList;
-	}
-<<<<<<< HEAD
+		DateTime now = new DateTime();
+		activeList = new ArrayList<Task>(list);
+		for(RecurTask t: recurList){
+			for(DateTime d: t.returnTime()){
+				if(d.dayOfYear().equals(now.dayOfYear())){
+					activeList.add(t);
+				}
+			}
+		}
+	} 
 	
-=======
+	public void setDisplayAll(){
+		DateTime now = new DateTime();
+		activeList = new ArrayList<Task>(taskList);
+		for(RecurTask t: recurList){
+			for(DateTime d: t.returnTime()){
+				if(d.dayOfYear().equals(now.dayOfYear())){
+					activeList.add(t);
+				}
+			}
+		}
+	} 
 
->>>>>>> f1408057840addec287f7fac076bfe841975c2fe
+
+	public void setDisplay(){
+		DateTime now = new DateTime();
+		ArrayList<Task> dis = new ArrayList<Task>();
+		for(Task t:taskList){
+			if(isWithinOneWeek(t) && (t.getStatus()==false)){
+				dis.add(t);
+			}
+		}
+		for(RecurTask t: recurList){
+			for(DateTime d: t.returnTime()){
+				if(d.getWeekyear() == now.getWeekyear()){
+					activeList.add(t);
+				}
+			}
+		}
+		dis = sortArrayByTime(dis);
+		activeList = dis;
+	}
+	
+	public ArrayList<Task> setDisplay(DateTime date){
+		ArrayList<Task> display = new ArrayList<Task>();
+		for(Task t: taskList){
+			if(t.getEndingTime().getDayOfYear() == date.getDayOfYear()){
+				display.add(t);
+			}
+		}
+		for(RecurTask rt: recurList){
+			if(rt.includeDate(date)){
+				display.add(rt);
+			}
+		}
+		return display;
+	}
+
 	public ArrayList<Task> returnDisplay(){
 		activeList = sortArrayByTime(activeList);
+		
 		return activeList;
 	}
 	/******************************************Used Methods***************************************************/
-	/*public Task retrieveTask(int index) throws NoResultFound{
-	try{
-		for(Task task:taskList){
-			if(task.getIndex() == index){
-				return task;
+	//All words in keywords list are included in the title
+	public boolean includeAllWords(String[] keywords, String[] title){
+		boolean isFound;
+		for(String key:keywords){
+			isFound = false;
+			for(String til: title){
+				if(key.equalsIgnoreCase(til)){
+					isFound = true;
+				}
 			}
-			else{
-				throw new NoResultFound("No such task found in the list");
+			if(isFound == false){
+				return false;
 			}
 		}
+		return true;
 	}
-	catch(NoResultFound ex){
-		System.out.println("No such task is found in the list");
+	
+	public boolean isWithinOneWeek(Task t){
+		DateTime now = new DateTime();
+		if(t.getEndingTime().isAfter(now.plusWeeks(1))){
+			return false;
+		}
+		else{
+			return true;
+		}
 	}
-	return null;
-<<<<<<< HEAD
 	
-=======
-
->>>>>>> f1408057840addec287f7fac076bfe841975c2fe
-}*/
-
-
-
-
-<<<<<<< HEAD
+	public ArrayList<Task> taskFilter(ArrayList<Task> arr){
+		ArrayList<Task> filteredResults = new ArrayList<Task>();
+		for(Task t: arr){
+			if(t.isAfterNow()&& t.getStatus()){
+				filteredResults.add(t);
+			}
+		}
+		return filteredResults;
+	}
+	/*******************************************Test Method***************************************/
+	public void clear(){
+		recurList.clear();
+		taskList.clear();
+		Storage.write(taskList);
+		Storage.recurWrite(recurList);
+	}
 	
-=======
-
->>>>>>> f1408057840addec287f7fac076bfe841975c2fe
-
+	public ArrayList<Task> displayAll(){
+		activeList.clear();
+		activeList.addAll(taskList);
+		activeList.addAll(recurList);
+		sortArrayByTime(activeList);
+		return activeList;
+	}
+	
+	
+		
 }

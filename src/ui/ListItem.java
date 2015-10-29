@@ -1,62 +1,116 @@
 package ui;
 
+import org.joda.time.DateTime;
+
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
+import javafx.scene.text.TextAlignment;
 
 public class ListItem extends StackPane{
 
-	private String[] colorArray = {"rgb(102,178,255)","rgb(255,153,51)","rgb(255,153,153)","rgb(153,255,51)","rgb(255,255,51)","rgb(255,51,255)"};
+	private Circle statusIcon;
 	private Label index;
 	private Label title;
-	private Label description;
-	private Label startTime;
-	private Label endTime;
-	private Label isDone;
-	private Label isOverDue;
+	private Label taskDuration;
+	//private Label isOverDue;
 
-	public ListItem(String taskTitle, String taskDescription, String taskStartTime, String taskEndTime, boolean isDone, int index) {
-		this.index = new Label(String.valueOf(index));
-		this.index.setFont(Font.font("Georgia",FontWeight.BOLD,25));
+	public ListItem(String taskTitle, DateTime taskStartTime, DateTime taskEndTime, String taskType, boolean isDone, boolean isOverdue, int taskIndex) {
 
 		title = new Label(taskTitle);
-		title.setFont(Font.font("Georgia",FontWeight.BOLD,15));
-		title.setPrefHeight(25);
-
-		description = new Label(taskDescription);
-
-		startTime  = new Label("Start: " + taskStartTime);
-		startTime.setPrefWidth(300);
-
-		endTime  = new Label("End: " + taskEndTime);
-		//endTime.setPrefWidth();
-		this.isDone = new Label();
-		if (isDone) {
-			this.isDone.setText("Done");
+		title.setId("title");
+		title.setFont(Font.font("SansSerif",FontWeight.BOLD,16));
+		title.setPadding(new Insets(0,0,0,5));
+		title.setMaxWidth(Double.MAX_VALUE);
+		if (isOverdue) {
+			
+			title.setTextFill(Color.PALEVIOLETRED);
+			title.setFont(Font.font("SansSerif", FontWeight.BOLD, FontPosture.ITALIC, 16));
 		} else {
-			this.isDone.setText("Not Done");
+			title.setTextFill(Color.ANTIQUEWHITE);	
+		}		
+
+		index = new Label(String.valueOf(taskIndex));
+		index.setId("index");
+		index.setFont(Font.font("SansSerif",FontWeight.LIGHT,22));
+		index.setTextFill(Color.WHITESMOKE);
+		index.setTextAlignment(TextAlignment.RIGHT);
+		index.setAlignment(Pos.CENTER_RIGHT);
+		index.setPadding(new Insets(0,20,0,0));
+		index.setMinWidth(50);
+
+		statusIcon = new Circle();
+		statusIcon.setId("statusIcon");
+		statusIcon.setRadius(5);
+
+		if (isDone) {
+			statusIcon.setFill(Color.GREENYELLOW);
+		} else {
+			statusIcon.setFill(Color.RED);
 		}
 
+		String startDate = (taskStartTime.getYear() == DateTime.now().getYear()) ? 
+				taskStartTime.toLocalDate().toString("EEE dd MMM") : taskStartTime.toLocalDate().toString("EEE dd MMM YYYY");
+		String startTime = taskStartTime.toLocalTime().toString("HHmm");
+		String endDate = (taskEndTime.getYear() == DateTime.now().getYear()) ?
+				taskEndTime.toLocalDate().toString("EEE dd MMM") : taskEndTime.toLocalDate().toString("EEE dd MMM YYYY");
+		String endTime = taskEndTime.toLocalTime().toString("HHmm");
+
+		taskDuration = new Label();
+		if (taskType.equals("deadline")) {
+			taskDuration.setText("By [" + endDate + "] " + endTime + " hrs");
+		} else if (taskType.equals("event")){
+			taskDuration.setText("[" + startDate + "] " + startTime + " hrs  -  [" + endDate + "] " + endTime + " hrs");
+		}
+		taskDuration.setTextFill(Color.LIGHTGRAY);
+		taskDuration.setFont(Font.font("SansSerif", FontPosture.ITALIC, 11));
+		taskDuration.setPadding(new Insets(0,0,0,15));
+
+		HBox titleNstatus = new HBox();
+		titleNstatus.setAlignment(Pos.CENTER_LEFT);
+		titleNstatus.getChildren().addAll(statusIcon, title);
 
 		HBox timeLayout = new HBox();
-		timeLayout.getChildren().addAll(startTime, endTime);
+		timeLayout.getChildren().addAll(taskDuration);
 
 		VBox detailsLayout = new VBox();
-		detailsLayout.setPrefWidth(500);
-		detailsLayout.getChildren().addAll(title, description, timeLayout);
+
+		if (taskType.equals("task")) {
+			detailsLayout.getChildren().addAll(titleNstatus);
+		} else {
+			detailsLayout.getChildren().addAll(titleNstatus, timeLayout);
+		}
+
+		detailsLayout.setPadding(new Insets(0,0,0,5));
+		detailsLayout.setAlignment(Pos.CENTER);
 
 		VBox statusLayout = new VBox();
-		statusLayout.getChildren().addAll(this.index, this.isDone);
+		statusLayout.setPadding(new Insets(0,0,0,0));
+		statusLayout.setAlignment(Pos.CENTER_RIGHT);
+		statusLayout.setPrefWidth(30);
+		statusLayout.getChildren().addAll(this.index);
 
 		HBox consoleLayout = new HBox();
+		HBox.setHgrow(detailsLayout, Priority.ALWAYS);
 		consoleLayout.getChildren().addAll(detailsLayout, statusLayout);
-		this.setStyle("-fx-background-color: " + colorArray[index%6] + "; -fx-background-radius: 10px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);");
+		this.setId("listItem");
 		this.getChildren().add(consoleLayout);
-		this.setPadding(new Insets(5, 5, 5, 5));
-
+		this.setPadding(new Insets(2, 10, 2, 2));
+		this.setMinHeight(40);
+	}
+	public String getTitle() {
+		return this.title.getText();
+	}
+	public String getIsOverdue() {
+		return this.title.getText();
 	}
 }
