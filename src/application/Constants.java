@@ -102,6 +102,7 @@ public class Constants {
 	public static final String COMMAND_ALERT = "alert";
 	public static final String COMMAND_CLEAR = "clear";
 	public static final String COMMAND_SETPATH = "setpath";
+	public static final String COMMAND_ENQUIREPATH = "enquirepath";
 
 
 	// Array indices

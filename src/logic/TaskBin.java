@@ -25,6 +25,7 @@ public class TaskBin implements editTaskInfo{
 	Storage taskStorage;
 	Stack<Command> undoStack;
 	Stack<Command> redoStack;
+	
 
 	private static final String add_tag = "ADD";
 	private static final String delete_tag = "DELETE";
@@ -685,5 +686,22 @@ public class TaskBin implements editTaskInfo{
 		}
 		return filteredResults;
 	}
+	/*******************************************Test Method***************************************/
+	public void clear(){
+		recurList.clear();
+		taskList.clear();
+		Storage.write(taskList);
+		Storage.recurWrite(recurList);
+	}
+	
+	public ArrayList<Task> displayAll(){
+		activeList.clear();
+		activeList.addAll(taskList);
+		activeList.addAll(recurList);
+		sortArrayByTime(activeList);
+		return activeList;
+	}
+	
+	
 		
 }

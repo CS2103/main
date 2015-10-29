@@ -2,6 +2,8 @@ package logic;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.joda.time.DateTime;
 
@@ -235,6 +237,8 @@ public class Logic {
 			return bin.undoStack.peek().returnMani().getTitle() + Constants.FEEDBACK_EDIT_SUCCESS;
 		case Constants.COMMAND_SETPATH:
 			return Constants.FEEDBACK_SETPATH_SUCCESS + input.split(" ")[1].trim();
+		case Constants.COMMAND_ENQUIREPATH:
+			return 
 		default:
 			return Constants.FEEDBACK_INVALID;
 		}
@@ -247,4 +251,26 @@ public class Logic {
 	public String getCommand(String input) {
 		return parser.getCommand(input);
 	}
-}
+	
+	public String parseDate(String input){
+		String dateString = new String();
+		Pattern dp;
+		Matcher dm;
+
+		for (String regex: Constants.dateRegex) {
+			try{
+				dp = Pattern.compile(regex);
+				dm = dp.matcher(input);
+				if (dm.find()) {
+					dateString = dm.group().trim();
+					System.out.println("[DATEPARSER] Date Match: " + dateString);
+					break;
+				}
+			} catch (NullPointerException e) {
+			} catch (IllegalArgumentException e) {
+			}
+		}
+		return dateString;
+	}
+
+}	
