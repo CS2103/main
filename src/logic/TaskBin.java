@@ -266,7 +266,7 @@ public class TaskBin implements editTaskInfo{
 			if (obj.equals(task)) {
 				System.out.println("ADSSADAD");
 				System.out.println(obj.getTitle());
-				obj.mark();
+				obj.mark(new DateTime());
 				Command mark = new Command(mark_tag, obj);
 				undoStack.push(mark);
 			}
@@ -309,7 +309,7 @@ public class TaskBin implements editTaskInfo{
 			if (obj.equals(task)) {
 				System.out.println("ADSSADAD");
 				System.out.println(obj.getTitle());
-				obj.unMark();
+				obj.unmark(new DateTime());
 				Command mark = new Command(unmark_tag, obj);
 				undoStack.push(mark);
 			}
@@ -626,6 +626,21 @@ public class TaskBin implements editTaskInfo{
 		}
 		dis = sortArrayByTime(dis);
 		activeList = dis;
+	}
+	
+	public ArrayList<Task> setDisplay(DateTime date){
+		ArrayList<Task> display = new ArrayList<Task>();
+		for(Task t: taskList){
+			if(t.getEndingTime().getDayOfYear() == date.getDayOfYear()){
+				display.add(t);
+			}
+		}
+		for(RecurTask rt: recurList){
+			if(rt.includeDate(date)){
+				display.add(rt);
+			}
+		}
+		return display;
 	}
 
 	public ArrayList<Task> returnDisplay(){

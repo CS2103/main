@@ -112,6 +112,15 @@ public class RecurTask extends Task {
 		return del;
 	}
 	
+	public boolean includeDate(DateTime date){
+		for(DateTime t: recurDate){
+			if(t.equals(date)){
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public void clearRecurDone(){
 		recurDone.clear();
 	}
