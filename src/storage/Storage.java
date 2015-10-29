@@ -18,6 +18,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import logic.Task;
+import logic.RecurTask;
 
 public class Storage {
 
@@ -119,7 +120,7 @@ public class Storage {
 		return taskList;
 	}
 	
-	public static void writeRecur(ArrayList<Task> tasks) {
+	public static void writeRecur(ArrayList<RecurTask> tasks) {
 		try {
 			if (path == null) {
 				path = savedPath.getAbsolutePath();
