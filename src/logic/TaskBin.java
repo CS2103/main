@@ -25,6 +25,7 @@ public class TaskBin implements editTaskInfo{
 	Storage taskStorage;
 	Stack<Command> undoStack;
 	Stack<Command> redoStack;
+	
 
 	private static final String add_tag = "ADD";
 	private static final String delete_tag = "DELETE";
@@ -266,7 +267,7 @@ public class TaskBin implements editTaskInfo{
 			if (obj.equals(task)) {
 				System.out.println("ADSSADAD");
 				System.out.println(obj.getTitle());
-				obj.mark();
+				obj.mark(new DateTime());
 				Command mark = new Command(mark_tag, obj);
 				undoStack.push(mark);
 			}
@@ -309,7 +310,7 @@ public class TaskBin implements editTaskInfo{
 			if (obj.equals(task)) {
 				System.out.println("ADSSADAD");
 				System.out.println(obj.getTitle());
-				obj.unMark();
+				obj.unmark(new DateTime());
 				Command mark = new Command(unmark_tag, obj);
 				undoStack.push(mark);
 			}
@@ -627,6 +628,21 @@ public class TaskBin implements editTaskInfo{
 		dis = sortArrayByTime(dis);
 		activeList = dis;
 	}
+	
+	public ArrayList<Task> setDisplay(DateTime date){
+		ArrayList<Task> display = new ArrayList<Task>();
+		for(Task t: taskList){
+			if(t.getEndingTime().getDayOfYear() == date.getDayOfYear()){
+				display.add(t);
+			}
+		}
+		for(RecurTask rt: recurList){
+			if(rt.includeDate(date)){
+				display.add(rt);
+			}
+		}
+		return display;
+	}
 
 	public ArrayList<Task> returnDisplay(){
 		activeList = sortArrayByTime(activeList);
@@ -670,5 +686,22 @@ public class TaskBin implements editTaskInfo{
 		}
 		return filteredResults;
 	}
+	/*******************************************Test Method***************************************/
+	public void clear(){
+		recurList.clear();
+		taskList.clear();
+		Storage.write(taskList);
+		Storage.recurWrite(recurList);
+	}
+	
+	public ArrayList<Task> displayAll(){
+		activeList.clear();
+		activeList.addAll(taskList);
+		activeList.addAll(recurList);
+		sortArrayByTime(activeList);
+		return activeList;
+	}
+	
+	
 		
 }

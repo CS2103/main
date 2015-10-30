@@ -13,7 +13,6 @@ public class RecurTask extends Task {
 	
 	private ArrayList<DateTime> recurDate = new ArrayList<DateTime>();
 	private ArrayList<DateTime> recurDone = new ArrayList<DateTime>();
-	private DateTime recurStart;
 	private DateTime recurEnd;
 	private String recurTag; 
 	
@@ -110,6 +109,15 @@ public class RecurTask extends Task {
 			}
 		}
 		return del;
+	}
+	
+	public boolean includeDate(DateTime date){
+		for(DateTime t: recurDate){
+			if(t.equals(date)){
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	public void clearRecurDone(){
