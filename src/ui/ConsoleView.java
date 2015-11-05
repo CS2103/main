@@ -41,6 +41,7 @@ public class ConsoleView extends Pane {
 	HBox listDisplay;
 	AddTaskPreview addTaskPreview;
 	EditTaskPreview editTaskPreview;
+	HelpScreen helpScreen;
 
 	VBox timedList;
 	VBox floatingList;
@@ -87,13 +88,20 @@ public class ConsoleView extends Pane {
 		timeline.setCycleCount(Animation.INDEFINITE);
 		timeline.play();
 
-		timedList.setStyle(
-				"-fx-background-color:linear-gradient( from 100.0% 0.0% to 100.0% 100.0%, rgb(51,51,51) 0.0, rgb(179,179,179) 40.0, rgb(51,51,51) 100.0)");
+		timedList.setId("timedList");
+		// timedList.setStyle(
+		// "-fx-background-color:linear-gradient( from 100.0% 0.0% to 100.0%
+		// 100.0%, rgb(51,51,51) 0.0, rgb(179,179,179) 40.0, rgb(51,51,51)
+		// 100.0)");
 		timedList.setFocusTraversable(false);
 		timedList.setFillWidth(true);
+		timedList.setMinWidth(350);
 
-		floatingList.setStyle(
-				"-fx-background-color: linear-gradient( from 100.0% 0.0% to 100.0% 100.0%, rgb(46,50,68) 0.0, rgb(51,51,51) 40.0, rgb(39,41,54) 100.0)");
+		floatingList.setId("floatingList");
+		// floatingList.setStyle(
+		// "-fx-background-color: linear-gradient( from 100.0% 0.0% to 100.0%
+		// 100.0%, rgb(46,50,68) 0.0, rgb(51,51,51) 40.0, rgb(39,41,54)
+		// 100.0)");
 		floatingList.setFocusTraversable(false);
 		floatingList.setFillWidth(true);
 
@@ -111,7 +119,7 @@ public class ConsoleView extends Pane {
 		scrollPane.setFitToWidth(true);
 		scrollPane.setMaxHeight(470);
 		scrollPane.setMinHeight(470);
-		scrollPane.setPrefWidth(700);
+		scrollPane.setPrefWidth(800);
 		scrollPane.setHbarPolicy(ScrollBarPolicy.NEVER);
 		scrollPane.setFocusTraversable(false);
 		scrollPane.setBorder(null);
@@ -121,7 +129,8 @@ public class ConsoleView extends Pane {
 
 		addTaskPreview = new AddTaskPreview("", DateTime.now(), DateTime.now());
 		editTaskPreview = new EditTaskPreview("", DateTime.now(), DateTime.now(), "");
-		mainDisplay.getChildren().addAll(editTaskPreview, addTaskPreview, scrollPane);
+		helpScreen = new HelpScreen();
+		mainDisplay.getChildren().addAll(helpScreen, editTaskPreview, addTaskPreview, scrollPane);
 
 		inputConsole.setId("inputConsole");
 		inputConsole.setEditable(true);
@@ -152,7 +161,7 @@ public class ConsoleView extends Pane {
 	}
 
 	public void updateEditTaskPreviewDetails(String oldTitle, DateTime startTime, DateTime endTime, String field,
-			String newTitle, DateTime newDateTime) {
+			String newTitle, DateTime newDateTime, String oldRecurValue, String recurValue) {
 		editTaskPreview.clearAllDetails();
 		editTaskPreview.oldTitle.setText(oldTitle);
 		editTaskPreview.oldStartTime.setText(showIfValidDate(startTime));
@@ -161,6 +170,8 @@ public class ConsoleView extends Pane {
 		editTaskPreview.newTitleField.setText(newTitle);
 		editTaskPreview.newStartTimeField.setText(showIfValidDate(newDateTime));
 		editTaskPreview.newEndTimeField.setText(showIfValidDate(newDateTime));
+		editTaskPreview.oldRecurring.setText(oldRecurValue);
+		editTaskPreview.newRecurringField.setText(recurValue);
 	}
 
 	private String showIfValidDate(DateTime dateTime) {
@@ -169,5 +180,34 @@ public class ConsoleView extends Pane {
 		} else {
 			return "N/A";
 		}
+	}
+
+	public void showEditPopup() {
+		addTaskPreview.setVisible(false);
+		scrollPane.toBack();
+		editTaskPreview.toFront();
+		helpScreen.toBack();
+	}
+
+	public void showAddPopup() {
+		addTaskPreview.toFront();
+		addTaskPreview.setVisible(true);
+		scrollPane.toBack();
+		editTaskPreview.toBack();
+		helpScreen.toBack();
+	}
+
+	public void showHelpPopup() {
+		addTaskPreview.toBack();
+		scrollPane.toBack();
+		editTaskPreview.toBack();
+		helpScreen.toFront();
+	}
+
+	public void showDefaultView() {
+		addTaskPreview.toBack();
+		scrollPane.toFront();
+		editTaskPreview.toBack();
+		helpScreen.toBack();
 	}
 }

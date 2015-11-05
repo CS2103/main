@@ -1,11 +1,7 @@
 package storage;
 
-import static org.junit.Assert.*;
-
-import org.joda.time.DateTime;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -13,6 +9,11 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+
+import org.joda.time.DateTime;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 // import Google Gson library
 import com.google.gson.Gson;
@@ -24,7 +25,8 @@ import logic.Task;
 public class StorageTest {
 	// initial methods to serialise/deserialise savedTask.json with DateTime
 	// formats
-	final static Gson gson = Converters.registerDateTime(new GsonBuilder().setPrettyPrinting().serializeNulls()).create();
+	final static Gson gson = Converters.registerDateTime(new GsonBuilder().setPrettyPrinting().serializeNulls())
+			.create();
 	final DateTime original = new DateTime();
 	final String json = gson.toJson(original);
 	final DateTime reconstituted = gson.fromJson(json, DateTime.class);
@@ -35,19 +37,19 @@ public class StorageTest {
 	@Before
 	public void setUp() throws Exception {
 		Task[] t = new Task[6];
-		DateTime d0 = new DateTime(0,1,1,0,0);
-		DateTime d1 = new DateTime(2015,10,21,0,0);
-		DateTime d2 = new DateTime(2015,11,25,0,0);
-		DateTime d3 = new DateTime(2015,2,22,0,0);
-		DateTime d4 = new DateTime(2016,1,21,0,0);
-		DateTime d5 = new DateTime(2014,3,23,0,0);
+		DateTime d0 = new DateTime(0, 1, 1, 0, 0);
+		DateTime d1 = new DateTime(2015, 10, 21, 0, 0);
+		DateTime d2 = new DateTime(2015, 11, 25, 0, 0);
+		DateTime d3 = new DateTime(2015, 2, 22, 0, 0);
+		DateTime d4 = new DateTime(2016, 1, 21, 0, 0);
+		DateTime d5 = new DateTime(2014, 3, 23, 0, 0);
 		t[0] = new Task("Apple produced Iphone", d0, d0);
-		t[1] = new Task("Google produced Google Glass", d0,d1);
+		t[1] = new Task("Google produced Google Glass", d0, d1);
 		t[2] = new Task("Vivado produced new Boards", d3, d1);
-		t[3] = new Task("Go fishing" ,d5, d2);
+		t[3] = new Task("Go fishing", d5, d2);
 		t[4] = new Task("Do homework", d3, d4);
-		t[5] = new Task ("Love no War", d5, d3);
-		for(int i = 0; i< t.length; i++) {
+		t[5] = new Task("Love no War", d5, d3);
+		for (int i = 0; i < t.length; i++) {
 			taskList.add(t[i]);
 		}
 	}
@@ -82,7 +84,8 @@ public class StorageTest {
 	@Test
 	public void testsetPath3() {
 		Storage.setPath("/Users/hungngth/Downloads");
-		assertEquals("test correct assignment of path to Storage.path", Storage.path, "/Users/hungngth/Downloads/TBAsave.txt");
+		assertEquals("test correct assignment of path to Storage.path", Storage.path,
+				"/Users/hungngth/Downloads/TBAsave.txt");
 	}
 
 	@Test
@@ -91,7 +94,8 @@ public class StorageTest {
 		try {
 			FileReader fr = new FileReader("/Users/hungngth/Documents/workspace/TBA/main");
 			BufferedReader br = new BufferedReader(fr);
-			assertEquals("test correct path writing to savedPath.txt", "/Users/hungngth/Documents/workspace/TBA/main", br.readLine());
+			assertEquals("test correct path writing to savedPath.txt", "/Users/hungngth/Documents/workspace/TBA/main",
+					br.readLine());
 			br.close();
 		} catch (FileNotFoundException e) {
 		} catch (IOException e) {
@@ -101,7 +105,7 @@ public class StorageTest {
 
 	@Test
 	public void testWriteAndRead() {
-		//System.out.println("taskList " + taskList.toString());
+		// System.out.println("taskList " + taskList.toString());
 		Storage.write(taskList);
 		String line = "";
 		boolean pass = true;
@@ -114,8 +118,9 @@ public class StorageTest {
 			}
 			br.close();
 			String jsonString = stringBuilder.toString();
-			//System.out.println("jsonString " + jsonString);
-			taskListForTest = gson.fromJson(jsonString, new TypeToken<ArrayList<Task>>(){}.getType());
+			// System.out.println("jsonString " + jsonString);
+			taskListForTest = gson.fromJson(jsonString, new TypeToken<ArrayList<Task>>() {
+			}.getType());
 
 			for (int i = 0; i < taskList.size(); i++) {
 				if (!taskListForTest.get(i).equals(taskList.get(i))) {
