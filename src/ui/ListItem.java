@@ -29,10 +29,12 @@ public class ListItem extends StackPane {
 			boolean isOverdue, String recurValue, int taskIndex) {
 
 		title = new Label(taskTitle);
+
 		title.setFont(Font.font("SansSerif", FontWeight.BOLD, 16));
 		title.setPadding(new Insets(0, 0, 0, 5));
 		title.setMaxWidth(Double.MAX_VALUE);
 		if (isOverdue) {
+
 			title.setTextFill(Color.PALEVIOLETRED);
 			title.setFont(Font.font("SansSerif", FontWeight.BOLD, FontPosture.ITALIC, 16));
 		} else {
@@ -48,7 +50,6 @@ public class ListItem extends StackPane {
 		index = new Label(String.valueOf(taskIndex));
 		index.setId("index");
 		index.setFont(Font.font("SansSerif", FontWeight.LIGHT, 22));
-		// index.setTextFill(Color.rgb(26, 77, 77));
 		index.setTextAlignment(TextAlignment.RIGHT);
 		index.setAlignment(Pos.CENTER_RIGHT);
 		index.setPadding(new Insets(0, 20, 0, 0));

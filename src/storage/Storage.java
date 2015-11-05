@@ -30,23 +30,15 @@ public class Storage {
 	final DateTime reconstituted = gson.fromJson(json, DateTime.class);
 
 	// attributes
-	public static File normalTask = new File("savedTaskNormal.json"); // public
-																		// for
-																		// testing,
-																		// change
-																		// after
-																		// done
-	public static File recurTask = new File("savedTaskRecur.json"); // public
-																	// for
-																	// testing,
-																	// change
-																	// after
-																	// done
 
-	public static File savedPath = new File("savedPath.txt"); // public for
+	public static File savedTask = new File("TBAsave.json"); // public for
 																// testing,
 																// change after
 																// done
+
+	public static File savedPath = new File("TBApath.txt"); // public for
+															// testing, change
+															// after done
 
 	public static String path; // public for testing, change after done
 
@@ -82,8 +74,7 @@ public class Storage {
 
 		write(currentTaskList);
 
-		normalTask.delete();
-		recurTask.delete();
+		savedTask.delete();
 	}
 
 	public static String enquirePath() {
@@ -91,6 +82,7 @@ public class Storage {
 	}
 
 	public static void write(ArrayList<Task> tasks) {
+		System.out.println(path);
 		try {
 			if (path == null) {
 				path = savedPath.getAbsolutePath();
@@ -106,6 +98,7 @@ public class Storage {
 	}
 
 	public static ArrayList<Task> read() {
+
 		try {
 			FileReader fr = new FileReader(savedPath);
 			BufferedReader br = new BufferedReader(fr);
@@ -118,7 +111,7 @@ public class Storage {
 		ArrayList<Task> taskList = new ArrayList<Task>();
 		String line = "";
 		if (path == null) {
-			path = normalTask.getAbsolutePath();
+			path = savedTask.getAbsolutePath();
 		}
 		try {
 			FileReader fr = new FileReader(path);
@@ -137,4 +130,5 @@ public class Storage {
 		}
 		return taskList;
 	}
+
 }

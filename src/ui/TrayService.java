@@ -1,10 +1,3 @@
-/**
- * This class:
- * Creates an instance of the application in the system tray
- * Allows the app to run in the background
- *
- */
-
 package ui;
 
 import java.awt.AWTException;
@@ -146,4 +139,3 @@ public class TrayService {
 		trayIcon.displayMessage("Message.", Constants.APP_NAME + " is still running. You can access it from here.", TrayIcon.MessageType.INFO);
 	}
 }
-
