@@ -1,4 +1,4 @@
-package Logic;
+package logic;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -21,6 +21,7 @@ public class Logic {
 	}
 
 	public ArrayList<Task> inputHandler(String input) throws ParseException, InvalidTimeException {
+		System.out.println("The input handler is activated");
 		String command = CommandParser.getCommand(input);
 
 		if (command.equalsIgnoreCase(("add"))) {
@@ -52,9 +53,11 @@ public class Logic {
 			return bin.returnDisplay();
 		} else if (command.equalsIgnoreCase("enquirepath")) {
 			return bin.returnDisplay();
-		} else if (command.equalsIgnoreCase("display")) {
-			bin.findTaskByDate(parser.getEndDateTime(input));
-			return bin.returnDisplay();
+		} else if (command.equalsIgnoreCase("show")) {
+			System.out.println("The date to search is " + parser.getEndDateTime(input).toString());
+			return searchEntries(parser.getEndDateTime(input));
+		} else if (command.equalsIgnoreCase("exit")) {
+			System.exit(0);
 		}
 
 		return null;
@@ -66,7 +69,7 @@ public class Logic {
 		System.out.println(title);
 		Task newTask = new Task();
 		if (title.length() != 0) {
-			//System.out.println(title.length());
+			// System.out.println(title.length());
 			DateTime startTime = parser.getStartDateTime(input);
 			DateTime endTime = parser.getEndDateTime(input);
 			System.out.println("Task Stats: " + title.length() + " " + startTime.toString() + " " + endTime.toString());
@@ -81,7 +84,6 @@ public class Logic {
 				newTask = new Task(title, startTime, endTime);
 				System.out.println(newTask.getTitle());
 			}
-			
 
 			bin.add(newTask);
 			System.out.println(newTask.getType() + " is added");
@@ -91,7 +93,8 @@ public class Logic {
 	}
 
 	public ArrayList<Task> displayHome() {
-		return bin.returnDisplay();
+
+		return bin.displayHome();
 	}
 
 	public ArrayList<Task> displayCurrent() {
@@ -105,9 +108,15 @@ public class Logic {
 			bin.editTitle(toEdit, info);
 			break;
 		case "start":
+			if (toEdit.getType().equals(Constants.TYPE_RECUR)) {
+				break;
+			}
 			bin.editStartingDate(toEdit, parser.getDateTime(info));
 			break;
 		case "end":
+			if (toEdit.getType().equals(Constants.TYPE_RECUR)) {
+				break;
+			}
 			bin.editEndingDate(toEdit, parser.getDateTime(info));
 			break;
 		}
@@ -196,12 +205,13 @@ public class Logic {
 		switch (parser.getCommand(input)) {
 		case Constants.COMMAND_ADD:
 
-			if (!((parser.getStartDateTime(input).equals(null)) || (parser.getEndDateTime(input).equals(null)))) {
+			if ((!(parser.getStartDateTime(input).getYear() == 0)) && (!(parser.getEndDateTime(input).getYear() == 0))
+					&& (!parser.getRecurValue(input).equals(Constants.TYPE_RECUR))) {
 				DateTime[] time = new DateTime[2];
 				time[0] = parser.getStartDateTime(input);
 				time[1] = parser.getEndDateTime(input);
 				if (bin.isClashed(time)) {
-					return parser.getTitle(input) + "has a time clash with existing events";
+					return parser.getTitle(input) + " has a time clash with existing events";
 				}
 			}
 

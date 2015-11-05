@@ -6,11 +6,12 @@ import org.joda.time.DateTime;
 
 import application.Constants;
 
-public class BinDisplay {
+//@@Liu Xiaoming
+public class DisplayTasks {
 	ArrayList<Task> bufferList;
 	ArrayList<Task> displayList;
 
-	public BinDisplay() {
+	public DisplayTasks() {
 		bufferList = new ArrayList<Task>();
 		displayList = new ArrayList<Task>();
 	}
@@ -67,7 +68,7 @@ public class BinDisplay {
 				dis.add(t);
 			}
 		}
-		
+
 		displayList = dis;
 		System.out.println("Display Set as TaskList");
 	}
@@ -125,7 +126,7 @@ public class BinDisplay {
 		if (todo) {
 			switch (command.returnCommand()) {
 			case Constants.alter_tag:
-				displayList.remove(command.returnOrigin());
+				displayList.remove(displayList.get(displayList.indexOf(command.returnOrigin())));
 				displayList.add(command.returnMani());
 				break;
 

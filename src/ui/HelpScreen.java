@@ -1,7 +1,5 @@
 package ui;
 
-import org.joda.time.DateTime;
-
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.layout.ColumnConstraints;
@@ -14,7 +12,7 @@ public class HelpScreen extends StackPane {
 
 	Label header;
 
-	public HelpScreen(String title, DateTime startTime, DateTime endTime, String taskType) {
+	public HelpScreen() {
 
 		header = new Label("Help");
 		header.setId("taskPreviewHeader");
@@ -34,7 +32,7 @@ public class HelpScreen extends StackPane {
 		getChildren().addAll(helpScreenLayout);
 		setPrefSize(700, 50);
 		setStyle("-fx-background-color: rgba(255,255,255,0.5)");
-		setPadding(new Insets(200, 50, 100, 50));
+		setPadding(new Insets(100, 50, 50, 50));
 	}
 
 }

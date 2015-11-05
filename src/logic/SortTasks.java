@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import application.Constants;
 
-public class BinSorter {
+public class SortTasks {
 
 	public boolean includeAllWords(String[] keywords, String[] title) {
 		boolean isFound;
@@ -60,7 +60,6 @@ public class BinSorter {
 				timeUndefined = sortArrayByAlpha(timeUndefined);
 				recurArray = sortArrayByAlpha(recurArray);
 				inboxArr.addAll(timeUndefined);
-				inboxArr.addAll(recurArray);
 				return inboxArr;
 			}
 		}
@@ -68,7 +67,6 @@ public class BinSorter {
 		timeUndefined = sortArrayByAlpha(timeUndefined);
 		recurArray = sortArrayByAlpha(recurArray);
 		inboxArr.addAll(timeUndefined);
-		inboxArr.addAll(recurArray);
 		return inboxArr;
 	}
 

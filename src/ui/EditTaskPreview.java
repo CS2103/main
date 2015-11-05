@@ -95,12 +95,13 @@ public class EditTaskPreview extends StackPane {
 		newRecurringField.setId("taskPreviewDetails");
 
 		ColumnConstraints columnConstraint = new ColumnConstraints(150);
+		ColumnConstraints columnConstraint1 = new ColumnConstraints(400);
 
 		editTitleLayout = new GridPane();
 		editTitleLayout.add(newTitleLabel, 0, 0);
 		editTitleLayout.add(newTitleField, 1, 0);
 		editTitleLayout.setVisible(false);
-		editTitleLayout.getColumnConstraints().addAll(columnConstraint, columnConstraint);
+		editTitleLayout.getColumnConstraints().addAll(columnConstraint, columnConstraint1);
 
 		editStartTimeLayout = new GridPane();
 		editStartTimeLayout.add(oldStartTimeLabel, 0, 0);

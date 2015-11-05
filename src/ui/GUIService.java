@@ -25,10 +25,9 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
-import Logic.*;
-import Logic.InvalidTimeException;
-import Logic.Logic;
-import Logic.Task;
+import logic.InvalidTimeException;
+import logic.Logic;
+import logic.Task;
 import parser.CommandParser;
 import parser.Parser;
 import parser.TitleParser;
@@ -68,7 +67,7 @@ public class GUIService {
 		content.setEffect(dropShadow);
 
 		addListenersToConsoleView(stage);
-		populateList(logic.displayHome());
+		populateList(logic.startupDisplay());
 		content.getChildren().addAll(consoleView);
 	}
 
@@ -78,8 +77,7 @@ public class GUIService {
 		ObservableList<ListItem> floatingTasks = FXCollections.observableArrayList();
 		for (Task task : tasksArr) {
 			ListItem newListItem = new ListItem(task.getTitle(), task.getStartingTime(), task.getEndingTime(),
-					task.getType(), task.getStatus(), task.isOverDue(), index++);
-			assert task.getType() != null;
+					task.getType(), task.getStatus(), task.isOverDue(), task.returnRecurTag(), index++);
 			if (task.getType().equalsIgnoreCase("task")) {
 				floatingTasks.add(newListItem);
 			} else {
@@ -98,38 +96,33 @@ public class GUIService {
 		} else {
 			consoleView.listDisplay.getChildren().setAll(consoleView.timedList, consoleView.floatingList);
 		}
-
 		consoleView.addTaskPreview.toBack();
 		consoleView.scrollPane.toFront();
-
 	}
 
 	private void addListenersToConsoleView(Stage stage) {
 		consoleView.inputConsole.textProperty().addListener((observable, oldValue, newValue) -> {
 			LOGGER.log(Level.FINEST, "Textfield changed from " + oldValue + " to " + newValue);
-			if (newValue.equalsIgnoreCase(Constants.COMMAND_EXIT)) {
-				System.exit(0);
-			} else if (newValue.split(" ")[0].equalsIgnoreCase(Constants.COMMAND_ADD)) {
+			if (newValue.equalsIgnoreCase(Constants.COMMAND_HELP)) {
 
-				consoleView.addTaskPreview.toFront();
-				consoleView.scrollPane.toBack();
-				consoleView.editTaskPreview.toBack();
+			} else if (CommandParser.getCommand(newValue).equalsIgnoreCase(Constants.COMMAND_ADD)) {
+
+				consoleView.showAddPopup();
 				consoleView.updateAddTaskPreviewDetails(TitleParser.getTitle(newValue),
-						parser.getStartDateTime(newValue), this.parser.getEndDateTime(newValue), null);
+						parser.getStartDateTime(newValue), this.parser.getEndDateTime(newValue),
+						parser.getRecurValue(newValue));
 			} else if (CommandParser.getCommand(newValue).equalsIgnoreCase(Constants.COMMAND_INVALID)) {
-				consoleView.addTaskPreview.toBack();
-				consoleView.scrollPane.toFront();
+				consoleView.showDefaultView();
 			} else if (CommandParser.getCommand(newValue).equalsIgnoreCase(Constants.COMMAND_DELETE)) {
 
 			} else if (CommandParser.getCommand(newValue).equalsIgnoreCase(Constants.COMMAND_EDIT)
 					&& newValue.matches("\\D+\\s\\d+\\s\\D+.+\\z")) {
-				consoleView.editTaskPreview.toFront();
-				consoleView.scrollPane.toBack();
-				consoleView.addTaskPreview.toBack();
+				consoleView.showEditPopup();
 				Task toEdit = this.logic.displayCurrent().get(this.parser.getIndex(newValue) - 1);
 				consoleView.updateEditTaskPreviewDetails(toEdit.getTitle(), toEdit.getStartingTime(),
 						toEdit.getEndingTime(), this.parser.getField(newValue), TitleParser.getEditTitle(newValue),
-						this.parser.getDateTime(TitleParser.getEditTitle(newValue)));
+						this.parser.getDateTime(TitleParser.getEditTitle(newValue)), "in progress",
+						parser.getRecurValue(newValue));
 			}
 		});
 
@@ -175,7 +168,6 @@ public class GUIService {
 					}
 				} else if (consoleView.inputConsole.getText().length() == 0 && event.getCode() == KeyCode.BACK_SPACE) {
 					populateList(logic.displayHome());
-
 					updateStatusLabel(Constants.FEEDBACK_VIEW_TODAY);
 				} else if (event.getCode() == KeyCode.DOWN) {
 
@@ -202,7 +194,6 @@ public class GUIService {
 				String input = consoleView.inputConsole.getText();
 				System.out.println("UI initiated");
 				try {
-					System.out.println("The received output list by UI size is " + logic.inputHandler(input).size());
 					populateList(logic.inputHandler(input));
 					updateStatusLabel(logic.getStatusBarText(input));
 					consoleView.inputConsole.clear();
@@ -217,10 +208,10 @@ public class GUIService {
 	}
 
 	public Scene buildScene(StackPane content) {
-		Scene myScene = new Scene(content, 700, 600);
+		Scene myScene = new Scene(content, 800, 600);
 		myScene.setFill(Color.TRANSPARENT);
 		myScene.getStylesheets().clear();
-		myScene.getStylesheets().add(this.getClass().getResource("style.css").toExternalForm());
+		myScene.getStylesheets().add(this.getClass().getResource("style2.css").toExternalForm());
 		showConsolePane();
 		return myScene;
 	}
