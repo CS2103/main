@@ -17,8 +17,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
-import logic.Task;
-import logic.RecurTask;
+import Logic.Task;
 
 public class Storage {
 
@@ -121,51 +120,5 @@ public class Storage {
 		}
 		return taskList;
 	}
-	
-	public static void writeRecur(ArrayList<RecurTask> tasks) {
-		try {
-			if (path == null) {
-				path = savedPath.getAbsolutePath();
-			}
-			File file = new File(path);
-			FileWriter fw = new FileWriter(file);
-			BufferedWriter bw = new BufferedWriter(fw);
-			bw.write(gson.toJson(tasks));
-			bw.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public static ArrayList<RecurTask> readRecur() {
-		try {
-			FileReader fr = new FileReader(savedPath);
-			BufferedReader br = new BufferedReader(fr);
-			Storage.path = br.readLine();
-			br.close();
-		} catch (FileNotFoundException e) {
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		ArrayList<RecurTask> taskList = new ArrayList<RecurTask>();
-		String line = "";
-		if (path == null) {
-			path = recurTask.getAbsolutePath();
-		}
-		try {
-			FileReader fr = new FileReader(path);
-			BufferedReader br = new BufferedReader(fr);
-			StringBuilder stringBuilder = new StringBuilder();
-			while ((line = br.readLine()) != null) {
-				stringBuilder.append(line).append("\n");
-			}
-			br.close();
-			String jsonString = stringBuilder.toString();
-			taskList = gson.fromJson(jsonString, new TypeToken<ArrayList<RecurTask>>(){}.getType());
-		} catch (FileNotFoundException e) {
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return taskList;
-	}
 }
+	

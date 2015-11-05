@@ -25,9 +25,10 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
-import logic.InvalidTimeException;
-import logic.Logic;
-import logic.Task;
+import Logic.*;
+import Logic.InvalidTimeException;
+import Logic.Logic;
+import Logic.Task;
 import parser.CommandParser;
 import parser.Parser;
 import parser.TitleParser;
@@ -199,7 +200,9 @@ public class GUIService {
 			@Override
 			public void handle(ActionEvent event) {
 				String input = consoleView.inputConsole.getText();
+				System.out.println("UI initiated");
 				try {
+					System.out.println("The received output list by UI size is " + logic.inputHandler(input).size());
 					populateList(logic.inputHandler(input));
 					updateStatusLabel(logic.getStatusBarText(input));
 					consoleView.inputConsole.clear();

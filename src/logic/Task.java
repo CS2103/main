@@ -1,155 +1,252 @@
-package logic;
+package Logic;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import org.joda.time.DateTime;
+import application.Constants;
 
 public class Task {
-	
-	private static int numberOfTask = 0;
 	private String title;
 	private DateTime startingTime;
 	private DateTime endingTime;
+	private DateTime recurEnd;
 	private String type_tag;
+	private boolean isRecur;
 	private boolean isFinished;
-	private boolean[] recurring = new boolean[7];
+	private ArrayList<DateTime> recurDate;
+	private ArrayList<DateTime> recurDone;
 
-
-	public Task(Task task){
+	public Task(Task task) {
 		this.title = task.getTitle();
 		this.isFinished = task.getStatus();
 		this.startingTime = task.getStartingTime();
 		this.endingTime = task.getEndingTime();
+		this.recurDate = task.getRecurDates();
+		this.recurDone = task.getDoneDates();
 		setTag();
 	}
 
-	public Task(String title){
+	public Task(String title) {
 		this.title = title;
-		numberOfTask++;
 		isFinished = false;
+		isRecur = false;
 		setTag();
+		System.out.println(this.getType() + " is Created");
 	}
 
-	public Task(){
+	public Task() {
 		String time = Calendar.getInstance().toString();
+		isRecur = false;
 		this.title = "Untitled " + time;
 		this.isFinished = false;
-		numberOfTask++;
+		
 	}
 
-	public Task(String title, DateTime startingTime, DateTime endingTime) throws InvalidTimeException{
-		this.title= title;
+	public Task(String title, DateTime startingTime, DateTime endingTime) throws InvalidTimeException {
+		this.title = title;
 		this.startingTime = startingTime;
 		this.endingTime = endingTime;
-		try{
-			if(endingTime.isBefore(startingTime)){
+		isRecur = false;
+		System.out.println("is Creating");
+		try {
+			if (endingTime.isBefore(startingTime)) {
 				InvalidTimeException e = new InvalidTimeException("The ending time is prior to the starting time");
 				throw e;
 			}
-		}
-		catch(InvalidTimeException e){
+		} catch (InvalidTimeException e) {
 			System.out.println("Error" + e);
+
 		}
 		setTag();
+		System.out.println(this.getType() + " is Created");
 	}
 
-	public Task(DateTime startingTime, DateTime endingTime){
+	public Task(DateTime startingTime, DateTime endingTime) {
+		
 		this();
 		this.startingTime = startingTime;
-		this.endingTime= endingTime;
-		try{
-			if(endingTime.isBefore(startingTime)){
+		this.endingTime = endingTime;
+		isRecur = false;
+		System.out.println("is Creating");
+		try {
+			if (endingTime.isBefore(startingTime)) {
 				InvalidTimeException e = new InvalidTimeException("The ending time is prior to the starting time");
 				throw e;
 			}
-		}
-		catch(InvalidTimeException e){
+		} catch (InvalidTimeException e) {
 			System.out.println("Error" + e);
 		}
 		setTag();
+		System.out.println(this.getType() + " is Created");
 	}
 
-	public Task(String title, DateTime endingTime){
+	public Task(String title, DateTime endingTime) {
 		this(title);
-		this.endingTime= endingTime;
+		this.endingTime = endingTime;
+		isRecur = false;
+		System.out.println("is Creating");
 		setTag();
+		System.out.println(this.getType() + " is Created");
 	}
 
-	public Task(DateTime date){
+	public Task(DateTime date) {
 		this();
-		this.endingTime= date;
+		this.endingTime = date;
+		isRecur = false;
 		setTag();
+		System.out.println(this.getType() + " is Created");
 	}
 
-	//Accessors
-	public String getTitle(){
+	public Task(String title, DateTime startingTime, DateTime endingTime, DateTime recurEnding, String recurTag) {
+		isRecur = true;
+		isFinished = false;
+		this.title = title;
+		this.startingTime = startingTime;
+		this.endingTime = endingTime;
+		this.recurEnd = recurEnding;
+		DateTime end = new DateTime(endingTime);
+		this.type_tag = Constants.TYPE_RECUR;
+		recurDate = new ArrayList<DateTime>();
+		recurDone = new ArrayList<DateTime>();
+		recurDate.add(end);
+		System.out.println("is Creating");
+		switch (recurTag) {
+		case Constants.tag_weekly:
+			while (end.plusWeeks(1).isBefore(recurEnd)) {
+				end = new DateTime(end.plusWeeks(1));
+				recurDate.add(end);
+
+			}
+			break;
+		case Constants.tag_daily:
+			while (end.plusDays(1).isBefore(recurEnd)) {
+				end = new DateTime(end.plusDays(1));
+				recurDate.add(end);
+			}
+			break;
+		case Constants.tag_monthly:
+			while (end.plusMonths(1).isBefore(recurEnd)) {
+				end = new DateTime(end.plusMonths(1));
+				recurDate.add(end);
+			}
+			break;
+		case Constants.tag_yearly:
+			while (end.plusMonths(1).isBefore(recurEnd)) {
+				end = new DateTime(end.plusYears(1));
+				recurDate.add(end);
+			}
+			break;
+		}
+		System.out.println(this.getType() + " is Created");
+	}
+
+	public String getTitle() {
 		return title;
 	}
-	public boolean getStatus(){
-		return isFinished;
-	}
-	public int getTaskCount(){
-		return numberOfTask;
-	}
-	public String getType(){
-		return type_tag;
-	}
-	public DateTime getStartingTime(){
-		return startingTime;
-	}
-	public DateTime getEndingTime(){
-		return endingTime;
-	}
-	public boolean isAfterNow() {
-		return endingTime.isBeforeNow() && !type_tag.equals("task");
-	}
-	
-	public boolean isOverDue(){
-		return endingTime.isBeforeNow() && !type_tag.equals("task") && (!isFinished);
-	}
-	public boolean[] getRecurring() {
-		return recurring;
+
+	public boolean getStatus() {
+		if (!type_tag.equals(Constants.recur_tag)) {
+			return isFinished;
+		} else {
+			return isRecur() && isDone();
+		}
 	}
 
-	//Mutators
-	public void setTitle(String title){
+	public String getType() {
+		return type_tag;
+	}
+
+	public DateTime getStartingTime() {
+		return startingTime;
+	}
+
+	public DateTime getEndingTime() {
+		return endingTime;
+	}
+
+	public boolean isAfterNow() {
+		return endingTime.isBeforeNow() && !type_tag.equals(Constants.TYPE_FLOATING);
+	}
+
+	public boolean isOverDue() {
+		if (!isTypeRecur()) {
+			return endingTime.isBeforeNow() && !type_tag.equals(Constants.TYPE_FLOATING) && (!isFinished);
+		} else {
+			DateTime now = new DateTime();
+			for (DateTime t : recurDate) {
+				if (t.isBefore(now) && !isDone(t)) {
+					return true;
+				}
+			}
+		}
+		return false;
+
+	}
+
+	public void setTitle(String title) {
 		this.title = title;
 	}
 
-	public boolean mark(){
-		numberOfTask--;
-		isFinished = true;
-		return isFinished;
-	}
-	public void unMark() {
-		isFinished = false;
-		numberOfTask++;
+	public void mark() {
+		if (!type_tag.equals(Constants.TYPE_RECUR)) {
+			isFinished = true;
+		} else {
+			DateTime now = new DateTime();
+			for (DateTime t : recurDate) {
+				if (t.getDayOfYear() == now.getDayOfYear()) {
+					recurDone.add(t);
+				}
+			}
+		}
 	}
 
-	public void setStartingDate(DateTime startingTime){
+	public void unMark() {
+		if (!type_tag.equals(Constants.TYPE_RECUR)) {
+			isFinished = false;
+		} else {
+			DateTime now = new DateTime();
+			for (DateTime t : recurDone) {
+				if (t.getDayOfYear() == now.getDayOfYear()) {
+					recurDone.remove(t);
+				}
+			}
+		}
+	}
+
+	public void setStartingDate(DateTime startingTime) {
 		this.startingTime = startingTime;
 		setTag();
 	}
 
-	public void setEndingDate(DateTime endingTime){
+	public void setEndingDate(DateTime endingTime) {
 		this.endingTime = endingTime;
 		setTag();
 	}
 
-	public void setTag(){
-		if(isValidDate(endingTime) || isValidDate(startingTime)){
-			if(isValidDate(startingTime)){
-				this.type_tag = "event";			// Event Tasks (have start and end time)
+	public void setTag() {
+		System.out.println("Setting Tag");
+		if (isTypeRecur()) {
+			this.type_tag = Constants.TYPE_RECUR;
+		}
+		if (isValidDate(endingTime) || isValidDate(startingTime)) {
+			if (isValidDate(startingTime)) {
+				this.type_tag = Constants.TYPE_EVENT; // Event Tasks (have start
+														// and end time)
 			} else {
-				this.type_tag = "deadline";		// Deadline Tasks (have end but no start time)
+				this.type_tag = Constants.TYPE_DEADLINE; // Deadline Tasks (have
+															// end but no start
+															// time)
 			}
 		} else {
-			this.type_tag = "task";				// Floating Tasks (no start and end date/time)
+			this.type_tag = Constants.TYPE_FLOATING; // Floating Tasks (no start
+														// and end date/time)
 		}
+		System.out.println("Tag set");
 	}
-	
+
 	public boolean isValidDate(DateTime date) {
-		if (date.getYear() == 0){
+		if (date.getYear() == 0) {
 			return false;
 		}
 		return true;
@@ -159,14 +256,94 @@ public class Task {
 	public boolean equals(Object obj) {
 		if (obj instanceof Task) {
 			Task task = (Task) obj;
-			return	(this.getTitle().equals(task.getTitle())) &&
-					(this.getStatus() == task.getStatus()) &&
-					(this.getEndingTime().equals(task.getEndingTime())) &&
-					(this.getStartingTime().equals(task.getStartingTime())) &&
-					(this.getType().equals(task.getType())
-							);
+			return (this.getTitle().equals(task.getTitle())) && (this.getStatus() == task.getStatus())
+					&& (this.getEndingTime().equals(task.getEndingTime()))
+					&& (this.getStartingTime().equals(task.getStartingTime()))
+					&& (this.getType().equals(task.getType()));
 		} else {
 			return false;
 		}
 	}
+
+	public boolean isTypeRecur() {
+		return this.isRecur;
+	}
+
+	public ArrayList<DateTime> getRecurDates() {
+		if (isTypeRecur())
+			return recurDate;
+		return null;
+	}
+
+	public ArrayList<DateTime> getDoneDates() {
+		if (isTypeRecur())
+			return recurDone;
+		return null;
+	}
+
+	public boolean isRecur() {
+		if (!isTypeRecur()) {
+			return false;
+		}
+		DateTime now = new DateTime();
+		for (DateTime t : recurDate) {
+			if (t.getDayOfYear() == now.getDayOfYear()) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public boolean isRecur(DateTime date) {
+		if (!isTypeRecur()) {
+			return false;
+		}
+		for (DateTime t : recurDate) {
+			if (t.getDayOfYear() == date.getDayOfYear()) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public boolean isDone() {
+		if (!isTypeRecur()) {
+			return false;
+		}
+		DateTime now = new DateTime();
+		for (DateTime t : recurDone) {
+			if ((t.getDayOfYear() == now.getDayOfYear()) && (recurDate.contains(t))) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public boolean isDone(DateTime date) {
+		if (!isTypeRecur()) {
+			return false;
+		}
+		for (DateTime t : recurDone) {
+			if (t.getDayOfYear() == date.getDayOfYear()) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public DateTime deleteRecur(DateTime date) {
+		if (!isTypeRecur()) {
+			return null;
+		}
+		DateTime del = new DateTime(0, 1, 1, 0, 0);
+		for (DateTime t : recurDate) {
+			if (t.getDayOfYear() == date.getDayOfYear()) {
+				recurDate.remove(t);
+				recurDone.remove(t);
+				del = t;
+			}
+		}
+		return del;
+	}
+
 }

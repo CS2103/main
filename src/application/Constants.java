@@ -1,6 +1,22 @@
 package application;
 
 public class Constants {
+	
+	public static final String add_tag = "ADD";
+	public static final String delete_tag = "DELETE";
+	public static final String replace_tag = "REPLACE";
+	public static final String alter_tag = "ALTER";
+	public static final String mark_tag = "MARK";
+	public static final String unmark_tag = "UNMARK";
+	public static final String recur_tag = "ADD_RECUR";
+	public static final String tag_weekly = "weekly";
+	public static final String tag_monthly = "monthly";
+	public static final String tag_daily = "daily";
+	public static final String tag_yearly = "yearly";
+	public static final String TYPE_RECUR = "recur";
+	public static final String TYPE_EVENT = "event";
+	public static final String TYPE_DEADLINE = "deadline";
+	public static final String TYPE_FLOATING = "task";
 
 	public static final String APP_NAME = "TBA";
 

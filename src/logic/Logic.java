@@ -1,4 +1,4 @@
-package logic;
+package Logic;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -22,13 +22,9 @@ public class Logic {
 
 	public ArrayList<Task> inputHandler(String input) throws ParseException, InvalidTimeException {
 		String command = CommandParser.getCommand(input);
+
 		if (command.equalsIgnoreCase(("add"))) {
-			if (parser.getRecurValue(input).equals(null)) {
-				addTask(input);
-			} else {
-				addRecur(input);
-			}
-			return bin.returnDisplay();
+			return addTask(input);
 		} else if (command.equalsIgnoreCase("home")) {
 			return displayHome();
 		} else if (command.equalsIgnoreCase("setpath")) {
@@ -44,13 +40,9 @@ public class Logic {
 			return unMarkTaskByIndex(parser.getIndexes(input));
 		} else if (command.equalsIgnoreCase("display")) {
 
-		} else if (command.equalsIgnoreCase("recur")) {
-			DateTime endTime = new DateTime(2015, 11, 25, 0, 0);
-			addRecurTask(input, endTime);
 		} else if (command.equalsIgnoreCase("search")) {
 			System.out.println("DEBUG " + parser.getTitle(input));
 			ArrayList<Task> result = searchEntries(parser.getTitle(input));
-			bin.setDisplay(result);
 			return bin.returnDisplay();
 		} else if (command.equalsIgnoreCase("undo")) {
 			bin.undo();
@@ -60,54 +52,45 @@ public class Logic {
 			return bin.returnDisplay();
 		} else if (command.equalsIgnoreCase("enquirepath")) {
 			return bin.returnDisplay();
+		} else if (command.equalsIgnoreCase("display")) {
+			bin.findTaskByDate(parser.getEndDateTime(input));
+			return bin.returnDisplay();
 		}
+
 		return null;
 	}
 
-	private ArrayList<Task> addRecur(String input) throws InvalidTimeException {
-		DateTime now = new DateTime();
-		DateTime endDate = now.plusYears(1);
-		String recurValue = parser.getRecurValue(input);
-		String title = parser.getTitle(input);
-		if (title.length() != 0) {
-			DateTime startTime = parser.getStartDateTime(input);
-			DateTime endTime = parser.getEndDateTime(input);
-			System.out.println("Title: " + title);
-			System.out.println("StartTime: " + startTime);
-			System.out.println("EndTime: " + endTime);
-			RecurTask newTask = new RecurTask(title, startTime, endTime, endDate, recurValue);
-			bin.add(newTask);
-			bin.setDisplay();
-		}
-		return bin.returnDisplay();
-
-		// TODO Auto-generated method stub
-
-	}
-
 	public ArrayList<Task> addTask(String input) throws ParseException, InvalidTimeException {
+
 		String title = parser.getTitle(input);
+		System.out.println(title);
+		Task newTask = new Task();
 		if (title.length() != 0) {
+			//System.out.println(title.length());
 			DateTime startTime = parser.getStartDateTime(input);
 			DateTime endTime = parser.getEndDateTime(input);
-			System.out.println("Title: " + title);
-			System.out.println("StartTime: " + startTime);
-			System.out.println("EndTime: " + endTime);
+			System.out.println("Task Stats: " + title.length() + " " + startTime.toString() + " " + endTime.toString());
+			if (!parser.getRecurValue(input).equals("")) {
+				System.out.println("IS RECUR");
+				String recurValue = parser.getRecurValue(input);
+				DateTime endRecur = new DateTime();
+				endRecur = endRecur.plusYears(1);
+				newTask = new Task(title, startTime, endTime, endRecur, recurValue);
+			} else {
+				System.out.println("NOT RECUR");
+				newTask = new Task(title, startTime, endTime);
+				System.out.println(newTask.getTitle());
+			}
+			
 
-			Task newTask = new Task(title, startTime, endTime);
 			bin.add(newTask);
-			bin.setDisplay();
+			System.out.println(newTask.getType() + " is added");
 		}
-		return bin.returnDisplay();
-	}
-
-	public ArrayList<Task> addRecurTask(String input, DateTime endDate) throws InvalidTimeException {
-
-		return startupDisplay();
+		ArrayList<Task> newList = bin.returnDisplay();
+		return newList;
 	}
 
 	public ArrayList<Task> displayHome() {
-		bin.setDisplay();
 		return bin.returnDisplay();
 	}
 
@@ -120,9 +103,6 @@ public class Logic {
 		switch (field) {
 		case "title":
 			bin.editTitle(toEdit, info);
-			break;
-		case "description":
-			bin.editDescription(toEdit, info);
 			break;
 		case "start":
 			bin.editStartingDate(toEdit, parser.getDateTime(info));
@@ -155,7 +135,6 @@ public class Logic {
 			result = bin.findTaskByDate(result, endingDate);
 		}
 		bin.delete(result.get(0));
-		bin.setDisplay();
 		return bin.returnDisplay();
 	}
 
@@ -164,7 +143,6 @@ public class Logic {
 		Task toDel = new Task();
 		toDel = display.get(index - 1);
 		bin.delete(toDel);
-		bin.setDisplay();
 		return bin.returnDisplay();
 	}
 
@@ -173,13 +151,11 @@ public class Logic {
 
 	public ArrayList<Task> searchEntries(String keyWord) {
 		ArrayList<Task> result = bin.findTaskByTitle(keyWord);
-		bin.setDisplay(result);
 		return bin.returnDisplay();
 	}
 
 	public ArrayList<Task> searchEntries(DateTime date) {
 		ArrayList<Task> result = bin.findTaskByDate(date);
-		bin.setDisplay(result);
 		return bin.returnDisplay();
 	}
 
@@ -198,7 +174,7 @@ public class Logic {
 			ArrayList<Task> display = bin.returnDisplay();
 			Task toMark = new Task();
 			toMark = display.get(index - 1);
-			bin.unMarkTaskInstance(toMark);
+			bin.unmarkTaskInstance(toMark);
 		}
 		return bin.returnDisplay();
 	}
@@ -212,14 +188,23 @@ public class Logic {
 	}
 
 	public ArrayList<Task> startupDisplay() {// display the initial screen
-		ArrayList<Task> initDis = bin.displayInit();
-		initDis = bin.sortArrayByTime(initDis);
+		ArrayList<Task> initDis = bin.displayHome();
 		return initDis;
 	}
 
 	public String getStatusBarText(String input) {
 		switch (parser.getCommand(input)) {
 		case Constants.COMMAND_ADD:
+
+			if (!((parser.getStartDateTime(input).equals(null)) || (parser.getEndDateTime(input).equals(null)))) {
+				DateTime[] time = new DateTime[2];
+				time[0] = parser.getStartDateTime(input);
+				time[1] = parser.getEndDateTime(input);
+				if (bin.isClashed(time)) {
+					return parser.getTitle(input) + "has a time clash with existing events";
+				}
+			}
+
 			return parser.getTitle(input) + Constants.FEEDBACK_ADD_SUCCESS;
 		case Constants.COMMAND_MARK:
 			return bin.undoStack.peek().returnMani().getTitle() + Constants.FEEDBACK_DONE_SUCCESS;
