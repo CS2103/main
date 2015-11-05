@@ -3,7 +3,7 @@ package ui;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import logic.Task;
+import Logic.Task;
 
 public class GUIServiceTest {
 

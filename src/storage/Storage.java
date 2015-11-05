@@ -17,7 +17,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
-import logic.Task;
+import Logic.Task;
 
 public class Storage {
 
@@ -29,15 +29,16 @@ public class Storage {
 	final DateTime reconstituted = gson.fromJson(json, DateTime.class);
 
 	// attributes
-	public static File tempSavedTask = new File("savedTask.json"); // public for testing, change after done
+	public static File normalTask = new File("savedTaskNormal.json"); // public for testing, change after done
+	public static File recurTask = new File("savedTaskRecur.json"); // public for testing, change after done
+
 	public static File savedPath = new File("savedPath.txt"); // public for testing, change after done
 
 	public static String path; // public for testing, change after done
+	
 	private static ArrayList<Task> currentTaskList = new ArrayList<Task>();
 
-	public Storage() {
-
-	}
+	public Storage() { }
 
 	public static void setPath(String path) {
 		File file = new File(path);
@@ -65,7 +66,8 @@ public class Storage {
 
 		write(currentTaskList);
 
-		tempSavedTask.delete();
+		normalTask.delete();
+		recurTask.delete();
 	}
 
 	public static String enquirePath() {
@@ -100,7 +102,7 @@ public class Storage {
 		ArrayList<Task> taskList = new ArrayList<Task>();
 		String line = "";
 		if (path == null) {
-			path = tempSavedTask.getAbsolutePath();
+			path = normalTask.getAbsolutePath();
 		}
 		try {
 			FileReader fr = new FileReader(path);
@@ -119,3 +121,4 @@ public class Storage {
 		return taskList;
 	}
 }
+	
