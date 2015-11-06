@@ -78,19 +78,19 @@
 }
 
 #titleTask {
-	-fx-text-fill:anitquewhite ;
+	-fx-text-fill:antiquewhite ;
 }
 
 #titleEvent {
-	-fx-text-fill:anitquewhite ;
+	-fx-text-fill:antiquewhite ;
 }
 
 #titleDeadline {
-	-fx-text-fill:anitquewhite ;
+	-fx-text-fill:antiquewhite ;
 }
 
 #index {
-	
+	-fx-text-fill:antiquewhite ;
 }
 
 #statusIcon {
