@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-public class parserTest {
+public class ParserTest {
 	
 	Parser parser = new Parser();
 	

@@ -1,7 +1,7 @@
+//@@author A0121442X
 package ui;
 
 import java.awt.AWTException;
-
 import java.awt.MenuItem;
 import java.awt.PopupMenu;
 import java.awt.SystemTray;
@@ -18,9 +18,6 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-
-import com.melloware.jintellitype.HotkeyListener;
-import com.melloware.jintellitype.JIntellitype;
 
 public class TrayService {
 
@@ -39,7 +36,8 @@ public class TrayService {
 
 		if (SystemTray.isSupported()) {
 			SystemTray tray = SystemTray.getSystemTray();
-			java.awt.Image image = Toolkit.getDefaultToolkit().getImage(TrayService.class.getResource("/resource/icon.png"));
+			java.awt.Image image = Toolkit.getDefaultToolkit()
+					.getImage(TrayService.class.getResource("/resource/icon.png"));
 			stage.getIcons().add(new Image("/resource/icon.png"));
 
 			stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
@@ -125,7 +123,6 @@ public class TrayService {
 				};
 			});
 
-
 			try {
 				tray.add(trayIcon);
 			} catch (AWTException e) {
@@ -136,6 +133,7 @@ public class TrayService {
 	}
 
 	public void showProgramIsMinimizedMsg() {
-		trayIcon.displayMessage("Message.", Constants.APP_NAME + " is still running. You can access it from here.", TrayIcon.MessageType.INFO);
+		trayIcon.displayMessage("Message.", Constants.APP_NAME + " is still running. You can access it from here.",
+				TrayIcon.MessageType.INFO);
 	}
 }

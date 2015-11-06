@@ -5,11 +5,11 @@ import java.util.Collections;
 
 import logic.Task;
 
-public class GUIServiceTest {
+public class GuiServiceTest {
 
 	private ArrayList<Task> taskArray;
 
-	public GUIServiceTest() {
+	public GuiServiceTest() {
 		taskArray = new ArrayList<Task>();
 
 		logic.Task task1 = new Task("Meet Xiaoming for dinner");

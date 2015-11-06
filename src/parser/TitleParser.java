@@ -36,8 +36,8 @@ public class TitleParser {
 		return text;
 	}
 
-	public static String getEditTitle(String input){
-		for (int i = 0; i < 3; i++){
+	public static String getEditTitle(String input) {
+		for (int i = 0; i < 3; i++) {
 			input = excludeFirstWord(input);
 		}
 		return input;
@@ -46,21 +46,22 @@ public class TitleParser {
 	public static String splitInputWithDictionary(String[] dictionary, String input) {
 		int firstIndex = -1;
 		int lastIndex = input.length();
-		
+
 		Pattern datePattern;
 		Matcher dateMatcher;
 
 		for (String regex : dictionary) {
-/*			if (input.toLowerCase().indexOf(regex) > firstIndex) {
-				firstIndex = input.toLowerCase().indexOf(regex);
-			}*/
+			/*
+			 * if (input.toLowerCase().indexOf(regex) > firstIndex) { firstIndex
+			 * = input.toLowerCase().indexOf(regex); }
+			 */
 			datePattern = Pattern.compile(regex);
 			dateMatcher = datePattern.matcher(input.toLowerCase());
-			
-			if (dateMatcher.find()){
+
+			if (dateMatcher.find()) {
 				firstIndex = dateMatcher.start();
 			}
-			
+
 		}
 
 		if (firstIndex < 0) {
@@ -72,18 +73,19 @@ public class TitleParser {
 		taskKeywords.addAll(Arrays.asList(Constants.TASK_END_DATETIME));
 		taskKeywords.addAll(Arrays.asList(Constants.TASK_RECURRING));
 		taskKeywords.removeAll(Arrays.asList(dictionary));
-		
+
 		for (String regex : taskKeywords) {
-//			if (input.toLowerCase().indexOf(regex) < lastIndex && input.toLowerCase().indexOf(regex) > 0) {
-				datePattern = Pattern.compile(regex);
-				dateMatcher = datePattern.matcher(input);
-				
-				if (dateMatcher.find()){
-					if (dateMatcher.start() < lastIndex){
-						lastIndex = dateMatcher.start();
-					}
-				}			
-//			}
+			// if (input.toLowerCase().indexOf(regex) < lastIndex &&
+			// input.toLowerCase().indexOf(regex) > 0) {
+			datePattern = Pattern.compile(regex);
+			dateMatcher = datePattern.matcher(input);
+
+			if (dateMatcher.find()) {
+				if (dateMatcher.start() < lastIndex) {
+					lastIndex = dateMatcher.start();
+				}
+			}
+			// }
 		}
 		if (lastIndex <= firstIndex) {
 			lastIndex = input.length();
@@ -93,12 +95,11 @@ public class TitleParser {
 	}
 
 	static String extractFirstWord(String input) {
-		return input.split(" ")[0].trim();
+		return input.split(Constants.SPACE)[0].trim();
 	}
 
 	static String excludeFirstWord(String input) {
 		return input.substring(extractFirstWord(input).length()).trim();
 	}
-	
-	
+
 }

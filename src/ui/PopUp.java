@@ -1,13 +1,14 @@
+//@@author A0121442X
 package ui;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 
-public class PopUp{
+public class PopUp {
 
 	private Alert alert;
 
-	public PopUp (String title, String message) {
+	public PopUp(String title, String message) {
 		alert = new Alert(AlertType.INFORMATION);
 		alert.setTitle(title);
 		alert.setHeaderText(null);

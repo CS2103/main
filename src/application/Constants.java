@@ -1,7 +1,7 @@
 package application;
 
 public class Constants {
-	
+
 	public static final String add_tag = "ADD";
 	public static final String delete_tag = "DELETE";
 	public static final String replace_tag = "REPLACE";
@@ -20,8 +20,6 @@ public class Constants {
 
 	public static final String APP_NAME = "TBA";
 
-	public static final String WELCOME_MESSAGE = "Welcome to TaskBuddyAwesome. \n"
-			+ "To view available commands type HELP and hit enter.\n";
 	// Limit for number of days before current day for which task without year
 	// will be entered as overdue task
 	public static final int DAYS_OFFSET = 7;
@@ -151,6 +149,7 @@ public class Constants {
 	public static final String FEEDBACK_REDO_FAILURE = "Nothing to redo!";
 	public static final String FEEDBACK_VIEW_HOMESCREEN = "Displaying Home-Screen!";
 	public static final String FEEDBACK_VIEW_TODAY = "Displaying agenda for this week";
+	public static final String FEEDBACK_VIEW_HELP = "Displaying help screen";
 	public static final String FEEDBACK_INVALID = "That is an invalid action!";
 	public static final String FEEDBACK_INVALID_NUMBER_OF_QUOTES = "Invaild number of quotes";
 	public static final String FEEDBACK_INVALID_PARAMETERS_FOR_EDIT = "Invalid parameters for edit command";

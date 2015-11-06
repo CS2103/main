@@ -1,6 +1,5 @@
+//@@author A0121442X
 package ui;
-
-import org.joda.time.DateTime;
 
 import application.Constants;
 import javafx.geometry.Insets;
@@ -41,7 +40,7 @@ public class EditTaskPreview extends StackPane {
 	Label newEndTimeField;
 	Label newRecurringField;
 
-	public EditTaskPreview(String title, DateTime startTime, DateTime endTime, String taskType) {
+	public EditTaskPreview() {
 
 		header = new Label("Edit task");
 		header.setId("taskPreviewHeader");
@@ -167,6 +166,5 @@ public class EditTaskPreview extends StackPane {
 		} else if (field.equalsIgnoreCase("start") || field.equalsIgnoreCase("end")) {
 
 		}
-
 	}
 }
