@@ -46,11 +46,21 @@ public class TitleParser {
 	public static String splitInputWithDictionary(String[] dictionary, String input) {
 		int firstIndex = -1;
 		int lastIndex = input.length();
+		
+		Pattern datePattern;
+		Matcher dateMatcher;
 
 		for (String regex : dictionary) {
-			if (input.toLowerCase().indexOf(regex) > firstIndex) {
+/*			if (input.toLowerCase().indexOf(regex) > firstIndex) {
 				firstIndex = input.toLowerCase().indexOf(regex);
+			}*/
+			datePattern = Pattern.compile(regex);
+			dateMatcher = datePattern.matcher(input.toLowerCase());
+			
+			if (dateMatcher.find()){
+				firstIndex = dateMatcher.start();
 			}
+			
 		}
 
 		if (firstIndex < 0) {
@@ -60,20 +70,20 @@ public class TitleParser {
 		ArrayList<String> taskKeywords = new ArrayList<String>();
 		taskKeywords.addAll(Arrays.asList(Constants.TASK_START_DATETIME));
 		taskKeywords.addAll(Arrays.asList(Constants.TASK_END_DATETIME));
+		taskKeywords.addAll(Arrays.asList(Constants.TASK_RECURRING));
 		taskKeywords.removeAll(Arrays.asList(dictionary));
-
-		Pattern datePattern;
-		Matcher dateMatcher;
 		
 		for (String regex : taskKeywords) {
-			if (input.toLowerCase().indexOf(regex) < lastIndex && input.toLowerCase().indexOf(regex) > 0) {
-				datePattern = Pattern.compile(regex + "\\d");
+//			if (input.toLowerCase().indexOf(regex) < lastIndex && input.toLowerCase().indexOf(regex) > 0) {
+				datePattern = Pattern.compile(regex);
 				dateMatcher = datePattern.matcher(input);
 				
 				if (dateMatcher.find()){
-					lastIndex = input.toLowerCase().indexOf(regex);
+					if (dateMatcher.start() < lastIndex){
+						lastIndex = dateMatcher.start();
+					}
 				}			
-			}
+//			}
 		}
 		if (lastIndex <= firstIndex) {
 			lastIndex = input.length();
