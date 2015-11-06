@@ -19,7 +19,8 @@ public class HelpScreen extends StackPane {
 		header = new Label("Help");
 		header.setId("taskPreviewHeader");
 
-		helpText = new Text("add\ndelete\nedit\nmark\nunmark\nundo\nredo\nsearch\nshow\nsetpath\nenquirepath\nexit");
+		helpText = new Text(
+				"add\tcreate\ta\ndelete\nedit\nmark\nunmark\nundo\nredo\nsearch\nshow\nsetpath\nenquirepath\nexit");
 		helpText.setStyle("-fx-fill: rgba(255,255,255,1); -fx-font-size:18; -fx-font-weight:400");
 
 		helpScreenLayout = new VBox();

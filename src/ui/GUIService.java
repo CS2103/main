@@ -186,6 +186,9 @@ public class GUIService {
 					translateTransition.setCycleCount(1);
 					translateTransition.setAutoReverse(false);
 					translateTransition.play();
+				} else if (event.getCode() == KeyCode.F1) {
+					consoleView.showHelpPopup();
+					updateStatusLabel(Constants.FEEDBACK_VIEW_HELP);
 				}
 			}
 		});
