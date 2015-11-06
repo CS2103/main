@@ -1,11 +1,4 @@
-/**
- * This class:
- * Creates and instantiates the individual components for
- * the console view
- * The console view is where the user inputs commands
- * The console textfield extends an autocomplete feature
- */
-
+//@@author A0121442X
 package ui;
 
 import java.text.SimpleDateFormat;
@@ -61,7 +54,7 @@ public class ConsoleView extends Pane {
 		inputConsole = new AutoCompleteTextField();
 		status = new Label();
 
-		dateDisplay.setId("timeDisplay");
+		dateDisplay.setId("dateDisplay");
 		dateDisplay.setAlignment(Pos.CENTER_LEFT);
 		dateDisplay.setMaxWidth(Double.MAX_VALUE);
 		dateDisplay.setPadding(new Insets(0, 0, 0, 20));
@@ -127,10 +120,10 @@ public class ConsoleView extends Pane {
 
 		mainDisplay = new StackPane();
 
-		addTaskPreview = new AddTaskPreview("", DateTime.now(), DateTime.now());
-		editTaskPreview = new EditTaskPreview("", DateTime.now(), DateTime.now(), "");
+		addTaskPreview = new AddTaskPreview();
+		editTaskPreview = new EditTaskPreview();
 		helpScreen = new HelpScreen();
-		mainDisplay.getChildren().addAll(helpScreen, editTaskPreview, addTaskPreview, scrollPane);
+		mainDisplay.getChildren().addAll(editTaskPreview, addTaskPreview, scrollPane, helpScreen);
 
 		inputConsole.setId("inputConsole");
 		inputConsole.setEditable(true);
@@ -183,31 +176,21 @@ public class ConsoleView extends Pane {
 	}
 
 	public void showEditPopup() {
-		addTaskPreview.setVisible(false);
-		scrollPane.toBack();
 		editTaskPreview.toFront();
-		helpScreen.toBack();
 	}
 
 	public void showAddPopup() {
 		addTaskPreview.toFront();
-		addTaskPreview.setVisible(true);
-		scrollPane.toBack();
-		editTaskPreview.toBack();
-		helpScreen.toBack();
 	}
 
 	public void showHelpPopup() {
-		addTaskPreview.toBack();
-		scrollPane.toBack();
-		editTaskPreview.toBack();
 		helpScreen.toFront();
 	}
 
 	public void showDefaultView() {
 		addTaskPreview.toBack();
-		scrollPane.toFront();
 		editTaskPreview.toBack();
 		helpScreen.toBack();
+		scrollPane.toFront();
 	}
 }

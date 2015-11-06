@@ -1,3 +1,4 @@
+//@@author A0121442X
 package ui;
 
 import java.awt.TrayIcon;
@@ -166,7 +167,8 @@ public class GUIService {
 					} else {
 						consoleView.inputConsole.clear();
 					}
-				} else if (consoleView.inputConsole.getText().length() == 0 && event.getCode() == KeyCode.BACK_SPACE) {
+				} else if (event.getCode() == KeyCode.BACK_SPACE && consoleView.inputConsole.getText().length() == 0) {
+					consoleView.showDefaultView();
 					populateList(logic.displayHome());
 					updateStatusLabel(Constants.FEEDBACK_VIEW_TODAY);
 				} else if (event.getCode() == KeyCode.DOWN) {
@@ -192,16 +194,26 @@ public class GUIService {
 			@Override
 			public void handle(ActionEvent event) {
 				String input = consoleView.inputConsole.getText();
-				System.out.println("UI initiated");
+
 				try {
+
 					populateList(logic.inputHandler(input));
-					updateStatusLabel(logic.getStatusBarText(input));
 					consoleView.inputConsole.clear();
 				} catch (ParseException e) {
 					LOGGER.log(Level.SEVERE, "Unable to parse user input");
 				} catch (InvalidTimeException e) {
 				} catch (NullPointerException e) {
 					LOGGER.log(Level.SEVERE, "Current user input not returning anything for GUI to display");
+				}
+
+				try {
+					updateStatusLabel(logic.getStatusBarText(input));
+				} catch (NullPointerException e) {
+					LOGGER.log(Level.SEVERE, "Nothing for status bar to display");
+				}
+
+				if (CommandParser.getCommand(input).trim().equalsIgnoreCase(Constants.COMMAND_HELP)) {
+					consoleView.showHelpPopup();
 				}
 			}
 		});
@@ -211,7 +223,7 @@ public class GUIService {
 		Scene myScene = new Scene(content, 800, 600);
 		myScene.setFill(Color.TRANSPARENT);
 		myScene.getStylesheets().clear();
-		myScene.getStylesheets().add(this.getClass().getResource("style3.css").toExternalForm());
+		myScene.getStylesheets().add(this.getClass().getResource("style1.css").toExternalForm());
 		showConsolePane();
 		return myScene;
 	}
