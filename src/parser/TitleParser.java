@@ -2,6 +2,8 @@ package parser;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import application.Constants;
 
@@ -56,15 +58,21 @@ public class TitleParser {
 		}
 
 		ArrayList<String> taskKeywords = new ArrayList<String>();
-		//taskKeywords.addAll(Arrays.asList(Constants.TASK_END_DATE));
-		//taskKeywords.addAll(Arrays.asList(Constants.TASK_START_DATE));
 		taskKeywords.addAll(Arrays.asList(Constants.TASK_START_DATETIME));
 		taskKeywords.addAll(Arrays.asList(Constants.TASK_END_DATETIME));
 		taskKeywords.removeAll(Arrays.asList(dictionary));
 
+		Pattern datePattern;
+		Matcher dateMatcher;
+		
 		for (String regex : taskKeywords) {
 			if (input.toLowerCase().indexOf(regex) < lastIndex && input.toLowerCase().indexOf(regex) > 0) {
-				lastIndex = input.toLowerCase().indexOf(regex);
+				datePattern = Pattern.compile(regex + "\\d");
+				dateMatcher = datePattern.matcher(input);
+				
+				if (dateMatcher.find()){
+					lastIndex = input.toLowerCase().indexOf(regex);
+				}			
 			}
 		}
 		if (lastIndex <= firstIndex) {
