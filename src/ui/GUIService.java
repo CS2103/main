@@ -211,7 +211,7 @@ public class GUIService {
 		Scene myScene = new Scene(content, 800, 600);
 		myScene.setFill(Color.TRANSPARENT);
 		myScene.getStylesheets().clear();
-		myScene.getStylesheets().add(this.getClass().getResource("style2.css").toExternalForm());
+		myScene.getStylesheets().add(this.getClass().getResource("style3.css").toExternalForm());
 		showConsolePane();
 		return myScene;
 	}

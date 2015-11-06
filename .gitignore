@@ -1,8 +1,7 @@
 *.class
 
-savedPath.txt
-tempFile.json
+TBApath.txt
+TBAsave.json
 
 /bin/
-savedTask.json
 TBAsave.json
