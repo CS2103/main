@@ -17,6 +17,8 @@ public class Constants {
 	public static final String TYPE_EVENT = "event";
 	public static final String TYPE_DEADLINE = "deadline";
 	public static final String TYPE_FLOATING = "task";
+	public static final String STATUS_COMPLETE = "complete";
+	public static final String STATUS_INCOMPLETE = "incomplete";
 
 	public static final String APP_NAME = "TBA";
 
@@ -200,6 +202,7 @@ public class Constants {
 			"(\\s|^)until (\\d|(t((oday?)|(dy?)|(mr?)|(omorrow))))",
 			"(\\s|^)till (\\d|(t((oday?)|(dy?)|(mr?)|(omorrow))))",
 			"(\\s|^)before (\\d|(t((oday?)|(dy?)|(mr?)|(omorrow))))",
+			"(\\s|^)on (\\d|(t((oday?)|(dy?)|(mr?)|(omorrow))))",
 			"(\\s|^)to (\\d|(t((oday?)|(dy?)|(mr?)|(omorrow))))" };
 	public static final String[] TASK_RECURRING = { "daily", "weekly", "monthly", "yearly" };
 
