@@ -128,6 +128,15 @@ public class DateParserTest {
 	}
 
 	@Test
+	public void testGetDateTime_() { // 2017 is NOT a leap year
+		DateTime dateTime = DateParser.getDateTime("29 feb 17");
+		assertFalse(INCORRECT_DAY, dateTime.getDayOfMonth() == 29);
+		assertFalse(INCORRECT_MONTH, dateTime.getMonthOfYear() == 2);
+		assertFalse(INCORRECT_YEAR, dateTime.getYear() == 2017);
+		assertTrue(INCORRECT_YEAR, dateTime.getYear() == 0);
+	}
+
+	@Test
 	public void testGetDateTime_LeapYear2() { // 2017 is NOT a leap year
 		DateTime dateTime = DateParser.getDateTime("29 feb 17");
 		assertFalse(INCORRECT_DAY, dateTime.getDayOfMonth() == 29);
