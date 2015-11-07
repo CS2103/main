@@ -15,7 +15,6 @@ package parser;
  * 10-12
  */
 
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -27,15 +26,16 @@ import application.Constants;
 public class DateParser {
 
 	public static DateTime getDateTime(String input) {
+		System.out.println("input: \'" + input + "\'");
 		DateTime dateTime;
 		String dateString = new String();
 		String timeString = new String();
-		
+
 		Pattern dp;
 		Matcher dm;
 
-		for (String regex: Constants.dateRegex) {
-			try{
+		for (String regex : Constants.dateRegex) {
+			try {
 				dp = Pattern.compile(regex);
 				dm = dp.matcher(input);
 				if (dm.find()) {
@@ -50,8 +50,8 @@ public class DateParser {
 
 		Pattern tp;
 		Matcher tm;
-		for (String regex: Constants.timeRegex) {
-			try{
+		for (String regex : Constants.timeRegex) {
+			try {
 				tp = Pattern.compile(regex);
 				tm = tp.matcher(input.replace(dateString.trim(), "").trim());
 				if (tm.find()) {
@@ -65,21 +65,33 @@ public class DateParser {
 		}
 
 		dateTime = parseDate(dateString);
-		
-		if (!timeString.isEmpty() && dateTime.getYear() == 0){
+
+		for (String regex : Constants.DICTIONARY_TODAY) {
+			if (input != null && input.contains(regex)) {
+				dateTime = DateTime.now();
+			}
+		}
+
+		for (String regex : Constants.DICTIONARY_TOMORROW) {
+			if (input != null && input.contains(regex)){
+				dateTime = DateTime.now().plusDays(1);
+			}
+		}
+
+		if (!timeString.isEmpty() && dateTime.getYear() == 0) {
 			dateTime = DateTime.now();
 		}
-		
+
 		dateTime = dateTime.withHourOfDay(parseTime(timeString).getHourOfDay());
 		dateTime = dateTime.withMinuteOfHour(parseTime(timeString).getMinuteOfHour());
-		
+
 		return dateTime;
 	}
 
 	private static DateTime parseDate(String dateString) {
-		
+
 		DateTime date = DateTime.now().withYear(0);
-		
+
 		for (String formatString : Constants.dateFormats) {
 			try {
 				date = DateTimeFormat.forPattern(formatString).parseDateTime(dateString);
@@ -87,10 +99,10 @@ public class DateParser {
 			} catch (IllegalArgumentException e) {
 			}
 		}
-		if (date.getYear() == 2000){
+		if (date.getYear() == 2000) {
 			date = date.withYear(DateTime.now().getYear());
 		}
-		
+
 		return date;
 	}
 
