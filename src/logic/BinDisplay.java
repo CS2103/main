@@ -62,7 +62,7 @@ public class BinDisplay {
 	public void setDisplay(ArrayList<Task> taskList) {
 		ArrayList<Task> dis = new ArrayList<Task>();
 		for (Task t : taskList) {
-			if ((isWithinOneWeek(t) && (!t.getStatus()))){
+			if ((isWithinOneWeek(t) && (!t.getStatus()))||(t.isToday())){
 				System.out.println(t.getStatus());
 				dis.add(t);
 			}

@@ -329,6 +329,21 @@ public class Task {
 		}
 		return false;
 	}
+	
+	public boolean isToday(){
+		if(isTypeRecur()){
+			return isRecur();
+		}
+		else{
+			
+			//TODO
+			if(this.getEndingTime().getDayOfYear()==DateTime.now().getDayOfYear()){
+				return true;
+			}else{
+				return false;
+			}
+		}
+	}
 
 	public boolean isRecur(DateTime date) {
 		if (!isTypeRecur()) {

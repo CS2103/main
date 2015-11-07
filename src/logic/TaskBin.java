@@ -62,6 +62,18 @@ public class TaskBin {
 		return results;
 	}
 	
+	public ArrayList<Task> displayFinished(){
+		ArrayList<Task> results = new ArrayList<Task>();
+		for(Task t:taskList){
+			if((t.getStatus() == true)&&(t.isTypeRecur() == false)){
+				results.add(t);
+			}
+		}
+		display.setDisplayAll(results);
+		displayList = display.returnDisplay();
+		return results;
+	}
+	
 	public ArrayList<Task> displayAll(){
 		display.setDisplayAll(taskList);
 		displayList = display.returnDisplay();
