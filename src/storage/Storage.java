@@ -42,10 +42,10 @@ public class Storage {
 	}
 
 	public static boolean containSlash(String path) {
-		if (!(path.contains("\\") || path.contains("/"))) {
-			return false;
-		} else {
+		if (path.contains("\\") || path.contains("/")) {
 			return true;
+		} else {
+			return false;
 		}
 	}
 	
@@ -58,12 +58,12 @@ public class Storage {
 	public static boolean setPath(String newPath) {
 		File checkFile = new File(newPath);
 		if (isInvalidPath(checkFile)) {
-			if (containSlash(newPath)) {
+			if (!containSlash(newPath)) {
 				return false;
 			} else {
-				
-				File f = new File(extractPath(path));
-				if(!f.exists()) {
+				String subPath = extractPath(newPath);
+				File file = new File(subPath);
+				if(isInvalidPath(file)) {
 					return false;
 				} else {
 					Storage.path = newPath;
