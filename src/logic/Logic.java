@@ -53,8 +53,8 @@ public class Logic {
 		} else if (command.equalsIgnoreCase(Constants.COMMAND_ENQUIREPATH)) {
 			return bin.returnDisplay();
 		} else if (command.equalsIgnoreCase(Constants.COMMAND_SHOW)) {
-			System.out.println("The date to search is " + parser.getEndDateTime(input).toString());
-			return searchEntries(parser.getEndDateTime(input));
+			System.out.println("The date to search is " + parser.getDateTime(input).toString());
+			return searchEntries(parser.getDateTime(input));
 		} else if (command.equalsIgnoreCase(Constants.COMMAND_EXIT)) {
 			System.exit(0);
 		} else if (command.equalsIgnoreCase(Constants.COMMAND_HELP)) {
