@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import application.Constants;
 import logic.Task;
+import logic.TaskBin;
 
 public class TaskBinTest {
 
@@ -21,7 +22,11 @@ public class TaskBinTest {
 		Task task3 = new Task("¶àÓïÑÔÖ§³Ö");
 		Task task4 = new Task("Task starts and end at different year", new DateTime(2015,11,12,0,0), new DateTime(2016,1,15,0,1));
 		Task task5 = new Task("Task ends before it starts", new DateTime(2015,12,11,0,0), new DateTime(2015,11,15,0,0));
-
+		TaskBin testBin = new TaskBin();
+		testBin.add(task1);
+		testBin.add(task2);
+		testBin.add(task3);
+		
 	}
 
 	@Test

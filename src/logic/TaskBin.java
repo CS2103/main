@@ -188,11 +188,11 @@ public class TaskBin {
 				display.updateDisplay(previousComm, false);
 			}
 			break;*/
-			System.out.println("The tar is recur in redo: " + displayList.get(displayList.indexOf(previousComm.returnMani())).isTypeRecur() + ". The buffer is type recur in redo: " + previousComm.returnOrigin().isTypeRecur());
 			redoStack.push(previousComm);
-			System.out.println(previousComm.returnMani().getTitle() + previousComm.returnOrigin().getTitle());
-			System.out.println(taskList.get(displayList.indexOf(previousComm.returnMani())));
-			taskList.remove(taskList.get(taskList.indexOf(previousComm.returnMani())));
+			System.out.println("The previous title is: " + previousComm.returnMani().getTitle() + " and the current title is : " + previousComm.returnOrigin().getTitle());
+			System.out.println("The task I am search for is: " + taskList.get(displayList.indexOf(previousComm.returnMani())));
+			//taskList.remove(taskList.get(taskList.indexOf(previousComm.returnMani())));
+			taskList.remove(previousComm.returnMani());
 			taskList.add(previousComm.returnOrigin());
 			
 			if(!displayList.equals(taskList)){
@@ -200,7 +200,7 @@ public class TaskBin {
 				displayList.remove(displayList.get(displayList.indexOf(previousComm.returnMani())));
 				displayList.add(previousComm.returnOrigin());
 			}
-			
+			display.setDisplayAll(displayList);
 			break;
 
 		case Constants.mark_tag:
@@ -241,7 +241,7 @@ public class TaskBin {
 			displayList = display.returnDisplay();
 			break;
 		case Constants.alter_tag:
-			undoStack.push(redoComm);
+			/*undoStack.push(redoComm);
 			taskList.remove(redoComm.returnOrigin());
 			displayList.remove(redoComm.returnOrigin());
 			if (taskList != displayList) {
@@ -252,7 +252,20 @@ public class TaskBin {
 				taskList.add(redoComm.returnMani());
 			}
 			displayList = display.returnDisplay();
+			break;*/
+			undoStack.push(redoComm);
+			taskList.remove(taskList.get(taskList.indexOf(redoComm.returnOrigin())));
+			taskList.add(redoComm.returnMani());
+			
+			if(!displayList.equals(taskList)){
+				displayList.remove(displayList.get(displayList.indexOf(redoComm.returnOrigin())));
+				displayList.add(redoComm.returnMani());
+				
+			}
+			display.setDisplayAll(displayList);
 			break;
+			
+			
 
 		case Constants.mark_tag:
 			undoStack.push(redoComm);
@@ -370,11 +383,19 @@ public class TaskBin {
 		display.updateDisplay(editTil, true);
 		displayList = display.returnDisplay();*/
 		
-		Task tar = taskList.get(taskList.indexOf(task));
-		Task tarDis = displayList.get(displayList.indexOf(tar));
+		
 		Task buffer = new Task(task);
+		Task tar = new Task (taskList.get(taskList.indexOf(task)));
+		Task tarDis = new Task (displayList.get(displayList.indexOf(tar)));
+		taskList.remove(taskList.get(taskList.indexOf(task)));
+		displayList.remove(displayList.get(displayList.indexOf(task)));
 		tarDis.setTitle(newTitle);
 		tar.setTitle(newTitle);
+		taskList.add(tar);
+		displayList.add(tarDis);
+		
+		
+		
 		System.out.println("The tar is recur " + tar.isTypeRecur() + ". The buffer is type recur: " + buffer.isTypeRecur());
 		Command editTil = new Command(Constants.alter_tag, tar, buffer);
 		display.setDisplayAll(displayList);
@@ -393,16 +414,21 @@ public class TaskBin {
 		if(endDate.getYear() == 0){
 			endDate = task.getEndingTime();
 		}
-		Task tar = taskList.get(taskList.indexOf(task));
-		Task tarDis = displayList.get(displayList.indexOf(tar));
 		Task buffer = new Task(task);
+		Task tar = new Task (taskList.get(taskList.indexOf(task)));
+		Task tarDis = new Task (displayList.get(displayList.indexOf(tar)));
+		taskList.remove(taskList.get(taskList.indexOf(task)));
+		displayList.remove(displayList.get(displayList.indexOf(task)));
 		tar.setStartingDate(startDate);
 		tarDis.setStartingDate(startDate);
 		tar.setEndingDate(endDate);
 		tarDis.setEndingDate(endDate);
+		taskList.add(tar);
+		displayList.add(tarDis);
 		Command editDate = new Command(Constants.alter_tag, tar, buffer);
 		undoStack.push(editDate);
 		taskList = sorter.sortArrayByTime(taskList);
+		display.setDisplayAll(displayList);
 		Storage.write(taskList);
 		redoStack.clear();
 	}
@@ -411,16 +437,20 @@ public class TaskBin {
 		if (task.getType().equals(Constants.recur_tag)) {
 			return;
 		}
-		Task tar = taskList.get(taskList.indexOf(task));
-		Task tarDis = displayList.get(displayList.indexOf(tar));
+		
 		Task buffer = new Task(task);
+		Task tar = new Task (taskList.get(taskList.indexOf(task)));
+		Task tarDis = new Task (displayList.get(displayList.indexOf(tar)));
+		taskList.remove(taskList.get(taskList.indexOf(task)));
+		displayList.remove(displayList.get(displayList.indexOf(task)));
 		tar.setStartingDate(date);
 		tarDis.setStartingDate(date);
+		taskList.add(tar);
+		displayList.add(tarDis);
 		Command editDate = new Command(Constants.alter_tag, tar, buffer);
 		display.setDisplayAll(displayList);
 		undoStack.push(editDate);
 		taskList = sorter.sortArrayByTime(taskList);
-
 		Storage.write(taskList);
 		redoStack.clear();
 	}
@@ -429,11 +459,15 @@ public class TaskBin {
 		if (task.getType().equals(Constants.recur_tag)) {
 			return;
 		}
-		Task tar = taskList.get(taskList.indexOf(task));
-		Task tarDis = displayList.get(displayList.indexOf(tar));
 		Task buffer = new Task(task);
-		tar.setEndingDate(date);
-		tarDis.setEndingDate(date);
+		Task tar = new Task (taskList.get(taskList.indexOf(task)));
+		Task tarDis = new Task (displayList.get(displayList.indexOf(tar)));
+		taskList.remove(taskList.get(taskList.indexOf(task)));
+		displayList.remove(displayList.get(displayList.indexOf(task)));
+		tar.setStartingDate(date);
+		tarDis.setStartingDate(date);
+		taskList.add(tar);
+		displayList.add(tarDis);
 		Command editDate = new Command(Constants.alter_tag, tar, buffer);
 		display.setDisplayAll(displayList);
 		undoStack.push(editDate);
