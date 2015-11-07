@@ -5,13 +5,14 @@ import java.util.Collections;
 
 import Logic.Task;
 
-public class GUIServiceTest {
+public class GuiServiceTest {
 
 	private ArrayList<Task> taskArray;
-	public GUIServiceTest() {
+
+	public GuiServiceTest() {
 		taskArray = new ArrayList<Task>();
 
-		Task task1 = new Task("Meet Xiaoming for dinner");
+		logic.Task task1 = new Task("Meet Xiaoming for dinner");
 		Task task2 = new Task("Meet Hung for dinner");
 		Task task3 = new Task("Meet Andy for dinner");
 		Task task4 = new Task("Meet JR for dinner");
@@ -20,7 +21,7 @@ public class GUIServiceTest {
 
 	}
 
-	public ArrayList<Task> getStartupDisplay(){
+	public ArrayList<Task> getStartupDisplay() {
 		return taskArray;
 	}
 

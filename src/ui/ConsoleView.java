@@ -1,11 +1,4 @@
-/**
- * This class:
- * Creates and instantiates the individual components for
- * the console view
- * The console view is where the user inputs commands
- * The console textfield extends an autocomplete feature
- */
-
+//@@author A0121442X
 package ui;
 
 import java.text.SimpleDateFormat;
@@ -41,6 +34,7 @@ public class ConsoleView extends Pane {
 	HBox listDisplay;
 	AddTaskPreview addTaskPreview;
 	EditTaskPreview editTaskPreview;
+	HelpScreen helpScreen;
 
 	VBox timedList;
 	VBox floatingList;
@@ -60,7 +54,7 @@ public class ConsoleView extends Pane {
 		inputConsole = new AutoCompleteTextField();
 		status = new Label();
 
-		dateDisplay.setId("timeDisplay");
+		dateDisplay.setId("dateDisplay");
 		dateDisplay.setAlignment(Pos.CENTER_LEFT);
 		dateDisplay.setMaxWidth(Double.MAX_VALUE);
 		dateDisplay.setPadding(new Insets(0, 0, 0, 20));
@@ -87,13 +81,20 @@ public class ConsoleView extends Pane {
 		timeline.setCycleCount(Animation.INDEFINITE);
 		timeline.play();
 
-		timedList.setStyle(
-				"-fx-background-color:linear-gradient( from 100.0% 0.0% to 100.0% 100.0%, rgb(51,51,51) 0.0, rgb(179,179,179) 40.0, rgb(51,51,51) 100.0)");
+		timedList.setId("timedList");
+		// timedList.setStyle(
+		// "-fx-background-color:linear-gradient( from 100.0% 0.0% to 100.0%
+		// 100.0%, rgb(51,51,51) 0.0, rgb(179,179,179) 40.0, rgb(51,51,51)
+		// 100.0)");
 		timedList.setFocusTraversable(false);
 		timedList.setFillWidth(true);
+		timedList.setMinWidth(350);
 
-		floatingList.setStyle(
-				"-fx-background-color: linear-gradient( from 100.0% 0.0% to 100.0% 100.0%, rgb(46,50,68) 0.0, rgb(51,51,51) 40.0, rgb(39,41,54) 100.0)");
+		floatingList.setId("floatingList");
+		// floatingList.setStyle(
+		// "-fx-background-color: linear-gradient( from 100.0% 0.0% to 100.0%
+		// 100.0%, rgb(46,50,68) 0.0, rgb(51,51,51) 40.0, rgb(39,41,54)
+		// 100.0)");
 		floatingList.setFocusTraversable(false);
 		floatingList.setFillWidth(true);
 
@@ -111,7 +112,7 @@ public class ConsoleView extends Pane {
 		scrollPane.setFitToWidth(true);
 		scrollPane.setMaxHeight(470);
 		scrollPane.setMinHeight(470);
-		scrollPane.setPrefWidth(700);
+		scrollPane.setPrefWidth(800);
 		scrollPane.setHbarPolicy(ScrollBarPolicy.NEVER);
 		scrollPane.setFocusTraversable(false);
 		scrollPane.setBorder(null);
@@ -119,9 +120,10 @@ public class ConsoleView extends Pane {
 
 		mainDisplay = new StackPane();
 
-		addTaskPreview = new AddTaskPreview("", DateTime.now(), DateTime.now());
-		editTaskPreview = new EditTaskPreview("", DateTime.now(), DateTime.now(), "");
-		mainDisplay.getChildren().addAll(editTaskPreview, addTaskPreview, scrollPane);
+		addTaskPreview = new AddTaskPreview();
+		editTaskPreview = new EditTaskPreview();
+		helpScreen = new HelpScreen();
+		mainDisplay.getChildren().addAll(editTaskPreview, addTaskPreview, scrollPane, helpScreen);
 
 		inputConsole.setId("inputConsole");
 		inputConsole.setEditable(true);
@@ -152,7 +154,7 @@ public class ConsoleView extends Pane {
 	}
 
 	public void updateEditTaskPreviewDetails(String oldTitle, DateTime startTime, DateTime endTime, String field,
-			String newTitle, DateTime newDateTime) {
+			String newTitle, DateTime newDateTime, String oldRecurValue, String recurValue) {
 		editTaskPreview.clearAllDetails();
 		editTaskPreview.oldTitle.setText(oldTitle);
 		editTaskPreview.oldStartTime.setText(showIfValidDate(startTime));
@@ -161,6 +163,8 @@ public class ConsoleView extends Pane {
 		editTaskPreview.newTitleField.setText(newTitle);
 		editTaskPreview.newStartTimeField.setText(showIfValidDate(newDateTime));
 		editTaskPreview.newEndTimeField.setText(showIfValidDate(newDateTime));
+		editTaskPreview.oldRecurring.setText(oldRecurValue);
+		editTaskPreview.newRecurringField.setText(recurValue);
 	}
 
 	private String showIfValidDate(DateTime dateTime) {
@@ -169,5 +173,24 @@ public class ConsoleView extends Pane {
 		} else {
 			return "N/A";
 		}
+	}
+
+	public void showEditPopup() {
+		editTaskPreview.toFront();
+	}
+
+	public void showAddPopup() {
+		addTaskPreview.toFront();
+	}
+
+	public void showHelpPopup() {
+		helpScreen.toFront();
+	}
+
+	public void showDefaultView() {
+		addTaskPreview.toBack();
+		editTaskPreview.toBack();
+		helpScreen.toBack();
+		scrollPane.toFront();
 	}
 }

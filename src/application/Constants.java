@@ -18,10 +18,24 @@ public class Constants {
 	public static final String TYPE_DEADLINE = "deadline";
 	public static final String TYPE_FLOATING = "task";
 
+	public static final String add_tag = "ADD";
+	public static final String delete_tag = "DELETE";
+	public static final String replace_tag = "REPLACE";
+	public static final String alter_tag = "ALTER";
+	public static final String mark_tag = "MARK";
+	public static final String unmark_tag = "UNMARK";
+	public static final String recur_tag = "ADD_RECUR";
+	public static final String tag_weekly = "weekly";
+	public static final String tag_monthly = "monthly";
+	public static final String tag_daily = "daily";
+	public static final String tag_yearly = "yearly";
+	public static final String TYPE_RECUR = "recur";
+	public static final String TYPE_EVENT = "event";
+	public static final String TYPE_DEADLINE = "deadline";
+	public static final String TYPE_FLOATING = "task";
+
 	public static final String APP_NAME = "TBA";
 
-	public static final String WELCOME_MESSAGE = "Welcome to TaskBuddyAwesome. \n"
-			+ "To view available commands type HELP and hit enter.\n";
 	// Limit for number of days before current day for which task without year
 	// will be entered as overdue task
 	public static final int DAYS_OFFSET = 7;
@@ -151,6 +165,7 @@ public class Constants {
 	public static final String FEEDBACK_REDO_FAILURE = "Nothing to redo!";
 	public static final String FEEDBACK_VIEW_HOMESCREEN = "Displaying Home-Screen!";
 	public static final String FEEDBACK_VIEW_TODAY = "Displaying agenda for this week";
+	public static final String FEEDBACK_VIEW_HELP = "Displaying help screen";
 	public static final String FEEDBACK_INVALID = "That is an invalid action!";
 	public static final String FEEDBACK_INVALID_NUMBER_OF_QUOTES = "Invaild number of quotes";
 	public static final String FEEDBACK_INVALID_PARAMETERS_FOR_EDIT = "Invalid parameters for edit command";
@@ -167,29 +182,31 @@ public class Constants {
 	public static String[] dateTimeFormats = { "d MMM yyyy HHmm", "d/M/yy", "d/M", "d-M-y", "d MMM", "d MMMM",
 			"dd.MM.yyyy", "d-M", "dd.M" };
 
-	public static String[] dateRegex = { "(3[0-1]|2[0-9]|1[0-9]|[1-9])[\\s]\\D+[\\s][0-9]{2}(\\s|$)", // 10
-																										// dec+
-																										// 2015
-			"(3[0-1]|2[0-9]|1[0-9]|[1-9])[.|/|-](1[0-2]|[1-9])[.|/|-]\\d{1,4}", // 10.12.2015
-																				// OR
-																				// 10/12/2015
-																				// OR
-																				// 10-12-2015
-			"(3[0-1]|2[0-9]|1[0-9]|[1-9])[\\s]\\D+", // 10 dec+
-			"(3[0-1]|2[0-9]|(1[0-9])|[1-9])[.|/|-]((1[0-2]|[1-9]))" // 10.12 OR
-																	// 10/12
-			// "\b(0?[1-9]|[1-2][0-9]|3[0-1])[- /.](0?[1-9]|1[0-2])[-
-			// /.](19|20)?[0-9]{2}\b"
+	public static String[] dateRegex = { 
+			"((31(?!\\s(feb(ruary)?|apr(il)?|june?|(sep(?=\\b|t)t?|nov)(ember)?)))|(0?[1-9])|1\\d|2[0-8]|29|30)\\s(jan(uary)?|feb(ruary)?|ma(r(ch)?|y)|apr(il)?|ju((ly?)|(ne?))|aug(ust)?|oct(ober)?|(sep(?=\\b|t)t?|nov|dec)(ember)?)\\s\\d{2}(\\s|$)" ,
+																						// 10 dec+ 15															
+																						// adapted from http://regexlib.com/REDetails.aspx?regexp_id=405															
+			
+			"(3[0-1]|2[0-9]|1[0-9]|[1-9])[.|/|-](1[0-2]|[1-9])[.|/|-]\\d{1,4}", 		// 10.12.2015
+																						// OR
+																						// 10/12/2015
+																						// OR
+																						// 10-12-2015
+			
+			"(3[0-1]|2[0-9]|(1[0-9])|[1-9])[.|/|-]((1[0-2]|[1-9]))", 					// 10.12 OR
+																						// 10/12
+			
+			"((31(?!\\s(feb(ruary)?|apr(il)?|june?|(sep(?=\\b|t)t?|nov)(ember)?)))|(0?[1-9])|1\\d|2[0-8]|29|30)\\s(jan(uary)?|feb(ruary)?|ma(r(ch)?|y)|apr(il)?|ju((ly?)|(ne?))|aug(ust)?|oct(ober)?|(sep(?=\\b|t)t?|nov|dec)(ember)?)"
+																						// 10 dec+
 	};
 
-	public static String[] timeRegex = { "[(2[0-3]|1[0-9]|[0-9])]{2}[[1-5]?[0-9]]{2}", // 2345
-			"(2[0-3]|1[0-9]|[0-9]):([1-5]?[0-9])"// , // 23:45
-			// "\\d{1,2}[^/][0-5]{1,2}\\d"
+	public static String[] timeRegex = { "[(2[0-3]|1[0-9]|[0-9])]{2}[[1-5]?[0-9]]{2}", 	// 2345
+			"(2[0-3]|1[0-9]|[0-9]):([1-5]?[0-9])"										//23:45
 	};
 
 	// keywords
-	public static final String[] TASK_START_DATETIME = { " from ", " on ", " between " };
-	public static final String[] TASK_END_DATETIME = { " by ", " until ", " till ", " before ", " to " };
+	public static final String[] TASK_START_DATETIME = { " from \\d", " on \\d", " between \\d" };
+	public static final String[] TASK_END_DATETIME = { " by \\d", " until \\d", " till \\d", " before \\d", " to \\d" };
 	public static final String[] TASK_RECURRING = { "daily", "weekly", "monthly", "yearly" };
 
 	// space

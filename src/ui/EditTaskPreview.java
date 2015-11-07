@@ -1,6 +1,5 @@
+//@@author A0121442X
 package ui;
-
-import org.joda.time.DateTime;
 
 import application.Constants;
 import javafx.geometry.Insets;
@@ -41,7 +40,7 @@ public class EditTaskPreview extends StackPane {
 	Label newEndTimeField;
 	Label newRecurringField;
 
-	public EditTaskPreview(String title, DateTime startTime, DateTime endTime, String taskType) {
+	public EditTaskPreview() {
 
 		header = new Label("Edit task");
 		header.setId("taskPreviewHeader");
@@ -95,12 +94,13 @@ public class EditTaskPreview extends StackPane {
 		newRecurringField.setId("taskPreviewDetails");
 
 		ColumnConstraints columnConstraint = new ColumnConstraints(150);
+		ColumnConstraints columnConstraint1 = new ColumnConstraints(400);
 
 		editTitleLayout = new GridPane();
 		editTitleLayout.add(newTitleLabel, 0, 0);
 		editTitleLayout.add(newTitleField, 1, 0);
 		editTitleLayout.setVisible(false);
-		editTitleLayout.getColumnConstraints().addAll(columnConstraint, columnConstraint);
+		editTitleLayout.getColumnConstraints().addAll(columnConstraint, columnConstraint1);
 
 		editStartTimeLayout = new GridPane();
 		editStartTimeLayout.add(oldStartTimeLabel, 0, 0);
@@ -166,6 +166,5 @@ public class EditTaskPreview extends StackPane {
 		} else if (field.equalsIgnoreCase("start") || field.equalsIgnoreCase("end")) {
 
 		}
-
 	}
 }

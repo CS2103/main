@@ -17,39 +17,47 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
-import Logic.Task;
+import logic.Task;
 
 public class Storage {
 
 	// initial methods to serialise/deserialise savedTask.json with DateTime
 	// formats
-	final static Gson gson = Converters.registerDateTime(new GsonBuilder().setPrettyPrinting().serializeNulls()).create();
+	final static Gson gson = Converters.registerDateTime(new GsonBuilder().setPrettyPrinting().serializeNulls())
+			.create();
 	final DateTime original = new DateTime();
 	final String json = gson.toJson(original);
 	final DateTime reconstituted = gson.fromJson(json, DateTime.class);
 
 	// attributes
-	public static File normalTask = new File("savedTaskNormal.json"); // public for testing, change after done
-	public static File recurTask = new File("savedTaskRecur.json"); // public for testing, change after done
 
-	public static File savedPath = new File("savedPath.txt"); // public for testing, change after done
+	public static File savedTask = new File("TBAsave.json"); // public for
+																// testing,
+																// change after
+																// done
+
+	public static File savedPath = new File("TBApath.txt"); // public for
+															// testing, change
+															// after done
 
 	public static String path; // public for testing, change after done
-	
+
 	private static ArrayList<Task> currentTaskList = new ArrayList<Task>();
 
-	public Storage() { }
+	public Storage() {
+	}
 
 	public static void setPath(String path) {
 		File file = new File(path);
 		if (!file.exists()) {
 			System.out.println("file not exists");
 		}
-		
+
 		Storage.currentTaskList = read();
 
 		if (file.isDirectory()) {
-			path = path + "/TBAsave.txt"; // this is for mac or "\\TBAsave.txt" for windows
+			path = path + "/TBAsave.txt"; // this is for mac or "\\TBAsave.txt"
+											// for windows
 		}
 
 		try {
@@ -66,15 +74,15 @@ public class Storage {
 
 		write(currentTaskList);
 
-		normalTask.delete();
-		recurTask.delete();
+		savedTask.delete();
 	}
 
 	public static String enquirePath() {
 		return Storage.path;
 	}
-	
+
 	public static void write(ArrayList<Task> tasks) {
+		System.out.println(path);
 		try {
 			if (path == null) {
 				path = savedPath.getAbsolutePath();
@@ -90,6 +98,7 @@ public class Storage {
 	}
 
 	public static ArrayList<Task> read() {
+
 		try {
 			FileReader fr = new FileReader(savedPath);
 			BufferedReader br = new BufferedReader(fr);
@@ -102,7 +111,7 @@ public class Storage {
 		ArrayList<Task> taskList = new ArrayList<Task>();
 		String line = "";
 		if (path == null) {
-			path = normalTask.getAbsolutePath();
+			path = savedTask.getAbsolutePath();
 		}
 		try {
 			FileReader fr = new FileReader(path);
@@ -113,12 +122,13 @@ public class Storage {
 			}
 			br.close();
 			String jsonString = stringBuilder.toString();
-			taskList = gson.fromJson(jsonString, new TypeToken<ArrayList<Task>>(){}.getType());
+			taskList = gson.fromJson(jsonString, new TypeToken<ArrayList<Task>>() {
+			}.getType());
 		} catch (FileNotFoundException e) {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return taskList;
 	}
+
 }
-	

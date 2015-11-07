@@ -1,9 +1,10 @@
-package Logic;
+package logic;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 
 import org.joda.time.DateTime;
+
 import application.Constants;
 
 public class Task {
@@ -12,12 +13,14 @@ public class Task {
 	private DateTime endingTime;
 	private DateTime recurEnd;
 	private String type_tag;
+	private String recurTag;
 	private boolean isRecur;
 	private boolean isFinished;
 	private ArrayList<DateTime> recurDate;
 	private ArrayList<DateTime> recurDone;
 
 	public Task(Task task) {
+		this.recurTag = new String();
 		this.title = task.getTitle();
 		this.isFinished = task.getStatus();
 		this.startingTime = task.getStartingTime();
@@ -28,6 +31,7 @@ public class Task {
 	}
 
 	public Task(String title) {
+		this.recurTag = new String();
 		this.title = title;
 		isFinished = false;
 		isRecur = false;
@@ -36,15 +40,17 @@ public class Task {
 	}
 
 	public Task() {
+		this.recurTag = new String();
 		String time = Calendar.getInstance().toString();
 		isRecur = false;
 		this.title = "Untitled " + time;
 		this.isFinished = false;
-		
+
 	}
 
 	public Task(String title, DateTime startingTime, DateTime endingTime) throws InvalidTimeException {
 		this.title = title;
+		this.recurTag = new String();
 		this.startingTime = startingTime;
 		this.endingTime = endingTime;
 		isRecur = false;
@@ -63,10 +69,11 @@ public class Task {
 	}
 
 	public Task(DateTime startingTime, DateTime endingTime) {
-		
+
 		this();
 		this.startingTime = startingTime;
 		this.endingTime = endingTime;
+		this.recurTag = new String();
 		isRecur = false;
 		System.out.println("is Creating");
 		try {
@@ -101,6 +108,7 @@ public class Task {
 	public Task(String title, DateTime startingTime, DateTime endingTime, DateTime recurEnding, String recurTag) {
 		isRecur = true;
 		isFinished = false;
+		this.recurTag = recurTag;
 		this.title = title;
 		this.startingTime = startingTime;
 		this.endingTime = endingTime;
@@ -110,7 +118,6 @@ public class Task {
 		recurDate = new ArrayList<DateTime>();
 		recurDone = new ArrayList<DateTime>();
 		recurDate.add(end);
-		System.out.println("is Creating");
 		switch (recurTag) {
 		case Constants.tag_weekly:
 			while (end.plusWeeks(1).isBefore(recurEnd)) {
@@ -146,10 +153,10 @@ public class Task {
 	}
 
 	public boolean getStatus() {
-		if (!type_tag.equals(Constants.recur_tag)) {
+		if (!isTypeRecur()) {
 			return isFinished;
 		} else {
-			return isRecur() && isDone();
+			return this.isDone();
 		}
 	}
 
@@ -306,13 +313,17 @@ public class Task {
 		return false;
 	}
 
+	public String returnRecurTag() {
+		return recurTag;
+	}
+
 	public boolean isDone() {
 		if (!isTypeRecur()) {
 			return false;
 		}
 		DateTime now = new DateTime();
 		for (DateTime t : recurDone) {
-			if ((t.getDayOfYear() == now.getDayOfYear()) && (recurDate.contains(t))) {
+			if ((t.getDayOfYear() == now.getDayOfYear())) {
 				return true;
 			}
 		}

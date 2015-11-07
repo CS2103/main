@@ -1,4 +1,4 @@
-package Logic;
+package logic;
 
 import java.util.ArrayList;
 import java.util.Stack;
@@ -313,10 +313,11 @@ public class TaskBin {
 		tar.setTitle(newTitle);
 		Task buffer = new Task(task);
 		Command editTil = new Command(Constants.alter_tag, tar, buffer);
-		display.updateDisplay(editTil, true);
 		undoStack.push(editTil);
 		Storage.write(taskList);
 		redoStack.clear();
+		display.updateDisplay(editTil, true);
+		displayList = display.returnDisplay();
 	}
 
 	public void editStartingDate(Task task, DateTime date) {
@@ -373,7 +374,7 @@ public class TaskBin {
 	}
 
 	public boolean isClashed(Task task) {
-		if (task.getType().equals(Constants.TYPE_FLOATING)) {
+		if (!task.getType().equals(Constants.TYPE_FLOATING)) {
 			DateTime start = task.getStartingTime();
 			DateTime end = task.getEndingTime();
 			for (Task t : taskList) {
@@ -393,6 +394,12 @@ public class TaskBin {
 		DateTime start = time[0];
 		DateTime end = time[1];
 		for (Task t : taskList) {
+			if((t.getType().equals(Constants.TYPE_FLOATING))||(t.getType().equals(Constants.TYPE_RECUR))){
+				continue;
+			}
+			if(t.getStartingTime().equals(start) && t.getEndingTime().equals(end)){
+				continue;
+			}
 			if ((t.getStartingTime().isBefore(end)) && (t.getStartingTime().isAfter(start))) {
 				return true;
 			}

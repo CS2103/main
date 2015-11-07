@@ -4,8 +4,7 @@ import java.util.logging.Logger;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
-import ui.GUIService;
-import ui.HotKeyListener;
+import ui.GuiService;
 
 public class Main extends Application {
 
@@ -14,11 +13,11 @@ public class Main extends Application {
 	@Override
 	public void start(Stage stage) {
 
-		GUIService myGui = new GUIService(stage);
+		GuiService myGui = new GuiService(stage);
 
 		myGui.showStage(); // Loads the GUI application window
-	//	HotKeyListener hkl = new HotKeyListener(stage);
-		myGui.showTray(); // Loads the System Tray instance
+		// HotKeyListener hkl = new HotKeyListener(stage);
+		myGui.showTray();
 	}
 
 	public static void main(String[] args) {

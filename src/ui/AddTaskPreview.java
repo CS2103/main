@@ -1,6 +1,5 @@
+//@@author A0121442X
 package ui;
-
-import org.joda.time.DateTime;
 
 import application.Constants;
 import javafx.geometry.Insets;
@@ -23,7 +22,7 @@ public class AddTaskPreview extends StackPane {
 	Label tempEndTime;
 	Label tempRecurring;
 
-	public AddTaskPreview(String title, DateTime startTime, DateTime endTime) {
+	public AddTaskPreview() {
 
 		header = new Label("Add new task");
 		header.setId("taskPreviewHeader");

@@ -1,10 +1,13 @@
+//@@author A0121442X
 package ui;
 
 import org.joda.time.DateTime;
 
+import application.Constants;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
@@ -22,13 +25,12 @@ public class ListItem extends StackPane {
 	private Label index;
 	private Label title;
 	private Label taskDuration;
-	// private Label isOverDue;
 
 	public ListItem(String taskTitle, DateTime taskStartTime, DateTime taskEndTime, String taskType, boolean isDone,
-			boolean isOverdue, int taskIndex) {
+			boolean isOverdue, String recurValue, int taskIndex) {
 
 		title = new Label(taskTitle);
-		title.setId("title");
+
 		title.setFont(Font.font("SansSerif", FontWeight.BOLD, 16));
 		title.setPadding(new Insets(0, 0, 0, 5));
 		title.setMaxWidth(Double.MAX_VALUE);
@@ -37,13 +39,18 @@ public class ListItem extends StackPane {
 			title.setTextFill(Color.PALEVIOLETRED);
 			title.setFont(Font.font("SansSerif", FontWeight.BOLD, FontPosture.ITALIC, 16));
 		} else {
-			title.setTextFill(Color.ANTIQUEWHITE);
+			if (taskType.equals("task")) {
+				title.setId("titleTask");
+			} else if (taskType.equals("event")) {
+				title.setId("titleEvent");
+			} else if (taskType.equals("deadline")) {
+				title.setId("titleDeadline");
+			}
 		}
 
 		index = new Label(String.valueOf(taskIndex));
 		index.setId("index");
 		index.setFont(Font.font("SansSerif", FontWeight.LIGHT, 22));
-		index.setTextFill(Color.WHITESMOKE);
 		index.setTextAlignment(TextAlignment.RIGHT);
 		index.setAlignment(Pos.CENTER_RIGHT);
 		index.setPadding(new Insets(0, 20, 0, 0));
@@ -52,6 +59,13 @@ public class ListItem extends StackPane {
 		statusIcon = new Circle();
 		statusIcon.setId("statusIcon");
 		statusIcon.setRadius(5);
+
+		DropShadow dropShadow = new DropShadow();
+		dropShadow.setRadius(5.0);
+		dropShadow.setOffsetX(2.0);
+		dropShadow.setOffsetY(2.0);
+		dropShadow.setColor(Color.color(0.3, 0.3, 0.3));
+		statusIcon.setEffect(dropShadow);
 
 		if (isDone) {
 			statusIcon.setFill(Color.GREENYELLOW);
@@ -74,11 +88,21 @@ public class ListItem extends StackPane {
 		}
 
 		taskDuration = new Label();
+		taskDuration.setId("duration");
 		if (taskType.equals("deadline")) {
 			taskDuration.setText("By [" + endDate + "] " + endTime + " hrs");
 		} else if (taskType.equals("event")) {
 			taskDuration.setText("[" + startDate + "] " + startTime + " hrs  -  [" + endDate + "] " + endTime + " hrs");
+		} else if (taskType.equals(Constants.TYPE_RECUR)) {
+			if (recurValue.equalsIgnoreCase("daily")) {
+				taskDuration.setText("Repeat " + recurValue + " " + startTime + " hrs - " + endTime + " hrs");
+			} else if (recurValue.equalsIgnoreCase("weekly")) {
+				taskDuration.setText("Repeat " + recurValue + " " + startTime + " hrs - " + endTime + " hrs");
+			} else if (recurValue.equalsIgnoreCase("monthly")) {
+				taskDuration.setText("Repeat " + recurValue + " " + startTime + " hrs - " + endTime + " hrs");
+			}
 		}
+
 		taskDuration.setTextFill(Color.LIGHTGRAY);
 		taskDuration.setFont(Font.font("SansSerif", FontPosture.ITALIC, 11));
 		taskDuration.setPadding(new Insets(0, 0, 0, 15));
