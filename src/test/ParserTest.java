@@ -1,8 +1,10 @@
-package parser;
+package test;
 
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
+
+import parser.Parser;
 
 public class ParserTest {
 

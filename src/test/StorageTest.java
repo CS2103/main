@@ -1,4 +1,4 @@
-package storage;
+package test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -21,6 +21,8 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import logic.Task;
+import storage.Converters;
+import storage.Storage;
 
 public class StorageTest {
 	// initial methods to serialise/deserialise savedTask.json with DateTime
