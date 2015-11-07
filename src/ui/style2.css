@@ -5,6 +5,8 @@
 
 #dateDisplay {
 	-fx-font-family: "sans-serif";
+	-fx-text-fill:rgb(214, 255, 255);
+	-fx-background-color: linear-gradient( from 100.0% 0.0% to 100.0% 100.0%, rgb(26,77,77) 0.0, rgb(51,102,102) 100.0);
 	-fx-font-size: 30px;
 }
 
