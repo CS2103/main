@@ -39,8 +39,6 @@ public class Logic {
 			return markTaskByIndex(parser.getIndexes(input));
 		} else if (command.equals(Constants.COMMAND_UNMARK)) {
 			return unMarkTaskByIndex(parser.getIndexes(input));
-		} else if (command.equalsIgnoreCase("display")) {
-
 		} else if (command.equalsIgnoreCase(Constants.COMMAND_SEARCH)) {
 			ArrayList<Task> result = searchEntries(parser.getTitle(input));
 			return bin.returnDisplay();
@@ -54,9 +52,17 @@ public class Logic {
 			return bin.returnDisplay();
 		} else if (command.equalsIgnoreCase(Constants.COMMAND_SHOW)) {
 			System.out.println("The date to search is " + parser.getDateTime(input).toString());
+			System.out.println("The tasks to show is: " + parser.getTitle(input));
+			if(parser.getTitle(input).equals(Constants.STATUS_INCOMPLETE)){
+				return bin.displayUnfinished();
+			}else if(parser.getTitle(input).equals(Constants.STATUS_COMPLETE)){
+				return bin.displayFinished();
+			}
+			
 			if(parser.getDateTime(input).getYear() == 0){
 				return bin.displayAll();
 			}
+			
 			return searchEntries(parser.getDateTime(input));
 		} else if (command.equalsIgnoreCase(Constants.COMMAND_EXIT)) {
 			System.exit(0);
