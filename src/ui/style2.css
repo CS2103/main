@@ -8,6 +8,7 @@
 	-fx-text-fill:rgb(214, 255, 255);
 	-fx-background-color: linear-gradient( from 100.0% 0.0% to 100.0% 100.0%, rgb(26,77,77) 0.0, rgb(51,102,102) 100.0);
 	-fx-font-size: 30px;
+	-fx-background-radius: 20 0 0 0 ;
 }
 
 #timeDisplay {
@@ -15,7 +16,7 @@
 	-fx-background-color: linear-gradient( from 100.0% 0.0% to 100.0% 100.0%, rgb(26,77,77) 0.0, rgb(51,102,102) 100.0);
 	-fx-text-fill:rgb(214, 255, 255);
 	-fx-font-size: 30px;
-	
+	-fx-background-radius: 0 20 0 0 ;
 }
 
 #scrollPane .scroll-bar:horizontal .track,
@@ -80,7 +81,7 @@
 
 #floatingList {
 	
-	-fx-background-color: linear-gradient( from 100.0% 0.0% to 100.0% 100.0%, rgb(128,179,128) 0.0, rgb(153,204,153) 100.0);
+	-fx-background-color:rgb(161,203,189);
 }
 
 #statusBar {	
@@ -90,6 +91,8 @@
 	-fx-background-color: linear-gradient( from 100.0% 0.0% to 100.0% 100.0%, rgb(26,77,77) 0.0, rgb(51,102,102) 100.0);
 	-fx-padding: 0 0 0 10;
 	-fx-pref-height: 30;
+	-fx-background-radius: 0 0 20 20 ;
+	
 }
 
 #listItem {

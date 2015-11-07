@@ -7,6 +7,7 @@
 	-fx-font-size: 30px;
 	-fx-background-color:linear-gradient( from 100.0% 0.0% to 100.0% 100.0%, rgb(153,51,0) 0.0, rgb(204,102,51) 100.0);
 	-fx-text-fill:blanchedalmond ;
+	-fx-background-radius: 20 0 0 0 ;
 }
 
 #timeDisplay {
@@ -14,7 +15,7 @@
 	-fx-background-color:linear-gradient( from 100.0% 0.0% to 100.0% 100.0%, rgb(153,51,0) 0.0, rgb(204,102,51) 100.0);
 	-fx-text-fill:blanchedalmond ;
 	-fx-font-size: 30px;
-	
+	-fx-background-radius: 0 20 0 0 ;
 }
 
 #scrollPane .scroll-bar:horizontal .track,
@@ -89,6 +90,8 @@
 	-fx-background-color:linear-gradient( from 100.0% 0.0% to 100.0% 100.0%, rgb(204,102,51) 0.0, rgb(153,51,0) 100.0);
 	-fx-padding: 0 0 0 10;
 	-fx-pref-height: 30;
+	-fx-background-radius: 0 0 20 20 ;
+	
 }
 
 #listItem {
