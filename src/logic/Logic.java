@@ -53,8 +53,11 @@ public class Logic {
 		} else if (command.equalsIgnoreCase(Constants.COMMAND_ENQUIREPATH)) {
 			return bin.returnDisplay();
 		} else if (command.equalsIgnoreCase(Constants.COMMAND_SHOW)) {
-			System.out.println("The date to search is " + parser.getEndDateTime(input).toString());
-			return searchEntries(parser.getEndDateTime(input));
+			System.out.println("The date to search is " + parser.getDateTime(input).toString());
+			if(parser.getDateTime(input).getYear() == 0){
+				return bin.displayAll();
+			}
+			return searchEntries(parser.getDateTime(input));
 		} else if (command.equalsIgnoreCase(Constants.COMMAND_EXIT)) {
 			System.exit(0);
 		} else if (command.equalsIgnoreCase(Constants.COMMAND_HELP)) {
@@ -234,6 +237,12 @@ public class Logic {
 			return Storage.enquirePath();
 		case Constants.COMMAND_HELP:
 			return Constants.FEEDBACK_VIEW_HELP;
+		case Constants.COMMAND_SHOW:
+			if(parser.getDateTime(input).getYear() == 0){
+				return Constants.FEEDBACK_SHOW_ALL_SUCCESS;
+			}else{
+				return Constants.FEEDBACK_SHOW_DATE_SUCCESS + parser.getDateTime(input).getDayOfMonth() + "/" + parser.getDateTime(input).getMonthOfYear();
+			}
 		default:
 			return Constants.FEEDBACK_INVALID;
 		}
