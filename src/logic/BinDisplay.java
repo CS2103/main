@@ -62,7 +62,7 @@ public class BinDisplay {
 	public void setDisplay(ArrayList<Task> taskList) {
 		ArrayList<Task> dis = new ArrayList<Task>();
 		for (Task t : taskList) {
-			if (isWithinOneWeek(t) && (!t.getStatus())) {
+			if ((isWithinOneWeek(t) && (!t.getStatus()))){
 				System.out.println(t.getStatus());
 				dis.add(t);
 			}
@@ -76,7 +76,7 @@ public class BinDisplay {
 	public ArrayList<Task> setDisplay(ArrayList<Task> taskList, DateTime date) {
 		ArrayList<Task> display = new ArrayList<Task>();
 		for (Task t : taskList) {
-			if (t.getEndingTime().getDayOfYear() == date.getDayOfYear()) {
+			if ((t.getEndingTime().getDayOfYear() == date.getDayOfYear())) {
 				display.add(t);
 			}
 		}
@@ -106,7 +106,7 @@ public class BinDisplay {
 			ArrayList<DateTime> dates = t.getRecurDates();
 			for (DateTime date : dates) {
 				if (date.isAfter(now) && date.isBefore(weekAfter)) {
-					return true;
+					return true; 
 				}
 			}
 			return false;
