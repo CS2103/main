@@ -151,14 +151,13 @@ public class Constants {
 	public static final String FEEDBACK_REDO_SUCCESS = "Redone!!";
 	public static final String FEEDBACK_REDO_FAILURE = "Nothing to redo!";
 	public static final String FEEDBACK_VIEW_HOMESCREEN = "Displaying Home-Screen!";
-	public static final String FEEDBACK_VIEW_TODAY = "Displaying agenda for this week";
+	public static final String FEEDBACK_VIEW_TODAY = "Displaying all tasks from today to ";
 	public static final String FEEDBACK_VIEW_HELP = "Displaying help screen";
 	public static final String FEEDBACK_INVALID = "That is an invalid action!";
 	public static final String FEEDBACK_INVALID_NUMBER_OF_QUOTES = "Invaild number of quotes";
 	public static final String FEEDBACK_INVALID_PARAMETERS_FOR_EDIT = "Invalid parameters for edit command";
 	public static final String FEEDBACK_SETPATH_SUCCESS = "New save location is: ";
 	public static final String FEEDBACK_SETPATH_FAILURE = " not found! Save location is not changed";
-
 
 	// date formats
 	public static String[] dateFormats = { "dd MMM yy", "d/M/yy", "d/M", "d-M-yy", "d MMM", "dd MMMM", "dd.MM.yy",

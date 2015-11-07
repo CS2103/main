@@ -1,4 +1,4 @@
-//@author A0129708
+//@@author A0129708
 package logic;
 
 import java.text.ParseException;
@@ -54,7 +54,7 @@ public class Logic {
 			return bin.returnDisplay();
 		} else if (command.equalsIgnoreCase(Constants.COMMAND_SHOW)) {
 			System.out.println("The date to search is " + parser.getDateTime(input).toString());
-			if(parser.getDateTime(input).getYear() == 0){
+			if (parser.getDateTime(input).getYear() == 0) {
 				return bin.displayAll();
 			}
 			return searchEntries(parser.getDateTime(input));
@@ -120,11 +120,12 @@ public class Logic {
 			bin.editEndingDate(toEdit, parser.getDateTime(info));
 			break;
 		case "time":
-			//TODO
+			// TODO
 			if (toEdit.getType().equals(Constants.TYPE_RECUR)) {
 				break;
 			}
-			System.out.println("The new starting time is: " +  parser.getStartDateTime(info).toString() + ".  " + "The ending Time is " + parser.getEndDateTime(info).toString() + " . ");
+			System.out.println("The new starting time is: " + parser.getStartDateTime(info).toString() + ".  "
+					+ "The ending Time is " + parser.getEndDateTime(info).toString() + " . ");
 			bin.editTimeField(toEdit, parser.getStartDateTime(info), parser.getEndDateTime(info));
 			break;
 		}
@@ -250,10 +251,11 @@ public class Logic {
 		case Constants.COMMAND_HELP:
 			return Constants.FEEDBACK_VIEW_HELP;
 		case Constants.COMMAND_SHOW:
-			if(parser.getDateTime(input).getYear() == 0){
+			if (parser.getDateTime(input).getYear() == 0) {
 				return Constants.FEEDBACK_SHOW_ALL_SUCCESS;
-			}else{
-				return Constants.FEEDBACK_SHOW_DATE_SUCCESS + parser.getDateTime(input).getDayOfMonth() + "/" + parser.getDateTime(input).getMonthOfYear();
+			} else {
+				return Constants.FEEDBACK_SHOW_DATE_SUCCESS + parser.getDateTime(input).getDayOfMonth() + "/"
+						+ parser.getDateTime(input).getMonthOfYear();
 			}
 		default:
 			return Constants.FEEDBACK_INVALID;
