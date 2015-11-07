@@ -33,6 +33,9 @@ public class TitleParser {
 		if (text == null) {
 			text = splitInputWithDictionary(Constants.DICTIONARY_SETPATH, input);
 		}
+		if (text == null) {
+			text = splitInputWithDictionary(Constants.DICTIONARY_SHOW, input);
+		}
 		return text;
 	}
 
