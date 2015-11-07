@@ -42,10 +42,7 @@ public class TitleParser {
 		Matcher dateMatcher;
 
 		for (String regex : dictionary) {
-			/*
-			 * if (input.toLowerCase().indexOf(regex) > firstIndex) { firstIndex
-			 * = input.toLowerCase().indexOf(regex); }
-			 */
+
 			datePattern = Pattern.compile(regex);
 			dateMatcher = datePattern.matcher(input.toLowerCase());
 
@@ -66,8 +63,7 @@ public class TitleParser {
 		taskKeywords.removeAll(Arrays.asList(dictionary));
 
 		for (String regex : taskKeywords) {
-			// if (input.toLowerCase().indexOf(regex) < lastIndex &&
-			// input.toLowerCase().indexOf(regex) > 0) {
+
 			datePattern = Pattern.compile(regex);
 			dateMatcher = datePattern.matcher(input);
 
@@ -76,7 +72,6 @@ public class TitleParser {
 					lastIndex = dateMatcher.start();
 				}
 			}
-			// }
 		}
 		if (lastIndex <= firstIndex) {
 			lastIndex = input.length();
