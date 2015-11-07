@@ -62,7 +62,7 @@ public class StorageTest {
 	}
 
 	@Test
-	public void testSetPath1() {
+	public void testSetPath_() {
 		boolean pass = true;
 		Storage.setPath("/Users/hungngth/Downloads");
 		File f = new File("/Users/hungngth/Downloads/TBAsave.txt");
