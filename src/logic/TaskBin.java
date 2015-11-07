@@ -377,7 +377,26 @@ public class TaskBin {
 		tar.setTitle(newTitle);
 		System.out.println("The tar is recur " + tar.isTypeRecur() + ". The buffer is type recur: " + buffer.isTypeRecur());
 		Command editTil = new Command(Constants.alter_tag, tar, buffer);
+		display.setDisplayAll(displayList);
 		undoStack.push(editTil);
+		Storage.write(taskList);
+		redoStack.clear();
+	}
+	
+	public void editTimeField(Task task, DateTime startDate, DateTime endDate){
+		if (task.getType().equals(Constants.recur_tag)) {
+			return;
+		}
+		Task tar = taskList.get(taskList.indexOf(task));
+		Task tarDis = displayList.get(displayList.indexOf(tar));
+		Task buffer = new Task(task);
+		tar.setStartingDate(startDate);
+		tarDis.setStartingDate(startDate);
+		tar.setEndingDate(endDate);
+		tarDis.setEndingDate(endDate);
+		Command editDate = new Command(Constants.alter_tag, tar, buffer);
+		undoStack.push(editDate);
+		taskList = sorter.sortArrayByTime(taskList);
 		Storage.write(taskList);
 		redoStack.clear();
 	}
@@ -392,6 +411,7 @@ public class TaskBin {
 		tar.setStartingDate(date);
 		tarDis.setStartingDate(date);
 		Command editDate = new Command(Constants.alter_tag, tar, buffer);
+		display.setDisplayAll(displayList);
 		undoStack.push(editDate);
 		taskList = sorter.sortArrayByTime(taskList);
 
@@ -409,6 +429,7 @@ public class TaskBin {
 		tar.setEndingDate(date);
 		tarDis.setEndingDate(date);
 		Command editDate = new Command(Constants.alter_tag, tar, buffer);
+		display.setDisplayAll(displayList);
 		undoStack.push(editDate);
 		taskList = sorter.sortArrayByTime(taskList);
 
@@ -444,6 +465,9 @@ public class TaskBin {
 			DateTime start = task.getStartingTime();
 			DateTime end = task.getEndingTime();
 			for (Task t : taskList) {
+				if((t.getStartingTime().getYear() == 0) || (t.getEndingTime().getYear()==0)){
+					return false;
+				}
 				if ((t.getStartingTime().isBefore(end)) && (t.getStartingTime().isAfter(start))) {
 					return true;
 				}
@@ -463,7 +487,7 @@ public class TaskBin {
 			if((t.getType().equals(Constants.TYPE_FLOATING))||(t.getType().equals(Constants.TYPE_RECUR))){
 				continue;
 			}
-			if(t.getStartingTime().equals(start) && t.getEndingTime().equals(end)){
+			if((t.getStartingTime().getSecondOfDay() == start.getSecondOfDay()) && (t.getEndingTime().getSecondOfDay() == end.getSecondOfDay())){
 				continue;
 			}
 			if ((t.getStartingTime().isBefore(end)) && (t.getStartingTime().isAfter(start))) {

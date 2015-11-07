@@ -7,6 +7,7 @@
 	-fx-font-size: 30px;
 	-fx-background-color:radial-gradient( focus-angle 0.0deg, focus-distance 0.0%, center 50.0% 50.0%, radius 100.0%, rgb(204,230,255) 0.0, rgb(0,26,128) 100.0 );
 	-fx-text-fill:rgb(255,255,255);
+	-fx-background-radius: 20 0 0 0 ;
 }
 
 #timeDisplay {
@@ -14,7 +15,7 @@
 	-fx-background-color:radial-gradient( focus-angle 0.0deg, focus-distance 0.0%, center 50.0% 50.0%, radius 100.0%, rgb(204,230,255) 0.0, rgb(0,26,128) 100.0 );
 	-fx-text-fill:rgb(255,255,255);
 	-fx-font-size: 30px;
-	
+	-fx-background-radius: 0 20 0 0 ;	
 }
 
 #scrollPane .scroll-bar:horizontal .track,
@@ -79,7 +80,7 @@
 
 #floatingList {
 	
-	-fx-background-color:rgb(217,231,255)        ;
+	-fx-background-color:rgb(217,231,255);
 }
 
 #statusBar {	
@@ -89,6 +90,7 @@
 	-fx-background-color:radial-gradient( focus-angle 0.0deg, focus-distance 0.0%, center 50.0% 50.0%, radius 100.0%, rgb(204,230,255) 0.0, rgb(0,26,128) 100.0 );
 	-fx-padding: 0 0 0 10;
 	-fx-pref-height: 30;
+	-fx-background-radius: 0 0 20 20 ;
 }
 
 #listItem {
