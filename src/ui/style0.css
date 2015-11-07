@@ -5,15 +5,13 @@
 
 #dateDisplay {
 	-fx-font-family: "sans-serif";
-	-fx-text-fill:rgb(214, 255, 255);
-	-fx-background-color: linear-gradient( from 100.0% 0.0% to 100.0% 100.0%, rgb(26,77,77) 0.0, rgb(51,102,102) 100.0);
 	-fx-font-size: 30px;
+	-fx-background-color: rgba(140,140,140, 0.3);
 }
 
 #timeDisplay {
 	-fx-font-family: "sans-serif";
-	-fx-background-color: linear-gradient( from 100.0% 0.0% to 100.0% 100.0%, rgb(26,77,77) 0.0, rgb(51,102,102) 100.0);
-	-fx-text-fill:rgb(214, 255, 255);
+	-fx-background-color: rgba(140,140,140, 0.3);
 	-fx-font-size: 30px;
 	
 }
@@ -73,49 +71,42 @@
 }
 
 #timedList {
+	-fx-background-color:linear-gradient( from 100.0% 0.0% to 100.0% 100.0%, rgb(51,51,51) 0.0, rgb(179,179,179) 40.0, rgb(51,51,51) 100.0);
 	
-	/*-fx-background-color: linear-gradient( from 100.0% 0.0% to 100.0% 100.0%, rgb(204,204,204) 0.0, rgb(242,242,242) 100.0);*/
-	-fx-background-color: linear-gradient( from 100.0% 0.0% to 100.0% 100.0%, rgb(179,230,179) 0.0, rgb(204,255,204) 100.0);
 }
 
 #floatingList {
-	
-	-fx-background-color: linear-gradient( from 100.0% 0.0% to 100.0% 100.0%, rgb(128,179,128) 0.0, rgb(153,204,153) 100.0);
+	-fx-background-color: linear-gradient( from 100.0% 0.0% to 100.0% 100.0%, rgb(46,50,68) 0.0, rgb(51,51,51) 40.0, rgb(39,41,54) 100.0);
 }
 
 #statusBar {	
 	-fx-font-size: 12pt;
 	-fx-font-family: "sans-serif";
-	-fx-text-fill:rgb(214, 255, 255);
-	-fx-background-color: linear-gradient( from 100.0% 0.0% to 100.0% 100.0%, rgb(26,77,77) 0.0, rgb(51,102,102) 100.0);
+	-fx-text-fill: rgb(255,255,255);
+	-fx-background-color: linear-gradient( from 100.0% 0.0% to 100.0% 100.0%, rgba(128,128,128, 0.8) 0.0, rgba(204,204,204, 0.8) 40.0, rgba(153,153,153, 0.8) 100.0);
 	-fx-padding: 0 0 0 10;
 	-fx-pref-height: 30;
 }
 
 #listItem {
-	-fx-background-color: rgba(0,0,0,0.04);
+	-fx-background-color: rgba(0,0,0,0.2);
 }
 
 #titleTask {
-	-fx-text-fill: rgb(204, 255, 255);
+	-fx-text-fill:antiquewhite ;
 }
 
 #titleEvent {
-	-fx-text-fill: rgb(27, 166, 27);
+	-fx-text-fill:antiquewhite ;
 }
 
 #titleDeadline {
-	-fx-text-fill: rgb(27, 166, 27);
+	-fx-text-fill:antiquewhite ;
 }
 
 #index {
-	-fx-text-fill: rgb(26, 77, 77);
+	-fx-text-fill:antiquewhite ;
 }
-
-#duration {
-	-fx-text-fill: rgb(26, 77, 77);
-}
-
 
 #statusIcon {
 	

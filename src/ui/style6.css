@@ -9,8 +9,8 @@
 
 #timeDisplay {
 	-fx-font-family: "sans-serif";
-	-fx-background-color:linear-gradient( from 100.0% 0.0% to 100.0% 100.0%, rgb(153,51,0) 0.0, rgb(204,102,51) 100.0);
-	-fx-text-fill:blanchedalmond ;
+	-fx-background-color:linear-gradient( from 100.0% 0.0% to 100.0% 100.0%, rgb(153,153,51) 0.0, rgb(204,204,102) 100.0);
+	-fx-text-fill:rgb(21,105,53);
 	-fx-font-size: 30px;
 	
 }
@@ -49,7 +49,7 @@
 #inputConsole {
 	-fx-pref-height: 25px;
 	-fx-pref-width: 700px;
-	-fx-background-color: rgba(255,255,255, 1);
+	-fx-background-color:rgb(255,249,205);
 	-fx-text-inner-color: black;
 	-fx-font-size: 15;
 	-fx-font-family: "sans-serif";
@@ -58,19 +58,19 @@
 #timedList {
 	
 	/*-fx-background-color: linear-gradient( from 100.0% 0.0% to 100.0% 100.0%, rgb(204,204,204) 0.0, rgb(242,242,242) 100.0);*/
-	-fx-background-color:peachpuff;
+	-fx-background-color:rgb(255,251,221);
 }
 
 #floatingList {
 	
-	-fx-background-color:rgb(255,188,149);
+	-fx-background-color:rgb(255,244,207);
 }
 
 #statusBar {	
 	-fx-font-size: 12pt;
 	-fx-font-family: "sans-serif";
-	-fx-text-fill:blanchedalmond ;
-	-fx-background-color:linear-gradient( from 100.0% 0.0% to 100.0% 100.0%, rgb(204,102,51) 0.0, rgb(153,51,0) 100.0);
+	-fx-text-fill:rgb(21,105,53);
+	-fx-background-color:linear-gradient( from 100.0% 0.0% to 100.0% 100.0%, rgb(230,230,128) 0.0, rgb(153,153,51) 100.0);
 	-fx-padding: 0 0 0 10;
 	-fx-pref-height: 30;
 }
@@ -80,20 +80,20 @@
 }
 
 #titleTask {
-	-fx-text-fill:blanchedalmond     ;
+	-fx-text-fill:rgb(21,105,53);
 }
 
 #titleEvent {
-	-fx-text-fill:chocolate    ;
+	-fx-text-fill:rgb(21,105,53);
 }
 #titleDeadline {
-	-fx-text-fill:chocolate;
+	-fx-text-fill:rgb(21,105,53);
 }
 #index {
-	-fx-text-fill:crimson ;
+	-fx-text-fill:rgb(21,105,53);
 }
 #duration {
-	-fx-text-fill:chocolate ;
+	-fx-text-fill:rgb(21,105,53);
 }
 
 #statusIcon {

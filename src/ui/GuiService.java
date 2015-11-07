@@ -4,7 +4,6 @@ package ui;
 import java.awt.TrayIcon;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -44,6 +43,7 @@ public class GuiService {
 	Parser parser;
 
 	int listIndex;
+	int themeIndex;
 	private TrayService trayService;
 	private Stage stage;
 
@@ -189,6 +189,8 @@ public class GuiService {
 				} else if (event.getCode() == KeyCode.F1) {
 					consoleView.showHelpPopup();
 					updateStatusLabel(Constants.FEEDBACK_VIEW_HELP);
+				} else if (event.getCode() == KeyCode.F2) {
+					changeTheme();
 				}
 			}
 		});
@@ -223,23 +225,25 @@ public class GuiService {
 	}
 
 	public Scene buildScene(StackPane content) {
-		Scene myScene = new Scene(content, 800, 600);
+		themeIndex = 1;
+		Scene myScene = new Scene(content, 803, 600);
 		myScene.setFill(Color.TRANSPARENT);
 		myScene.getStylesheets().clear();
-		myScene.getStylesheets().add(this.getClass().getResource("style1.css").toExternalForm());
+		myScene.getStylesheets().add(this.getClass().getResource("style6.css").toExternalForm());
 		showConsolePane();
 		return myScene;
+	}
+
+	public void changeTheme() {
+		stage.getScene().getStylesheets().clear();
+		stage.getScene().getStylesheets().add(this.getClass()
+				.getResource(Constants.THEME_LIST[(++themeIndex) % Constants.THEME_LIST.length]).toExternalForm());
 	}
 
 	public void showConsolePane() {
 		consoleView.toFront();
 		consoleView.setVisible(true);
 		consoleView.setDisable(false);
-	}
-
-	public void addAutocompleteEntries(ArrayList<String> stringArrayList) {
-		String[] stringArray = (String[]) stringArrayList.toArray();
-		Collections.addAll(consoleView.inputConsole.entries, stringArray);
 	}
 
 	public void showStage() {
@@ -249,7 +253,6 @@ public class GuiService {
 		stage.setScene(buildScene(this.content));
 		stage.sizeToScene();
 		stage.show();
-		stage.setAlwaysOnTop(true);
 	}
 
 	public TrayIcon showTray() {
