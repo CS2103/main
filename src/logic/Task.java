@@ -20,13 +20,17 @@ public class Task {
 	private ArrayList<DateTime> recurDone;
 
 	public Task(Task task) {
-		this.recurTag = new String();
+		this.isRecur = task.isTypeRecur();
+		this.recurTag = task.returnRecurTag();
+		this.recurEnd = task.getRecurEnd();
 		this.title = task.getTitle();
-		this.isFinished = task.getStatus();
+		this.type_tag = task.getType();
+		this.isFinished = task.returnIsFinished();
 		this.startingTime = task.getStartingTime();
 		this.endingTime = task.getEndingTime();
 		this.recurDate = task.getRecurDates();
 		this.recurDone = task.getDoneDates();
+		
 		setTag();
 	}
 
@@ -193,6 +197,9 @@ public class Task {
 
 	public void setTitle(String title) {
 		this.title = title;
+		if(isTypeRecur()){
+			isRecur = true;
+		}
 	}
 
 	public void mark() {
@@ -263,13 +270,23 @@ public class Task {
 	public boolean equals(Object obj) {
 		if (obj instanceof Task) {
 			Task task = (Task) obj;
-			return (this.getTitle().equals(task.getTitle())) && (this.getStatus() == task.getStatus())
-					&& (this.getEndingTime().equals(task.getEndingTime()))
-					&& (this.getStartingTime().equals(task.getStartingTime()))
-					&& (this.getType().equals(task.getType()));
+			if(!task.isTypeRecur()){
+			return (this.getTitle().equals(task.getTitle()))
+					&& (this.getEndingTime().isEqual(task.getEndingTime()))
+					&& (this.getEndingTime().isEqual(task.getEndingTime()))
+					&& (this.getType().equals(task.getType()));}
+			else{
+				return (this.getTitle().equals(task.getTitle())) && (this.getStatus() == task.getStatus())
+						&& (this.getRecurEnd().equals(task.getRecurEnd()))
+						&& (this.returnRecurTag().equals(task.returnRecurTag()));}
+			
 		} else {
 			return false;
 		}
+	}
+	
+	public DateTime getRecurEnd(){
+		return recurEnd;
 	}
 
 	public boolean isTypeRecur() {
@@ -340,6 +357,10 @@ public class Task {
 			}
 		}
 		return false;
+	}
+	
+	public boolean returnIsFinished(){
+		return isFinished;
 	}
 
 	public DateTime deleteRecur(DateTime date) {

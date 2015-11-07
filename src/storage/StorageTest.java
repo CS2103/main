@@ -20,7 +20,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
-import Logic.Task;
+import logic.Task;
 
 public class StorageTest {
 	// initial methods to serialise/deserialise savedTask.json with DateTime
