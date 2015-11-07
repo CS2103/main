@@ -92,7 +92,12 @@ public class ListItem extends StackPane {
 		if (taskType.equals("deadline")) {
 			taskDuration.setText("By [" + endDate + "] " + endTime + " hrs");
 		} else if (taskType.equals("event")) {
-			taskDuration.setText("[" + startDate + "] " + startTime + " hrs  -  [" + endDate + "] " + endTime + " hrs");
+			if (checkIfOnSameDay(taskStartTime, taskEndTime)) {
+				taskDuration.setText("[" + endDate + "] Whole day");
+			} else {
+				taskDuration
+						.setText("[" + startDate + "] " + startTime + " hrs  -  [" + endDate + "] " + endTime + " hrs");
+			}
 		} else if (taskType.equals(Constants.TYPE_RECUR)) {
 			if (recurValue.equalsIgnoreCase("daily")) {
 				taskDuration.setText("Repeat " + recurValue + " " + startTime + " hrs - " + endTime + " hrs");
@@ -146,5 +151,15 @@ public class ListItem extends StackPane {
 
 	public String getIsOverdue() {
 		return this.title.getText();
+	}
+
+	public boolean checkIfOnSameDay(DateTime dateTime1, DateTime dateTime2) {
+		if (dateTime1.getDayOfMonth() == dateTime2.getDayOfMonth()
+				&& dateTime1.getMonthOfYear() == dateTime2.getMonthOfYear()
+				&& dateTime1.getYear() == dateTime2.getYear()) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 }

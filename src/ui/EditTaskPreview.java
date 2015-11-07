@@ -15,6 +15,7 @@ public class EditTaskPreview extends StackPane {
 	GridPane editTitleLayout;
 	GridPane editStartTimeLayout;
 	GridPane editEndTimeLayout;
+	GridPane editDurationLayout;
 
 	Label header;
 	Label oldTitleLabel;
@@ -99,7 +100,7 @@ public class EditTaskPreview extends StackPane {
 		editTitleLayout = new GridPane();
 		editTitleLayout.add(newTitleLabel, 0, 0);
 		editTitleLayout.add(newTitleField, 1, 0);
-		editTitleLayout.setVisible(false);
+		// editTitleLayout.setVisible(false);
 		editTitleLayout.getColumnConstraints().addAll(columnConstraint, columnConstraint1);
 
 		editStartTimeLayout = new GridPane();
@@ -107,7 +108,7 @@ public class EditTaskPreview extends StackPane {
 		editStartTimeLayout.add(oldStartTime, 1, 0);
 		editStartTimeLayout.add(newStartTimeLabel, 0, 1);
 		editStartTimeLayout.add(newStartTimeField, 1, 1);
-		editStartTimeLayout.setVisible(false);
+		// editStartTimeLayout.setVisible(false);
 		editStartTimeLayout.getColumnConstraints().add(columnConstraint);
 
 		editEndTimeLayout = new GridPane();
@@ -115,10 +116,25 @@ public class EditTaskPreview extends StackPane {
 		editEndTimeLayout.add(oldEndTime, 1, 0);
 		editEndTimeLayout.add(newEndTimeLabel, 0, 1);
 		editEndTimeLayout.add(newEndTimeField, 1, 1);
-		editEndTimeLayout.setVisible(false);
+		// editEndTimeLayout.setVisible(false);
 		editEndTimeLayout.getColumnConstraints().addAll(columnConstraint, columnConstraint);
 
-		newDetailsLayout = new StackPane(editTitleLayout, editStartTimeLayout, editEndTimeLayout);
+		editDurationLayout = new GridPane();
+		editDurationLayout.add(oldStartTimeLabel, 0, 0);
+		editDurationLayout.add(oldStartTime, 1, 0);
+		editDurationLayout.add(newStartTimeLabel, 2, 0);
+		editDurationLayout.add(newStartTimeField, 3, 0);
+		editDurationLayout.add(oldEndTimeLabel, 0, 1);
+		editDurationLayout.add(oldEndTime, 1, 1);
+		editDurationLayout.add(newEndTimeLabel, 2, 1);
+		editDurationLayout.add(newEndTimeField, 3, 1);
+		// editDurationLayout.setVisible(false);
+		editDurationLayout.getColumnConstraints().addAll(columnConstraint, columnConstraint, columnConstraint,
+				columnConstraint);
+
+		newDetailsLayout = new StackPane();
+		// newDetailsLayout = new StackPane(editTitleLayout,
+		// editStartTimeLayout, editEndTimeLayout, editDurationLayout);
 
 		taskPreviewLayout = new GridPane();
 		GridPane.setConstraints(header, 0, 0, 2, 1);
@@ -144,27 +160,40 @@ public class EditTaskPreview extends StackPane {
 		newRecurringField.setText(Constants.EMPTY_STRING);
 	}
 
-	public void detailsToShow(String taskType, String field) {
+	public void detailsToShow(String field) {
+		newDetailsLayout.getChildren().clear();
 		if (field.equalsIgnoreCase("title")) {
-			newDetailsLayout.getChildren().get(0).setVisible(true);
-			newDetailsLayout.getChildren().get(1).setVisible(false);
-			newDetailsLayout.getChildren().get(2).setVisible(false);
+			newDetailsLayout.getChildren().add(editTitleLayout);
 		} else if (field.equalsIgnoreCase("start")) {
-			newDetailsLayout.getChildren().get(0).setVisible(false);
-			newDetailsLayout.getChildren().get(1).setVisible(true);
-			newDetailsLayout.getChildren().get(2).setVisible(false);
+			newDetailsLayout.getChildren().add(editStartTimeLayout);
 		} else if (field.equalsIgnoreCase("end")) {
-			newDetailsLayout.getChildren().get(0).setVisible(false);
-			newDetailsLayout.getChildren().get(1).setVisible(false);
-			newDetailsLayout.getChildren().get(2).setVisible(true);
+			newDetailsLayout.getChildren().add(editEndTimeLayout);
+		} else if (field.equalsIgnoreCase("time")) {
+			newDetailsLayout.getChildren().add(editDurationLayout);
 		}
-	}
-
-	public void formatNewEntry(String field, String newEntry) {
-		if (field.equalsIgnoreCase("title")) {
-
-		} else if (field.equalsIgnoreCase("start") || field.equalsIgnoreCase("end")) {
-
-		}
+		/*
+		 * if (field.equalsIgnoreCase("title")) {
+		 * newDetailsLayout.getChildren().get(0).setVisible(true);
+		 * newDetailsLayout.getChildren().get(1).setVisible(false);
+		 * newDetailsLayout.getChildren().get(2).setVisible(false);
+		 * newDetailsLayout.getChildren().get(3).setVisible(false); } else if
+		 * (field.equalsIgnoreCase("start")) {
+		 * newDetailsLayout.getChildren().get(0).setVisible(false);
+		 * newDetailsLayout.getChildren().get(1).setVisible(true);
+		 * newDetailsLayout.getChildren().get(2).setVisible(false);
+		 * newDetailsLayout.getChildren().get(3).setVisible(false); } else if
+		 * (field.trim().equalsIgnoreCase("end")) {
+		 * newDetailsLayout.getChildren().get(0).setVisible(false);
+		 * newDetailsLayout.getChildren().get(1).setVisible(false);
+		 * newDetailsLayout.getChildren().get(2).setVisible(true);
+		 * newDetailsLayout.getChildren().get(3).setVisible(false);
+		 * System.out.println("showing end"); } else if
+		 * (field.equalsIgnoreCase("time")) {
+		 * newDetailsLayout.getChildren().get(0).setVisible(false);
+		 * newDetailsLayout.getChildren().get(1).setVisible(false);
+		 * newDetailsLayout.getChildren().get(2).setVisible(false);
+		 * newDetailsLayout.getChildren().get(3).setVisible(true);
+		 * System.out.println("showing time"); }
+		 */
 	}
 }

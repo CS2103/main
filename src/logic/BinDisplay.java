@@ -63,13 +63,11 @@ public class BinDisplay {
 		ArrayList<Task> dis = new ArrayList<Task>();
 		for (Task t : taskList) {
 			if (isWithinOneWeek(t) && (!t.getStatus())) {
-				System.out.println(t.getStatus());
 				dis.add(t);
 			}
 		}
-		
+
 		displayList = dis;
-		System.out.println("Display Set as TaskList");
 	}
 
 	// display all tasks at one specific date
@@ -86,7 +84,6 @@ public class BinDisplay {
 
 	// return the display list back
 	public ArrayList<Task> returnDisplay() {
-		// TODO
 		// activeList = sortArrayByTime(activeList);
 		System.out.println("The size of the activeList is:" + displayList.size());
 		return displayList;
@@ -101,7 +98,6 @@ public class BinDisplay {
 	public boolean isWithinOneWeek(Task t) {
 		DateTime now = new DateTime();
 		DateTime weekAfter = now.plusDays(7);
-		System.out.println("Check in one week");
 		if (t.getType().equals(Constants.TYPE_RECUR)) {
 			ArrayList<DateTime> dates = t.getRecurDates();
 			for (DateTime date : dates) {

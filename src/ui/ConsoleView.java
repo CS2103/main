@@ -23,6 +23,9 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
+import logic.Task;
+import parser.Parser;
+import parser.TitleParser;
 
 public class ConsoleView extends Pane {
 
@@ -40,6 +43,8 @@ public class ConsoleView extends Pane {
 	VBox floatingList;
 	ScrollPane scrollPane;
 	StackPane mainDisplay;
+
+	Parser parser = new Parser();
 
 	public ConsoleView() {
 
@@ -153,18 +158,18 @@ public class ConsoleView extends Pane {
 		addTaskPreview.tempEndTime.setText(this.showIfValidDate(endTime));
 	}
 
-	public void updateEditTaskPreviewDetails(String oldTitle, DateTime startTime, DateTime endTime, String field,
-			String newTitle, DateTime newDateTime, String oldRecurValue, String recurValue) {
+	public void updateEditTaskPreviewDetails(Task toEdit, String input) {
+
 		editTaskPreview.clearAllDetails();
-		editTaskPreview.oldTitle.setText(oldTitle);
-		editTaskPreview.oldStartTime.setText(showIfValidDate(startTime));
-		editTaskPreview.oldEndTime.setText(showIfValidDate(endTime));
-		editTaskPreview.detailsToShow("", field);
-		editTaskPreview.newTitleField.setText(newTitle);
-		editTaskPreview.newStartTimeField.setText(showIfValidDate(newDateTime));
-		editTaskPreview.newEndTimeField.setText(showIfValidDate(newDateTime));
-		editTaskPreview.oldRecurring.setText(oldRecurValue);
-		editTaskPreview.newRecurringField.setText(recurValue);
+		editTaskPreview.detailsToShow(parser.getField(input));
+		editTaskPreview.oldTitle.setText(toEdit.getTitle());
+		editTaskPreview.oldStartTime.setText(showIfValidDate(toEdit.getStartingTime()));
+		editTaskPreview.oldEndTime.setText(showIfValidDate(toEdit.getEndingTime()));
+		editTaskPreview.newTitleField.setText(TitleParser.getEditTitle(input));
+		editTaskPreview.newStartTimeField.setText(showIfValidDate(parser.getStartDateTime(input)));
+		editTaskPreview.newEndTimeField.setText(showIfValidDate(parser.getEndDateTime(input)));
+		// editTaskPreview.oldRecurring.setText(oldRecurValue);
+		// editTaskPreview.newRecurringField.setText(recurValue);
 	}
 
 	private String showIfValidDate(DateTime dateTime) {

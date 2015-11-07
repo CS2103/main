@@ -120,10 +120,9 @@ public class GuiService {
 					&& newValue.matches("\\D+\\s\\d+\\s\\D+.+\\z")) {
 				consoleView.showEditPopup();
 				Task toEdit = this.logic.displayCurrent().get(this.parser.getIndex(newValue) - 1);
-				consoleView.updateEditTaskPreviewDetails(toEdit.getTitle(), toEdit.getStartingTime(),
-						toEdit.getEndingTime(), this.parser.getField(newValue), TitleParser.getEditTitle(newValue),
-						this.parser.getDateTime(TitleParser.getEditTitle(newValue)), "in progress",
-						parser.getRecurValue(newValue));
+
+				consoleView.updateEditTaskPreviewDetails(toEdit, newValue);
+				System.out.println(parser.getField(newValue));
 			}
 		});
 
