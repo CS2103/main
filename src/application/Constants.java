@@ -1,7 +1,7 @@
 package application;
 
 public class Constants {
-
+	
 	public static final String add_tag = "ADD";
 	public static final String delete_tag = "DELETE";
 	public static final String replace_tag = "REPLACE";
@@ -17,6 +17,7 @@ public class Constants {
 	public static final String TYPE_EVENT = "event";
 	public static final String TYPE_DEADLINE = "deadline";
 	public static final String TYPE_FLOATING = "task";
+
 
 	public static final String APP_NAME = "TBA";
 
