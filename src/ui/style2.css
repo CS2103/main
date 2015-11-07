@@ -75,13 +75,12 @@
 
 #timedList {
 	
-	/*-fx-background-color: linear-gradient( from 100.0% 0.0% to 100.0% 100.0%, rgb(204,204,204) 0.0, rgb(242,242,242) 100.0);*/
-	-fx-background-color: linear-gradient( from 100.0% 0.0% to 100.0% 100.0%, rgb(179,230,179) 0.0, rgb(204,255,204) 100.0);
+	-fx-background-color:rgb(221,255,213);
 }
 
 #floatingList {
 	
-	-fx-background-color:rgb(161,203,189);
+	-fx-background-color:rgb(212,244,204);
 }
 
 #statusBar {	
@@ -100,15 +99,15 @@
 }
 
 #titleTask {
-	-fx-text-fill: rgb(204, 255, 255);
+	-fx-text-fill: rgb(26, 77, 77);
 }
 
 #titleEvent {
-	-fx-text-fill: rgb(27, 166, 27);
+	-fx-text-fill: rgb(26, 77, 77);
 }
 
 #titleDeadline {
-	-fx-text-fill: rgb(27, 166, 27);
+	-fx-text-fill: rgb(26, 77, 77);
 }
 
 #index {
