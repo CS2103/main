@@ -123,6 +123,18 @@ public class TaskBin {
 	public ArrayList<Task> markTaskInstance(Task task) {
 
 		for (Task obj : taskList) {
+			boolean isFoundRecur = false;
+			if(obj.isTypeRecur()){
+				for(DateTime t:obj.getRecurDates()){
+					if(t.getDayOfYear() == DateTime.now().getDayOfYear()){
+						isFoundRecur = true;
+						break;
+					}
+				}
+				if(!isFoundRecur){
+					return null;
+				}
+			}
 			if (obj.equals(task)) {
 				//System.out.println(obj.getTitle());
 				obj.mark();
@@ -521,11 +533,9 @@ public class TaskBin {
 			for (Task t : taskList) {
 				if((t.getStartingTime().getYear() == 0) || (t.getEndingTime().getYear()==0)){
 					return false;
-				}
-				if ((t.getStartingTime().isBefore(end)) && (t.getStartingTime().isAfter(start))) {
+				}else if ((t.getStartingTime().isBefore(end)) && (t.getStartingTime().isAfter(start))) {
 					return true;
-				}
-				if ((t.getEndingTime().isAfter(start)) && (t.getEndingTime().isBefore(end))) {
+				}else if ((t.getEndingTime().isAfter(start)) && (t.getEndingTime().isBefore(end))) {
 					return true;
 				}
 			}
