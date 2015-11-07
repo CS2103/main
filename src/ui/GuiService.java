@@ -4,7 +4,6 @@ package ui;
 import java.awt.TrayIcon;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -237,11 +236,6 @@ public class GuiService {
 		consoleView.setDisable(false);
 	}
 
-	public void addAutocompleteEntries(ArrayList<String> stringArrayList) {
-		String[] stringArray = (String[]) stringArrayList.toArray();
-		Collections.addAll(consoleView.inputConsole.entries, stringArray);
-	}
-
 	public void showStage() {
 		Platform.setImplicitExit(false);
 		stage.setTitle(Constants.APP_NAME);
@@ -249,7 +243,6 @@ public class GuiService {
 		stage.setScene(buildScene(this.content));
 		stage.sizeToScene();
 		stage.show();
-		stage.setAlwaysOnTop(true);
 	}
 
 	public TrayIcon showTray() {
