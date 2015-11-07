@@ -43,6 +43,7 @@ public class GuiService {
 	Parser parser;
 
 	int listIndex;
+	int themeIndex;
 	private TrayService trayService;
 	private Stage stage;
 
@@ -188,6 +189,8 @@ public class GuiService {
 				} else if (event.getCode() == KeyCode.F1) {
 					consoleView.showHelpPopup();
 					updateStatusLabel(Constants.FEEDBACK_VIEW_HELP);
+				} else if (event.getCode() == KeyCode.F2) {
+					changeTheme();
 				}
 			}
 		});
@@ -222,12 +225,19 @@ public class GuiService {
 	}
 
 	public Scene buildScene(StackPane content) {
+		themeIndex = 1;
 		Scene myScene = new Scene(content, 800, 600);
 		myScene.setFill(Color.TRANSPARENT);
 		myScene.getStylesheets().clear();
 		myScene.getStylesheets().add(this.getClass().getResource("style1.css").toExternalForm());
 		showConsolePane();
 		return myScene;
+	}
+
+	public void changeTheme() {
+		stage.getScene().getStylesheets().clear();
+		stage.getScene().getStylesheets().add(this.getClass()
+				.getResource(Constants.THEME_LIST[(++themeIndex) % Constants.THEME_LIST.length]).toExternalForm());
 	}
 
 	public void showConsolePane() {
