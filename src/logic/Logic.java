@@ -238,7 +238,11 @@ public class Logic {
 		case Constants.COMMAND_HELP:
 			return Constants.FEEDBACK_VIEW_HELP;
 		case Constants.COMMAND_SHOW:
-			return Constants.FEEDBACK_SHOW_ALL_SUCCESS;
+			if(parser.getDateTime(input).getYear() == 0){
+				return Constants.FEEDBACK_SHOW_ALL_SUCCESS;
+			}else{
+				return Constants.FEEDBACK_SHOW_DATE_SUCCESS + parser.getDateTime(input).getDayOfMonth() + "/" + parser.getDateTime(input).getMonthOfYear();
+			}
 		default:
 			return Constants.FEEDBACK_INVALID;
 		}

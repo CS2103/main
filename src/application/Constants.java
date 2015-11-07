@@ -128,6 +128,7 @@ public class Constants {
 	public static final String FEEDBACK_SHOW_WEEK_SUCCESS = "Displaying agenda for next 7 days!";
 	public static final String FEEDBACK_SHOW_WEEK_FAILURE = "No tasks due in the next 7 days!";
 	public static final String FEEDBACK_SHOW_MONTH_SUCCESS = "Displaying agenda for ";
+	public static final String FEEDBACK_SHOW_DATE_SUCCESS = "Displaying all tasks that is due by ";
 	public static final String FEEDBACK_SHOW_MONTH_FAILURE = "No tasks due in ";
 	public static final String FEEDBACK_SHOW_ALL_SUCCESS = "Displaying all tasks found in database!";
 	public static final String FEEDBACK_SHOW_ALL_FAILURE = "No tasks found in database!";
