@@ -1,4 +1,4 @@
-//@author A0129708
+//@@author A0129708
 package logic;
 
 import java.text.ParseException;
@@ -53,16 +53,16 @@ public class Logic {
 		} else if (command.equalsIgnoreCase(Constants.COMMAND_SHOW)) {
 			System.out.println("The date to search is " + parser.getDateTime(input).toString());
 			System.out.println("The tasks to show is: " + parser.getTitle(input));
-			if(parser.getTitle(input).equals(Constants.STATUS_INCOMPLETE)){
+			if (parser.getTitle(input).equals(Constants.STATUS_INCOMPLETE)) {
 				return bin.displayUnfinished();
-			}else if(parser.getTitle(input).equals(Constants.STATUS_COMPLETE)){
+			} else if (parser.getTitle(input).equals(Constants.STATUS_COMPLETE)) {
 				return bin.displayFinished();
 			}
-			
-			if(parser.getDateTime(input).getYear() == 0){
+
+			if (parser.getDateTime(input).getYear() == 0) {
 				return bin.displayAll();
 			}
-			
+
 			return searchEntries(parser.getDateTime(input));
 		} else if (command.equalsIgnoreCase(Constants.COMMAND_EXIT)) {
 			System.exit(0);
@@ -126,11 +126,12 @@ public class Logic {
 			bin.editEndingDate(toEdit, parser.getDateTime(info));
 			break;
 		case "time":
-			//TODO
+			// TODO
 			if (toEdit.getType().equals(Constants.TYPE_RECUR)) {
 				break;
 			}
-			System.out.println("The new starting time is: " +  parser.getStartDateTime(info).toString() + ".  " + "The ending Time is " + parser.getEndDateTime(info).toString() + " . ");
+			System.out.println("The new starting time is: " + parser.getStartDateTime(info).toString() + ".  "
+					+ "The ending Time is " + parser.getEndDateTime(info).toString() + " . ");
 			bin.editTimeField(toEdit, parser.getStartDateTime(info), parser.getEndDateTime(info));
 			break;
 		}
@@ -246,7 +247,7 @@ public class Logic {
 		case Constants.COMMAND_EDIT:
 			return bin.undoStack.peek().returnMani().getTitle() + Constants.FEEDBACK_EDIT_SUCCESS;
 		case Constants.COMMAND_SETPATH:
-			if (Storage.setPath(input)) {
+			if (Storage.setPath(input.split(" ")[1].trim())) {
 				return Constants.FEEDBACK_SETPATH_SUCCESS + input.split(Constants.SPACE)[1].trim();
 			} else {
 				return input.split(Constants.SPACE)[1].trim() + Constants.FEEDBACK_SETPATH_FAILURE;
@@ -256,10 +257,17 @@ public class Logic {
 		case Constants.COMMAND_HELP:
 			return Constants.FEEDBACK_VIEW_HELP;
 		case Constants.COMMAND_SHOW:
-			if(parser.getDateTime(input).getYear() == 0){
+			if (parser.getDateTime(input).getYear() == 0
+					&& !parser.getTitle(input).equalsIgnoreCase(Constants.STATUS_COMPLETE)
+					&& !parser.getTitle(input).equalsIgnoreCase(Constants.STATUS_INCOMPLETE)) {
 				return Constants.FEEDBACK_SHOW_ALL_SUCCESS;
-			}else{
-				return Constants.FEEDBACK_SHOW_DATE_SUCCESS + parser.getDateTime(input).getDayOfMonth() + "/" + parser.getDateTime(input).getMonthOfYear();
+			} else if (parser.getTitle(input).equalsIgnoreCase(Constants.STATUS_COMPLETE)) {
+				return Constants.FEEDBACK_SHOW_COMPLETED_SUCCESS;
+			} else if (parser.getTitle(input).equalsIgnoreCase(Constants.STATUS_INCOMPLETE)) {
+				return Constants.FEEDBACK_SHOW_INCOMPLETE_SUCCESS;
+			} else {
+				return Constants.FEEDBACK_SHOW_DATE_SUCCESS + parser.getDateTime(input).getDayOfMonth() + "/"
+						+ parser.getDateTime(input).getMonthOfYear();
 			}
 		default:
 			return Constants.FEEDBACK_INVALID;

@@ -165,7 +165,7 @@ public class EditTaskPreview extends StackPane {
 		editDurationLayout.add(oldEndTimeLabel, 0, 1);
 		editDurationLayout.add(oldDurationEndTime, 1, 1);
 		editDurationLayout.add(newEndTimeLabel, 2, 1);
-		editDurationLayout.add(newDurationEndTimeField, 3, 1); //
+		editDurationLayout.add(newDurationEndTimeField, 3, 1);
 		editDurationLayout.getColumnConstraints().addAll(columnConstraint, columnConstraint, columnConstraint,
 				columnConstraint);
 	}

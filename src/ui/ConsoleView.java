@@ -175,8 +175,6 @@ public class ConsoleView extends Pane {
 		editTaskPreview.oldDurationEndTime.setText(showIfValidDate(toEdit.getEndingTime()));
 		editTaskPreview.newDurationStartTimeField.setText(showIfValidDate(parser.getStartDateTime(input)));
 		editTaskPreview.newDurationEndTimeField.setText(showIfValidDate(parser.getEndDateTime(input)));
-		// editTaskPreview.oldRecurring.setText(oldRecurValue);
-		// editTaskPreview.newRecurringField.setText(recurValue);
 	}
 
 	private String showIfValidDate(DateTime dateTime) {

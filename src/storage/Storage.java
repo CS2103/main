@@ -41,10 +41,39 @@ public class Storage {
 	public Storage() {
 	}
 
+	public static boolean containSlash(String path) {
+		if (path.contains("\\") || path.contains("/")) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public static String extractPath(String path) {
+		int i = path.lastIndexOf("/");
+		String subPath = path.substring(0, i);
+		return subPath;
+	}
+	
 	public static boolean setPath(String newPath) {
 		File checkFile = new File(newPath);
 		if (isInvalidPath(checkFile)) {
-			return false;
+			if (!containSlash(newPath)) {
+				return false;
+			} else {
+				String subPath = extractPath(newPath);
+				File file = new File(subPath);
+				if(isInvalidPath(file)) {
+					return false;
+				} else {
+					Storage.path = newPath;
+					Storage.currentTasks = read();
+					writePathToFile();
+					write(currentTasks);
+					savedTask.delete();
+					return true;
+				}
+			}
 		} else {
 			Storage.currentTasks = read();
 			if (checkFile.isDirectory()) {
@@ -60,15 +89,16 @@ public class Storage {
 	}
 
 	private static boolean isInvalidPath(File file) {
-		if (!file.exists()) {
-			return true;
-		} else {
+		if (file.exists()) {
 			return false;
+		} else {
+			return true;
 		}
 	}
 
 	public static void appendSaveName(String newPath) {
-		Storage.path = newPath + "\\TBAsave.txt"; // "/TBAsave.txt" for macOS or "\\TBAsave.txt" for windows
+		//	Storage.path = newPath + "\\TBAsave.txt"; // for windows
+		Storage.path = newPath + "/TBAsave.txt";  // for macOS
 
 	}
 
@@ -89,7 +119,6 @@ public class Storage {
 	}
 
 	public static void write(ArrayList<Task> tasks) {
-		System.out.println(path);
 		try {
 			if (path == null) {
 				path = savedPath.getAbsolutePath();
