@@ -73,7 +73,7 @@ public class DateParser {
 		}
 
 		for (String regex : Constants.DICTIONARY_TOMORROW) {
-			if (input != null && input.contains(regex)){
+			if (input != null && input.contains(regex)) {
 				dateTime = DateTime.now().plusDays(1);
 			}
 		}
