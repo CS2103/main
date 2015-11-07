@@ -133,6 +133,8 @@ public class Constants {
 	public static final String FEEDBACK_SHOW_MONTH_FAILURE = "No tasks due in ";
 	public static final String FEEDBACK_SHOW_ALL_SUCCESS = "Displaying all tasks found in database!";
 	public static final String FEEDBACK_SHOW_ALL_FAILURE = "No tasks found in database!";
+	public static final String FEEDBACK_SHOW_COMPLETED_SUCCESS = "Showing all completed tasks";
+	public static final String FEEDBACK_SHOW_INCOMPLETE_SUCCESS = "Showing all unfinished tasks";
 	public static final String FEEDBACK_SEARCH_SUCCESS_SINGLE = "Search results for tasks with the keyword: ";
 	public static final String FEEDBACK_SEARCH_SUCCESS_MULTI = "Search results for tasks with the keywords: ";
 	public static final String FEEDBACK_SEARCH_FAILURE = "SEARCH FAILED";

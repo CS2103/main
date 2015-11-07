@@ -16,19 +16,7 @@ public class TitleParser {
 			text = splitInputWithDictionary(Constants.DICTIONARY_DELETE, input);
 		}
 		if (text == null) {
-			text = splitInputWithDictionary(Constants.DICTIONARY_EDIT, input);
-		}
-		if (text == null) {
 			text = splitInputWithDictionary(Constants.DICTIONARY_SEARCH, input);
-		}
-		if (text == null) {
-			text = splitInputWithDictionary(Constants.DICTIONARY_UNDO, input);
-		}
-		if (text == null) {
-			text = splitInputWithDictionary(Constants.DICTIONARY_REDO, input);
-		}
-		if (text == null) {
-			text = splitInputWithDictionary(Constants.DICTIONARY_EXIT, input);
 		}
 		if (text == null) {
 			text = splitInputWithDictionary(Constants.DICTIONARY_SETPATH, input);
@@ -54,10 +42,7 @@ public class TitleParser {
 		Matcher dateMatcher;
 
 		for (String regex : dictionary) {
-			/*
-			 * if (input.toLowerCase().indexOf(regex) > firstIndex) { firstIndex
-			 * = input.toLowerCase().indexOf(regex); }
-			 */
+
 			datePattern = Pattern.compile(regex);
 			dateMatcher = datePattern.matcher(input.toLowerCase());
 
@@ -78,8 +63,7 @@ public class TitleParser {
 		taskKeywords.removeAll(Arrays.asList(dictionary));
 
 		for (String regex : taskKeywords) {
-			// if (input.toLowerCase().indexOf(regex) < lastIndex &&
-			// input.toLowerCase().indexOf(regex) > 0) {
+
 			datePattern = Pattern.compile(regex);
 			dateMatcher = datePattern.matcher(input);
 
@@ -88,7 +72,6 @@ public class TitleParser {
 					lastIndex = dateMatcher.start();
 				}
 			}
-			// }
 		}
 		if (lastIndex <= firstIndex) {
 			lastIndex = input.length();

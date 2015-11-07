@@ -35,16 +35,16 @@ public class BinSorter {
 				if (inboxArr.get(i).getType().equals(Constants.TYPE_FLOATING)) {
 					timeUndefined.add(inboxArr.get(i));
 					inboxArr.remove(inboxArr.get(i));
-					i--;// TODO
-					len--;
+					//i--;// TODO
+					//len--;
 					isSorted = false;
 					break;
 				}
 				if (inboxArr.get(i).getType().equals(Constants.TYPE_RECUR)) {
 					recurArray.add(inboxArr.get(i));
 					inboxArr.remove(inboxArr.get(i));
-					i--;// TODO
-					len--;
+					//i--;// TODO
+					//len--;
 					isSorted = false;
 					break;
 				}
