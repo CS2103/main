@@ -166,31 +166,37 @@ public class Constants {
 	public static String[] dateTimeFormats = { "d MMM yyyy HHmm", "d/M/yy", "d/M", "d-M-y", "d MMM", "d MMMM",
 			"dd.MM.yyyy", "d-M", "dd.M" };
 
-	public static String[] dateRegex = { 
-			"((31(?!\\s(feb(ruary)?|apr(il)?|june?|(sep(?=\\b|t)t?|nov)(ember)?)))|(0?[1-9])|1\\d|2[0-8]|29|30)\\s(jan(uary)?|feb(ruary)?|ma(r(ch)?|y)|apr(il)?|ju((ly?)|(ne?))|aug(ust)?|oct(ober)?|(sep(?=\\b|t)t?|nov|dec)(ember)?)\\s\\d{2}(\\s|$)" ,
-																						// 10 dec+ 15															
-																						// adapted from http://regexlib.com/REDetails.aspx?regexp_id=405															
-			
-			"(3[0-1]|2[0-9]|1[0-9]|[1-9])[.|/|-](1[0-2]|[1-9])[.|/|-]\\d{1,4}", 		// 10.12.2015
-																						// OR
-																						// 10/12/2015
-																						// OR
-																						// 10-12-2015
-			
-			"(3[0-1]|2[0-9]|(1[0-9])|[1-9])[.|/|-]((1[0-2]|[1-9]))", 					// 10.12 OR
-																						// 10/12
-			
+	public static String[] dateRegex = {
+			"((31(?!\\s(feb(ruary)?|apr(il)?|june?|(sep(?=\\b|t)t?|nov)(ember)?)))|(0?[1-9])|1\\d|2[0-8]|29|30)\\s(jan(uary)?|feb(ruary)?|ma(r(ch)?|y)|apr(il)?|ju((ly?)|(ne?))|aug(ust)?|oct(ober)?|(sep(?=\\b|t)t?|nov|dec)(ember)?)\\s\\d{2}(\\s|$)",
+			// 10 dec+ 15
+			// adapted from http://regexlib.com/REDetails.aspx?regexp_id=405
+
+			"(3[0-1]|2[0-9]|1[0-9]|[1-9])[.|/|-](1[0-2]|[1-9])[.|/|-]\\d{1,4}", // 10.12.2015
+																				// OR
+																				// 10/12/2015
+																				// OR
+																				// 10-12-2015
+
+			"(3[0-1]|2[0-9]|(1[0-9])|[1-9])[.|/|-]((1[0-2]|[1-9]))", // 10.12 OR
+																		// 10/12
+
 			"((31(?!\\s(feb(ruary)?|apr(il)?|june?|(sep(?=\\b|t)t?|nov)(ember)?)))|(0?[1-9])|1\\d|2[0-8]|29|30)\\s(jan(uary)?|feb(ruary)?|ma(r(ch)?|y)|apr(il)?|ju((ly?)|(ne?))|aug(ust)?|oct(ober)?|(sep(?=\\b|t)t?|nov|dec)(ember)?)"
-																						// 10 dec+
+			// 10 dec+
 	};
 
-	public static String[] timeRegex = { "[(2[0-3]|1[0-9]|[0-9])]{2}[[1-5]?[0-9]]{2}", 	// 2345
-			"(2[0-3]|1[0-9]|[0-9]):([1-5]?[0-9])"										//23:45
+	public static String[] timeRegex = { "[(2[0-3]|1[0-9]|[0-9])]{2}[[1-5]?[0-9]]{2}", // 2345
+			"(2[0-3]|1[0-9]|[0-9]):([1-5]?[0-9])" // 23:45
 	};
 
 	// keywords
-	public static final String[] TASK_START_DATETIME = { " from \\d", " on \\d", " between \\d" };
-	public static final String[] TASK_END_DATETIME = { " by \\d", " until \\d", " till \\d", " before \\d", " to \\d" };
+	// DATETIME keywords regex only counts as datetime if "(digit) / today /
+	// tomorrow" values are input
+
+	public static final String[] TASK_START_DATETIME = { " from (\\d|(t((oday?)|(dy?)|(mr?)|(omorrow))))",
+			" on (\\d|(t((oday?)|(dy?)|(mr?)|(omorrow))))", " between (\\d|(t((oday?)|(dy?)|(mr?)|(omorrow))))" };
+	public static final String[] TASK_END_DATETIME = { " by (\\d|(t((oday?)|(dy?)|(mr?)|(omorrow))))",
+			" until (\\d|(t((oday?)|(dy?)|(mr?)|(omorrow))))", " till (\\d|(t((oday?)|(dy?)|(mr?)|(omorrow))))",
+			" before (\\d|(t((oday?)|(dy?)|(mr?)|(omorrow))))", " to (\\d|(t((oday?)|(dy?)|(mr?)|(omorrow))))" };
 	public static final String[] TASK_RECURRING = { "daily", "weekly", "monthly", "yearly" };
 
 	// space
@@ -202,6 +208,10 @@ public class Constants {
 
 	// empty string
 	public static final String EMPTY_STRING = "";
+
+	// theme list
+	public static final String[] THEME_LIST = { "style0.css", "style1.css", "style2.css", "style3.css", "style4.css",
+			"style5.css" };
 
 	// Tray icon display messages
 	final static String MSG_ALREADY_RUNNING = APP_NAME + " is Already Running!";

@@ -5,6 +5,8 @@
 
 #dateDisplay {
 	-fx-font-family: "sans-serif";
+	-fx-text-fill:rgb(214, 255, 255);
+	-fx-background-color: linear-gradient( from 100.0% 0.0% to 100.0% 100.0%, rgb(26,77,77) 0.0, rgb(51,102,102) 100.0);
 	-fx-font-size: 30px;
 }
 
@@ -32,15 +34,29 @@
 }
 
 #scrollPane .scroll-bar:vertical .thumb {
-    -fx-background-color: derive(black,90%);
+    -fx-background-color: rgba(130,130,130, 0.4);
     -fx-background-insets: 0, 0, 0;
-    -fx-background-radius: 0em;
+    -fx-background-radius:30;
+    -fx-padding: 7,7,7,7;
 }
 
 #scrollPane .scroll-bar:vertical .increment-button ,
 #scrollPane .scroll-bar:vertical .decrement-button {
-    -fx-background-color:transparent;
-    -fx-border-color:derive(gray,80%);
+    -fx-background-color:null;
+	-fx-border-color:null;
+	-fx-background-radius: 0;
+	-fx-padding:0;
+	-fx-shape: null;
+	
+}
+
+#scrollPane .scroll-bar *.increment-arrow,
+#scrollPane .scroll-bar *.decrement-arrow{
+    -fx-background-color: null;
+    -fx-background-radius: 0;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+    -fx-shape: null;
 }
 
 #scrollPane {
