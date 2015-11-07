@@ -106,7 +106,7 @@ public class Storage {
 		try {
 			FileWriter fw = new FileWriter(savedPath.getAbsoluteFile());
 			BufferedWriter bw = new BufferedWriter(fw);
-			bw.write(path);
+			bw.write(Storage.path);
 			bw.close();
 
 		} catch (IOException e) {

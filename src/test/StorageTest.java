@@ -21,6 +21,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import logic.Task;
+import logic.TaskBin;
 import storage.Converters;
 import storage.Storage;
 
@@ -37,7 +38,7 @@ public class StorageTest {
 	private static ArrayList<Task> taskListForTest = new ArrayList<Task>();
 
 	@Before
-	public void setUp() throws Exception {
+	public void setUp1() throws Exception {
 		Task[] t = new Task[6];
 		DateTime d0 = new DateTime(0, 1, 1, 0, 0);
 		DateTime d1 = new DateTime(2015, 10, 21, 0, 0);
@@ -55,14 +56,34 @@ public class StorageTest {
 			taskList.add(t[i]);
 		}
 	}
-
+	
+	@Before
+	public void setUp2() throws Exception {
+		Task task1 = new Task(new DateTime(0,1,1,0,0),new DateTime(0,1,1,0,0));
+		Task task2 = new Task("The title of the task is super super super super super super super super super super super super super super super super long", new DateTime(0,1,1,0,0), new DateTime(0,1,1,0,0));
+		Task task3 = new Task("������֧��", new DateTime(0,1,1,0,0),new DateTime(0,1,1,0,0) );
+		Task task4 = new Task("Task starts and end at different year", new DateTime(2015,11,12,0,0), new DateTime(2016,1,15,0,1));
+		Task task5 = new Task("Task ends before it starts", new DateTime(2015,12,11,0,0), new DateTime(2015,11,15,0,0));
+		TaskBin testBin = new TaskBin();
+		testBin.add(task1);
+		testBin.add(task2);
+		testBin.add(task3);
+		testBin.add(task4);
+		testBin.add(task5);
+		ArrayList<Task> output1 = new ArrayList<Task>();
+		output1.add(task3);
+		output1.add(task2);
+		output1.add(task1);
+		output1.add(task5);
+		output1.add(task4);
+	}
 	@After
 	public void reset() throws Exception {
 		taskList.clear();
 	}
 
 	@Test
-	public void testSetPath_() {
+	public void testSetPath_fileCreated1() {
 		boolean pass = true;
 		Storage.setPath("/Users/hungngth/Downloads");
 		File file = new File("/Users/hungngth/Downloads/TBAsave.txt");
@@ -73,7 +94,7 @@ public class StorageTest {
 	}
 
 	@Test
-	public void testsetPath2() {
+	public void testsetPath_fileCreated2() {
 		boolean pass = true;
 		Storage.setPath("/Users/hungngth/Downloads/mysave.txt");
 		File file = new File("/Users/hungngth/Downloads/mysave.txt");
@@ -84,14 +105,14 @@ public class StorageTest {
 	}
 
 	@Test
-	public void testsetPath3() {
+	public void testsetPath_correctAssignment() {
 		Storage.setPath("/Users/hungngth/Downloads");
 		assertEquals("test correct assignment of path to Storage.path", Storage.path,
 				"/Users/hungngth/Downloads/TBAsave.txt");
 	}
 
 	@Test
-	public void testsetPath4() {
+	public void testsetPath_correctPathWritten() {
 		Storage.setPath("/Users/hungngth/Downloads/mysave.txt");
 		try {
 			FileReader fr = new FileReader("/Users/hungngth/Documents/workspace/TBA/main");
@@ -106,7 +127,7 @@ public class StorageTest {
 	}
 
 	@Test
-	public void testWriteAndRead() {
+	public void testWrite_CorrectContentWritten() {
 		// System.out.println("taskList " + taskList.toString());
 		Storage.write(taskList);
 		String line = "";
@@ -133,8 +154,38 @@ public class StorageTest {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		assertTrue(pass);
+		assertTrue("test correct content written to savedTask.json", pass);
+	}
+	
+	@Test
+	public void testRead_CorrectContentRead() {
+		// System.out.println("taskList " + taskList.toString());
+		Storage.write(taskList);
+		String line = "";
+		boolean pass = true;
+		try {
+			FileReader fr = new FileReader(Storage.path);
+			BufferedReader br = new BufferedReader(fr);
+			StringBuilder stringBuilder = new StringBuilder();
+			while ((line = br.readLine()) != null) {
+				stringBuilder.append(line).append("\n");
+			}
+			br.close();
+			String jsonString = stringBuilder.toString();
+			// System.out.println("jsonString " + jsonString);
+			taskListForTest = gson.fromJson(jsonString, new TypeToken<ArrayList<Task>>() {
+			}.getType());
 
+			for (int i = 0; i < taskList.size(); i++) {
+				if (!taskListForTest.get(i).equals(taskList.get(i))) {
+					pass = false;
+				}
+			}
+		} catch (FileNotFoundException e) {
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		assertTrue("test correct content written to savedTask.json", pass);
 	}
 
 }
