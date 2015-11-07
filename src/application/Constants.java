@@ -157,6 +157,8 @@ public class Constants {
 	public static final String FEEDBACK_INVALID_NUMBER_OF_QUOTES = "Invaild number of quotes";
 	public static final String FEEDBACK_INVALID_PARAMETERS_FOR_EDIT = "Invalid parameters for edit command";
 	public static final String FEEDBACK_SETPATH_SUCCESS = "New save location is: ";
+	public static final String FEEDBACK_SETPATH_FAILURE = " not found! Save location is not changed";
+
 
 	// date formats
 	public static String[] dateFormats = { "dd MMM yy", "d/M/yy", "d/M", "d-M-yy", "d MMM", "dd MMMM", "dd.MM.yy",

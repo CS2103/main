@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+
 import java.util.ArrayList;
 
 // import Joda Time library
@@ -23,43 +24,55 @@ public class Storage {
 
 	// initial methods to serialise/deserialise savedTask.json with DateTime
 	// formats
-	final static Gson gson = Converters.registerDateTime(new GsonBuilder().setPrettyPrinting().serializeNulls())
-			.create();
+	final static Gson gson = Converters.registerDateTime(new GsonBuilder().setPrettyPrinting().serializeNulls()).create();
 	final DateTime original = new DateTime();
 	final String json = gson.toJson(original);
 	final DateTime reconstituted = gson.fromJson(json, DateTime.class);
 
 	// attributes
+	public static File savedTask = new File("TBAsave.json"); // public for testing, change after done
 
-	public static File savedTask = new File("TBAsave.json"); // public for
-																// testing,
-																// change after
-																// done
-
-	public static File savedPath = new File("TBApath.txt"); // public for
-															// testing, change
-															// after done
+	public static File savedPath = new File("TBApath.txt"); // public for testing, change after done
 
 	public static String path; // public for testing, change after done
 
-	private static ArrayList<Task> currentTaskList = new ArrayList<Task>();
+	private static ArrayList<Task> currentTasks = new ArrayList<Task>();
 
 	public Storage() {
 	}
 
-	public static void setPath(String path) {
-		File file = new File(path);
+	public static boolean setPath(String newPath) {
+		File checkFile = new File(newPath);
+		if (isInvalidPath(checkFile)) {
+			return false;
+		} else {
+			Storage.currentTasks = read();
+			if (checkFile.isDirectory()) {
+				appendSaveName(newPath);
+				writePathToFile();
+			} else {
+				Storage.path = newPath;
+			}
+			write(currentTasks);
+			savedTask.delete();
+			return true;
+		}
+	}
+
+	private static boolean isInvalidPath(File file) {
 		if (!file.exists()) {
-			System.out.println("file not exists");
+			return true;
+		} else {
+			return false;
 		}
+	}
 
-		Storage.currentTaskList = read();
+	public static void appendSaveName(String newPath) {
+		Storage.path = newPath + "\\TBAsave.txt"; // "/TBAsave.txt" for macOS or "\\TBAsave.txt" for windows
 
-		if (file.isDirectory()) {
-			path = path + "/TBAsave.txt"; // this is for mac or "\\TBAsave.txt"
-											// for windows
-		}
+	}
 
+	public static void writePathToFile() {
 		try {
 			FileWriter fw = new FileWriter(savedPath.getAbsoluteFile());
 			BufferedWriter bw = new BufferedWriter(fw);
@@ -69,12 +82,6 @@ public class Storage {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
-		Storage.path = path;
-
-		write(currentTaskList);
-
-		savedTask.delete();
 	}
 
 	public static String enquirePath() {
