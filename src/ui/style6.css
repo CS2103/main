@@ -5,6 +5,10 @@
 #dateDisplay {
 	-fx-font-family: "sans-serif";
 	-fx-font-size: 30px;
+	-fx-text-fill:rgb(21,105,53);
+	-fx-background-color:linear-gradient( from 100.0% 0.0% to 100.0% 100.0%, rgb(153,153,51) 0.0, rgb(204,204,102) 100.0);
+	-fx-background-radius: 20 0 0 0 ;	
+	
 }
 
 #timeDisplay {
@@ -12,6 +16,7 @@
 	-fx-background-color:linear-gradient( from 100.0% 0.0% to 100.0% 100.0%, rgb(153,153,51) 0.0, rgb(204,204,102) 100.0);
 	-fx-text-fill:rgb(21,105,53);
 	-fx-font-size: 30px;
+	-fx-background-radius: 0 20 0 0 ;	
 	
 }
 
@@ -31,15 +36,29 @@
 }
 
 #scrollPane .scroll-bar:vertical .thumb {
-    -fx-background-color: derive(black,90%);
+    -fx-background-color: rgba(130,130,130, 0.4);
     -fx-background-insets: 0, 0, 0;
-    -fx-background-radius: 0em;
+    -fx-background-radius:30;
+    -fx-padding: 7,7,7,7;
 }
 
 #scrollPane .scroll-bar:vertical .increment-button ,
 #scrollPane .scroll-bar:vertical .decrement-button {
-    -fx-background-color:transparent;
-    -fx-border-color:derive(gray,80%);
+    -fx-background-color:null;
+	-fx-border-color:null;
+	-fx-background-radius: 0;
+	-fx-padding:0;
+	-fx-shape: null;
+	
+}
+
+#scrollPane .scroll-bar *.increment-arrow,
+#scrollPane .scroll-bar *.decrement-arrow{
+    -fx-background-color: null;
+    -fx-background-radius: 0;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+    -fx-shape: null;
 }
 
 #scrollPane {
@@ -73,6 +92,8 @@
 	-fx-background-color:linear-gradient( from 100.0% 0.0% to 100.0% 100.0%, rgb(230,230,128) 0.0, rgb(153,153,51) 100.0);
 	-fx-padding: 0 0 0 10;
 	-fx-pref-height: 30;
+	-fx-background-radius: 0 0 20 20 ;	
+	
 }
 
 #listItem {
