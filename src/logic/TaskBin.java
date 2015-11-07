@@ -203,6 +203,7 @@ public class TaskBin {
 			redoStack.push(previousComm);
 			System.out.println("The previous title is: " + previousComm.returnMani().getTitle() + " and the current title is : " + previousComm.returnOrigin().getTitle());
 			System.out.println("The task I am search for is: " + taskList.get(displayList.indexOf(previousComm.returnMani())));
+			displayList = display.returnDisplay();
 			//taskList.remove(taskList.get(taskList.indexOf(previousComm.returnMani())));
 			taskList.remove(previousComm.returnMani());
 			taskList.add(previousComm.returnOrigin());
@@ -265,6 +266,7 @@ public class TaskBin {
 			}
 			displayList = display.returnDisplay();
 			break;*/
+			displayList = display.returnDisplay();
 			undoStack.push(redoComm);
 			taskList.remove(taskList.get(taskList.indexOf(redoComm.returnOrigin())));
 			taskList.add(redoComm.returnMani());
@@ -476,8 +478,8 @@ public class TaskBin {
 		Task tarDis = new Task (displayList.get(displayList.indexOf(tar)));
 		taskList.remove(taskList.get(taskList.indexOf(task)));
 		displayList.remove(displayList.get(displayList.indexOf(task)));
-		tar.setStartingDate(date);
-		tarDis.setStartingDate(date);
+		tar.setEndingDate(date);
+		tarDis.setEndingDate(date);
 		taskList.add(tar);
 		displayList.add(tarDis);
 		Command editDate = new Command(Constants.alter_tag, tar, buffer);
@@ -550,6 +552,10 @@ public class TaskBin {
 			}
 		}
 		return false;
+	}
+	
+	public ArrayList<Task> returnAllInbox(){
+		return new ArrayList<Task>(taskList);
 	}
 
 }
