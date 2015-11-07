@@ -30,8 +30,7 @@ public class Task {
 		this.endingTime = task.getEndingTime();
 		this.recurDate = task.getRecurDates();
 		this.recurDone = task.getDoneDates();
-		
-		setTag();
+
 	}
 
 	public Task(String title) {

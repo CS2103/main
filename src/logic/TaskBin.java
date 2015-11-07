@@ -364,32 +364,36 @@ public class TaskBin {
 		redoStack.clear();
 	}
 
-	public void editStartingDate(Task task, DateTime date) {
+	public void editStartingDate(Task task, DateTime date){
 		if (task.getType().equals(Constants.recur_tag)) {
 			return;
 		}
 		Task tar = taskList.get(taskList.indexOf(task));
+		Task tarDis = displayList.get(displayList.indexOf(tar));
 		Task buffer = new Task(task);
 		tar.setStartingDate(date);
+		tarDis.setStartingDate(date);
 		Command editDate = new Command(Constants.alter_tag, tar, buffer);
-		display.updateDisplay(editDate, true);
 		undoStack.push(editDate);
 		taskList = sorter.sortArrayByTime(taskList);
+
 		Storage.write(taskList);
 		redoStack.clear();
 	}
 
-	public void editEndingDate(Task task, DateTime date) {
+	public void editEndingDate(Task task, DateTime date){
 		if (task.getType().equals(Constants.recur_tag)) {
 			return;
 		}
 		Task tar = taskList.get(taskList.indexOf(task));
+		Task tarDis = displayList.get(displayList.indexOf(tar));
 		Task buffer = new Task(task);
 		tar.setEndingDate(date);
+		tarDis.setEndingDate(date);
 		Command editDate = new Command(Constants.alter_tag, tar, buffer);
-		display.updateDisplay(editDate, true);
 		undoStack.push(editDate);
 		taskList = sorter.sortArrayByTime(taskList);
+
 		Storage.write(taskList);
 		redoStack.clear();
 	}
