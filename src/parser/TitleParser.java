@@ -16,19 +16,7 @@ public class TitleParser {
 			text = splitInputWithDictionary(Constants.DICTIONARY_DELETE, input);
 		}
 		if (text == null) {
-			text = splitInputWithDictionary(Constants.DICTIONARY_EDIT, input);
-		}
-		if (text == null) {
 			text = splitInputWithDictionary(Constants.DICTIONARY_SEARCH, input);
-		}
-		if (text == null) {
-			text = splitInputWithDictionary(Constants.DICTIONARY_UNDO, input);
-		}
-		if (text == null) {
-			text = splitInputWithDictionary(Constants.DICTIONARY_REDO, input);
-		}
-		if (text == null) {
-			text = splitInputWithDictionary(Constants.DICTIONARY_EXIT, input);
 		}
 		if (text == null) {
 			text = splitInputWithDictionary(Constants.DICTIONARY_SETPATH, input);
@@ -63,6 +51,8 @@ public class TitleParser {
 
 			if (dateMatcher.find()) {
 				firstIndex = dateMatcher.start();
+				System.out.println("TRUE");
+				System.out.println("\"" + firstIndex +"\"");
 			}
 
 		}
