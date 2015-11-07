@@ -444,6 +444,9 @@ public class TaskBin {
 			DateTime start = task.getStartingTime();
 			DateTime end = task.getEndingTime();
 			for (Task t : taskList) {
+				if((t.getStartingTime().getYear() == 0) || (t.getEndingTime().getYear()==0)){
+					return false;
+				}
 				if ((t.getStartingTime().isBefore(end)) && (t.getStartingTime().isAfter(start))) {
 					return true;
 				}
@@ -463,7 +466,7 @@ public class TaskBin {
 			if((t.getType().equals(Constants.TYPE_FLOATING))||(t.getType().equals(Constants.TYPE_RECUR))){
 				continue;
 			}
-			if(t.getStartingTime().equals(start) && t.getEndingTime().equals(end)){
+			if((t.getStartingTime().getSecondOfDay() == start.getSecondOfDay()) && (t.getEndingTime().getSecondOfDay() == end.getSecondOfDay())){
 				continue;
 			}
 			if ((t.getStartingTime().isBefore(end)) && (t.getStartingTime().isAfter(start))) {
