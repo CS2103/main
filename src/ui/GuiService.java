@@ -226,10 +226,10 @@ public class GuiService {
 
 	public Scene buildScene(StackPane content) {
 		themeIndex = 1;
-		Scene myScene = new Scene(content, 800, 600);
+		Scene myScene = new Scene(content, 803, 600);
 		myScene.setFill(Color.TRANSPARENT);
 		myScene.getStylesheets().clear();
-		myScene.getStylesheets().add(this.getClass().getResource("style1.css").toExternalForm());
+		myScene.getStylesheets().add(this.getClass().getResource("style6.css").toExternalForm());
 		showConsolePane();
 		return myScene;
 	}
