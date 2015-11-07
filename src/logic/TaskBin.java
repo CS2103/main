@@ -377,6 +377,7 @@ public class TaskBin {
 		tar.setTitle(newTitle);
 		System.out.println("The tar is recur " + tar.isTypeRecur() + ". The buffer is type recur: " + buffer.isTypeRecur());
 		Command editTil = new Command(Constants.alter_tag, tar, buffer);
+		display.setDisplayAll(displayList);
 		undoStack.push(editTil);
 		Storage.write(taskList);
 		redoStack.clear();
@@ -392,6 +393,7 @@ public class TaskBin {
 		tar.setStartingDate(date);
 		tarDis.setStartingDate(date);
 		Command editDate = new Command(Constants.alter_tag, tar, buffer);
+		display.setDisplayAll(displayList);
 		undoStack.push(editDate);
 		taskList = sorter.sortArrayByTime(taskList);
 
@@ -409,6 +411,7 @@ public class TaskBin {
 		tar.setEndingDate(date);
 		tarDis.setEndingDate(date);
 		Command editDate = new Command(Constants.alter_tag, tar, buffer);
+		display.setDisplayAll(displayList);
 		undoStack.push(editDate);
 		taskList = sorter.sortArrayByTime(taskList);
 
