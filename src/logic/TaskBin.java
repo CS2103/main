@@ -382,6 +382,24 @@ public class TaskBin {
 		Storage.write(taskList);
 		redoStack.clear();
 	}
+	
+	public void editTimeField(Task task, DateTime startDate, DateTime endDate){
+		if (task.getType().equals(Constants.recur_tag)) {
+			return;
+		}
+		Task tar = taskList.get(taskList.indexOf(task));
+		Task tarDis = displayList.get(displayList.indexOf(tar));
+		Task buffer = new Task(task);
+		tar.setStartingDate(startDate);
+		tarDis.setStartingDate(startDate);
+		tar.setEndingDate(endDate);
+		tarDis.setEndingDate(endDate);
+		Command editDate = new Command(Constants.alter_tag, tar, buffer);
+		undoStack.push(editDate);
+		taskList = sorter.sortArrayByTime(taskList);
+		Storage.write(taskList);
+		redoStack.clear();
+	}
 
 	public void editStartingDate(Task task, DateTime date){
 		if (task.getType().equals(Constants.recur_tag)) {

@@ -119,6 +119,14 @@ public class Logic {
 			}
 			bin.editEndingDate(toEdit, parser.getDateTime(info));
 			break;
+		case "time":
+			//TODO
+			if (toEdit.getType().equals(Constants.TYPE_RECUR)) {
+				break;
+			}
+			System.out.println("The new starting time is: " +  parser.getStartDateTime(info).toString() + ".  " + "The ending Time is " + parser.getEndDateTime(info).toString() + " . ");
+			bin.editTimeField(toEdit, parser.getStartDateTime(info), parser.getEndDateTime(info));
+			break;
 		}
 		return bin.returnDisplay();
 	}
