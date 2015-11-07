@@ -387,6 +387,12 @@ public class TaskBin {
 		if (task.getType().equals(Constants.recur_tag)) {
 			return;
 		}
+		if(startDate.getYear() == 0){
+			startDate = task.getStartingTime();
+		}
+		if(endDate.getYear() == 0){
+			endDate = task.getEndingTime();
+		}
 		Task tar = taskList.get(taskList.indexOf(task));
 		Task tarDis = displayList.get(displayList.indexOf(tar));
 		Task buffer = new Task(task);
