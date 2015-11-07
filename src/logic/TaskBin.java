@@ -124,7 +124,7 @@ public class TaskBin {
 
 		for (Task obj : taskList) {
 			if (obj.equals(task)) {
-				System.out.println(obj.getTitle());
+				//System.out.println(obj.getTitle());
 				obj.mark();
 				Command mark = new Command(Constants.mark_tag, obj);
 				undoStack.push(mark);
@@ -140,7 +140,7 @@ public class TaskBin {
 	public ArrayList<Task> unmarkTaskInstance(Task task) {
 		for (Task obj : taskList) {
 			if (obj.equals(task)) {
-				System.out.println(obj.getTitle());
+				//System.out.println(obj.getTitle());
 				obj.unMark();
 				Command unmark = new Command(Constants.unmark_tag, obj);
 				undoStack.push(unmark);
