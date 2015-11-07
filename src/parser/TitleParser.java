@@ -51,8 +51,6 @@ public class TitleParser {
 
 			if (dateMatcher.find()) {
 				firstIndex = dateMatcher.start();
-				System.out.println("TRUE");
-				System.out.println("\"" + firstIndex +"\"");
 			}
 
 		}
