@@ -128,7 +128,7 @@ public class DateParserTest {
 	}
 
 	@Test
-	public void testGetDateTime_() { // 2017 is NOT a leap year
+	public void testGetDateTime_LeapYear2() { // 2017 is NOT a leap year
 		DateTime dateTime = DateParser.getDateTime("29 feb 17");
 		assertFalse(INCORRECT_DAY, dateTime.getDayOfMonth() == 29);
 		assertFalse(INCORRECT_MONTH, dateTime.getMonthOfYear() == 2);
@@ -137,11 +137,57 @@ public class DateParserTest {
 	}
 
 	@Test
-	public void testGetDateTime_LeapYear2() { // 2017 is NOT a leap year
-		DateTime dateTime = DateParser.getDateTime("29 feb 17");
-		assertFalse(INCORRECT_DAY, dateTime.getDayOfMonth() == 29);
-		assertFalse(INCORRECT_MONTH, dateTime.getMonthOfYear() == 2);
+	public void testGetDateTime_DayBoundary1() { // day is negative
+		DateTime dateTime = DateParser.getDateTime(" -2 mar 17");
+		assertTrue(INCORRECT_DAY, dateTime.getDayOfMonth() == 2);
+		assertTrue(INCORRECT_MONTH, dateTime.getMonthOfYear() == 3);
+		assertTrue(INCORRECT_YEAR, dateTime.getYear() == 2017);
+	}
+
+	@Test
+	public void testGetDateTime_DayBoundary2() { // day > 31
+		DateTime dateTime = DateParser.getDateTime(" 32 jul 17");
+		assertTrue(INCORRECT_DAY, dateTime.getDayOfMonth() == 2);
+		assertTrue(INCORRECT_MONTH, dateTime.getMonthOfYear() == 7);
+		assertTrue(INCORRECT_YEAR, dateTime.getYear() == 2017);
+	}
+
+	/*
+	 * Will fail to parse expected DateTime
+	 */
+	@Test
+	public void testGetDateTime_DayBoundary3() { // day < 1
+		DateTime dateTime = DateParser.getDateTime(" 0/06/17");
+		assertFalse(INCORRECT_DAY, dateTime.getDayOfMonth() == 0);
+		assertFalse(INCORRECT_MONTH, dateTime.getMonthOfYear() == 6);
 		assertFalse(INCORRECT_YEAR, dateTime.getYear() == 2017);
+	}
+
+	/*
+	 * Ignore the second digit of the month as user error and parse
+	 */
+	@Test
+	public void testGetDateTime_MonthBoundary1() { // month > 12
+		DateTime dateTime = DateParser.getDateTime(" 06/27/17");
+		assertTrue(INCORRECT_DAY, dateTime.getDayOfMonth() == 6);
+		assertTrue(INCORRECT_MONTH, dateTime.getMonthOfYear() == 2);
+		assertTrue(INCORRECT_YEAR, dateTime.getYear() == DateTime.now().getYear());
+	}
+
+	/*
+	 * Will fail to parse expected DateTime
+	 */
+	@Test
+	public void testGetDateTime_MonthBoundary2() { // month < 1
+		DateTime dateTime = DateParser.getDateTime(" 06/0/17");
+		System.out.println(dateTime.getDayOfMonth() + " " + dateTime.getMonthOfYear() + " " + dateTime.getYear());
+		assertFalse(INCORRECT_DAY, dateTime.getDayOfMonth() == 6);
+		assertFalse(INCORRECT_MONTH, dateTime.getMonthOfYear() == 3);
 		assertTrue(INCORRECT_YEAR, dateTime.getYear() == 0);
+	}
+
+	@Test
+	public void testGetDateTime_YearBoundary1() { // year
+
 	}
 }

@@ -120,10 +120,9 @@ public class GuiService {
 					&& newValue.matches("\\D+\\s\\d+\\s\\D+.+\\z")) {
 				consoleView.showEditPopup();
 				Task toEdit = this.logic.displayCurrent().get(this.parser.getIndex(newValue) - 1);
-				consoleView.updateEditTaskPreviewDetails(toEdit.getTitle(), toEdit.getStartingTime(),
-						toEdit.getEndingTime(), this.parser.getField(newValue), TitleParser.getEditTitle(newValue),
-						this.parser.getDateTime(TitleParser.getEditTitle(newValue)), "in progress",
-						parser.getRecurValue(newValue));
+
+				consoleView.updateEditTaskPreviewDetails(toEdit, newValue);
+				System.out.println(parser.getField(newValue));
 			}
 		});
 
@@ -229,7 +228,7 @@ public class GuiService {
 		Scene myScene = new Scene(content, 803, 600);
 		myScene.setFill(Color.TRANSPARENT);
 		myScene.getStylesheets().clear();
-		myScene.getStylesheets().add(this.getClass().getResource("style4.css").toExternalForm());
+		myScene.getStylesheets().add(this.getClass().getResource("style1.css").toExternalForm());
 		showConsolePane();
 		return myScene;
 	}
