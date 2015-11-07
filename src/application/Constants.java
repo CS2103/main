@@ -217,7 +217,7 @@ public class Constants {
 
 	// theme list
 	public static final String[] THEME_LIST = { "style0.css", "style1.css", "style2.css", "style3.css", "style4.css",
-			"style5.css", "style6.css" };
+			"style5.css", "style6.css", "style7.css" };
 
 	// Tray icon display messages
 	final static String MSG_ALREADY_RUNNING = APP_NAME + " is Already Running!";
