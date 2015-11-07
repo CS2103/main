@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.joda.time.DateTime;
+
 import application.Constants;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
@@ -134,12 +136,6 @@ public class GuiService {
 			}
 		});
 
-		consoleView.floatingList.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent event) {
-			}
-		});
-
 		consoleView.addEventHandler(MouseEvent.MOUSE_DRAGGED, new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
@@ -169,7 +165,8 @@ public class GuiService {
 				} else if (event.getCode() == KeyCode.BACK_SPACE && consoleView.inputConsole.getText().length() == 0) {
 					consoleView.showDefaultView();
 					populateList(logic.displayHome());
-					updateStatusLabel(Constants.FEEDBACK_VIEW_TODAY);
+					updateStatusLabel(Constants.FEEDBACK_VIEW_TODAY
+							+ DateTime.now().plusWeeks(1).toLocalDateTime().toString("EEE dd MMMM"));
 				} else if (event.getCode() == KeyCode.DOWN) {
 
 					consoleView.scrollPane.setVvalue(consoleView.scrollPane.getVvalue() + 0.2);

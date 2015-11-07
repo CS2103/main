@@ -163,13 +163,18 @@ public class ConsoleView extends Pane {
 		editTaskPreview.clearAllDetails();
 		editTaskPreview.detailsToShow(parser.getField(input));
 		editTaskPreview.oldTitle.setText(toEdit.getTitle());
+		editTaskPreview.newTitleField.setText(TitleParser.getEditTitle(input));
+
 		editTaskPreview.oldStartTime.setText(showIfValidDate(toEdit.getStartingTime()));
 		editTaskPreview.oldEndTime.setText(showIfValidDate(toEdit.getEndingTime()));
-		editTaskPreview.newTitleField.setText(TitleParser.getEditTitle(input));
-		editTaskPreview.newStartTimeField.setText(showIfValidDate(parser.getStartDateTime(input)));
-		editTaskPreview.newEndTimeField.setText(showIfValidDate(parser.getEndDateTime(input)));
-		// editTaskPreview.oldRecurring.setText(oldRecurValue);
-		// editTaskPreview.newRecurringField.setText(recurValue);
+
+		editTaskPreview.newStartTimeField.setText(showIfValidDate(parser.getDateTime(input)));
+		editTaskPreview.newEndTimeField.setText(showIfValidDate(parser.getDateTime(input)));
+
+		editTaskPreview.oldDurationStartTime.setText(showIfValidDate(toEdit.getStartingTime()));
+		editTaskPreview.oldDurationEndTime.setText(showIfValidDate(toEdit.getEndingTime()));
+		editTaskPreview.newDurationStartTimeField.setText(showIfValidDate(parser.getStartDateTime(input)));
+		editTaskPreview.newDurationEndTimeField.setText(showIfValidDate(parser.getEndDateTime(input)));
 	}
 
 	private String showIfValidDate(DateTime dateTime) {
