@@ -49,7 +49,19 @@ public class TaskBin {
 		displayList = display.returnDisplay();
 		return displayList;
 	}
-
+	
+	public ArrayList<Task> displayUnfinished(){
+		ArrayList<Task> results = new ArrayList<Task>();
+		for(Task t:taskList){
+			if(t.getStatus() == false){
+				results.add(t);
+			}
+		}
+		display.setDisplayAll(results);
+		displayList = display.returnDisplay();
+		return results;
+	}
+	
 	public void add(Task newTask) {
 		Command add = new Command(Constants.add_tag, newTask);
 		this.undoStack.push(add);
