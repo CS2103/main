@@ -17,6 +17,8 @@ public class Constants {
 	public static final String TYPE_EVENT = "event";
 	public static final String TYPE_DEADLINE = "deadline";
 	public static final String TYPE_FLOATING = "task";
+	public static final String STATUS_COMPLETE = "complete";
+	public static final String STATUS_INCOMPLETE = "incomplete";
 
 	public static final String APP_NAME = "TBA";
 
@@ -172,14 +174,14 @@ public class Constants {
 			// 10 dec+ 15
 			// adapted from http://regexlib.com/REDetails.aspx?regexp_id=405
 
-			"(3[0-1]|2[0-9]|1[0-9]|[1-9])[.|/|-](1[0-2]|[1-9])[.|/|-]\\d{1,4}", // 10.12.2015
+			"(3[0-1]|2[0-9]|1[0-9]|(0?)[1-9])[.|/|-](1[0-2]|(0?)[1-9])[.|/|-]\\d{1,4}", // 10.12.2015
+			// OR
+			// 10/12/2015
+			// OR
+			// 10-12-2015
+			"(3[0-1]|2[0-9]|(1[0-9])|(0?)[1-9])[.|/|-]((1[0-2]|(0?)[1-9]))", // 10.12
 																				// OR
-																				// 10/12/2015
-																				// OR
-																				// 10-12-2015
-
-			"(3[0-1]|2[0-9]|(1[0-9])|[1-9])[.|/|-]((1[0-2]|[1-9]))", // 10.12 OR
-																		// 10/12
+			// 10/12
 
 			"((31(?!\\s(feb(ruary)?|apr(il)?|june?|(sep(?=\\b|t)t?|nov)(ember)?)))|(0?[1-9])|1\\d|2[0-8]|29|30)\\s(jan(uary)?|feb(ruary)?|ma(r(ch)?|y)|apr(il)?|ju((ly?)|(ne?))|aug(ust)?|oct(ober)?|(sep(?=\\b|t)t?|nov|dec)(ember)?)"
 			// 10 dec+
@@ -193,11 +195,15 @@ public class Constants {
 	// DATETIME keywords regex only counts as datetime if "(digit) / today /
 	// tomorrow" values are input
 
-	public static final String[] TASK_START_DATETIME = { " from (\\d|(t((oday?)|(dy?)|(mr?)|(omorrow))))",
-			" on (\\d|(t((oday?)|(dy?)|(mr?)|(omorrow))))", " between (\\d|(t((oday?)|(dy?)|(mr?)|(omorrow))))" };
-	public static final String[] TASK_END_DATETIME = { " by (\\d|(t((oday?)|(dy?)|(mr?)|(omorrow))))",
-			" until (\\d|(t((oday?)|(dy?)|(mr?)|(omorrow))))", " till (\\d|(t((oday?)|(dy?)|(mr?)|(omorrow))))",
-			" before (\\d|(t((oday?)|(dy?)|(mr?)|(omorrow))))", " to (\\d|(t((oday?)|(dy?)|(mr?)|(omorrow))))" };
+	public static final String[] TASK_START_DATETIME = { "(\\s|^)from (\\d|(t((oday?)|(dy?)|(mr?)|(omorrow))))",
+			"(\\s|^)on (\\d|(t((oday?)|(dy?)|(mr?)|(omorrow))))",
+			"(\\s|^)between (\\d|(t((oday?)|(dy?)|(mr?)|(omorrow))))" };
+	public static final String[] TASK_END_DATETIME = { "(\\s|^)by (\\d|(t((oday?)|(dy?)|(mr?)|(omorrow))))",
+			"(\\s|^)until (\\d|(t((oday?)|(dy?)|(mr?)|(omorrow))))",
+			"(\\s|^)till (\\d|(t((oday?)|(dy?)|(mr?)|(omorrow))))",
+			"(\\s|^)before (\\d|(t((oday?)|(dy?)|(mr?)|(omorrow))))",
+			"(\\s|^)on (\\d|(t((oday?)|(dy?)|(mr?)|(omorrow))))",
+			"(\\s|^)to (\\d|(t((oday?)|(dy?)|(mr?)|(omorrow))))" };
 	public static final String[] TASK_RECURRING = { "daily", "weekly", "monthly", "yearly" };
 
 	// space
