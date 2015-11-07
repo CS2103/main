@@ -172,7 +172,18 @@ public class Task {
 	}
 
 	public DateTime getEndingTime() {
-		return endingTime;
+		if(!isTypeRecur()){
+			return endingTime;
+		}
+		else{
+			for(DateTime date: recurDate){
+				if(date.isAfterNow()){
+					return date;
+				}
+			}
+			return null;
+		}
+		
 	}
 
 	public boolean isAfterNow() {
@@ -209,6 +220,7 @@ public class Task {
 			for (DateTime t : recurDate) {
 				if (t.getDayOfYear() == now.getDayOfYear()) {
 					recurDone.add(t);
+					return;
 				}
 			}
 		}
@@ -222,6 +234,7 @@ public class Task {
 			for (DateTime t : recurDone) {
 				if (t.getDayOfYear() == now.getDayOfYear()) {
 					recurDone.remove(t);
+					return;
 				}
 			}
 		}
