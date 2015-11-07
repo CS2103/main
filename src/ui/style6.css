@@ -10,7 +10,7 @@
 #timeDisplay {
 	-fx-font-family: "sans-serif";
 	-fx-background-color:linear-gradient( from 100.0% 0.0% to 100.0% 100.0%, rgb(153,153,51) 0.0, rgb(204,204,102) 100.0);
-	-fx-text-fill:rgb(255,255,255);
+	-fx-text-fill:rgb(21,105,53);
 	-fx-font-size: 30px;
 	
 }
@@ -69,8 +69,8 @@
 #statusBar {	
 	-fx-font-size: 12pt;
 	-fx-font-family: "sans-serif";
-	-fx-text-fill:rgb(255,255,255);
-	-fx-background-color:linear-gradient( from 100.0% 0.0% to 100.0% 100.0%, rgb(230,230,128) 0.0, rgb(102,102,0) 100.0);
+	-fx-text-fill:rgb(21,105,53);
+	-fx-background-color:linear-gradient( from 100.0% 0.0% to 100.0% 100.0%, rgb(230,230,128) 0.0, rgb(153,153,51) 100.0);
 	-fx-padding: 0 0 0 10;
 	-fx-pref-height: 30;
 }
@@ -80,20 +80,20 @@
 }
 
 #titleTask {
-	-fx-text-fill:rgb(0,10,218);
+	-fx-text-fill:rgb(21,105,53);
 }
 
 #titleEvent {
-	-fx-text-fill:rgb(0,10,218);
+	-fx-text-fill:rgb(21,105,53);
 }
 #titleDeadline {
-	-fx-text-fill:rgb(0,10,218);
+	-fx-text-fill:rgb(21,105,53);
 }
 #index {
-	-fx-text-fill:rgb(0,10,218);
+	-fx-text-fill:rgb(21,105,53);
 }
 #duration {
-	-fx-text-fill:rgb(0,10,218);
+	-fx-text-fill:rgb(21,105,53);
 }
 
 #statusIcon {
