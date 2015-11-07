@@ -189,8 +189,10 @@ public class Constants {
 	};
 
 	// keywords
-	public static final String[] TASK_START_DATETIME = { " from \\d", " on \\d", " between \\d" };
-	public static final String[] TASK_END_DATETIME = { " by \\d", " until \\d", " till \\d", " before \\d", " to \\d" };
+	// DATETIME keywords regex only counts as datetime if "(digit) / today / tomorrow" values are input
+	
+	public static final String[] TASK_START_DATETIME = { " from (\\d|(t((oday?)|(dy?)|(mr?)|(omorrow))))", " on (\\d|(t((oday?)|(dy?)|(mr?)|(omorrow))))", " between (\\d|(t((oday?)|(dy?)|(mr?)|(omorrow))))" };
+	public static final String[] TASK_END_DATETIME = { " by (\\d|(t((oday?)|(dy?)|(mr?)|(omorrow))))", " until (\\d|(t((oday?)|(dy?)|(mr?)|(omorrow))))", " till (\\d|(t((oday?)|(dy?)|(mr?)|(omorrow))))", " before (\\d|(t((oday?)|(dy?)|(mr?)|(omorrow))))", " to (\\d|(t((oday?)|(dy?)|(mr?)|(omorrow))))" };
 	public static final String[] TASK_RECURRING = { "daily", "weekly", "monthly", "yearly" };
 
 	// space
