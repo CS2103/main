@@ -54,6 +54,9 @@ public class Logic {
 			return bin.returnDisplay();
 		} else if (command.equalsIgnoreCase(Constants.COMMAND_SHOW)) {
 			System.out.println("The date to search is " + parser.getDateTime(input).toString());
+			if(parser.getDateTime(input).getYear() == 0){
+				return bin.displayAll();
+			}
 			return searchEntries(parser.getDateTime(input));
 		} else if (command.equalsIgnoreCase(Constants.COMMAND_EXIT)) {
 			System.exit(0);
@@ -234,6 +237,8 @@ public class Logic {
 			return Storage.enquirePath();
 		case Constants.COMMAND_HELP:
 			return Constants.FEEDBACK_VIEW_HELP;
+		case Constants.COMMAND_SHOW:
+			return Constants.FEEDBACK_SHOW_ALL_SUCCESS;
 		default:
 			return Constants.FEEDBACK_INVALID;
 		}

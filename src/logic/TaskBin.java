@@ -62,6 +62,12 @@ public class TaskBin {
 		return results;
 	}
 	
+	public ArrayList<Task> displayAll(){
+		display.setDisplayAll(taskList);
+		displayList = display.returnDisplay();
+		return displayList;
+	}
+	
 	public void add(Task newTask) {
 		Command add = new Command(Constants.add_tag, newTask);
 		this.undoStack.push(add);
