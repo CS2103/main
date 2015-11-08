@@ -206,7 +206,7 @@ public class DateParserTest {
 
 	@Test
 	public void testGetDateTime_ExtraSpacesWithinDate() {
-		DateTime dateTime = DateParser.getDateTime("06   /    10   /  17");
+		DateTime dateTime = DateParser.getDateTime("06    oct  17");
 		assertTrue(INCORRECT_DAY, dateTime.getDayOfMonth() == 6);
 		assertTrue(INCORRECT_MONTH, dateTime.getMonthOfYear() == 10);
 		assertTrue(INCORRECT_YEAR, dateTime.getYear() == 2017);

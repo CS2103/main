@@ -25,6 +25,7 @@ public class Constants {
 	// Limit for number of days before current day for which task without year
 	// will be entered as overdue task
 	public static final int DAYS_OFFSET = 7;
+	public static final int BEGINNING_OF_LIST = 1;
 
 	public static final String LABEL_TITLE = "Title: ";
 	public static final String LABEL_LOCATION = "Location: ";
@@ -155,7 +156,7 @@ public class Constants {
 	public static final String FEEDBACK_REDO_SUCCESS = "Redone!";
 	public static final String FEEDBACK_REDO_FAILURE = "Nothing to redo!";
 	public static final String FEEDBACK_VIEW_HOMESCREEN = "Displaying Home-Screen!";
-	public static final String FEEDBACK_VIEW_TODAY = "Displaying all tasks from today to ";
+	public static final String FEEDBACK_VIEW_TODAY = "Displaying all tasks from today until ";
 	public static final String FEEDBACK_VIEW_HELP = "Displaying help screen";
 	public static final String FEEDBACK_INVALID = "That is an invalid action!";
 	public static final String FEEDBACK_INVALID_NUMBER_OF_QUOTES = "Invaild number of quotes";
@@ -224,6 +225,22 @@ public class Constants {
 	// theme list
 	public static final String[] THEME_LIST = { "style0.css", "style1.css", "style2.css", "style3.css", "style4.css",
 			"style5.css", "style6.css", "style7.css" };
+
+	// List item formats
+	public static final String FORMAT_WHOLE_DAY = "[%1$s] Whole day";
+	public static final String FORMAT_SAME_DAY = "[%1$s] %2$s hrs - %3$s hrs";
+	public static final String FORMAT_EVENT = "[%1$s] %2$s hrs - [%3$s] %4$s hrs";
+	public static final String FORMAT_DEADLINE = "By [%1$s] %2$s hrs";
+	public static final String FORMAT_RECURRING = "Repeat %1$s %2$s hrs - %3$s hrs";
+	public static final String FORMAT_UNKNOWN = "????";
+
+	public static final String FORMAT_FULL_DATE = "EEE dd MMM yyy";
+	public static final String FORMAT_DATE_WITHOUT_YEAR = "EEE dd MMM";
+	public static final String FORMAT_TWENTYFOURHOUR = "HHmm";
+	public static final String FORMAT_DATE_VERBOSE = "EEEE dd MMMM";
+
+	public static final String TIME_START_OF_DAY = "0000";
+	public static final String TIME_END_OF_DAY = "2359";
 
 	// Tray icon display messages
 	final static String MSG_ALREADY_RUNNING = APP_NAME + " is Already Running!";

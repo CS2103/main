@@ -15,7 +15,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
-import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
 
@@ -30,14 +29,10 @@ public class ListItem extends StackPane {
 			boolean isOverdue, String recurValue, int taskIndex) {
 
 		title = new Label(taskTitle);
-
-		title.setFont(Font.font("SansSerif", FontWeight.BOLD, 16));
 		title.setPadding(new Insets(0, 0, 0, 5));
 		title.setMaxWidth(Double.MAX_VALUE);
 		if (isOverdue) {
-
-			title.setTextFill(Color.PALEVIOLETRED);
-			title.setFont(Font.font("SansSerif", FontWeight.BOLD, FontPosture.ITALIC, 16));
+			title.setId("titleOverdue");
 		} else {
 			if (taskType.equals("task")) {
 				title.setId("titleTask");
@@ -74,47 +69,36 @@ public class ListItem extends StackPane {
 		}
 
 		String startDate = (taskStartTime.getYear() == DateTime.now().getYear())
-				? taskStartTime.toLocalDate().toString("EEE dd MMM")
-				: taskStartTime.toLocalDate().toString("EEE dd MMM YYYY");
-		String startTime = taskStartTime.toLocalTime().toString("HHmm");
+				? taskStartTime.toLocalDate().toString(Constants.FORMAT_DATE_WITHOUT_YEAR)
+				: taskStartTime.toLocalDate().toString(Constants.FORMAT_FULL_DATE);
+		String startTime = taskStartTime.toLocalTime().toString(Constants.FORMAT_TWENTYFOURHOUR);
 		String endDate = (taskEndTime.getYear() == DateTime.now().getYear())
-				? taskEndTime.toLocalDate().toString("EEE dd MMM")
-				: taskEndTime.toLocalDate().toString("EEE dd MMM YYYY");
-		String endTime = taskEndTime.toLocalTime().toString("HHmm");
+				? taskEndTime.toLocalDate().toString(Constants.FORMAT_DATE_WITHOUT_YEAR)
+				: taskEndTime.toLocalDate().toString(Constants.FORMAT_FULL_DATE);
+		String endTime = taskEndTime.toLocalTime().toString(Constants.FORMAT_TWENTYFOURHOUR);
 
 		if (taskEndTime.isBefore(taskStartTime)) {
-			endDate = "????";
-			endTime = "????";
+			endDate = Constants.FORMAT_UNKNOWN;
+			endTime = Constants.FORMAT_UNKNOWN;
 		}
 
 		taskDuration = new Label();
 		taskDuration.setId("duration");
 		if (taskType.equals("deadline")) {
-			taskDuration.setText("By [" + endDate + "] " + endTime + " hrs");
+			taskDuration.setText(String.format(Constants.FORMAT_DEADLINE, endDate, endTime));
 		} else if (taskType.equals("event")) {
 			if (checkIfOnSameDay(taskStartTime, taskEndTime)) {
-				if (startTime.equals("0000") && endTime.equals("2359")) {
-					taskDuration.setText("[" + endDate + "] Whole day");
+				if (startTime.equals(Constants.TIME_START_OF_DAY) && endTime.equals(Constants.TIME_END_OF_DAY)) {
+					taskDuration.setText(String.format(Constants.FORMAT_WHOLE_DAY, endDate));
 				} else {
-					taskDuration.setText("[" + endDate + "] " + startTime + " hrs - " + endTime + " hrs");
+					taskDuration.setText(String.format(Constants.FORMAT_SAME_DAY, endDate, startTime, endTime));
 				}
 			} else {
-				taskDuration
-						.setText("[" + startDate + "] " + startTime + " hrs  -  [" + endDate + "] " + endTime + " hrs");
+				taskDuration.setText(String.format(Constants.FORMAT_EVENT, startDate, startTime, endDate, endTime));
 			}
 		} else if (taskType.equals(Constants.TYPE_RECUR)) {
-			if (recurValue.equalsIgnoreCase("daily")) {
-				taskDuration.setText("Repeat " + recurValue + " " + startTime + " hrs - " + endTime + " hrs");
-			} else if (recurValue.equalsIgnoreCase("weekly")) {
-				taskDuration.setText("Repeat " + recurValue + " " + startTime + " hrs - " + endTime + " hrs");
-			} else if (recurValue.equalsIgnoreCase("monthly")) {
-				taskDuration.setText("Repeat " + recurValue + " " + startTime + " hrs - " + endTime + " hrs");
-			}
+			taskDuration.setText(String.format(Constants.FORMAT_RECURRING, recurValue, startTime, endTime));
 		}
-
-		taskDuration.setTextFill(Color.LIGHTGRAY);
-		taskDuration.setFont(Font.font("SansSerif", FontPosture.ITALIC, 11));
-		taskDuration.setPadding(new Insets(0, 0, 0, 15));
 
 		HBox titleNstatus = new HBox();
 		titleNstatus.setAlignment(Pos.CENTER_LEFT);

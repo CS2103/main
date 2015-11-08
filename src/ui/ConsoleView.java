@@ -181,4 +181,8 @@ public class ConsoleView extends Pane {
 		helpScreen.toBack();
 		scrollPane.toFront();
 	}
+
+	public void clearInputConsole() {
+		inputConsole.clear();
+	}
 }
