@@ -15,16 +15,6 @@ public class Parser implements ParserInterface {
 	}
 
 	@Override
-	public String getStart(String input) {
-		return TitleParser.splitInputWithDictionary(Constants.TASK_START_DATETIME, input);
-	}
-
-	@Override
-	public String getEnd(String input) {
-		return TitleParser.splitInputWithDictionary(Constants.TASK_END_DATETIME, input);
-	}
-
-	@Override
 	public DateTime getDateTime(String input) {
 		return DateParser.getDateTime(input);
 	}
@@ -44,6 +34,11 @@ public class Parser implements ParserInterface {
 
 		return endDate;
 
+	}
+	
+	@Override
+	public boolean isValidEndingTime(DateTime startTime, DateTime endTime) {
+		return startTime.isBefore(endTime);
 	}
 
 	@Override
@@ -68,6 +63,15 @@ public class Parser implements ParserInterface {
 		}
 		return TitleParser.extractFirstWord(input);
 	}
+	
+	@Override
+	public String getEditTitle(String input) {
+		return TitleParser.getEditTitle(input);
+	}
+	
+	public String getRecurValue(String input) {
+		return DateParser.getRecurValue(input);
+	}
 
 	public ArrayList<Integer> getIndexes(String input) {
 		ArrayList<Integer> indexArray = new ArrayList<Integer>();
@@ -84,21 +88,13 @@ public class Parser implements ParserInterface {
 		}
 	}
 
-	@Override
-	public boolean isValidEndingTime(DateTime startTime, DateTime endTime) {
-		return startTime.isBefore(endTime);
+	private String getStart(String input) {
+		return TitleParser.splitInputWithDictionary(Constants.TASK_START_DATETIME, input);
 	}
 
-	public String getRecurValue(String input) {
-
-		String recurValue = new String();
-
-		for (int i = 0; i < Constants.TASK_RECURRING.length; i++) {
-			if (input.toLowerCase().contains(Constants.TASK_RECURRING[i])) {
-				recurValue = Constants.TASK_RECURRING[i];
-			}
-		}
-		return recurValue;
+	private String getEnd(String input) {
+		return TitleParser.splitInputWithDictionary(Constants.TASK_END_DATETIME, input);
 	}
+	
 
 }

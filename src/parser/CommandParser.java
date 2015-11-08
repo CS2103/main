@@ -52,7 +52,4 @@ public class CommandParser {
 		return input.split(Constants.SPACE)[0].trim();
 	}
 
-	static String excludeFirstWord(String input) {
-		return input.substring(extractFirstWord(input).length()).trim();
-	}
 }

@@ -142,4 +142,16 @@ public class DateParser {
 		}
 		return DateTime.now().withHourOfDay(0).withMinuteOfHour(0);
 	}
+	
+	public static String getRecurValue(String input) {
+
+		String recurValue = new String();
+
+		for (int i = 0; i < Constants.TASK_RECURRING.length; i++) {
+			if (input.toLowerCase().contains(Constants.TASK_RECURRING[i])) {
+				recurValue = Constants.TASK_RECURRING[i];
+			}
+		}
+		return recurValue;
+	}
 }
