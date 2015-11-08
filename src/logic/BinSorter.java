@@ -87,76 +87,66 @@ public class BinSorter {
 	
 	
 	public ArrayList<Task> sortArrayByTime(ArrayList<Task> inboxArr){
+		ArrayList<Task> normalTask = new ArrayList<Task>();
 		ArrayList<Task> timeUndefined = new ArrayList<Task>();
 		ArrayList<Task> recurList = new ArrayList<Task>();
 		if(inboxArr.size() <= 1){
 			return inboxArr;
 		}
-
-		for(int m = 1; m < inboxArr.size() - 1; m++){
-			boolean isSorted = true;
-			for(int i = 0; (i < inboxArr.size() - m); i++){
-				if(inboxArr.get(i).getEndingTime().getYear()== 0){
-					timeUndefined.add(inboxArr.get(i));
-					inboxArr.remove(inboxArr.get(i));
-					m--;
-					isSorted = false;
-					break;
-				}
-				
-				if(inboxArr.get(i).isTypeRecur() == true){
-					recurList.add(inboxArr.get(i));
-					inboxArr.remove(inboxArr.get(i));
-					m--;
-					isSorted = false;
-					break;
-				}
-				
-				if(inboxArr.get(i).getEndingTime().isAfter(inboxArr.get(i+1).getEndingTime())){
-					
-					Task buffer = inboxArr.get(i);
-					inboxArr.set(i, inboxArr.get(i+1));
-					inboxArr.set(i+1, buffer);
-					isSorted = false;
-					break;
-				}
-				
-			}
-			
-			if(isSorted){
-				for(int m1 = 1; m1 < inboxArr.size() - 1; m1++){
-					for(int i = 0; (i < recurList.size() - m1); i++){
-						if(recurList.get(i).getEndingTime().getMinuteOfDay() > recurList.get(i).getEndingTime().getMinuteOfDay()){
-							Task buffer = recurList.get(i);
-							recurList.set(i, recurList.get(i+1));
-							recurList.set(i+1, buffer);
-						}
-					}
-				}
-				inboxArr.addAll(recurList);
-				inboxArr.addAll(timeUndefined);
-				
-				return inboxArr;
-			}
-		}
-		
-		/*Collections.sort(inboxArr, new Comparator<Task>(){
-			public int compare(Task task1, Task task2){
-				return task1.getStartingDate().compareTo(task2.getStartingDate());
-			}
-		});*/
-		for(int m1 = 1; m1 < inboxArr.size() - 1; m1++){
-			for(int i = 0; (i < recurList.size() - m1); i++){
-				if(recurList.get(i).getEndingTime().getMinuteOfDay() > recurList.get(i).getEndingTime().getMinuteOfDay()){
-					Task buffer = recurList.get(i);
-					recurList.set(i, recurList.get(i+1));
-					recurList.set(i+1, buffer);
-				}
+		for(int m = 0; m < inboxArr.size(); m++){
+			switch(inboxArr.get(m).getType()){
+			case Constants.TYPE_RECUR:
+				recurList.add(inboxArr.get(m));
+				break;
+			case Constants.TYPE_FLOATING:
+				timeUndefined.add(inboxArr.get(m));
+				break;
+			default:
+				normalTask.add(inboxArr.get(m));
 			}
 		}
 		timeUndefined = sortArrayByAlpha(timeUndefined);
+
+		for(int i = 1; i < normalTask.size() - 1; i++){
+			boolean isSorted = true;
+			for (int m = 1; m < inboxArr.size() - i; m++) {
+				
+				if(normalTask.get(i).getEndingTime().isAfter(normalTask.get(i+1).getEndingTime())){
+						
+					Task buffer = normalTask.get(i);
+					normalTask.set(i, normalTask.get(i+1));
+					normalTask.set(i+1, buffer);
+					isSorted = false;
+					break;
+				}	
+			}
+			if(isSorted){
+				break;
+			}
+		}
+		
+		for(int i = 1; i < recurList.size() - 1; i++){
+			boolean isSorted = true;
+			for (int m = 1; m < recurList.size() - i; m++) {
+				
+				if(recurList.get(i).getEndingTime().getMinuteOfDay() > normalTask.get(i+1).getEndingTime().getMinuteOfDay()){
+					Task buffer = recurList.get(i);
+					recurList.set(i, recurList.get(i+1));
+					recurList.set(i+1, buffer);
+					isSorted = false;
+					break;
+				}	
+			}
+			if(isSorted){
+				break;
+			}
+		}
+		
+		inboxArr.clear();
+		inboxArr.addAll(normalTask);
 		inboxArr.addAll(recurList);
 		inboxArr.addAll(timeUndefined);
+		
 		
 		return inboxArr;
 	}
