@@ -39,7 +39,6 @@ public class TaskBin {
 	}
 
 	public ArrayList<Task> returnDisplay() {
-		System.out.println("is Returning display phase 1");
 		displayList = display.returnDisplay();
 		return displayList;
 	}
@@ -83,10 +82,8 @@ public class TaskBin {
 	public void add(Task newTask) {
 		Command add = new Command(Constants.add_tag, newTask);
 		this.undoStack.push(add);
-		System.out.println("The size of the stack is: " + undoStack.size());
 		this.taskList.add(newTask);
 		taskList = sorter.sortArrayByTime(taskList);
-		System.out.println(newTask.getType() + " is added");
 		display.setDisplay(taskList);
 		displayList = display.returnDisplay();
 		Storage.write(taskList);
@@ -136,7 +133,6 @@ public class TaskBin {
 				}
 			}
 			if (obj.equals(task)) {
-				//System.out.println(obj.getTitle());
 				obj.mark();
 				Command mark = new Command(Constants.mark_tag, obj);
 				undoStack.push(mark);
@@ -152,7 +148,6 @@ public class TaskBin {
 	public ArrayList<Task> unmarkTaskInstance(Task task) {
 		for (Task obj : taskList) {
 			if (obj.equals(task)) {
-				//System.out.println(obj.getTitle());
 				obj.unMark();
 				Command unmark = new Command(Constants.unmark_tag, obj);
 				undoStack.push(unmark);
@@ -198,31 +193,14 @@ public class TaskBin {
 			break;
 
 		case Constants.alter_tag:
-			/*redoStack.push(previousComm);
-			System.out.println("Stats of previous com " + previousComm.returnMani().getTitle() + "Stats of curr com " + previousComm.returnOrigin().getTitle());
-			//System.out.println(previousComm.returnMani().getTitle() + previousComm.returnOrigin().getTitle());
-			//System.out.println(taskList.get(displayList.indexOf(previousComm.returnMani())));
-			taskList.remove(taskList.get(taskList.indexOf(previousComm.returnMani())));
-			//TODO
-			//taskList.remove(previousComm.returnMani());
-			
-			taskList.add(previousComm.returnOrigin());
-			if (displayList != taskList) {
-				//System.out.println(displayList.get(displayList.indexOf(previousComm.returnMani())));
-				display.updateDisplay(previousComm, false);
-			}
-			break;*/
+
 			redoStack.push(previousComm);
-			System.out.println("The previous title is: " + previousComm.returnMani().getTitle() + " and the current title is : " + previousComm.returnOrigin().getTitle());
-			System.out.println("The task I am search for is: " + taskList.get(displayList.indexOf(previousComm.returnMani())));
 			displayList = display.returnDisplay();
 			//taskList.remove(taskList.get(taskList.indexOf(previousComm.returnMani())));
 			taskList.remove(previousComm.returnMani());
 			taskList.add(previousComm.returnOrigin());
 			
 			if(!displayList.equals(taskList)){
-				System.out.println(displayList.get(displayList.indexOf(previousComm.returnMani())));
-				displayList.remove(displayList.get(displayList.indexOf(previousComm.returnMani())));
 				displayList.add(previousComm.returnOrigin());
 			}
 			display.setDisplayAll(displayList);
@@ -387,13 +365,17 @@ public class TaskBin {
 				
 		Task buffer = new Task(task);
 		Task tar = new Task (taskList.get(taskList.indexOf(task)));
-		Task tarDis = new Task (displayList.get(displayList.indexOf(tar)));
+		
 		taskList.remove(taskList.get(taskList.indexOf(task)));
-		displayList.remove(displayList.get(displayList.indexOf(task)));
-		tarDis.setTitle(newTitle);
+		if(displayList.contains(tar)){
+			Task tarDis = new Task (displayList.get(displayList.indexOf(tar)));
+			displayList.remove(displayList.get(displayList.indexOf(task)));
+			tarDis.setTitle(newTitle);
+			displayList.add(tarDis);
+		}
+		
 		tar.setTitle(newTitle);
 		taskList.add(tar);
-		displayList.add(tarDis);
 		Command editTil = new Command(Constants.alter_tag, tar, buffer);
 		display.setDisplayAll(displayList);
 		undoStack.push(editTil);

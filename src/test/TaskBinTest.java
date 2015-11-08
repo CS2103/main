@@ -159,17 +159,17 @@ public class TaskBinTest {
 	@Test
 	public void testEditTitle() throws InvalidTimeException {
 		Task[] task = new Task[5];
-		task[1] = new Task(new DateTime(0,1,1,0,0),new DateTime(0,1,1,0,0));
-		task[2] = new Task("The title of the task is super super super super super super super super super super super super super super super super long", new DateTime(0,1,1,0,0), new DateTime(0,1,1,0,0));
-		task[3] = new Task("多语言支持", new DateTime(0,1,1,0,0),new DateTime(0,1,1,0,0) );
-		task[4] = new Task("Task starts and end at different year", new DateTime(2015,11,12,0,0), new DateTime(2016,1,15,0,1));
-		task[5] = new Task("Task ends before it starts", new DateTime(2015,12,11,0,0), new DateTime(2015,11,15,0,0));
+		task[0] = new Task(new DateTime(0,1,1,0,0),new DateTime(0,1,1,0,0));
+		task[1] = new Task("The title of the task is super super super super super super super super super super super super super super super super long", new DateTime(0,1,1,0,0), new DateTime(0,1,1,0,0));
+		task[2] = new Task("多语言支持", new DateTime(0,1,1,0,0),new DateTime(0,1,1,0,0) );
+		task[3] = new Task("Task starts and end at different year", new DateTime(2015,11,12,0,0), new DateTime(2016,1,15,0,1));
+		task[4] = new Task("Task ends before it starts", new DateTime(2015,12,11,0,0), new DateTime(2015,11,15,0,0));
 		TaskBin testBin = new TaskBin();
+		testBin.add(task[0]);
 		testBin.add(task[1]);
 		testBin.add(task[2]);
 		testBin.add(task[3]);
 		testBin.add(task[4]);
-		testBin.add(task[5]);
 		for(int i = 0; i < 5; i++){
 			String newTil = new Integer(i).toString();
 			testBin.editTitle(task[i],newTil );
@@ -178,8 +178,7 @@ public class TaskBinTest {
 		for(int i = 0; i < 5; i++){
 			output = output + testBin.returnAllInbox().get(i).getTitle();
 		}
-		System.out.println("WARNING!!!!!!!!!!!!!" + output);
-		assertEquals(output, "12345");
+		assertEquals(output, "01234");
 	}
 
 
@@ -199,8 +198,8 @@ public class TaskBinTest {
 		testBin.add(task[4]);
 		testBin.add(task[0]);
 		boolean[] result1 = {testBin.isClashed(dateArr), testBin.isClashed(dateArr), testBin.isClashed(dateArr), testBin.isClashed(dateArr), testBin.isClashed(dateArr)};
-		boolean[] expected = {true, false,true, true, true};
-		assertEquals(result1, expected);
+		boolean[] expected = {true,true,true, true, true};
+		assertArrayEquals(result1, expected);
 	}
 		
 		
