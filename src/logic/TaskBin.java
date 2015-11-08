@@ -1,3 +1,4 @@
+//@@author A0129708
 package logic;
 
 import java.util.ArrayList;
@@ -46,6 +47,7 @@ public class TaskBin {
 	public ArrayList<Task> displayHome() {
 		display.setDisplay(taskList);
 		displayList = display.returnDisplay();
+		sorter.sortArrayByTime(displayList);
 		return displayList;
 	}
 	
@@ -243,19 +245,8 @@ public class TaskBin {
 			display.setDisplay(taskList);
 			displayList = display.returnDisplay();
 			break;
+			
 		case Constants.alter_tag:
-			/*undoStack.push(redoComm);
-			taskList.remove(redoComm.returnOrigin());
-			displayList.remove(redoComm.returnOrigin());
-			if (taskList != displayList) {
-				taskList.add(redoComm.returnMani());
-				display.updateDisplay(redoComm, true);
-
-			} else {
-				taskList.add(redoComm.returnMani());
-			}
-			displayList = display.returnDisplay();
-			break;*/
 			displayList = display.returnDisplay();
 			undoStack.push(redoComm);
 			taskList.remove(taskList.get(taskList.indexOf(redoComm.returnOrigin())));
@@ -264,13 +255,10 @@ public class TaskBin {
 			if(!displayList.equals(taskList)){
 				displayList.remove(displayList.get(displayList.indexOf(redoComm.returnOrigin())));
 				displayList.add(redoComm.returnMani());
-				
 			}
 			display.setDisplayAll(displayList);
 			break;
 			
-			
-
 		case Constants.mark_tag:
 			undoStack.push(redoComm);
 			taskList.get(taskList.indexOf(redoComm.returnMani())).mark();
@@ -287,9 +275,7 @@ public class TaskBin {
 
 		default:
 			System.out.println("Error: Unable to identify the command type");
-
 		}
-
 	}
 
 	public ArrayList<Task> findTaskByTitle(ArrayList<Task> list, String title) {
@@ -416,7 +402,6 @@ public class TaskBin {
 		if (task.getType().equals(Constants.recur_tag)) {
 			return;
 		}
-		
 		Task buffer = new Task(task);
 		Task tar = new Task (taskList.get(taskList.indexOf(task)));
 		Task tarDis = new Task (displayList.get(displayList.indexOf(tar)));

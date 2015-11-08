@@ -94,7 +94,6 @@ public class Logic {
 	}
 
 	public ArrayList<Task> displayHome() {
-
 		return bin.displayHome();
 	}
 
@@ -143,29 +142,12 @@ public class Logic {
 		return bin.returnDisplay();
 	}
 
-	public ArrayList<Task> deleteTaskByName(String input) throws ParseException {
-		String title = parser.getTitle(input);
-		DateTime endingDate = parser.getEndDateTime(input);
-		if (endingDate == null) {
-			endingDate = DateTime.now();
-		}
-		ArrayList<Task> result = bin.findTaskByTitle(title);
-		if (result.size() > 1) {
-			result = bin.findTaskByDate(result, endingDate);
-		}
-		bin.delete(result.get(0));
-		return bin.returnDisplay();
-	}
-
 	public ArrayList<Task> deleteTaskByIndex(int index) {
 		ArrayList<Task> display = bin.returnDisplay();
 		Task toDel = new Task();
 		toDel = display.get(index - 1);
 		bin.delete(toDel);
 		return bin.returnDisplay();
-	}
-
-	public void showOverdue() {
 	}
 
 	public ArrayList<Task> searchEntries(String keyWord) {
@@ -198,15 +180,8 @@ public class Logic {
 		return bin.returnDisplay();
 	}
 
-	public void changeDirectory() {
 
-	}
-
-	public void editSettings() {
-
-	}
-
-	public ArrayList<Task> startupDisplay() {// display the initial screen
+	public ArrayList<Task> startupDisplay() {
 		ArrayList<Task> initDis = bin.displayHome();
 		return initDis;
 	}
@@ -268,7 +243,7 @@ public class Logic {
 			return Constants.FEEDBACK_INVALID;
 		}
 	}
-
+	//@@author A0129708
 	public int getIndex(String input) {
 		return parser.getIndex(input);
 	}

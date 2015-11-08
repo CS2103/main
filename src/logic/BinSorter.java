@@ -1,3 +1,4 @@
+//@@author A0129708
 package logic;
 
 import java.util.ArrayList;
@@ -21,69 +22,6 @@ public class BinSorter {
 		}
 		return true;
 	}
-
-	/*public ArrayList<Task> sortArrayByTime(ArrayList<Task> inboxArr) {
-		ArrayList<Task> timeUndefined = new ArrayList<Task>();
-		ArrayList<Task> recurArray = new ArrayList<Task>();
-		if (inboxArr.size() <= 1) {
-			return inboxArr;
-		}
-
-		for (int m = 1; m < inboxArr.size() - 1; m++) {
-			boolean isSorted = true;
-			for (int i = 0, len = inboxArr.size() - m; (i < len); i++) {
-				if (inboxArr.get(i).getType().equals(Constants.TYPE_FLOATING)) {
-					System.out.println("Triggered");
-					timeUndefined.add(inboxArr.get(i));
-					inboxArr.remove(inboxArr.get(i));
-					isSorted = false;
-					break;
-				}
-				if (inboxArr.get(i).isTypeRecur()) {
-					recurArray.add(inboxArr.get(i));
-					inboxArr.remove(inboxArr.get(i));
-					isSorted = false;
-					break;
-				}
-				if (inboxArr.get(i).getEndingTime().compareTo(inboxArr.get(i + 1).getEndingTime()) > 0) {
-					Task buffer = inboxArr.get(i);
-					inboxArr.set(i, inboxArr.get(i + 1));
-					inboxArr.set(i + 1, buffer);
-					isSorted = false;
-					break;
-				}
-			}
-			
-			if (isSorted) {
-				for(int i = 0; i < timeUndefined.size(); i++){
-					System.out.println(timeUndefined.get(i).getTitle());
-				}
-				timeUndefined = sortArrayByAlpha(timeUndefined);
-				recurArray = sortArrayByAlpha(recurArray);
-				inboxArr.addAll(recurArray);
-				for(int i = 0; i < timeUndefined.size(); i++){
-					inboxArr.add(inboxArr.size(),timeUndefined.get(i));
-				}
-				//inboxArr.addAll(timeUndefined);
-				
-				return inboxArr;
-			}
-		}
-		
-		for(int i = 0; i < timeUndefined.size(); i++){
-			System.out.println(timeUndefined.get(i).getTitle());
-		}
-
-		timeUndefined = sortArrayByAlpha(timeUndefined);
-		recurArray = sortArrayByAlpha(recurArray);
-		inboxArr.addAll(recurArray);
-		for(int i = 0; i < timeUndefined.size(); i++){
-			inboxArr.add(inboxArr.size(),timeUndefined.get(i));
-		}
-		//inboxArr.addAll(timeUndefined);
-	
-		return inboxArr;
-	}*/
 	
 	
 	public ArrayList<Task> sortArrayByTime(ArrayList<Task> inboxArr){
@@ -112,9 +50,7 @@ public class BinSorter {
 		for(int i = 1; i < normalTask.size() - 1; i++){
 			boolean isSorted = true;
 			for (int m = 1; m < inboxArr.size() - i; m++) {
-				
 				if(normalTask.get(i).getEndingTime().isAfter(normalTask.get(i+1).getEndingTime())){
-						
 					Task buffer = normalTask.get(i);
 					normalTask.set(i, normalTask.get(i+1));
 					normalTask.set(i+1, buffer);
@@ -143,13 +79,10 @@ public class BinSorter {
 				break;
 			}
 		}
-		
-	
+
 		result.addAll(normalTask);
 		result.addAll(recurList);
 		result.addAll(timeUndefined);
-		
-		
 		return result;
 	}
 
@@ -171,7 +104,6 @@ public class BinSorter {
 						break;
 					}
 				}
-
 			}
 			if (isSorted == true) {
 				return inboxArr;

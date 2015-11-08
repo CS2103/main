@@ -1,3 +1,4 @@
+//@@author A0129708
 package logic;
 
 import java.util.ArrayList;
@@ -123,7 +124,7 @@ public class BinDisplay {
 			}
 		}
 	}
-
+	//Update the display list after each action is performed
 	public void updateDisplay(Command command, boolean todo) {
 		if (todo) {
 			switch (command.returnCommand()) {

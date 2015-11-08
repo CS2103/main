@@ -1,3 +1,4 @@
+//@@author A0129708
 package logic;
 
 import java.util.ArrayList;
@@ -60,11 +61,11 @@ public class Task {
 		System.out.println("is Creating");
 		try {
 			if (endingTime.isBefore(startingTime)) {
-				InvalidTimeException e = new InvalidTimeException("The ending time is prior to the starting time");
-				throw e;
+				InvalidTimeException invalidTime = new InvalidTimeException("The ending time is prior to the starting time");
+				throw invalidTime;
 			}
-		} catch (InvalidTimeException e) {
-			System.out.println("Error" + e);
+		} catch (InvalidTimeException invalidTime) {
+			System.out.println("Error :" + invalidTime);
 
 		}
 		setTag();
@@ -333,10 +334,7 @@ public class Task {
 	public boolean isToday(){
 		if(isTypeRecur()){
 			return isRecur();
-		}
-		else{
-			
-			//TODO
+		}else{
 			if(this.getEndingTime().getDayOfYear()==DateTime.now().getDayOfYear()){
 				return true;
 			}else{
