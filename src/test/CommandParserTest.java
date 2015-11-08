@@ -5,11 +5,10 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 import application.Constants;
-import parser.Parser;
+import parser.CommandParser;
 
 public class CommandParserTest {
-	
-	Parser parser = new Parser();
+
 	
 	public static final String VALID_COMMAND = "Valid Command";
 	public static final String INVALID_COMMAND = "Invalid command";
@@ -25,8 +24,8 @@ public class CommandParserTest {
 		String input1 = new String("add task1");
 		String input2 = new String("create task2");
 		
-		assertTrue(INVALID_COMMAND, parser.getCommand(input1) == Constants.COMMAND_ADD);
-		assertTrue(INVALID_COMMAND, parser.getCommand(input2) == Constants.COMMAND_ADD);
+		assertTrue(INVALID_COMMAND, CommandParser.getCommand(input1) == Constants.COMMAND_ADD);
+		assertTrue(INVALID_COMMAND, CommandParser.getCommand(input2) == Constants.COMMAND_ADD);
 		
 	}
 	@Test
@@ -35,8 +34,8 @@ public class CommandParserTest {
 		String input1 = new String("delete task1");
 		String input2 = new String("del task2");
 		
-		assertTrue(INVALID_COMMAND, parser.getCommand(input1) == Constants.COMMAND_DELETE);
-		assertTrue(INVALID_COMMAND, parser.getCommand(input2) == Constants.COMMAND_DELETE);
+		assertTrue(INVALID_COMMAND, CommandParser.getCommand(input1) == Constants.COMMAND_DELETE);
+		assertTrue(INVALID_COMMAND, CommandParser.getCommand(input2) == Constants.COMMAND_DELETE);
 		
 	}
 	@Test
@@ -45,8 +44,8 @@ public class CommandParserTest {
 		String input1 = new String("edit task1");
 		String input2 = new String("e task2");
 		
-		assertTrue(INVALID_COMMAND, parser.getCommand(input1) == Constants.COMMAND_EDIT);
-		assertTrue(INVALID_COMMAND, parser.getCommand(input2) == Constants.COMMAND_EDIT);
+		assertTrue(INVALID_COMMAND, CommandParser.getCommand(input1) == Constants.COMMAND_EDIT);
+		assertTrue(INVALID_COMMAND, CommandParser.getCommand(input2) == Constants.COMMAND_EDIT);
 		
 	}
 	@Test
@@ -54,7 +53,7 @@ public class CommandParserTest {
 
 		String input1 = new String("undo");
 		
-		assertTrue(INVALID_COMMAND, parser.getCommand(input1) == Constants.COMMAND_UNDO);
+		assertTrue(INVALID_COMMAND, CommandParser.getCommand(input1) == Constants.COMMAND_UNDO);
 		
 	}
 	@Test
@@ -62,7 +61,7 @@ public class CommandParserTest {
 
 		String input1 = new String("redo");
 		
-		assertTrue(INVALID_COMMAND, parser.getCommand(input1) == Constants.COMMAND_REDO);
+		assertTrue(INVALID_COMMAND, CommandParser.getCommand(input1) == Constants.COMMAND_REDO);
 	
 	}
 	@Test
@@ -71,8 +70,8 @@ public class CommandParserTest {
 		String input1 = new String("mark task1");
 		String input2 = new String("m task2");
 		
-		assertTrue(INVALID_COMMAND, parser.getCommand(input1) == Constants.COMMAND_MARK);
-		assertTrue(INVALID_COMMAND, parser.getCommand(input2) == Constants.COMMAND_MARK);
+		assertTrue(INVALID_COMMAND, CommandParser.getCommand(input1) == Constants.COMMAND_MARK);
+		assertTrue(INVALID_COMMAND, CommandParser.getCommand(input2) == Constants.COMMAND_MARK);
 	
 	}
 	@Test
@@ -81,8 +80,8 @@ public class CommandParserTest {
 		String input1 = new String("unmark task1");
 		String input2 = new String("um task2");
 		
-		assertTrue(INVALID_COMMAND, parser.getCommand(input1) == Constants.COMMAND_UNMARK);
-		assertTrue(INVALID_COMMAND, parser.getCommand(input2) == Constants.COMMAND_UNMARK);
+		assertTrue(INVALID_COMMAND, CommandParser.getCommand(input1) == Constants.COMMAND_UNMARK);
+		assertTrue(INVALID_COMMAND, CommandParser.getCommand(input2) == Constants.COMMAND_UNMARK);
 	
 	}
 	@Test
@@ -91,8 +90,8 @@ public class CommandParserTest {
 		String input1 = new String("enquirepath");
 		String input2 = new String("en");
 		
-		assertTrue(INVALID_COMMAND, parser.getCommand(input1) == Constants.COMMAND_ENQUIREPATH);
-		assertTrue(INVALID_COMMAND, parser.getCommand(input2) == Constants.COMMAND_ENQUIREPATH);
+		assertTrue(INVALID_COMMAND, CommandParser.getCommand(input1) == Constants.COMMAND_ENQUIREPATH);
+		assertTrue(INVALID_COMMAND, CommandParser.getCommand(input2) == Constants.COMMAND_ENQUIREPATH);
 	
 	}
 	@Test
@@ -100,7 +99,7 @@ public class CommandParserTest {
 
 		String input1 = new String("help");
 		
-		assertTrue(INVALID_COMMAND, parser.getCommand(input1) == Constants.COMMAND_HELP);
+		assertTrue(INVALID_COMMAND, CommandParser.getCommand(input1) == Constants.COMMAND_HELP);
 	
 	}
 	@Test
@@ -109,8 +108,8 @@ public class CommandParserTest {
 		String input1 = new String("show task1");
 		String input2 = new String("display task2");
 		
-		assertTrue(INVALID_COMMAND, parser.getCommand(input1) == Constants.COMMAND_SHOW);
-		assertTrue(INVALID_COMMAND, parser.getCommand(input2) == Constants.COMMAND_SHOW);
+		assertTrue(INVALID_COMMAND, CommandParser.getCommand(input1) == Constants.COMMAND_SHOW);
+		assertTrue(INVALID_COMMAND, CommandParser.getCommand(input2) == Constants.COMMAND_SHOW);
 	
 	}
 	@Test
@@ -119,8 +118,8 @@ public class CommandParserTest {
 		String input1 = new String("search task1");
 		String input2 = new String("find task2");
 		
-		assertTrue(INVALID_COMMAND, parser.getCommand(input1) == Constants.COMMAND_SEARCH);
-		assertTrue(INVALID_COMMAND, parser.getCommand(input2) == Constants.COMMAND_SEARCH);
+		assertTrue(INVALID_COMMAND, CommandParser.getCommand(input1) == Constants.COMMAND_SEARCH);
+		assertTrue(INVALID_COMMAND, CommandParser.getCommand(input2) == Constants.COMMAND_SEARCH);
 	
 	}
 	
@@ -134,8 +133,8 @@ public class CommandParserTest {
 		String input1 = new String("add task1");
 		String input2 = new String("find task2");
 		
-		assertTrue(INVALID_COMMAND, parser.getCommand(input1) == Constants.COMMAND_ADD);
-		assertTrue(INVALID_COMMAND, parser.getCommand(input2) == Constants.COMMAND_SEARCH);
+		assertTrue(INVALID_COMMAND, CommandParser.getCommand(input1) == Constants.COMMAND_ADD);
+		assertTrue(INVALID_COMMAND, CommandParser.getCommand(input2) == Constants.COMMAND_SEARCH);
 	
 	}
 
@@ -149,10 +148,10 @@ public class CommandParserTest {
 		String input1 = new String("ad d task1");
 		String input2 = new String("sear task2");
 		
-		assertFalse(INVALID_COMMAND, parser.getCommand(input1) == Constants.COMMAND_ADD);
-		assertFalse(INVALID_COMMAND, parser.getCommand(input2) == Constants.COMMAND_SEARCH);
-		assertTrue(VALID_COMMAND, parser.getCommand(input1) == Constants.COMMAND_INVALID);
-		assertTrue(VALID_COMMAND, parser.getCommand(input2) == Constants.COMMAND_INVALID);
+		assertFalse(INVALID_COMMAND, CommandParser.getCommand(input1) == Constants.COMMAND_ADD);
+		assertFalse(INVALID_COMMAND, CommandParser.getCommand(input2) == Constants.COMMAND_SEARCH);
+		assertTrue(VALID_COMMAND, CommandParser.getCommand(input1) == Constants.COMMAND_INVALID);
+		assertTrue(VALID_COMMAND, CommandParser.getCommand(input2) == Constants.COMMAND_INVALID);
 	
 	}
 	
@@ -166,10 +165,10 @@ public class CommandParserTest {
 		String input1 = new String("cr3ate task1");
 		String input2 = new String("searchhh task2");
 		
-		assertFalse(INVALID_COMMAND, parser.getCommand(input1) == Constants.COMMAND_ADD);
-		assertFalse(INVALID_COMMAND, parser.getCommand(input2) == Constants.COMMAND_SEARCH);
-		assertTrue(VALID_COMMAND, parser.getCommand(input1) == Constants.COMMAND_INVALID);
-		assertTrue(VALID_COMMAND, parser.getCommand(input2) == Constants.COMMAND_INVALID);
+		assertFalse(INVALID_COMMAND, CommandParser.getCommand(input1) == Constants.COMMAND_ADD);
+		assertFalse(INVALID_COMMAND, CommandParser.getCommand(input2) == Constants.COMMAND_SEARCH);
+		assertTrue(VALID_COMMAND, CommandParser.getCommand(input1) == Constants.COMMAND_INVALID);
+		assertTrue(VALID_COMMAND, CommandParser.getCommand(input2) == Constants.COMMAND_INVALID);
 	
 	}
 	
@@ -179,8 +178,8 @@ public class CommandParserTest {
 		String input1 = new String(" add task1");
 		String input2 = new String("    find task2");
 		
-		assertTrue(INVALID_COMMAND, parser.getCommand(input1) == Constants.COMMAND_ADD);
-		assertTrue(INVALID_COMMAND, parser.getCommand(input2) == Constants.COMMAND_SEARCH);
+		assertTrue(INVALID_COMMAND, CommandParser.getCommand(input1) == Constants.COMMAND_ADD);
+		assertTrue(INVALID_COMMAND, CommandParser.getCommand(input2) == Constants.COMMAND_SEARCH);
 	
 	}
 	
@@ -194,10 +193,10 @@ public class CommandParserTest {
 		String input1 = new String("text mark task1");
 		String input2 = new String("word show task2");
 		
-		assertFalse(INVALID_COMMAND, parser.getCommand(input1) == Constants.COMMAND_MARK);
-		assertFalse(INVALID_COMMAND, parser.getCommand(input2) == Constants.COMMAND_SHOW);
-		assertTrue(VALID_COMMAND, parser.getCommand(input1) == Constants.COMMAND_INVALID);
-		assertTrue(VALID_COMMAND, parser.getCommand(input2) == Constants.COMMAND_INVALID);
+		assertFalse(INVALID_COMMAND, CommandParser.getCommand(input1) == Constants.COMMAND_MARK);
+		assertFalse(INVALID_COMMAND, CommandParser.getCommand(input2) == Constants.COMMAND_SHOW);
+		assertTrue(VALID_COMMAND, CommandParser.getCommand(input1) == Constants.COMMAND_INVALID);
+		assertTrue(VALID_COMMAND, CommandParser.getCommand(input2) == Constants.COMMAND_INVALID);
 	
 	}
 }
