@@ -247,7 +247,7 @@ public class Logic {
 		case Constants.COMMAND_EDIT:
 			return bin.undoStack.peek().returnMani().getTitle() + Constants.FEEDBACK_EDIT_SUCCESS;
 		case Constants.COMMAND_SETPATH:
-			if (Storage.setPath(input)) {
+			if (Storage.setPath(input.split(" ")[1].trim())) {
 				return Constants.FEEDBACK_SETPATH_SUCCESS + input.split(Constants.SPACE)[1].trim();
 			} else {
 				return input.split(Constants.SPACE)[1].trim() + Constants.FEEDBACK_SETPATH_FAILURE;
