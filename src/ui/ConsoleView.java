@@ -6,6 +6,7 @@ import java.util.Calendar;
 
 import org.joda.time.DateTime;
 
+import application.Constants;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -21,7 +22,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import logic.Task;
 import parser.Parser;
@@ -62,14 +62,10 @@ public class ConsoleView extends Pane {
 		dateDisplay.setId("dateDisplay");
 		dateDisplay.setAlignment(Pos.CENTER_LEFT);
 		dateDisplay.setMaxWidth(Double.MAX_VALUE);
-		dateDisplay.setPadding(new Insets(0, 0, 0, 20));
-		dateDisplay.setTextFill(Color.WHITE);
 
 		clockDisplay.setId("timeDisplay");
 		clockDisplay.setAlignment(Pos.CENTER_RIGHT);
 		clockDisplay.setMaxWidth(Double.MAX_VALUE);
-		clockDisplay.setPadding(new Insets(0, 20, 0, 0));
-		clockDisplay.setTextFill(Color.WHITE);
 
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy");
 		SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
@@ -87,20 +83,8 @@ public class ConsoleView extends Pane {
 		timeline.play();
 
 		timedList.setId("timedList");
-		// timedList.setStyle(
-		// "-fx-background-color:linear-gradient( from 100.0% 0.0% to 100.0%
-		// 100.0%, rgb(51,51,51) 0.0, rgb(179,179,179) 40.0, rgb(51,51,51)
-		// 100.0)");
-		timedList.setFocusTraversable(false);
-		timedList.setFillWidth(true);
-		timedList.setMinWidth(350);
 
 		floatingList.setId("floatingList");
-		// floatingList.setStyle(
-		// "-fx-background-color: linear-gradient( from 100.0% 0.0% to 100.0%
-		// 100.0%, rgb(46,50,68) 0.0, rgb(51,51,51) 40.0, rgb(39,41,54)
-		// 100.0)");
-		floatingList.setFocusTraversable(false);
 		floatingList.setFillWidth(true);
 
 		HBox.setHgrow(floatingList, Priority.ALWAYS);
@@ -115,11 +99,7 @@ public class ConsoleView extends Pane {
 		scrollPane.setContent(listDisplay);
 		scrollPane.setFitToHeight(true);
 		scrollPane.setFitToWidth(true);
-		scrollPane.setMaxHeight(470);
-		scrollPane.setMinHeight(470);
-		scrollPane.setPrefWidth(800);
 		scrollPane.setHbarPolicy(ScrollBarPolicy.NEVER);
-		scrollPane.setFocusTraversable(false);
 		scrollPane.setBorder(null);
 		scrollPane.setPickOnBounds(false);
 
@@ -132,11 +112,9 @@ public class ConsoleView extends Pane {
 
 		inputConsole.setId("inputConsole");
 		inputConsole.setEditable(true);
-		inputConsole.setFocusTraversable(true);
 
 		status.setMaxWidth(Double.MAX_VALUE);
 		status.setId("statusBar");
-		status.setAlignment(Pos.CENTER_LEFT);
 
 		HBox dateTime = new HBox();
 		HBox.setHgrow(clockDisplay, Priority.ALWAYS);
@@ -181,7 +159,7 @@ public class ConsoleView extends Pane {
 		if (dateTime.getYear() != 0000) {
 			return dateTime.toLocalDateTime().toString("HHmm dd MMM yyyy");
 		} else {
-			return "N/A";
+			return Constants.NOT_APPLICABLE;
 		}
 	}
 

@@ -14,6 +14,8 @@ public class DateParserTest {
 	public static final String INCORRECT_DAY = new String("Day of month is incorrect");
 	public static final String INCORRECT_MONTH = new String("Month of year is incorrect");
 	public static final String INCORRECT_YEAR = new String("Year is incorrect");
+	public static final String INCORRECT_HOUR = new String("Hour is incorrect");
+	public static final String INCORRECT_MINUTE = new String("Minute is incorrect");
 
 	@Test
 	public void testGetDateTime_Dash1() { // dd-MM-yyyy
@@ -187,7 +189,46 @@ public class DateParserTest {
 	}
 
 	@Test
-	public void testGetDateTime_YearBoundary1() { // year
+	public void testGetDateTime_ExtraSpacesBeforeDate() {
+		DateTime dateTime = DateParser.getDateTime("    06/10/17");
+		assertTrue(INCORRECT_DAY, dateTime.getDayOfMonth() == 6);
+		assertTrue(INCORRECT_MONTH, dateTime.getMonthOfYear() == 10);
+		assertTrue(INCORRECT_YEAR, dateTime.getYear() == 2017);
+	}
 
+	@Test
+	public void testGetDateTime_ExtraSpacesAfterDate() {
+		DateTime dateTime = DateParser.getDateTime("20/03/21       ");
+		assertTrue(INCORRECT_DAY, dateTime.getDayOfMonth() == 20);
+		assertTrue(INCORRECT_MONTH, dateTime.getMonthOfYear() == 3);
+		assertTrue(INCORRECT_YEAR, dateTime.getYear() == 2021);
+	}
+
+	@Test
+	public void testGetDateTime_ExtraSpacesWithinDate() {
+		DateTime dateTime = DateParser.getDateTime("06   /    10   /  17");
+		assertTrue(INCORRECT_DAY, dateTime.getDayOfMonth() == 6);
+		assertTrue(INCORRECT_MONTH, dateTime.getMonthOfYear() == 10);
+		assertTrue(INCORRECT_YEAR, dateTime.getYear() == 2017);
+	}
+
+	@Test
+	public void testGetDateTime_ColonForTime() { // year
+		DateTime dateTime = DateParser.getDateTime("10:21");
+		assertTrue(INCORRECT_DAY, dateTime.getDayOfMonth() == DateTime.now().getDayOfMonth());
+		assertTrue(INCORRECT_MONTH, dateTime.getMonthOfYear() == DateTime.now().getMonthOfYear());
+		assertTrue(INCORRECT_YEAR, dateTime.getYear() == DateTime.now().getYear());
+		assertTrue(INCORRECT_HOUR, dateTime.getHourOfDay() == 10);
+		assertTrue(INCORRECT_MINUTE, dateTime.getMinuteOfHour() == 21);
+	}
+
+	@Test
+	public void testGetDateTime_TwentyFourHourTime() { // year
+		DateTime dateTime = DateParser.getDateTime("2330");
+		assertTrue(INCORRECT_DAY, dateTime.getDayOfMonth() == DateTime.now().getDayOfMonth());
+		assertTrue(INCORRECT_MONTH, dateTime.getMonthOfYear() == DateTime.now().getMonthOfYear());
+		assertTrue(INCORRECT_YEAR, dateTime.getYear() == DateTime.now().getYear());
+		assertTrue(INCORRECT_HOUR, dateTime.getHourOfDay() == 23);
+		assertTrue(INCORRECT_MINUTE, dateTime.getMinuteOfHour() == 30);
 	}
 }
