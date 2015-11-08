@@ -33,27 +33,24 @@ public class TitleParser {
 	}
 
 	public static String splitInputWithDictionary(String[] dictionary, String input) {
-		int firstIndex = -1;
-		int lastIndex = input.length();
-
-		Pattern datePattern;
-		Matcher dateMatcher;
-
-		for (String regex : dictionary) {
-
-			datePattern = Pattern.compile(regex);
-			dateMatcher = datePattern.matcher(input.toLowerCase());
-
-			if (dateMatcher.find()) {
-				firstIndex = dateMatcher.start();
-			}
-
-		}
-
+		
+		int firstIndex = getFirstIndex(dictionary, input);
+		int lastIndex = getLastIndex(dictionary, input);
+		
 		if (firstIndex < 0) {
 			return null;
+		} else if (lastIndex <= firstIndex) {
+			lastIndex = input.length();
 		}
 
+		return excludeFirstWord(input.substring(firstIndex, lastIndex)).trim();
+	}
+
+	private static int getLastIndex(String[] dictionary, String input) {
+		Pattern datePattern;
+		Matcher dateMatcher;
+		int lastIndex = input.length();
+		
 		ArrayList<String> taskKeywords = new ArrayList<String>();
 		taskKeywords.addAll(Arrays.asList(Constants.TASK_START_DATETIME));
 		taskKeywords.addAll(Arrays.asList(Constants.TASK_END_DATETIME));
@@ -71,11 +68,25 @@ public class TitleParser {
 				}
 			}
 		}
-		if (lastIndex <= firstIndex) {
-			lastIndex = input.length();
-		}
+		return lastIndex;
+	}
 
-		return excludeFirstWord(input.substring(firstIndex, lastIndex)).trim();
+	private static int getFirstIndex(String[] dictionary, String input) {
+		Pattern datePattern;
+		Matcher dateMatcher;
+		int firstIndex = -1;
+
+		for (String regex : dictionary) {
+
+			datePattern = Pattern.compile(regex);
+			dateMatcher = datePattern.matcher(input.toLowerCase());
+
+			if (dateMatcher.find()) {
+				firstIndex = dateMatcher.start();
+			}
+
+		}
+		return firstIndex;
 	}
 
 	static String extractFirstWord(String input) {
