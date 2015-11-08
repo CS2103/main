@@ -39,7 +39,6 @@ public class TaskBin {
 	}
 
 	public ArrayList<Task> returnDisplay() {
-		System.out.println("is Returning display phase 1");
 		displayList = display.returnDisplay();
 		return displayList;
 	}
@@ -49,11 +48,11 @@ public class TaskBin {
 		displayList = display.returnDisplay();
 		return displayList;
 	}
-	
-	public ArrayList<Task> displayUnfinished(){
+
+	public ArrayList<Task> displayUnfinished() {
 		ArrayList<Task> results = new ArrayList<Task>();
-		for(Task t:taskList){
-			if(t.getStatus() == false){
+		for (Task t : taskList) {
+			if (t.getStatus() == false) {
 				results.add(t);
 			}
 		}
@@ -61,11 +60,11 @@ public class TaskBin {
 		displayList = display.returnDisplay();
 		return results;
 	}
-	
-	public ArrayList<Task> displayFinished(){
+
+	public ArrayList<Task> displayFinished() {
 		ArrayList<Task> results = new ArrayList<Task>();
-		for(Task t:taskList){
-			if((t.getStatus() == true)&&(t.isTypeRecur() == false)){
+		for (Task t : taskList) {
+			if ((t.getStatus() == true) && (t.isTypeRecur() == false)) {
 				results.add(t);
 			}
 		}
@@ -73,20 +72,18 @@ public class TaskBin {
 		displayList = display.returnDisplay();
 		return results;
 	}
-	
-	public ArrayList<Task> displayAll(){
+
+	public ArrayList<Task> displayAll() {
 		display.setDisplayAll(taskList);
 		displayList = display.returnDisplay();
 		return displayList;
 	}
-	
+
 	public void add(Task newTask) {
 		Command add = new Command(Constants.add_tag, newTask);
 		this.undoStack.push(add);
-		System.out.println("The size of the stack is: " + undoStack.size());
 		this.taskList.add(newTask);
 		taskList = sorter.sortArrayByTime(taskList);
-		System.out.println(newTask.getType() + " is added");
 		display.setDisplay(taskList);
 		displayList = display.returnDisplay();
 		Storage.write(taskList);
@@ -124,19 +121,18 @@ public class TaskBin {
 
 		for (Task obj : taskList) {
 			boolean isFoundRecur = false;
-			if(obj.isTypeRecur()){
-				for(DateTime t:obj.getRecurDates()){
-					if(t.getDayOfYear() == DateTime.now().getDayOfYear()){
+			if (obj.isTypeRecur()) {
+				for (DateTime t : obj.getRecurDates()) {
+					if (t.getDayOfYear() == DateTime.now().getDayOfYear()) {
 						isFoundRecur = true;
 						break;
 					}
 				}
-				if(!isFoundRecur){
+				if (!isFoundRecur) {
 					return null;
 				}
 			}
 			if (obj.equals(task)) {
-				//System.out.println(obj.getTitle());
 				obj.mark();
 				Command mark = new Command(Constants.mark_tag, obj);
 				undoStack.push(mark);
@@ -152,7 +148,6 @@ public class TaskBin {
 	public ArrayList<Task> unmarkTaskInstance(Task task) {
 		for (Task obj : taskList) {
 			if (obj.equals(task)) {
-				//System.out.println(obj.getTitle());
 				obj.unMark();
 				Command unmark = new Command(Constants.unmark_tag, obj);
 				undoStack.push(unmark);
@@ -198,30 +193,32 @@ public class TaskBin {
 			break;
 
 		case Constants.alter_tag:
-			/*redoStack.push(previousComm);
-			System.out.println("Stats of previous com " + previousComm.returnMani().getTitle() + "Stats of curr com " + previousComm.returnOrigin().getTitle());
-			//System.out.println(previousComm.returnMani().getTitle() + previousComm.returnOrigin().getTitle());
-			//System.out.println(taskList.get(displayList.indexOf(previousComm.returnMani())));
-			taskList.remove(taskList.get(taskList.indexOf(previousComm.returnMani())));
-			//TODO
-			//taskList.remove(previousComm.returnMani());
-			
-			taskList.add(previousComm.returnOrigin());
-			if (displayList != taskList) {
-				//System.out.println(displayList.get(displayList.indexOf(previousComm.returnMani())));
-				display.updateDisplay(previousComm, false);
-			}
-			break;*/
+			/*
+			 * redoStack.push(previousComm);
+			 * System.out.println("Stats of previous com " +
+			 * previousComm.returnMani().getTitle() + "Stats of curr com " +
+			 * previousComm.returnOrigin().getTitle());
+			 * //System.out.println(previousComm.returnMani().getTitle() +
+			 * previousComm.returnOrigin().getTitle());
+			 * //System.out.println(taskList.get(displayList.indexOf(
+			 * previousComm.returnMani())));
+			 * taskList.remove(taskList.get(taskList.indexOf(previousComm.
+			 * returnMani()))); //TODO
+			 * //taskList.remove(previousComm.returnMani());
+			 * 
+			 * taskList.add(previousComm.returnOrigin()); if (displayList !=
+			 * taskList) {
+			 * //System.out.println(displayList.get(displayList.indexOf(
+			 * previousComm.returnMani()))); display.updateDisplay(previousComm,
+			 * false); } break;
+			 */
 			redoStack.push(previousComm);
-			System.out.println("The previous title is: " + previousComm.returnMani().getTitle() + " and the current title is : " + previousComm.returnOrigin().getTitle());
-			System.out.println("The task I am search for is: " + taskList.get(displayList.indexOf(previousComm.returnMani())));
 			displayList = display.returnDisplay();
-			//taskList.remove(taskList.get(taskList.indexOf(previousComm.returnMani())));
+			// taskList.remove(taskList.get(taskList.indexOf(previousComm.returnMani())));
 			taskList.remove(previousComm.returnMani());
 			taskList.add(previousComm.returnOrigin());
-			
-			if(!displayList.equals(taskList)){
-				System.out.println(displayList.get(displayList.indexOf(previousComm.returnMani())));
+
+			if (!displayList.equals(taskList)) {
 				displayList.remove(displayList.get(displayList.indexOf(previousComm.returnMani())));
 				displayList.add(previousComm.returnOrigin());
 			}
@@ -239,9 +236,6 @@ public class TaskBin {
 			taskList.get(taskList.indexOf(previousComm.returnMani())).mark();
 			display.updateDisplay(previousComm, false);
 			break;
-
-		default:
-			System.out.println("Error: Unable to identify the command type");
 		}
 		Storage.write(taskList);
 	}
@@ -266,32 +260,28 @@ public class TaskBin {
 			displayList = display.returnDisplay();
 			break;
 		case Constants.alter_tag:
-			/*undoStack.push(redoComm);
-			taskList.remove(redoComm.returnOrigin());
-			displayList.remove(redoComm.returnOrigin());
-			if (taskList != displayList) {
-				taskList.add(redoComm.returnMani());
-				display.updateDisplay(redoComm, true);
-
-			} else {
-				taskList.add(redoComm.returnMani());
-			}
-			displayList = display.returnDisplay();
-			break;*/
+			/*
+			 * undoStack.push(redoComm);
+			 * taskList.remove(redoComm.returnOrigin());
+			 * displayList.remove(redoComm.returnOrigin()); if (taskList !=
+			 * displayList) { taskList.add(redoComm.returnMani());
+			 * display.updateDisplay(redoComm, true);
+			 * 
+			 * } else { taskList.add(redoComm.returnMani()); } displayList =
+			 * display.returnDisplay(); break;
+			 */
 			displayList = display.returnDisplay();
 			undoStack.push(redoComm);
 			taskList.remove(taskList.get(taskList.indexOf(redoComm.returnOrigin())));
 			taskList.add(redoComm.returnMani());
-			
-			if(!displayList.equals(taskList)){
+
+			if (!displayList.equals(taskList)) {
 				displayList.remove(displayList.get(displayList.indexOf(redoComm.returnOrigin())));
 				displayList.add(redoComm.returnMani());
-				
+
 			}
 			display.setDisplayAll(displayList);
 			break;
-			
-			
 
 		case Constants.mark_tag:
 			undoStack.push(redoComm);
@@ -306,10 +296,6 @@ public class TaskBin {
 			display.updateDisplay(redoComm, true);
 			displayList = display.returnDisplay();
 			break;
-
-		default:
-			System.out.println("Error: Unable to identify the command type");
-
 		}
 
 	}
@@ -384,65 +370,58 @@ public class TaskBin {
 	}
 
 	public void editTitle(Task task, String newTitle) {
-		/*Task tar = taskList.get(taskList.indexOf(task));
+		/*
+		 * Task tar = taskList.get(taskList.indexOf(task)); Task buffer = new
+		 * Task(task); buffer.setTitle(newTitle); taskList.remove(tar);
+		 * taskList.add(buffer); Command editTil = new
+		 * Command(Constants.alter_tag, buffer, tar); undoStack.push(editTil);
+		 * Storage.write(taskList); redoStack.clear();
+		 * display.updateDisplay(editTil, true); displayList =
+		 * display.returnDisplay();
+		 */
+		// Task buffer = new Task(task);
+
+		/*
+		 * Task tar = taskList.get(taskList.indexOf(task));
+		 * tar.setTitle(newTitle); Task buffer = new Task(task);
+		 * System.out.println("The title for tar is " + tar.getTitle() +
+		 * " and the title for buffer is " + buffer.getTitle()); Command editTil
+		 * = new Command(Constants.alter_tag, tar, buffer);
+		 * undoStack.push(editTil); Storage.write(taskList); redoStack.clear();
+		 * display.updateDisplay(editTil, true); displayList =
+		 * display.returnDisplay();
+		 */
+
 		Task buffer = new Task(task);
-		buffer.setTitle(newTitle);
-		taskList.remove(tar);
-		taskList.add(buffer);
-		Command editTil = new Command(Constants.alter_tag, buffer, tar);
-		undoStack.push(editTil);
-		Storage.write(taskList);
-		redoStack.clear();
-		display.updateDisplay(editTil, true);
-		displayList = display.returnDisplay();*/
-		//Task buffer = new Task(task);
-		
-		
-		/*Task tar = taskList.get(taskList.indexOf(task));
-		tar.setTitle(newTitle);
-		Task buffer = new Task(task);
-		System.out.println("The title for tar is " + tar.getTitle() + " and the title for buffer is " + buffer.getTitle());
-		Command editTil = new Command(Constants.alter_tag, tar, buffer);
-		undoStack.push(editTil);
-		Storage.write(taskList);
-		redoStack.clear();
-		display.updateDisplay(editTil, true);
-		displayList = display.returnDisplay();*/
-		
-		
-		Task buffer = new Task(task);
-		Task tar = new Task (taskList.get(taskList.indexOf(task)));
-		Task tarDis = new Task (displayList.get(displayList.indexOf(tar)));
+		Task tar = new Task(taskList.get(taskList.indexOf(task)));
+		Task tarDis = new Task(displayList.get(displayList.indexOf(tar)));
 		taskList.remove(taskList.get(taskList.indexOf(task)));
 		displayList.remove(displayList.get(displayList.indexOf(task)));
 		tarDis.setTitle(newTitle);
 		tar.setTitle(newTitle);
 		taskList.add(tar);
 		displayList.add(tarDis);
-		
-		
-		
-		System.out.println("The tar is recur " + tar.isTypeRecur() + ". The buffer is type recur: " + buffer.isTypeRecur());
+
 		Command editTil = new Command(Constants.alter_tag, tar, buffer);
 		display.setDisplayAll(displayList);
 		undoStack.push(editTil);
 		Storage.write(taskList);
 		redoStack.clear();
 	}
-	
-	public void editTimeField(Task task, DateTime startDate, DateTime endDate){
+
+	public void editTimeField(Task task, DateTime startDate, DateTime endDate) {
 		if (task.getType().equals(Constants.recur_tag)) {
 			return;
 		}
-		if(startDate.getYear() == 0){
+		if (startDate.getYear() == 0) {
 			startDate = task.getStartingTime();
 		}
-		if(endDate.getYear() == 0){
+		if (endDate.getYear() == 0) {
 			endDate = task.getEndingTime();
 		}
 		Task buffer = new Task(task);
-		Task tar = new Task (taskList.get(taskList.indexOf(task)));
-		Task tarDis = new Task (displayList.get(displayList.indexOf(tar)));
+		Task tar = new Task(taskList.get(taskList.indexOf(task)));
+		Task tarDis = new Task(displayList.get(displayList.indexOf(tar)));
 		taskList.remove(taskList.get(taskList.indexOf(task)));
 		displayList.remove(displayList.get(displayList.indexOf(task)));
 		tar.setStartingDate(startDate);
@@ -459,14 +438,14 @@ public class TaskBin {
 		redoStack.clear();
 	}
 
-	public void editStartingDate(Task task, DateTime date){
+	public void editStartingDate(Task task, DateTime date) {
 		if (task.getType().equals(Constants.recur_tag)) {
 			return;
 		}
-		
+
 		Task buffer = new Task(task);
-		Task tar = new Task (taskList.get(taskList.indexOf(task)));
-		Task tarDis = new Task (displayList.get(displayList.indexOf(tar)));
+		Task tar = new Task(taskList.get(taskList.indexOf(task)));
+		Task tarDis = new Task(displayList.get(displayList.indexOf(tar)));
 		taskList.remove(taskList.get(taskList.indexOf(task)));
 		displayList.remove(displayList.get(displayList.indexOf(task)));
 		tar.setStartingDate(date);
@@ -481,13 +460,13 @@ public class TaskBin {
 		redoStack.clear();
 	}
 
-	public void editEndingDate(Task task, DateTime date){
+	public void editEndingDate(Task task, DateTime date) {
 		if (task.getType().equals(Constants.recur_tag)) {
 			return;
 		}
 		Task buffer = new Task(task);
-		Task tar = new Task (taskList.get(taskList.indexOf(task)));
-		Task tarDis = new Task (displayList.get(displayList.indexOf(tar)));
+		Task tar = new Task(taskList.get(taskList.indexOf(task)));
+		Task tarDis = new Task(displayList.get(displayList.indexOf(tar)));
 		taskList.remove(taskList.get(taskList.indexOf(task)));
 		displayList.remove(displayList.get(displayList.indexOf(task)));
 		tar.setEndingDate(date);
@@ -531,11 +510,11 @@ public class TaskBin {
 			DateTime start = task.getStartingTime();
 			DateTime end = task.getEndingTime();
 			for (Task t : taskList) {
-				if((t.getStartingTime().getYear() == 0) || (t.getEndingTime().getYear()==0)){
+				if ((t.getStartingTime().getYear() == 0) || (t.getEndingTime().getYear() == 0)) {
 					return false;
-				}else if ((t.getStartingTime().isBefore(end)) && (t.getStartingTime().isAfter(start))) {
+				} else if ((t.getStartingTime().isBefore(end)) && (t.getStartingTime().isAfter(start))) {
 					return true;
-				}else if ((t.getEndingTime().isAfter(start)) && (t.getEndingTime().isBefore(end))) {
+				} else if ((t.getEndingTime().isAfter(start)) && (t.getEndingTime().isBefore(end))) {
 					return true;
 				}
 			}
@@ -548,10 +527,11 @@ public class TaskBin {
 		DateTime start = time[0];
 		DateTime end = time[1];
 		for (Task t : taskList) {
-			if((t.getType().equals(Constants.TYPE_FLOATING))||(t.getType().equals(Constants.TYPE_RECUR))){
+			if ((t.getType().equals(Constants.TYPE_FLOATING)) || (t.getType().equals(Constants.TYPE_RECUR))) {
 				continue;
 			}
-			if((t.getStartingTime().getSecondOfDay() == start.getSecondOfDay()) && (t.getEndingTime().getSecondOfDay() == end.getSecondOfDay())){
+			if ((t.getStartingTime().getSecondOfDay() == start.getSecondOfDay())
+					&& (t.getEndingTime().getSecondOfDay() == end.getSecondOfDay())) {
 				continue;
 			}
 			if ((t.getStartingTime().isBefore(end)) && (t.getStartingTime().isAfter(start))) {
@@ -563,8 +543,8 @@ public class TaskBin {
 		}
 		return false;
 	}
-	
-	public ArrayList<Task> returnAllInbox(){
+
+	public ArrayList<Task> returnAllInbox() {
 		return new ArrayList<Task>(taskList);
 	}
 

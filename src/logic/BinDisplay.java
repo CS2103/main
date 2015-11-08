@@ -69,8 +69,7 @@ public class BinDisplay {
 			}
 		}
 		dis = sorter.sortArrayByTime(dis);
-		for(int i = 0; i < dis.size();i++ ){
-			System.out.println("The titles in display list is: " + dis.get(i).getTitle());
+		for (int i = 0; i < dis.size(); i++) {
 		}
 		displayList = dis;
 	}
@@ -90,7 +89,6 @@ public class BinDisplay {
 	// return the display list back
 	public ArrayList<Task> returnDisplay() {
 		displayList = sorter.sortArrayByTime(displayList);
-		System.out.println("The size of the activeList is:" + displayList.size());
 		return displayList;
 	}
 
@@ -136,8 +134,6 @@ public class BinDisplay {
 			case Constants.unmark_tag:
 				displayList.get(displayList.indexOf(command.returnMani())).unMark();
 				break;
-			default:
-				System.out.println("Error: Unable to identify the command type");
 			}
 		} else {
 			switch (command.returnCommand()) {
@@ -152,8 +148,6 @@ public class BinDisplay {
 			case Constants.unmark_tag:
 				displayList.get(displayList.indexOf(command.returnMani())).mark();
 				break;
-			default:
-				System.out.println("Error: Unable to identify the command type");
 			}
 		}
 	}

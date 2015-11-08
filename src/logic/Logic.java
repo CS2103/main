@@ -49,8 +49,6 @@ public class Logic {
 		} else if (command.equalsIgnoreCase(Constants.COMMAND_ENQUIREPATH)) {
 			return bin.returnDisplay();
 		} else if (command.equalsIgnoreCase(Constants.COMMAND_SHOW)) {
-			System.out.println("The date to search is " + parser.getDateTime(input).toString());
-			System.out.println("The tasks to show is: " + parser.getTitle(input));
 			if (parser.getTitle(input).equals(Constants.STATUS_INCOMPLETE)) {
 				return bin.displayUnfinished();
 			} else if (parser.getTitle(input).equals(Constants.STATUS_COMPLETE)) {
@@ -74,12 +72,10 @@ public class Logic {
 	public ArrayList<Task> addTask(String input) throws ParseException, InvalidTimeException {
 
 		String title = parser.getTitle(input);
-		System.out.println(title);
 		Task newTask = new Task();
 		if (title.length() != 0) {
 			DateTime startTime = parser.getStartDateTime(input);
 			DateTime endTime = parser.getEndDateTime(input);
-			System.out.println("Task Stats: " + title.length() + " " + startTime.toString() + " " + endTime.toString());
 			if (!parser.getRecurValue(input).equals("")) {
 				String recurValue = parser.getRecurValue(input);
 				DateTime endRecur = new DateTime();
@@ -87,7 +83,6 @@ public class Logic {
 				newTask = new Task(title, startTime, endTime, endRecur, recurValue);
 			} else {
 				newTask = new Task(title, startTime, endTime);
-				System.out.println(newTask.getTitle());
 			}
 
 			bin.add(newTask);
@@ -128,8 +123,6 @@ public class Logic {
 			if (toEdit.getType().equals(Constants.TYPE_RECUR)) {
 				break;
 			}
-			System.out.println("The new starting time is: " + parser.getStartDateTime(info).toString() + ".  "
-					+ "The ending Time is " + parser.getEndDateTime(info).toString() + " . ");
 			bin.editTimeField(toEdit, parser.getStartDateTime(info), parser.getEndDateTime(info));
 			break;
 		}
