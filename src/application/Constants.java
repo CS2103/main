@@ -250,4 +250,9 @@ public class Constants {
 
 	// used in Storage.java to correct index when calling String.substring()
 	public static final int FIX_CORRECT_INDEX = 1;
+	
+	// Error Messages
+	public static final String ERROR_NULL_INPUT = "NULL input reached";
+	public static final String ERROR_INPUT_DATE = "Wrong date input";
+	public static final String ERROR_INPUT_TIME = "Wrong time input";
 }
