@@ -1,3 +1,4 @@
+//@@author A0121442X
 package test;
 
 import static org.junit.Assert.*;
@@ -89,10 +90,14 @@ public class TitleParserTest {
 	}
 	
 	@Test
-	public void testGetEditTitle_NormalText() { // Title is valid for edit command
+	public void testGetEditTitle_WhiteSpaces() { // Title contains multiple whitespaces within fields
 		
-		String input1 = new String("edit 1 title title3245");
+		String input1 = new String("edit 1 title        title3245");
+		String input2 = new String("edit 1        title title3245");
+		String input3 = new String("edit        1 title title3245");
 		
 		assertTrue(INVALID_TITLE, TitleParser.getEditTitle(input1).equals("title3245"));
+		assertTrue(INVALID_TITLE, TitleParser.getEditTitle(input2).equals("title3245"));
+		assertTrue(INVALID_TITLE, TitleParser.getEditTitle(input3).equals("title3245"));
 	}
 }
