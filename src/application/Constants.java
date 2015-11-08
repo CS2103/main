@@ -231,4 +231,6 @@ public class Constants {
 	final static String MSG_ERROR = "Error occured";
 	public final static String MSG_ABOUT = APP_NAME + " 2015 \nCreated by Andy, Hung, Jun Ren, Xiaoming";
 
+	// used in Storage.java to correct index when calling String.substring()
+	public static final int FIX_CORRECT_INDEX = 1;
 }

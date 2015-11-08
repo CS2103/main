@@ -30,6 +30,8 @@ public class StorageTest {
 	// formats
 	final static Gson gson = Converters.registerDateTime(new GsonBuilder().setPrettyPrinting().serializeNulls())
 			.create();
+	private static final int INPUTTASKS_LENGTH = 6;
+
 	final DateTime original = new DateTime();
 	final String json = gson.toJson(original);
 	final DateTime reconstituted = gson.fromJson(json, DateTime.class);
@@ -39,44 +41,40 @@ public class StorageTest {
 
 	@Before
 	public void setUp1() throws Exception {
-		Task[] t = new Task[6];
+		Task[] inputTasks = new Task[INPUTTASKS_LENGTH];
 		DateTime d0 = new DateTime(0, 1, 1, 0, 0);
 		DateTime d1 = new DateTime(2015, 10, 21, 0, 0);
 		DateTime d2 = new DateTime(2015, 11, 25, 0, 0);
 		DateTime d3 = new DateTime(2015, 2, 22, 0, 0);
 		DateTime d4 = new DateTime(2016, 1, 21, 0, 0);
 		DateTime d5 = new DateTime(2014, 3, 23, 0, 0);
-		t[0] = new Task("Apple produced Iphone", d0, d0);
-		t[1] = new Task("Google produced Google Glass", d0, d1);
-		t[2] = new Task("Vivado produced new Boards", d3, d1);
-		t[3] = new Task("Go fishing", d5, d2);
-		t[4] = new Task("Do homework", d3, d4);
-		t[5] = new Task("Love no War", d5, d3);
-		for (int i = 0; i < t.length; i++) {
-			taskList.add(t[i]);
+		inputTasks[0] = new Task("Apple produced Iphone", d0, d0);
+		inputTasks[1] = new Task("Google produced Google Glass", d0, d1);
+		inputTasks[2] = new Task("Vivado produced new Boards", d3, d1);
+		inputTasks[3] = new Task("Go fishing", d5, d2);
+		inputTasks[4] = new Task("Do homework", d3, d4);
+		inputTasks[5] = new Task("Love no War", d5, d3);
+		for (int i = 0; i < INPUTTASKS_LENGTH; i++) {
+			taskList.add(inputTasks[i]);
 		}
 	}
-	
+
+	/*
 	@Before
 	public void setUp2() throws Exception {
-		Task task1 = new Task(new DateTime(0,1,1,0,0),new DateTime(0,1,1,0,0));
-		Task task2 = new Task("The title of the task is super super super super super super super super super super super super super super super super long", new DateTime(0,1,1,0,0), new DateTime(0,1,1,0,0));
-		Task task3 = new Task("������֧��", new DateTime(0,1,1,0,0),new DateTime(0,1,1,0,0) );
-		Task task4 = new Task("Task starts and end at different year", new DateTime(2015,11,12,0,0), new DateTime(2016,1,15,0,1));
-		Task task5 = new Task("Task ends before it starts", new DateTime(2015,12,11,0,0), new DateTime(2015,11,15,0,0));
-		TaskBin testBin = new TaskBin();
-		testBin.add(task1);
-		testBin.add(task2);
-		testBin.add(task3);
-		testBin.add(task4);
-		testBin.add(task5);
-		ArrayList<Task> output1 = new ArrayList<Task>();
-		output1.add(task3);
-		output1.add(task2);
-		output1.add(task1);
-		output1.add(task5);
-		output1.add(task4);
+		Task[] inputTasks = new Task[INPUTTASKS_LENGTH];
+		inputTasks[0] = new Task(new DateTime(0,1,1,0,0),new DateTime(0,1,1,0,0));
+		inputTasks[1] = new Task(new DateTime(0,1,1,0,0),new DateTime(0,1,1,0,0));
+		inputTasks[2] = new Task("The title of the task is super super super super super super super super super super super super super super super super long", new DateTime(0,1,1,0,0), new DateTime(0,1,1,0,0));
+		inputTasks[3] = new Task("������֧��", new DateTime(0,1,1,0,0),new DateTime(0,1,1,0,0) );
+		inputTasks[4] = new Task("Task starts and end at different year", new DateTime(2015,11,12,0,0), new DateTime(2016,1,15,0,1));
+		inputTasks[5] = new Task("Task ends before it starts", new DateTime(2015,12,11,0,0), new DateTime(2015,11,15,0,0));
+		for (int i = 0; i < INPUTTASKS_LENGTH; i++) {
+			taskList.add(inputTasks[i]);
+		}
 	}
+	 */
+
 	@After
 	public void reset() throws Exception {
 		taskList.clear();
@@ -94,7 +92,7 @@ public class StorageTest {
 	}
 
 	@Test
-	public void testsetPath_fileCreated2() {
+	public void testSetPath_fileCreated2() {
 		boolean pass = true;
 		Storage.setPath("/Users/hungngth/Downloads/mysave.txt");
 		File file = new File("/Users/hungngth/Downloads/mysave.txt");
@@ -105,14 +103,99 @@ public class StorageTest {
 	}
 
 	@Test
-	public void testsetPath_correctAssignment() {
+	public void testSetPath_invalidPath1() {
+		boolean isValidPath, pass;
+		isValidPath = Storage.setPath("aaa");
+		if (isValidPath == false) {
+			pass = true;
+		} else {
+			pass = false;
+		}
+		assertTrue("test correct processing of invalid path input", pass);
+	}
+
+	@Test
+	public void testSetPath_invalidPath2() {
+		boolean isValidPath, pass;
+		isValidPath = Storage.setPath(" ");
+		if (isValidPath == false) {
+			pass = true;
+		} else {
+			pass = false;
+		}
+		assertTrue("test correct processing of invalid path input (space character)", pass);
+	}
+	
+	// \ / : * ? " < > |
+	@Test
+	public void testSetPath_invalidPath3() {
+		boolean isValidPath, pass;
+		isValidPath = Storage.setPath("*");
+		if (isValidPath == false) {
+			pass = true;
+		} else {
+			pass = false;
+		}
+		assertTrue("test correct processing of invalid path input (null)", pass);
+	}
+	
+	@Test
+	public void testSetPath_invalidPathWithSlash1() {
+		boolean isValidPath, pass;
+		isValidPath = Storage.setPath("/Users/hungngth/Download/Document");
+		if (isValidPath == false) {
+			pass = true;
+		} else {
+			pass = false;
+		}
+		assertTrue("test correct processing of invalid path input with slash", pass);
+	}
+	
+	@Test
+	public void testSetPath_invalidPathWithSlash2() {
+		boolean isValidPath, pass;
+		isValidPath = Storage.setPath("/Users/hungngth/Downloads/Documents/ilovefood/mysave.txt");
+		if (isValidPath == false) {
+			pass = true;
+		} else {
+			pass = false;
+		}
+		assertTrue("test correct processing of invalid path input with slash", pass);
+	}
+	
+	@Test
+	public void testSetPath_validPathWithoutName() {
+		boolean isValidPath, pass;
+		isValidPath = Storage.setPath("/Users/hungngth/Downloads/Documents");
+		if (isValidPath == true) {
+			pass = true;
+		} else {
+			pass = false;
+		}
+		assertTrue("test correct processing of valid path input without given name", pass);
+	}
+
+	@Test
+	public void testSetPath_validPathWithName1() {
+		boolean isValidPath, pass;
+		isValidPath = Storage.setPath("/Users/hungngth/Downloads/Documents/mysave.txt");
+		if (isValidPath == true) {
+			pass = true;
+		} else {
+			pass = false;
+		}
+		assertTrue("test correct processing of valid path input with name", pass);
+	}
+	
+	@Test
+	public void testSetPath_correctAssignment() {
 		Storage.setPath("/Users/hungngth/Downloads");
 		assertEquals("test correct assignment of path to Storage.path", Storage.path,
 				"/Users/hungngth/Downloads/TBAsave.txt");
 	}
 
 	@Test
-	public void testsetPath_correctPathWritten() {
+	public void testSetPath_correctPathWritten() {
 		Storage.setPath("/Users/hungngth/Downloads/mysave.txt");
 		try {
 			FileReader fr = new FileReader("/Users/hungngth/Documents/workspace/TBA/main");
@@ -127,7 +210,7 @@ public class StorageTest {
 	}
 
 	@Test
-	public void testWrite_CorrectContentWritten() {
+	public void testWrite_correctContentWritten() {
 		// System.out.println("taskList " + taskList.toString());
 		Storage.write(taskList);
 		String line = "";
@@ -154,11 +237,11 @@ public class StorageTest {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		assertTrue("test correct content written to savedTask.json", pass);
+		assertTrue("test correct number of tasks written to savedTask.json", pass);
 	}
-	
+
 	@Test
-	public void testRead_CorrectContentRead() {
+	public void testRead_correctContentRead() {
 		// System.out.println("taskList " + taskList.toString());
 		Storage.write(taskList);
 		String line = "";
@@ -185,7 +268,7 @@ public class StorageTest {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		assertTrue("test correct content written to savedTask.json", pass);
+		assertTrue("test correct number of tasks read from savedTask.json", pass);
 	}
 
 }
