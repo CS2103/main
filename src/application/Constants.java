@@ -48,6 +48,8 @@ public class Constants {
 	// double quote
 	public static final String DOUBLE_QUOTE = "\"";
 
+	public static final String NOT_APPLICABLE = "N/A";
+
 	// dot
 	public static final String DOT = ".";
 
@@ -133,6 +135,8 @@ public class Constants {
 	public static final String FEEDBACK_SHOW_MONTH_FAILURE = "No tasks due in ";
 	public static final String FEEDBACK_SHOW_ALL_SUCCESS = "Displaying all tasks found in database!";
 	public static final String FEEDBACK_SHOW_ALL_FAILURE = "No tasks found in database!";
+	public static final String FEEDBACK_SHOW_COMPLETED_SUCCESS = "Showing all completed tasks";
+	public static final String FEEDBACK_SHOW_INCOMPLETE_SUCCESS = "Showing all unfinished tasks";
 	public static final String FEEDBACK_SEARCH_SUCCESS_SINGLE = "Search results for tasks with the keyword: ";
 	public static final String FEEDBACK_SEARCH_SUCCESS_MULTI = "Search results for tasks with the keywords: ";
 	public static final String FEEDBACK_SEARCH_FAILURE = "SEARCH FAILED";
@@ -148,15 +152,16 @@ public class Constants {
 	public static final String FEEDBACK_MASS_NOT_DONE_FAILURE = "Invalid task ID specified!";
 	public static final String FEEDBACK_UNDO_SUCCESS = "Last action has been undone!";
 	public static final String FEEDBACK_UNDO_FAILURE = "Nothing to undo!";
-	public static final String FEEDBACK_REDO_SUCCESS = "Redone!!";
+	public static final String FEEDBACK_REDO_SUCCESS = "Redone!";
 	public static final String FEEDBACK_REDO_FAILURE = "Nothing to redo!";
 	public static final String FEEDBACK_VIEW_HOMESCREEN = "Displaying Home-Screen!";
-	public static final String FEEDBACK_VIEW_TODAY = "Displaying agenda for this week";
+	public static final String FEEDBACK_VIEW_TODAY = "Displaying all tasks from today to ";
 	public static final String FEEDBACK_VIEW_HELP = "Displaying help screen";
 	public static final String FEEDBACK_INVALID = "That is an invalid action!";
 	public static final String FEEDBACK_INVALID_NUMBER_OF_QUOTES = "Invaild number of quotes";
 	public static final String FEEDBACK_INVALID_PARAMETERS_FOR_EDIT = "Invalid parameters for edit command";
 	public static final String FEEDBACK_SETPATH_SUCCESS = "New save location is: ";
+	public static final String FEEDBACK_SETPATH_FAILURE = " not found! Save location is not changed";
 
 	// date formats
 	public static String[] dateFormats = { "dd MMM yy", "d/M/yy", "d/M", "d-M-yy", "d MMM", "dd MMMM", "dd.MM.yy",
@@ -218,7 +223,7 @@ public class Constants {
 
 	// theme list
 	public static final String[] THEME_LIST = { "style0.css", "style1.css", "style2.css", "style3.css", "style4.css",
-			"style5.css", "style6.css" };
+			"style5.css", "style6.css", "style7.css" };
 
 	// Tray icon display messages
 	final static String MSG_ALREADY_RUNNING = APP_NAME + " is Already Running!";

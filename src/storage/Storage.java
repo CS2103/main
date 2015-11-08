@@ -8,6 +8,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 // import Joda Time library
 import org.joda.time.DateTime;
@@ -30,7 +32,6 @@ public class Storage {
 	final DateTime reconstituted = gson.fromJson(json, DateTime.class);
 
 	// attributes
-
 	public static File savedTask = new File("TBAsave.json"); // public for
 																// testing,
 																// change after
@@ -42,24 +43,73 @@ public class Storage {
 
 	public static String path; // public for testing, change after done
 
-	private static ArrayList<Task> currentTaskList = new ArrayList<Task>();
+	private static ArrayList<Task> currentTasks = new ArrayList<Task>();
 
 	public Storage() {
 	}
 
-	public static void setPath(String path) {
-		File file = new File(path);
-		if (!file.exists()) {
-			System.out.println("file not exists");
+	public static boolean containSlash(String path) {
+		if (path.contains("\\") || path.contains("/")) {
+			return true;
+		} else {
+			return false;
 		}
+	}
 
-		Storage.currentTaskList = read();
+	public static String extractPath(String path) {
+		int i = path.lastIndexOf("/");
+		String subPath = path.substring(0, i);
+		return subPath;
+	}
 
-		if (file.isDirectory()) {
-			path = path + "/TBAsave.txt"; // this is for mac or "\\TBAsave.txt"
-											// for windows
+	public static boolean setPath(String newPath) {
+		File checkFile = new File(newPath);
+		if (isInvalidPath(checkFile)) {
+			if (!containSlash(newPath)) {
+				return false;
+			} else {
+				String subPath = extractPath(newPath);
+				File file = new File(subPath);
+				if (isInvalidPath(file)) {
+					return false;
+				} else {
+					Storage.path = newPath;
+					Storage.currentTasks = read();
+					writePathToFile();
+					write(currentTasks);
+					savedTask.delete();
+					return true;
+				}
+			}
+		} else {
+			Storage.currentTasks = read();
+			if (checkFile.isDirectory()) {
+				appendSaveName(newPath);
+				writePathToFile();
+			} else {
+				Storage.path = newPath;
+			}
+			write(currentTasks);
+			savedTask.delete();
+			return true;
 		}
+	}
 
+	private static boolean isInvalidPath(File file) {
+		if (file.exists()) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+	public static void appendSaveName(String newPath) {
+		// Storage.path = newPath + "\\TBAsave.txt"; // for windows
+		Storage.path = newPath + "/TBAsave.txt"; // for macOS
+
+	}
+
+	public static void writePathToFile() {
 		try {
 			FileWriter fw = new FileWriter(savedPath.getAbsoluteFile());
 			BufferedWriter bw = new BufferedWriter(fw);
@@ -67,14 +117,8 @@ public class Storage {
 			bw.close();
 
 		} catch (IOException e) {
-			e.printStackTrace();
+			Logger.getLogger("Log").log(Level.SEVERE, "Unable to write to savePath file");
 		}
-
-		Storage.path = path;
-
-		write(currentTaskList);
-
-		savedTask.delete();
 	}
 
 	public static String enquirePath() {
@@ -82,7 +126,6 @@ public class Storage {
 	}
 
 	public static void write(ArrayList<Task> tasks) {
-		System.out.println(path);
 		try {
 			if (path == null) {
 				path = savedPath.getAbsolutePath();
@@ -93,7 +136,7 @@ public class Storage {
 			bw.write(gson.toJson(tasks));
 			bw.close();
 		} catch (IOException e) {
-			e.printStackTrace();
+			Logger.getLogger("Log").log(Level.SEVERE, "Unable to write to save file");
 		}
 	}
 
@@ -105,8 +148,9 @@ public class Storage {
 			Storage.path = br.readLine();
 			br.close();
 		} catch (FileNotFoundException e) {
+			Logger.getLogger("Log").log(Level.SEVERE, "Cannot find savedPath file at specified location");
 		} catch (IOException e) {
-			e.printStackTrace();
+			Logger.getLogger("Log").log(Level.SEVERE, "Unable to read from savedPath file");
 		}
 		ArrayList<Task> taskList = new ArrayList<Task>();
 		String line = "";
@@ -125,8 +169,10 @@ public class Storage {
 			taskList = gson.fromJson(jsonString, new TypeToken<ArrayList<Task>>() {
 			}.getType());
 		} catch (FileNotFoundException e) {
+			Logger.getLogger("Log").log(Level.SEVERE, "Cannot find save file at specified location");
 		} catch (IOException e) {
-			e.printStackTrace();
+			Logger.getLogger("Log").log(Level.SEVERE, "Unable to read from save file");
+
 		}
 		return taskList;
 	}

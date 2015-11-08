@@ -37,13 +37,14 @@ public class Parser implements ParserInterface {
 	public DateTime getStartDateTime(String input) {
 		return DateParser.getDateTime(getStart(input));
 	}
-
+	
 	@Override
 	public DateTime getEndDateTime(String input) {
 		DateTime endDate = DateParser.getDateTime(getEnd(input));
 
-		if (endDate.getHourOfDay() == 0 && endDate.getMinuteOfHour() == 0)
+		if (endDate.getHourOfDay() == 0 && endDate.getMinuteOfHour() == 0){
 			endDate = endDate.withHourOfDay(23).withMinuteOfHour(59);
+		}
 
 		return endDate;
 
@@ -53,7 +54,7 @@ public class Parser implements ParserInterface {
 	public String getTitle(String input) {
 		return TitleParser.getTitle(input);
 	}
-
+	
 	@Override
 	public int getIndex(String input) {
 		input = input.split(Constants.SPACE)[1].trim();

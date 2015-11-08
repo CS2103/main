@@ -62,11 +62,11 @@ public class StorageTest {
 	}
 
 	@Test
-	public void testSetPath1() {
+	public void testSetPath_() {
 		boolean pass = true;
 		Storage.setPath("/Users/hungngth/Downloads");
-		File f = new File("/Users/hungngth/Downloads/TBAsave.txt");
-		if (!f.exists()) {
+		File file = new File("/Users/hungngth/Downloads/TBAsave.txt");
+		if (!file.exists()) {
 			pass = false;
 		}
 		assertTrue("test whether savefile is created (without inputting filename)", pass);
@@ -76,8 +76,8 @@ public class StorageTest {
 	public void testsetPath2() {
 		boolean pass = true;
 		Storage.setPath("/Users/hungngth/Downloads/mysave.txt");
-		File f = new File("/Users/hungngth/Downloads/mysave.txt");
-		if (!f.exists()) {
+		File file = new File("/Users/hungngth/Downloads/mysave.txt");
+		if (!file.exists()) {
 			pass = false;
 		}
 		assertTrue("test whether savefile is created (with given filename)", pass);

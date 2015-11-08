@@ -12,33 +12,23 @@ public class EditTaskPreview extends StackPane {
 
 	private GridPane taskPreviewLayout;
 
-	GridPane editTitleLayout;
-	GridPane editStartTimeLayout;
-	GridPane editEndTimeLayout;
+	private GridPane editTitleLayout;
+	private GridPane editStartTimeLayout;
+	private GridPane editEndTimeLayout;
+	private GridPane editDurationLayout;
 
-	Label header;
-	Label oldTitleLabel;
-	Label oldStartTimeLabel;
-	Label oldEndTimeLabel;
-	Label oldRecurringLabel;
+	private Label header, oldTitleLabel;
 
-	Label oldTitle;
-	Label oldStartTime;
-	Label oldEndTime;
-	Label oldRecurring;
-
-	Label newTitleLabel;
-	Label newStartTimeLabel;
-	Label newEndTimeLabel;
-	Label newRecurringLabel;
+	Label oldTitle, oldStartTime, oldEndTime, oldRecurring, oldDurationStartTime, oldDurationEndTime;
 
 	StackPane newDetailsLayout;
-	StackPane newField;
 
 	Label newTitleField;
-	Label newStartTimeField;
-	Label newEndTimeField;
-	Label newRecurringField;
+	Label newStartTimeField, newDurationStartTimeField;
+	Label newEndTimeField, newDurationEndTimeField;
+
+	ColumnConstraints columnConstraint = new ColumnConstraints(150);
+	ColumnConstraints columnConstraint1 = new ColumnConstraints(400);
 
 	public EditTaskPreview() {
 
@@ -47,15 +37,6 @@ public class EditTaskPreview extends StackPane {
 
 		oldTitleLabel = new Label("Title:");
 		oldTitleLabel.setId("taskPreviewLabel");
-
-		oldStartTimeLabel = new Label("Current Start Time:");
-		oldStartTimeLabel.setId("taskPreviewLabel");
-
-		oldEndTimeLabel = new Label("Current End Time:");
-		oldEndTimeLabel.setId("taskPreviewLabel");
-
-		oldRecurringLabel = new Label("Currently Repeating:");
-		oldRecurringLabel.setId("taskPreviewLabel");
 
 		oldTitle = new Label(Constants.COMMAND_INVALID);
 		oldTitle.setId("taskPreviewDetails");
@@ -66,20 +47,11 @@ public class EditTaskPreview extends StackPane {
 		oldEndTime = new Label();
 		oldEndTime.setId("taskPreviewDetails");
 
-		oldRecurring = new Label();
-		oldRecurring.setId("taskPreviewDetails");
+		oldDurationStartTime = new Label();
+		oldDurationStartTime.setId("taskPreviewDetails");
 
-		newTitleLabel = new Label("New Title: ");
-		newTitleLabel.setId("taskPreviewLabel");
-
-		newStartTimeLabel = new Label("New Start Time: ");
-		newStartTimeLabel.setId("taskPreviewLabel");
-
-		newEndTimeLabel = new Label("New End Time: ");
-		newEndTimeLabel.setId("taskPreviewLabel");
-
-		newRecurringLabel = new Label("New Repeating: ");
-		newRecurringLabel.setId("taskPreviewLabel");
+		oldDurationEndTime = new Label();
+		oldDurationEndTime.setId("taskPreviewDetails");
 
 		newTitleField = new Label();
 		newTitleField.setId("taskPreviewDetails");
@@ -90,41 +62,29 @@ public class EditTaskPreview extends StackPane {
 		newEndTimeField = new Label();
 		newEndTimeField.setId("taskPreviewDetails");
 
-		newRecurringField = new Label();
-		newRecurringField.setId("taskPreviewDetails");
+		newDurationStartTimeField = new Label();
+		newDurationStartTimeField.setId("taskPreviewDetails");
 
-		ColumnConstraints columnConstraint = new ColumnConstraints(150);
-		ColumnConstraints columnConstraint1 = new ColumnConstraints(400);
+		newDurationEndTimeField = new Label();
+		newDurationEndTimeField.setId("taskPreviewDetails");
 
 		editTitleLayout = new GridPane();
-		editTitleLayout.add(newTitleLabel, 0, 0);
-		editTitleLayout.add(newTitleField, 1, 0);
-		editTitleLayout.setVisible(false);
-		editTitleLayout.getColumnConstraints().addAll(columnConstraint, columnConstraint1);
-
 		editStartTimeLayout = new GridPane();
-		editStartTimeLayout.add(oldStartTimeLabel, 0, 0);
-		editStartTimeLayout.add(oldStartTime, 1, 0);
-		editStartTimeLayout.add(newStartTimeLabel, 0, 1);
-		editStartTimeLayout.add(newStartTimeField, 1, 1);
-		editStartTimeLayout.setVisible(false);
-		editStartTimeLayout.getColumnConstraints().add(columnConstraint);
-
 		editEndTimeLayout = new GridPane();
-		editEndTimeLayout.add(oldEndTimeLabel, 0, 0);
-		editEndTimeLayout.add(oldEndTime, 1, 0);
-		editEndTimeLayout.add(newEndTimeLabel, 0, 1);
-		editEndTimeLayout.add(newEndTimeField, 1, 1);
-		editEndTimeLayout.setVisible(false);
-		editEndTimeLayout.getColumnConstraints().addAll(columnConstraint, columnConstraint);
+		editDurationLayout = new GridPane();
 
-		newDetailsLayout = new StackPane(editTitleLayout, editStartTimeLayout, editEndTimeLayout);
+		newDetailsLayout = new StackPane();
 
 		taskPreviewLayout = new GridPane();
 		GridPane.setConstraints(header, 0, 0, 2, 1);
 		GridPane.setConstraints(oldTitleLabel, 0, 1);
 		GridPane.setConstraints(oldTitle, 1, 1);
 		GridPane.setConstraints(newDetailsLayout, 0, 2);
+
+		setUpEditTitleLayout();
+		setUpEditStartTimeLayout();
+		setUpEditEndTimeLayout();
+		setUpEditDurationLayout();
 
 		taskPreviewLayout.setPrefSize(700, 50);
 		taskPreviewLayout.setPadding(new Insets(20, 20, 20, 20));
@@ -141,30 +101,72 @@ public class EditTaskPreview extends StackPane {
 
 	public void clearAllDetails() {
 		newTitleField.setText(Constants.EMPTY_STRING);
-		newRecurringField.setText(Constants.EMPTY_STRING);
 	}
 
-	public void detailsToShow(String taskType, String field) {
+	public void detailsToShow(String field) {
+		newDetailsLayout.getChildren().clear();
 		if (field.equalsIgnoreCase("title")) {
-			newDetailsLayout.getChildren().get(0).setVisible(true);
-			newDetailsLayout.getChildren().get(1).setVisible(false);
-			newDetailsLayout.getChildren().get(2).setVisible(false);
+			newDetailsLayout.getChildren().addAll(editTitleLayout);
 		} else if (field.equalsIgnoreCase("start")) {
-			newDetailsLayout.getChildren().get(0).setVisible(false);
-			newDetailsLayout.getChildren().get(1).setVisible(true);
-			newDetailsLayout.getChildren().get(2).setVisible(false);
+			newDetailsLayout.getChildren().addAll(editStartTimeLayout);
 		} else if (field.equalsIgnoreCase("end")) {
-			newDetailsLayout.getChildren().get(0).setVisible(false);
-			newDetailsLayout.getChildren().get(1).setVisible(false);
-			newDetailsLayout.getChildren().get(2).setVisible(true);
+			newDetailsLayout.getChildren().addAll(editEndTimeLayout);
+		} else if (field.equalsIgnoreCase("time")) {
+			newDetailsLayout.getChildren().addAll(editDurationLayout);
 		}
 	}
 
-	public void formatNewEntry(String field, String newEntry) {
-		if (field.equalsIgnoreCase("title")) {
+	private void setUpEditTitleLayout() {
+		Label newTitleLabel = new Label("New Title:");
+		newTitleLabel.setId("taskPreviewLabel");
+		editTitleLayout.add(newTitleLabel, 0, 0);
+		editTitleLayout.add(newTitleField, 1, 0);
+		editTitleLayout.getColumnConstraints().addAll(columnConstraint, columnConstraint1);
+	}
 
-		} else if (field.equalsIgnoreCase("start") || field.equalsIgnoreCase("end")) {
+	private void setUpEditStartTimeLayout() {
+		Label newStartTimeLabel = new Label("New Start Time:");
+		newStartTimeLabel.setId("taskPreviewLabel");
+		Label oldStartTimeLabel = new Label("Current Start Time:");
+		oldStartTimeLabel.setId("taskPreviewLabel");
+		editStartTimeLayout.add(oldStartTimeLabel, 0, 0);
+		editStartTimeLayout.add(oldStartTime, 1, 0);
+		editStartTimeLayout.add(newStartTimeLabel, 0, 1);
+		editStartTimeLayout.add(newStartTimeField, 1, 1);
+		editStartTimeLayout.getColumnConstraints().addAll(columnConstraint, columnConstraint);
+	}
 
-		}
+	private void setUpEditEndTimeLayout() {
+		Label newEndTimeLabel = new Label("New End Time:");
+		newEndTimeLabel.setId("taskPreviewLabel");
+		Label oldEndTimeLabel = new Label("Current End Time:");
+		oldEndTimeLabel.setId("taskPreviewLabel");
+		editEndTimeLayout.add(oldEndTimeLabel, 0, 0);
+		editEndTimeLayout.add(oldEndTime, 1, 0);
+		editEndTimeLayout.add(newEndTimeLabel, 0, 1);
+		editEndTimeLayout.add(newEndTimeField, 1, 1);
+		editEndTimeLayout.getColumnConstraints().addAll(columnConstraint, columnConstraint);
+	}
+
+	private void setUpEditDurationLayout() {
+		Label newStartTimeLabel = new Label("New Start Time:");
+		newStartTimeLabel.setId("taskPreviewLabel");
+		Label oldStartTimeLabel = new Label("Current Start Time:");
+		oldStartTimeLabel.setId("taskPreviewLabel");
+		Label newEndTimeLabel = new Label("New End Time:");
+		newEndTimeLabel.setId("taskPreviewLabel");
+		Label oldEndTimeLabel = new Label("Current End Time:");
+		oldEndTimeLabel.setId("taskPreviewLabel");
+
+		editDurationLayout.add(oldStartTimeLabel, 0, 0);
+		editDurationLayout.add(oldDurationStartTime, 1, 0);
+		editDurationLayout.add(newStartTimeLabel, 2, 0);
+		editDurationLayout.add(newDurationStartTimeField, 3, 0);
+		editDurationLayout.add(oldEndTimeLabel, 0, 1);
+		editDurationLayout.add(oldDurationEndTime, 1, 1);
+		editDurationLayout.add(newEndTimeLabel, 2, 1);
+		editDurationLayout.add(newDurationEndTimeField, 3, 1);
+		editDurationLayout.getColumnConstraints().addAll(columnConstraint, columnConstraint, columnConstraint,
+				columnConstraint);
 	}
 }
