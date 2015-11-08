@@ -14,9 +14,6 @@ public class TitleParser {
 		String text = new String();
 		text = splitInputWithDictionary(Constants.DICTIONARY_ADD, input);
 		if (text == null) {
-			text = splitInputWithDictionary(Constants.DICTIONARY_DELETE, input);
-		}
-		if (text == null) {
 			text = splitInputWithDictionary(Constants.DICTIONARY_SEARCH, input);
 		}
 		if (text == null) {
