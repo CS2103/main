@@ -71,4 +71,28 @@ public class TitleParserTest {
 		
 		assertTrue(NULL_RETURN, TitleParser.getTitle(input1) == null);
 	}
+	
+	@Test
+	public void testGetTitle_SpecialCharacters() { // Title has special characters
+		
+		String input1 = new String("add +^$[]+! \\s from 10 nov to 12 nov");
+		
+		assertTrue(INVALID_TITLE, TitleParser.getTitle(input1).equals("+^$[]+! \\s"));
+	}
+	
+	@Test
+	public void testGetEditTitle_NormalText() { // Title is valid for edit command
+		
+		String input1 = new String("edit 1 title title3245");
+		
+		assertTrue(INVALID_TITLE, TitleParser.getEditTitle(input1).equals("title3245"));
+	}
+	
+	@Test
+	public void testGetEditTitle_NormalText() { // Title is valid for edit command
+		
+		String input1 = new String("edit 1 title title3245");
+		
+		assertTrue(INVALID_TITLE, TitleParser.getEditTitle(input1).equals("title3245"));
+	}
 }
