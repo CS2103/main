@@ -7,9 +7,7 @@ import java.util.ArrayList;
 import org.joda.time.DateTime;
 
 import application.Constants;
-import parser.CommandParser;
 import parser.Parser;
-import parser.TitleParser;
 import storage.Storage;
 
 public class Logic {
@@ -22,7 +20,7 @@ public class Logic {
 	}
 
 	public ArrayList<Task> inputHandler(String input) throws ParseException, InvalidTimeException {
-		String command = CommandParser.getCommand(input);
+		String command = parser.getCommand(input);
 
 		if (command.equalsIgnoreCase((Constants.COMMAND_ADD))) {
 			return addTask(input);
@@ -34,7 +32,7 @@ public class Logic {
 		} else if (command.equalsIgnoreCase(Constants.COMMAND_DELETE)) {
 			return deleteTaskByIndex(parser.getIndex(input));
 		} else if (command.equals(Constants.COMMAND_EDIT)) {
-			return editTask(parser.getIndex(input), parser.getField(input), TitleParser.getEditTitle(input));
+			return editTask(parser.getIndex(input), parser.getField(input), parser.getEditTitle(input));
 		} else if (command.equals(Constants.COMMAND_MARK)) {
 			return markTaskByIndex(parser.getIndexes(input));
 		} else if (command.equals(Constants.COMMAND_UNMARK)) {
