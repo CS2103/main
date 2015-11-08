@@ -118,6 +118,11 @@ public class TaskBin {
 			}
 		}
 	}
+	
+	public void clear(){
+		taskList.clear();
+		Storage.write(taskList);
+	}
 
 	public ArrayList<Task> markTaskInstance(Task task) {
 

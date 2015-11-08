@@ -402,5 +402,14 @@ public class Task {
 		}
 		return del;
 	}
+	
+	public String toString(){
+		String output = new String("Title: " + getTitle() + "\n" +
+								   "Status: " + getStatus() + "\n");
+		return output;
+	}
+								  
+								   
+
 
 }

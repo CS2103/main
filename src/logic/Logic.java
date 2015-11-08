@@ -20,6 +20,10 @@ public class Logic {
 	public Logic() {
 		bin.init();
 	}
+	
+	public void clear(){
+		bin.clear();
+	}
 
 	public ArrayList<Task> inputHandler(String input) throws ParseException, InvalidTimeException {
 		String command = CommandParser.getCommand(input);
@@ -51,6 +55,7 @@ public class Logic {
 		} else if (command.equalsIgnoreCase(Constants.COMMAND_ENQUIREPATH)) {
 			return bin.returnDisplay();
 		} else if (command.equalsIgnoreCase(Constants.COMMAND_SHOW)) {
+			System.out.println(toString());
 			if (parser.getTitle(input).equals(Constants.STATUS_INCOMPLETE)) {
 				return bin.displayUnfinished();
 			} else if (parser.getTitle(input).equals(Constants.STATUS_COMPLETE)) {
@@ -185,6 +190,14 @@ public class Logic {
 		ArrayList<Task> initDis = bin.displayHome();
 		return initDis;
 	}
+	
+	public String toString(){
+		String display = new String();
+		for(Task t:bin.returnDisplay()){
+			display = display + t.toString();
+		}
+		return display;
+	}
 
 	// @@author A0121442X
 	public String getStatusBarText(String input) {
@@ -243,7 +256,6 @@ public class Logic {
 			return Constants.FEEDBACK_INVALID;
 		}
 	}
-	//@@author A0129708
 	public int getIndex(String input) {
 		return parser.getIndex(input);
 	}
