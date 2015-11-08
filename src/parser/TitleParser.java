@@ -27,7 +27,7 @@ public class TitleParser {
 
 	public static String getEditTitle(String input) {
 		for (int i = 0; i < 3; i++) {
-			input = excludeFirstWord(input);
+			input = excludeFirstWord(input.trim());
 		}
 		return input;
 	}
