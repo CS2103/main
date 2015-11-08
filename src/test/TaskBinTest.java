@@ -15,6 +15,16 @@ import logic.Task;
 import logic.TaskBin;
 
 public class TaskBinTest {
+	static DateTime invalid = new DateTime(0,1,1,0,0);
+	static DateTime date1 = new DateTime(2015,11,12,0,0);
+	static DateTime date1_2 = new DateTime(2015,11,12,0,1);
+	static DateTime date2 = new DateTime(2016,1,15,0,1);
+	static DateTime date2_2 = new DateTime(2016,1,15,0,1);
+	static DateTime date3 =  new DateTime(1,12,11,0,0);
+	static DateTime date4 = new DateTime(2015,11,15,0,0);
+	static DateTime date5 = new DateTime(9999,10,20,0,0);
+	static DateTime date6 = new DateTime(-1,10,20,0,0);
+	static DateTime date7 = new DateTime(12580,10,20,0,0);
 
 
 	@Before
@@ -124,20 +134,17 @@ public class TaskBinTest {
 		Task task1 = new Task(new DateTime(0,1,1,0,0),new DateTime(0,1,1,0,0));
 		Task task2 = new Task("The title of the task is super super super super super super super super super super super super super super super super long", new DateTime(0,1,1,0,0), new DateTime(0,1,1,0,0));
 		Task task3 = new Task("¶àÓïÑÔÖ§³Ö", new DateTime(0,1,1,0,0),new DateTime(0,1,1,0,0) );
-		Task task4 = new Task("Task starts and end at different year", new DateTime(2015,11,12,0,0), new DateTime(2016,1,15,0,1));
 		Task task5 = new Task("Task ends before it starts", new DateTime(2015,12,11,0,0), new DateTime(2015,11,15,0,0));
 		TaskBin testBin = new TaskBin();
 		testBin.add(task1);
 		testBin.add(task2);
 		testBin.add(task3);
-		testBin.add(task4);
 		testBin.add(task5);
 		testBin.markTaskInstance(task2);
 		testBin.markTaskInstance(task5);
 		testBin.markTaskInstance(task3);
 		testBin.markTaskInstance(task1);
 		testBin.unmarkTaskInstance(task5);
-		testBin.unmarkTaskInstance(task4);
 		testBin.unmarkTaskInstance(task1);
 		ArrayList<Task> result = new ArrayList<Task>();
 		for(Task t:testBin.returnAllInbox()){
@@ -175,14 +182,28 @@ public class TaskBinTest {
 		assertEquals(output, "12345");
 	}
 
-	@Test
-	public void testEditStartingDate() {
-		fail("Not yet implemented"); // TODO
-	}
 
 	@Test
-	public void testIsClashedDateTimeArray() {
-		fail("Not yet implemented"); // TODO
+	public void testIsClashedDateTimeArray() throws InvalidTimeException {
+		TaskBin testBin = new TaskBin();
+		DateTime[] dateArr = {date1, date4};
+		Task[] task = new Task[5];
+		task[1] = new Task(date1, date1_2);
+		task[2] = new Task(date2, date2_2);
+		task[3] = new Task(date3, date4);
+		task[4] = new Task(date6, date2);
+		task[0] = new Task(date6, date7);
+		testBin.add(task[1]);
+		testBin.add(task[2]);
+		testBin.add(task[3]);
+		testBin.add(task[4]);
+		testBin.add(task[0]);
+		boolean[] result1 = {testBin.isClashed(dateArr), testBin.isClashed(dateArr), testBin.isClashed(dateArr), testBin.isClashed(dateArr), testBin.isClashed(dateArr)};
+		boolean[] expected = {true, false,true, true, true};
+		assertEquals(result1, expected);
 	}
+		
+		
+
 
 }

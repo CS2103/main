@@ -88,6 +88,7 @@ public class BinSorter {
 	
 	public ArrayList<Task> sortArrayByTime(ArrayList<Task> inboxArr){
 		System.out.println("Is sorting");
+		ArrayList<Task> result = new ArrayList<Task>();
 		ArrayList<Task> normalTask = new ArrayList<Task>();
 		ArrayList<Task> timeUndefined = new ArrayList<Task>();
 		ArrayList<Task> recurList = new ArrayList<Task>();
@@ -143,13 +144,13 @@ public class BinSorter {
 			}
 		}
 		
-		inboxArr.clear();
-		inboxArr.addAll(normalTask);
-		inboxArr.addAll(recurList);
-		inboxArr.addAll(timeUndefined);
+	
+		result.addAll(normalTask);
+		result.addAll(recurList);
+		result.addAll(timeUndefined);
 		
 		
-		return inboxArr;
+		return result;
 	}
 
 	public ArrayList<Task> sortArrayByAlpha(ArrayList<Task> inboxArr) {

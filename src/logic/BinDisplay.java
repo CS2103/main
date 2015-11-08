@@ -69,10 +69,11 @@ public class BinDisplay {
 				dis.add(t);
 			}
 		}
-		dis = sorter.sortArrayByTime(dis);
+		
 		for(int i = 0; i < dis.size();i++ ){
 			System.out.println("The titles in display list is: " + dis.get(i).getTitle());
 		}
+		dis = sorter.sortArrayByTime(dis);
 		displayList = dis;
 	}
 
