@@ -36,9 +36,11 @@ public class StorageTest {
 	final String json = gson.toJson(original);
 	final DateTime reconstituted = gson.fromJson(json, DateTime.class);
 
-	private static ArrayList<Task> taskList = new ArrayList<Task>();
+	private static final ArrayList<Task> taskList = new ArrayList<Task>();
 	private static ArrayList<Task> taskListForTest = new ArrayList<Task>();
-	private static File path;
+	private static final File pathFile = new File("savedPath.txt");
+	private static final String path = Storage.extractDirectory(pathFile.getAbsolutePath());
+	private static final String newPath = path + "/TBAsave.txt";
 
 	@Before
 	public void setUp1() throws Exception {
@@ -59,7 +61,6 @@ public class StorageTest {
 			taskList.add(inputTasks[i]);
 		}
 		
-	//	path = new File("savedPath.txt");
 
 	}
 
@@ -87,11 +88,8 @@ public class StorageTest {
 	@Test
 	public void testSetPath_fileCreated1() {
 		boolean pass = true;
-		String newPath = Storage.extractDirectory(path.getAbsolutePath());
-		System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAA "  + newPath);
-
-		Storage.setPath(path.getAbsolutePath());
-		File file = new File("/Users/hungngth/Downloads/TBAsave.txt");
+		Storage.setPath(path);
+		File file = new File(newPath);
 		if (!file.exists()) {
 			pass = false;
 		}
