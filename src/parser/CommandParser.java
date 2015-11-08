@@ -8,7 +8,7 @@ import application.Constants;
 public class CommandParser {
 
 	public static String getCommand(String input) {
-		String command = extractFirstWord(input).toLowerCase();
+		String command = extractFirstWord(input.trim()).toLowerCase();
 		if (checkForWordInDictionary(Constants.DICTIONARY_ADD, command)) {
 			return Constants.DICTIONARY_ADD[0];
 		} else if (checkForWordInDictionary(Constants.DICTIONARY_DELETE, command)) {
