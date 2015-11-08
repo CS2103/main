@@ -134,6 +134,7 @@ public class ConsoleView extends Pane {
 		addTaskPreview.tempTitle.setText(title);
 		addTaskPreview.tempStartTime.setText(this.showIfValidDate(startTime));
 		addTaskPreview.tempEndTime.setText(this.showIfValidDate(endTime));
+		addTaskPreview.tempRecurring.setText(recurring);
 	}
 
 	public void updateEditTaskPreviewDetails(Task toEdit, String input) {
@@ -180,5 +181,9 @@ public class ConsoleView extends Pane {
 		editTaskPreview.toBack();
 		helpScreen.toBack();
 		scrollPane.toFront();
+	}
+
+	public void clearInputConsole() {
+		inputConsole.clear();
 	}
 }

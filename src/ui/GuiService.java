@@ -36,18 +36,20 @@ public class GuiService {
 	StackPane content;
 	ConsoleView consoleView;
 
-	Logic logic;
-	Parser parser;
+	private Logic logic;
+	private Parser parser;
 
-	int listIndex;
-	int themeIndex;
+	private static int taskIndex = 1;
+	private static int themeIndex = 0;
 	private TrayService trayService;
 	private Stage stage;
 
 	private static double xOffset = 0;
 	private static double yOffset = 0;
 
-	private LogHandler logger = new LogHandler();
+	private static boolean isShowingHelpPopup = false;
+	private static final int APP_DIMENSIONS_HEIGHT = 600;
+	private static final int APP_DIMENSIONS_WIDTH = 805;
 
 	public GuiService(Stage stage) {
 		this.stage = stage;
@@ -72,12 +74,12 @@ public class GuiService {
 	}
 
 	private void populateList(ArrayList<Task> tasksArr) {
-		int index = 1;
+		taskIndex = Constants.BEGINNING_OF_LIST;
 		ObservableList<ListItem> timedTasks = FXCollections.observableArrayList();
 		ObservableList<ListItem> floatingTasks = FXCollections.observableArrayList();
 		for (Task task : tasksArr) {
 			ListItem newListItem = new ListItem(task.getTitle(), task.getStartingTime(), task.getEndingTime(),
-					task.getType(), task.getStatus(), task.isOverDue(), task.returnRecurTag(), index++);
+					task.getType(), task.getStatus(), task.isOverDue(), task.returnRecurTag(), taskIndex++);
 			if (task.getType().equalsIgnoreCase("task")) {
 				floatingTasks.add(newListItem);
 			} else {
@@ -102,7 +104,6 @@ public class GuiService {
 
 	private void addListenersToConsoleView(Stage stage) {
 		consoleView.inputConsole.textProperty().addListener((observable, oldValue, newValue) -> {
-			logger.log(Level.FINEST, "Textfield changed from " + oldValue + " to " + newValue);
 			if (newValue.equalsIgnoreCase(Constants.COMMAND_HELP)) {
 
 			} else if (CommandParser.getCommand(newValue).equalsIgnoreCase(Constants.COMMAND_ADD)) {
@@ -154,13 +155,13 @@ public class GuiService {
 					if (consoleView.inputConsole.getText().length() == 0) {
 						System.exit(0);
 					} else {
-						consoleView.inputConsole.clear();
+						consoleView.clearInputConsole();
 					}
 				} else if (event.getCode() == KeyCode.BACK_SPACE && consoleView.inputConsole.getText().length() == 0) {
 					consoleView.showDefaultView();
 					populateList(logic.displayHome());
 					updateStatusLabel(Constants.FEEDBACK_VIEW_TODAY
-							+ DateTime.now().plusWeeks(1).toLocalDateTime().toString("EEE dd MMMM"));
+							+ DateTime.now().plusWeeks(1).toLocalDateTime().toString(Constants.FORMAT_DATE_VERBOSE));
 				} else if (event.getCode() == KeyCode.DOWN) {
 
 					consoleView.scrollPane.setVvalue(consoleView.scrollPane.getVvalue() + 0.2);
@@ -171,8 +172,7 @@ public class GuiService {
 				} else if (event.getCode() == KeyCode.BACK_QUOTE) {
 
 				} else if (event.getCode() == KeyCode.F1) {
-					consoleView.showHelpPopup();
-					updateStatusLabel(Constants.FEEDBACK_VIEW_HELP);
+					toggleDisplayHelpPopup();
 				} else if (event.getCode() == KeyCode.F2) {
 					changeTheme();
 				}
@@ -187,18 +187,18 @@ public class GuiService {
 				try {
 
 					populateList(logic.inputHandler(input));
-					consoleView.inputConsole.clear();
+					consoleView.clearInputConsole();
 				} catch (ParseException e) {
-					logger.log(Level.WARNING, "Unable to parse user input");
+					LogHandler.log(Level.WARNING, "Unable to parse user input");
 				} catch (InvalidTimeException e) {
 				} catch (NullPointerException e) {
-					logger.log(Level.INFO, "Current user input not returning anything for GUI to display");
+					LogHandler.log(Level.INFO, "Current user input not returning anything for GUI to display");
 				}
 
 				try {
 					updateStatusLabel(logic.getStatusBarText(input));
 				} catch (NullPointerException e) {
-					logger.log(Level.INFO, "Nothing for status bar to display");
+					LogHandler.log(Level.INFO, "Nothing for status bar to display");
 				}
 
 				if (CommandParser.getCommand(input).trim().equalsIgnoreCase(Constants.COMMAND_HELP)) {
@@ -209,8 +209,7 @@ public class GuiService {
 	}
 
 	public Scene buildScene(StackPane content) {
-		themeIndex = 1;
-		Scene myScene = new Scene(content, 803, 600);
+		Scene myScene = new Scene(content, APP_DIMENSIONS_WIDTH, APP_DIMENSIONS_HEIGHT);
 		myScene.setFill(Color.TRANSPARENT);
 		myScene.getStylesheets().clear();
 		myScene.getStylesheets().add(this.getClass().getResource("style0.css").toExternalForm());
@@ -246,6 +245,16 @@ public class GuiService {
 
 	public void updateStatusLabel(String text) {
 		consoleView.status.setText(text);
+	}
+
+	public void toggleDisplayHelpPopup() {
+		if (!isShowingHelpPopup) {
+			consoleView.showHelpPopup();
+			updateStatusLabel(Constants.FEEDBACK_VIEW_HELP);
+		} else {
+			consoleView.showDefaultView();
+		}
+		isShowingHelpPopup = !isShowingHelpPopup;
 	}
 
 	public void updateInterface(String input, ArrayList<Task> taskArray) {

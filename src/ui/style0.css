@@ -1,3 +1,4 @@
+/*@@author A0121442X  */
 #currentDisplay {
 		
 }
@@ -103,23 +104,40 @@
 	-fx-padding: 0 0 0 10;
 	-fx-pref-height: 30;
 	-fx-background-radius: 0 0 20 20 ;
-	-fx-alignment:center-left;
+	-fx-alignment: center-left;
 }
 
 #listItem {
 	-fx-background-color: rgba(0,0,0,0.2);
 }
 
+#titleOverdue {
+	-fx-text-fill: palevioletred ;
+	-fx-font-family: "sans-serif";
+	-fx-font-weight: bold;
+	-fx-font-style: italic;
+	-fx-font-size:16px; 
+}
+
 #titleTask {
 	-fx-text-fill:antiquewhite ;
+	-fx-font-family: "sans-serif";
+	-fx-font-weight: bold;
+	-fx-font-size:16px;
 }
 
 #titleEvent {
 	-fx-text-fill:antiquewhite ;
+	-fx-font-family: "sans-serif";
+	-fx-font-weight: bold;
+	-fx-font-size:16px;
 }
 
 #titleDeadline {
 	-fx-text-fill:antiquewhite ;
+	-fx-font-family: "sans-serif";
+	-fx-font-weight: bold;
+	-fx-font-size:16px;
 }
 
 #index {
@@ -127,7 +145,15 @@
 }
 
 #statusIcon {
-	
+
+}
+
+#duration{
+	-fx-text-fill: lightgray;
+	-fx-padding: 0 0 0 15;
+	-fx-font-family: sans-serif;
+	-fx-font-style: italic;
+	-fx-font-size: 11px; 
 }
 
 #taskPreviewHeader {
