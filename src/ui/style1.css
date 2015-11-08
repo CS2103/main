@@ -10,6 +10,7 @@
 	-fx-text-fill:black;
 	-fx-font-size: 30px;
 	-fx-background-radius: 20 0 0 0 ;	
+	-fx-padding: 0 0 0 20;
 	
 }
 
@@ -19,6 +20,7 @@
 	-fx-text-fill:black;
 	-fx-font-size: 30px;
 	-fx-background-radius: 0 20 0 0 ;
+	-fx-padding: 0 20 0 0;	
 }
 
 #scrollPane .scroll-bar:horizontal .track,
@@ -64,6 +66,10 @@
 
 #scrollPane {
 	-fx-background-color:white;
+	-fx-max-height:470px;
+	-fx-min-height:470px;
+	-fx-focus-traversable:false;
+	-fx-pref-width:800px;
 }
 
 #inputConsole {
@@ -73,14 +79,18 @@
 	-fx-text-inner-color: black;
 	-fx-font-size: 15;
 	-fx-font-family: "sans-serif";
+	-fx-focus-traversable:true;
 }
 
 #timedList {
+	-fx-focus-traversable:false;
 	-fx-background-color: rgba(245,245,245,1);
-	
+	-fx-min-width:350px;
+	-fx-fill-width:true;
 }
 
 #floatingList {
+	-fx-focus-traversable:false;
 	-fx-background-color: rgba(245,245,245,1);
 }
 
@@ -92,6 +102,7 @@
 	-fx-background-radius: 0 0 20 20 ;
 	-fx-padding: 0 0 0 10;
 	-fx-pref-height: 30;
+	-fx-alignment:center-left;
 }
 
 #listItem {

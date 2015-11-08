@@ -48,6 +48,8 @@ public class Constants {
 	// double quote
 	public static final String DOUBLE_QUOTE = "\"";
 
+	public static final String NOT_APPLICABLE = "N/A";
+
 	// dot
 	public static final String DOT = ".";
 
@@ -150,7 +152,7 @@ public class Constants {
 	public static final String FEEDBACK_MASS_NOT_DONE_FAILURE = "Invalid task ID specified!";
 	public static final String FEEDBACK_UNDO_SUCCESS = "Last action has been undone!";
 	public static final String FEEDBACK_UNDO_FAILURE = "Nothing to undo!";
-	public static final String FEEDBACK_REDO_SUCCESS = "Redone!!";
+	public static final String FEEDBACK_REDO_SUCCESS = "Redone!";
 	public static final String FEEDBACK_REDO_FAILURE = "Nothing to redo!";
 	public static final String FEEDBACK_VIEW_HOMESCREEN = "Displaying Home-Screen!";
 	public static final String FEEDBACK_VIEW_TODAY = "Displaying all tasks from today to ";

@@ -7,8 +7,9 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 // import Joda Time library
 import org.joda.time.DateTime;
@@ -24,15 +25,21 @@ public class Storage {
 
 	// initial methods to serialise/deserialise savedTask.json with DateTime
 	// formats
-	final static Gson gson = Converters.registerDateTime(new GsonBuilder().setPrettyPrinting().serializeNulls()).create();
+	final static Gson gson = Converters.registerDateTime(new GsonBuilder().setPrettyPrinting().serializeNulls())
+			.create();
 	final DateTime original = new DateTime();
 	final String json = gson.toJson(original);
 	final DateTime reconstituted = gson.fromJson(json, DateTime.class);
 
 	// attributes
-	public static File savedTask = new File("TBAsave.json"); // public for testing, change after done
+	public static File savedTask = new File("TBAsave.json"); // public for
+																// testing,
+																// change after
+																// done
 
-	public static File savedPath = new File("TBApath.txt"); // public for testing, change after done
+	public static File savedPath = new File("TBApath.txt"); // public for
+															// testing, change
+															// after done
 
 	public static String path; // public for testing, change after done
 
@@ -48,13 +55,13 @@ public class Storage {
 			return false;
 		}
 	}
-	
+
 	public static String extractPath(String path) {
 		int i = path.lastIndexOf("/");
 		String subPath = path.substring(0, i);
 		return subPath;
 	}
-	
+
 	public static boolean setPath(String newPath) {
 		File checkFile = new File(newPath);
 		if (isInvalidPath(checkFile)) {
@@ -63,7 +70,7 @@ public class Storage {
 			} else {
 				String subPath = extractPath(newPath);
 				File file = new File(subPath);
-				if(isInvalidPath(file)) {
+				if (isInvalidPath(file)) {
 					return false;
 				} else {
 					Storage.path = newPath;
@@ -97,8 +104,8 @@ public class Storage {
 	}
 
 	public static void appendSaveName(String newPath) {
-		//	Storage.path = newPath + "\\TBAsave.txt"; // for windows
-		Storage.path = newPath + "/TBAsave.txt";  // for macOS
+		// Storage.path = newPath + "\\TBAsave.txt"; // for windows
+		Storage.path = newPath + "/TBAsave.txt"; // for macOS
 
 	}
 
@@ -110,7 +117,7 @@ public class Storage {
 			bw.close();
 
 		} catch (IOException e) {
-			e.printStackTrace();
+			Logger.getLogger("Log").log(Level.SEVERE, "Unable to write to savePath file");
 		}
 	}
 
@@ -129,7 +136,7 @@ public class Storage {
 			bw.write(gson.toJson(tasks));
 			bw.close();
 		} catch (IOException e) {
-			e.printStackTrace();
+			Logger.getLogger("Log").log(Level.SEVERE, "Unable to write to save file");
 		}
 	}
 
@@ -141,8 +148,9 @@ public class Storage {
 			Storage.path = br.readLine();
 			br.close();
 		} catch (FileNotFoundException e) {
+			Logger.getLogger("Log").log(Level.SEVERE, "Cannot find savedPath file at specified location");
 		} catch (IOException e) {
-			e.printStackTrace();
+			Logger.getLogger("Log").log(Level.SEVERE, "Unable to read from savedPath file");
 		}
 		ArrayList<Task> taskList = new ArrayList<Task>();
 		String line = "";
@@ -161,8 +169,10 @@ public class Storage {
 			taskList = gson.fromJson(jsonString, new TypeToken<ArrayList<Task>>() {
 			}.getType());
 		} catch (FileNotFoundException e) {
+			Logger.getLogger("Log").log(Level.SEVERE, "Cannot find save file at specified location");
 		} catch (IOException e) {
-			e.printStackTrace();
+			Logger.getLogger("Log").log(Level.SEVERE, "Unable to read from save file");
+
 		}
 		return taskList;
 	}

@@ -9,10 +9,12 @@ import application.Constants;
 public class BinDisplay {
 	ArrayList<Task> bufferList;
 	ArrayList<Task> displayList;
+	BinSorter sorter;
 
 	public BinDisplay() {
 		bufferList = new ArrayList<Task>();
 		displayList = new ArrayList<Task>();
+		sorter = new BinSorter();
 	}
 
 	public ArrayList<Task> initDisplay(ArrayList<Task> taskList) {
@@ -66,7 +68,10 @@ public class BinDisplay {
 				dis.add(t);
 			}
 		}
-
+		dis = sorter.sortArrayByTime(dis);
+		for(int i = 0; i < dis.size();i++ ){
+			System.out.println("The titles in display list is: " + dis.get(i).getTitle());
+		}
 		displayList = dis;
 	}
 
@@ -84,7 +89,7 @@ public class BinDisplay {
 
 	// return the display list back
 	public ArrayList<Task> returnDisplay() {
-		// activeList = sortArrayByTime(activeList);
+		displayList = sorter.sortArrayByTime(displayList);
 		System.out.println("The size of the activeList is:" + displayList.size());
 		return displayList;
 	}
