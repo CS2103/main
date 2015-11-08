@@ -1,13 +1,12 @@
+//@@author A0129708
 package test;
 
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import org.joda.time.DateTime;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import application.Constants;
