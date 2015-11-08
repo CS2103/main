@@ -38,6 +38,7 @@ public class StorageTest {
 
 	private static ArrayList<Task> taskList = new ArrayList<Task>();
 	private static ArrayList<Task> taskListForTest = new ArrayList<Task>();
+	private static File path;
 
 	@Before
 	public void setUp1() throws Exception {
@@ -57,6 +58,9 @@ public class StorageTest {
 		for (int i = 0; i < INPUTTASKS_LENGTH; i++) {
 			taskList.add(inputTasks[i]);
 		}
+		
+	//	path = new File("savedPath.txt");
+
 	}
 
 	/*
@@ -83,7 +87,10 @@ public class StorageTest {
 	@Test
 	public void testSetPath_fileCreated1() {
 		boolean pass = true;
-		Storage.setPath("/Users/hungngth/Downloads");
+		String newPath = Storage.extractDirectory(path.getAbsolutePath());
+		System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAA "  + newPath);
+
+		Storage.setPath(path.getAbsolutePath());
 		File file = new File("/Users/hungngth/Downloads/TBAsave.txt");
 		if (!file.exists()) {
 			pass = false;
@@ -125,7 +132,7 @@ public class StorageTest {
 		}
 		assertTrue("test correct processing of invalid path input (space character)", pass);
 	}
-	
+
 	// \ / : * ? " < > |
 	@Test
 	public void testSetPath_invalidPath3() {
@@ -138,7 +145,7 @@ public class StorageTest {
 		}
 		assertTrue("test correct processing of invalid path input (null)", pass);
 	}
-	
+
 	@Test
 	public void testSetPath_invalidPathWithSlash1() {
 		boolean isValidPath, pass;
@@ -150,7 +157,7 @@ public class StorageTest {
 		}
 		assertTrue("test correct processing of invalid path input with slash", pass);
 	}
-	
+
 	@Test
 	public void testSetPath_invalidPathWithSlash2() {
 		boolean isValidPath, pass;
@@ -162,7 +169,7 @@ public class StorageTest {
 		}
 		assertTrue("test correct processing of invalid path input with slash", pass);
 	}
-	
+
 	@Test
 	public void testSetPath_validPathWithoutName() {
 		boolean isValidPath, pass;
@@ -186,7 +193,7 @@ public class StorageTest {
 		}
 		assertTrue("test correct processing of valid path input with name", pass);
 	}
-	
+
 	@Test
 	public void testSetPath_correctAssignment() {
 		Storage.setPath("/Users/hungngth/Downloads");
