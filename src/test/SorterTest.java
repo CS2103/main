@@ -62,13 +62,12 @@ public class SorterTest {
 		expected.add(taskArr[4]);
 		expected.add(taskArr[1]);
 		expected.add(taskArr[0]);
+		expected.add(taskArr[6]);
 		expected.add(taskArr[3]);
 		
 		
 		ArrayList<Task> output = sorter.sortArrayByTime(testBin.returnAllInbox());
 		for(int i = 0; i < 6; i++){
-			System.out.println("The title is " + output.get(i).getTitle() + " " + output.get(i).getEndingTime().getYear());
-			System.out.println('\n');
 			if(!output.get(i).equals(expected.get(i))){
 				equals = false;
 			}
@@ -78,8 +77,12 @@ public class SorterTest {
 	}
 
 	@Test
-	public void testSortArrayByAlpha() {
-		fail("Not yet implemented"); // TODO
+	public void testSortArrayByAlpha() throws InvalidTimeException {
+		Task task1 = new Task(new DateTime(0,1,1,0,0),new DateTime(0,1,1,0,0));
+		Task task2 = new Task("The title of the task is super super super super super super super super super super super super super super super super long", new DateTime(0,1,1,0,0), new DateTime(0,1,1,0,0));
+		Task task3 = new Task("¶àÓïÑÔÖ§³Ö", new DateTime(0,1,1,0,0),new DateTime(0,1,1,0,0) );
+		Task task4 = new Task("123LetsGO", new DateTime(2015,11,12,0,0), new DateTime(2016,1,15,0,1));
+		Task task5 = new Task("#$%%^&*(", new DateTime(2015,12,11,0,0), new DateTime(2015,11,15,0,0));
 	}
 
 }
