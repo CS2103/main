@@ -50,6 +50,23 @@ public class Storage {
 	public Storage() {
 	}
 
+	public static boolean setPath(String newPath) {
+		File checkFile = new File(newPath);
+		boolean canSetPath;
+		if (!isValidPath(checkFile)) {
+			if (!containSlash(newPath)) {
+				canSetPath = false;
+				return canSetPath;
+			} else {
+				canSetPath = processInvalidPath(newPath);
+				return canSetPath;
+			}
+		} else {
+			canSetPath = processValidPath(newPath, checkFile);
+			return canSetPath;
+		}
+	}
+
 	public static boolean containSlash(String path) {
 		if (path.contains("\\") || path.contains("/")) {
 			return true;
@@ -79,83 +96,72 @@ public class Storage {
 		}
 	}
 
-	public static boolean setPath(String newPath) {
-		File checkFile = new File(newPath);
-		if (isInvalidPath(checkFile)) {
-
-			if (!containSlash(newPath)) {
-				return false;
-
-			} else {
-				String filename = extractFilename(newPath);
-				System.out.println("filename " + filename);
-				if (containInvalidChar(filename)) {
-					return false;
-				}
-				String directory = extractDirectory(newPath);
-				System.out.println("directory " + directory);
-				File file = new File(directory);
-				if (isInvalidPath(file)) {
-					return false;
-				} else {
-					Storage.path = newPath;
-					deleteOldSave();
-					writePathToFile();
-
-					System.out.println("newPath " + newPath);
-					System.out.println("path1 " + path);
-					Storage.currentTaskList = read();
-					System.out.println("path2 " + path);
-					write(currentTaskList);
-					savedTask.delete();
-					return true;
-				}
-			}
-
+	private static boolean processValidPath(String newPath, File checkFile) {
+		Storage.currentTaskList = read();
+		if (checkFile.isDirectory()) {
+			appendSaveName(newPath);
+			writePathToFile();
 		} else {
+			Storage.path = newPath;
+		}
+		return cleanUpUnusedFile();
+	}
+
+	private static boolean cleanUpUnusedFile() {
+		write(currentTaskList);
+		savedTask.delete();
+		return true;
+	}
+
+	private static boolean processInvalidPath(String newPath) {
+		String filename = extractFilename(newPath);
+
+		if (containInvalidChar(filename)) {
+			return false;
+		}
+
+		String directory = extractDirectory(newPath);
+		File file = new File(directory);
+
+		if (!isValidPath(file)) {
+			return false;
+		} else {
+			Storage.path = newPath;
+			deleteOldSaveFile();
+			writePathToFile();
 			Storage.currentTaskList = read();
-			if (checkFile.isDirectory()) {
-				appendSaveName(newPath);
-				writePathToFile();
-			} else {
-				Storage.path = newPath;
-			}
-			write(currentTaskList);
-			savedTask.delete();
-			return true;
+			return cleanUpUnusedFile();
 		}
 	}
 
-	private static void deleteOldSave() {
+	private static void deleteOldSaveFile() {
 		try {
 			FileReader fr = new FileReader(savedPath);
 			BufferedReader br = new BufferedReader(fr);
-			System.out.println("here2 " + Storage.path);
 			String oldPath = br.readLine();
-			System.out.println("here3 " + Storage.path);
 			br.close();
-			File f = new File(oldPath);
-			f.delete();
+			File file = new File(oldPath);
+			file.delete();
+
 		} catch (FileNotFoundException e) {
 			Logger.getLogger("Log").log(Level.SEVERE, "Cannot find savedPath file at specified location");
+
 		} catch (IOException e) {
 			Logger.getLogger("Log").log(Level.SEVERE, "Unable to read from savedPath file");
 		}
-		
 	}
 
-	private static boolean isInvalidPath(File file) {
+	private static boolean isValidPath(File file) {
 		if (file.exists()) {
-			return false;
-		} else {
 			return true;
+		} else {
+			return false;
 		}
 	}
 
 	public static void appendSaveName(String newPath) {
 		// Storage.path = newPath + "\\TBAsave.txt"; // for windows
 		Storage.path = newPath + "/TBAsave.txt"; // for macOS
-
 	}
 
 	public static void writePathToFile() {
@@ -176,21 +182,25 @@ public class Storage {
 
 	public static void write(ArrayList<Task> tasks) {
 		try {
-			if (Storage.path == null) {
-				Storage.path = savedPath.getAbsolutePath();
-			}
+			handleNullPath();
 			File file = new File(Storage.path);
 			FileWriter fw = new FileWriter(file);
 			BufferedWriter bw = new BufferedWriter(fw);
 			bw.write(gson.toJson(tasks));
 			bw.close();
+
 		} catch (IOException e) {
 			Logger.getLogger("Log").log(Level.SEVERE, "Unable to write to save file");
 		}
 	}
 
-	public static ArrayList<Task> read() {
+	private static void handleNullPath() {
+		if (Storage.path == null) {
+			Storage.path = savedPath.getAbsolutePath();
+		}
+	}
 
+	public static ArrayList<Task> read() {
 		try {
 			FileReader fr = new FileReader(savedPath);
 			BufferedReader br = new BufferedReader(fr);
@@ -198,33 +208,37 @@ public class Storage {
 			Storage.path = br.readLine();
 			System.out.println("here3 " + Storage.path);
 			br.close();
+
 		} catch (FileNotFoundException e) {
 			Logger.getLogger("Log").log(Level.SEVERE, "Cannot find savedPath file at specified location");
+
 		} catch (IOException e) {
 			Logger.getLogger("Log").log(Level.SEVERE, "Unable to read from savedPath file");
 		}
+
 		ArrayList<Task> taskList = new ArrayList<Task>();
 		String line = "";
-		if (Storage.path == null) {
-			System.out.println("here " + Storage.path);
-			Storage.path = savedTask.getAbsolutePath();
-		}
+		handleNullPath();
+
 		try {
 			FileReader fr = new FileReader(Storage.path);
 			BufferedReader br = new BufferedReader(fr);
 			StringBuilder stringBuilder = new StringBuilder();
+
 			while ((line = br.readLine()) != null) {
 				stringBuilder.append(line).append("\n");
 			}
+
 			br.close();
 			String jsonString = stringBuilder.toString();
 			taskList = gson.fromJson(jsonString, new TypeToken<ArrayList<Task>>() {
 			}.getType());
+
 		} catch (FileNotFoundException e) {
 			Logger.getLogger("Log").log(Level.SEVERE, "Cannot find save file at specified location");
+
 		} catch (IOException e) {
 			Logger.getLogger("Log").log(Level.SEVERE, "Unable to read from save file");
-
 		}
 		return taskList;
 	}
