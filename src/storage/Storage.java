@@ -19,9 +19,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
-import logic.Task;
-
 import application.Constants;
+import logic.Task;
 
 public class Storage {
 
@@ -76,20 +75,21 @@ public class Storage {
 	}
 
 	public static String extractDirectory(String path) {
-		int i = path.lastIndexOf("/");
+		int i = path.lastIndexOf("\\");
 		String subPath = path.substring(0, i);
 		return subPath;
 	}
 
 	public static String extractFilename(String path) {
-		int i = path.lastIndexOf("/");
+		int i = path.lastIndexOf("\\");
 		String subPath = path.substring(i + Constants.FIX_CORRECT_INDEX);
 		return subPath;
 	}
 
 	// : * ? " < > |
 	public static boolean containInvalidChar(String path) {
-		if (path.contains(":") || path.contains("*") || path.contains("?") || path.contains("\"") || path.contains("<") || path.contains(">") || path.contains("|")) {
+		if (path.contains(":") || path.contains("*") || path.contains("?") || path.contains("\"") || path.contains("<")
+				|| path.contains(">") || path.contains("|")) {
 			return true;
 		} else {
 			return false;
