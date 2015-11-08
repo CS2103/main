@@ -55,7 +55,6 @@ public class TaskBinTest {
 				}
 			}
 		}
-		assertTrue(success);
 		
 	}
 
@@ -110,19 +109,70 @@ public class TaskBinTest {
 		testBin.markTaskInstance(task5);
 		testBin.markTaskInstance(task3);
 		testBin.markTaskInstance(task1);
-		ArrayList<Task> result = testBin.getUnfinished();
-		System.out.println("UNIT TEST INFO: " + result.size() + " " + result.get(0).getTitle());
-		assertTrue((result.size() == 1) && result.get(0).equals(task4));
+		ArrayList<Task> result = new ArrayList<Task>();
+		for(Task t:testBin.returnAllInbox()){
+			if(t.getStatus()){
+				result.add(t);
+			}
+		}
+		//System.out.println("UNIT TEST INFO: " + result.size() + " " + result.get(0).getTitle());
+		assertTrue((result.size() == 4));
 	}
 
 	@Test
-	public void testUnmarkTaskInstance() {
-		fail("Not yet implemented"); // TODO
+	public void testUnmarkTaskInstance() throws InvalidTimeException {
+		Task task1 = new Task(new DateTime(0,1,1,0,0),new DateTime(0,1,1,0,0));
+		Task task2 = new Task("The title of the task is super super super super super super super super super super super super super super super super long", new DateTime(0,1,1,0,0), new DateTime(0,1,1,0,0));
+		Task task3 = new Task("多语言支持", new DateTime(0,1,1,0,0),new DateTime(0,1,1,0,0) );
+		Task task4 = new Task("Task starts and end at different year", new DateTime(2015,11,12,0,0), new DateTime(2016,1,15,0,1));
+		Task task5 = new Task("Task ends before it starts", new DateTime(2015,12,11,0,0), new DateTime(2015,11,15,0,0));
+		TaskBin testBin = new TaskBin();
+		testBin.add(task1);
+		testBin.add(task2);
+		testBin.add(task3);
+		testBin.add(task4);
+		testBin.add(task5);
+		testBin.markTaskInstance(task2);
+		testBin.markTaskInstance(task5);
+		testBin.markTaskInstance(task3);
+		testBin.markTaskInstance(task1);
+		testBin.unmarkTaskInstance(task5);
+		testBin.unmarkTaskInstance(task4);
+		testBin.unmarkTaskInstance(task1);
+		ArrayList<Task> result = new ArrayList<Task>();
+		for(Task t:testBin.returnAllInbox()){
+			if(t.getStatus()){
+				result.add(t);
+			}
+		}
+		System.out.println(result.size());
+		assertTrue(result.size() == 2);
 	}
 
 	@Test
-	public void testEditTitle() {
-		fail("Not yet implemented"); // TODO
+	public void testEditTitle() throws InvalidTimeException {
+		Task[] task = new Task[5];
+		task[1] = new Task(new DateTime(0,1,1,0,0),new DateTime(0,1,1,0,0));
+		task[2] = new Task("The title of the task is super super super super super super super super super super super super super super super super long", new DateTime(0,1,1,0,0), new DateTime(0,1,1,0,0));
+		task[3] = new Task("多语言支持", new DateTime(0,1,1,0,0),new DateTime(0,1,1,0,0) );
+		task[4] = new Task("Task starts and end at different year", new DateTime(2015,11,12,0,0), new DateTime(2016,1,15,0,1));
+		task[5] = new Task("Task ends before it starts", new DateTime(2015,12,11,0,0), new DateTime(2015,11,15,0,0));
+		TaskBin testBin = new TaskBin();
+		testBin.add(task[1]);
+		testBin.add(task[2]);
+		testBin.add(task[3]);
+		testBin.add(task[4]);
+		testBin.add(task[5]);
+		for(int i = 0; i < 5; i++){
+			String newTil = new Integer(i).toString();
+			testBin.editTitle(task[i],newTil );
+		}
+		String output = new String();
+		for(int i = 0; i < 5; i++){
+			output = output + testBin.returnAllInbox().get(i).getTitle();
+		}
+		System.out.println("WARNING!!!!!!!!!!!!!" + output);
+		assertEquals(output, "12345");
 	}
 
 	@Test

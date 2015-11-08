@@ -87,6 +87,7 @@ public class BinSorter {
 	
 	
 	public ArrayList<Task> sortArrayByTime(ArrayList<Task> inboxArr){
+		System.out.println("Is sorting");
 		ArrayList<Task> normalTask = new ArrayList<Task>();
 		ArrayList<Task> timeUndefined = new ArrayList<Task>();
 		ArrayList<Task> recurList = new ArrayList<Task>();

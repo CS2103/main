@@ -384,32 +384,7 @@ public class TaskBin {
 	}
 
 	public void editTitle(Task task, String newTitle) {
-		/*Task tar = taskList.get(taskList.indexOf(task));
-		Task buffer = new Task(task);
-		buffer.setTitle(newTitle);
-		taskList.remove(tar);
-		taskList.add(buffer);
-		Command editTil = new Command(Constants.alter_tag, buffer, tar);
-		undoStack.push(editTil);
-		Storage.write(taskList);
-		redoStack.clear();
-		display.updateDisplay(editTil, true);
-		displayList = display.returnDisplay();*/
-		//Task buffer = new Task(task);
-		
-		
-		/*Task tar = taskList.get(taskList.indexOf(task));
-		tar.setTitle(newTitle);
-		Task buffer = new Task(task);
-		System.out.println("The title for tar is " + tar.getTitle() + " and the title for buffer is " + buffer.getTitle());
-		Command editTil = new Command(Constants.alter_tag, tar, buffer);
-		undoStack.push(editTil);
-		Storage.write(taskList);
-		redoStack.clear();
-		display.updateDisplay(editTil, true);
-		displayList = display.returnDisplay();*/
-		
-		
+				
 		Task buffer = new Task(task);
 		Task tar = new Task (taskList.get(taskList.indexOf(task)));
 		Task tarDis = new Task (displayList.get(displayList.indexOf(tar)));
@@ -419,10 +394,6 @@ public class TaskBin {
 		tar.setTitle(newTitle);
 		taskList.add(tar);
 		displayList.add(tarDis);
-		
-		
-		
-		System.out.println("The tar is recur " + tar.isTypeRecur() + ". The buffer is type recur: " + buffer.isTypeRecur());
 		Command editTil = new Command(Constants.alter_tag, tar, buffer);
 		display.setDisplayAll(displayList);
 		undoStack.push(editTil);

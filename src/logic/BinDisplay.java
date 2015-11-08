@@ -19,6 +19,7 @@ public class BinDisplay {
 
 	public ArrayList<Task> initDisplay(ArrayList<Task> taskList) {
 		bufferList = taskList;
+		sorter.sortArrayByTime(bufferList);
 		setDisplay(bufferList);
 		return bufferList;
 	}
@@ -142,8 +143,10 @@ public class BinDisplay {
 		} else {
 			switch (command.returnCommand()) {
 			case Constants.alter_tag:
-				displayList.add(displayList.get(displayList.indexOf(command.returnOrigin())));
-				displayList.remove(command.returnMani());
+				if(displayList.contains(command.returnOrigin())){
+					displayList.add(displayList.get(displayList.indexOf(command.returnOrigin())));
+					displayList.remove(command.returnMani());
+				}
 				break;
 
 			case Constants.mark_tag:
