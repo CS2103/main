@@ -28,6 +28,10 @@ public class DateParser {
 
 	public static DateTime getDateTime(String input) {
 		DateTime dateTime;
+		if(input != null){
+			input = input.replaceAll("\\s+", Constants.SPACE);
+		}
+		
 		String dateString = new String();
 		String timeString = new String();
 
