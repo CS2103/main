@@ -236,7 +236,6 @@ public class Storage {
 
 			br.close();
 			String jsonString = stringBuilder.toString();
-			//System.out.println(jsonString);
 			taskList = gson.fromJson(jsonString, new TypeToken<ArrayList<Task>>() {}.getType());
 
 		} catch (FileNotFoundException e) {
