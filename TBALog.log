@@ -1,0 +1,6 @@
+Nov 08, 2015 6:25:32 PM storage.Storage read
+SEVERE: Cannot find savedPath file at specified location
+Nov 08, 2015 6:25:32 PM storage.Storage read
+SEVERE: Cannot find save file at specified location
+Nov 08, 2015 6:27:34 PM application.LogHandler log
+INFO: Current user input not returning anything for GUI to display

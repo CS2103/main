@@ -36,8 +36,11 @@ public class StorageTest {
 	final String json = gson.toJson(original);
 	final DateTime reconstituted = gson.fromJson(json, DateTime.class);
 
-	private static ArrayList<Task> taskList = new ArrayList<Task>();
+	private static final ArrayList<Task> taskList = new ArrayList<Task>();
 	private static ArrayList<Task> taskListForTest = new ArrayList<Task>();
+	private static final File pathFile = new File("savedPath.txt");
+	private static final String path = Storage.extractDirectory(pathFile.getAbsolutePath());
+	private static final String newPath = path + "/TBAsave.txt";
 
 	@Before
 	public void setUp1() throws Exception {
@@ -57,6 +60,8 @@ public class StorageTest {
 		for (int i = 0; i < INPUTTASKS_LENGTH; i++) {
 			taskList.add(inputTasks[i]);
 		}
+		
+
 	}
 
 	/*
@@ -83,8 +88,8 @@ public class StorageTest {
 	@Test
 	public void testSetPath_fileCreated1() {
 		boolean pass = true;
-		Storage.setPath("/Users/hungngth/Downloads");
-		File file = new File("/Users/hungngth/Downloads/TBAsave.txt");
+		Storage.setPath(path);
+		File file = new File(newPath);
 		if (!file.exists()) {
 			pass = false;
 		}
@@ -125,7 +130,7 @@ public class StorageTest {
 		}
 		assertTrue("test correct processing of invalid path input (space character)", pass);
 	}
-	
+
 	// \ / : * ? " < > |
 	@Test
 	public void testSetPath_invalidPath3() {
@@ -138,7 +143,7 @@ public class StorageTest {
 		}
 		assertTrue("test correct processing of invalid path input (null)", pass);
 	}
-	
+
 	@Test
 	public void testSetPath_invalidPathWithSlash1() {
 		boolean isValidPath, pass;
@@ -150,7 +155,7 @@ public class StorageTest {
 		}
 		assertTrue("test correct processing of invalid path input with slash", pass);
 	}
-	
+
 	@Test
 	public void testSetPath_invalidPathWithSlash2() {
 		boolean isValidPath, pass;
@@ -162,7 +167,7 @@ public class StorageTest {
 		}
 		assertTrue("test correct processing of invalid path input with slash", pass);
 	}
-	
+
 	@Test
 	public void testSetPath_validPathWithoutName() {
 		boolean isValidPath, pass;
@@ -186,7 +191,7 @@ public class StorageTest {
 		}
 		assertTrue("test correct processing of valid path input with name", pass);
 	}
-	
+
 	@Test
 	public void testSetPath_correctAssignment() {
 		Storage.setPath("/Users/hungngth/Downloads");

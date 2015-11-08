@@ -64,13 +64,11 @@ public class DisplayTasks {
 		ArrayList<Task> dis = new ArrayList<Task>();
 		for (Task t : taskList) {
 			if (isWithinOneWeek(t) || (!t.getStatus())) {
-				System.out.println(t.getStatus());
 				dis.add(t);
 			}
 		}
 
 		displayList = dis;
-		System.out.println("Display Set as TaskList");
 	}
 
 	// display all tasks at one specific date
@@ -87,9 +85,6 @@ public class DisplayTasks {
 
 	// return the display list back
 	public ArrayList<Task> returnDisplay() {
-		// TODO
-		// activeList = sortArrayByTime(activeList);
-		System.out.println("The size of the activeList is:" + displayList.size());
 		return displayList;
 	}
 
@@ -102,7 +97,6 @@ public class DisplayTasks {
 	public boolean isWithinOneWeek(Task t) {
 		DateTime now = new DateTime();
 		DateTime weekAfter = now.plusDays(7);
-		System.out.println("Check in one week");
 		if (t.getType().equals(Constants.TYPE_RECUR)) {
 			ArrayList<DateTime> dates = t.getRecurDates();
 			for (DateTime date : dates) {
@@ -136,8 +130,6 @@ public class DisplayTasks {
 			case Constants.unmark_tag:
 				displayList.get(displayList.indexOf(command.returnMani())).unMark();
 				break;
-			default:
-				System.out.println("Error: Unable to identify the command type");
 			}
 		} else {
 			switch (command.returnCommand()) {
@@ -152,8 +144,6 @@ public class DisplayTasks {
 			case Constants.unmark_tag:
 				displayList.get(displayList.indexOf(command.returnMani())).mark();
 				break;
-			default:
-				System.out.println("Error: Unable to identify the command type");
 			}
 		}
 	}
