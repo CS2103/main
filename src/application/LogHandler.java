@@ -1,7 +1,6 @@
 //@@author A0121442X
 package application;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.FileHandler;
@@ -11,20 +10,18 @@ import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
 public class LogHandler {
-	Handler consoleHandler = new ConsoleHandler();
-	private static final String FILE_PATH = System.getProperty("user.dir").toString() + "/log/";
-	private static final String LOGGER_FILE = FILE_PATH + "TBALog.log";
+	private static Handler consoleHandler = new ConsoleHandler();
+	// private static final String FILE_PATH =
+	// System.getProperty("user.dir").toString() + "/log/";
+	private static final String LOGGER_FILE = "TBALog.log";
 	private static Logger logger = Logger.getLogger("Log");
 	private static Handler fileHandler;
 
-	public LogHandler() {
-		File logFile = new File(FILE_PATH);
-		if (logFile.exists()) {
-			return;
-		} else {
-			logFile.mkdir();
-		}
-
+	public static void setUpLogger() {
+		/*
+		 * File logFile = new File(FILE_PATH); if (logFile.exists()) { return; }
+		 * else { logFile.mkdir(); }
+		 */
 		SimpleFormatter loggerFormatter = new SimpleFormatter();
 
 		try {
@@ -39,7 +36,7 @@ public class LogHandler {
 		logger.isLoggable(Level.INFO);
 	}
 
-	public void log(Level level, String message) {
+	public static void log(Level level, String message) {
 		logger.log(level, message);
 	}
 }

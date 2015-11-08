@@ -108,16 +108,33 @@
 	-fx-background-color: rgba(0,0,0,0.04);
 }
 
+#titleOverdue {
+	-fx-text-fill: palevioletred ;
+	-fx-font-family: "sans-serif";
+	-fx-font-weight: bold;
+	-fx-font-style: italic;
+	-fx-font-size:16px; 
+}
+
 #titleTask {
 	-fx-text-fill: rgb(26, 77, 77);
+	-fx-font-family: "sans-serif";
+	-fx-font-weight: bold;
+	-fx-font-size:16px; 
 }
 
 #titleEvent {
 	-fx-text-fill: rgb(26, 77, 77);
+	-fx-font-family: "sans-serif";
+	-fx-font-weight: bold;
+	-fx-font-size:16px; 
 }
 
 #titleDeadline {
 	-fx-text-fill: rgb(26, 77, 77);
+	-fx-font-family: "sans-serif";
+	-fx-font-weight: bold;
+	-fx-font-size:16px; 
 }
 
 #index {
@@ -126,6 +143,10 @@
 
 #duration {
 	-fx-text-fill: rgb(26, 77, 77);
+	-fx-padding: 0 0 0 15;
+	-fx-font-family: sans-serif;
+	-fx-font-style: italic;
+	-fx-font-size: 11px; 
 }
 
 
