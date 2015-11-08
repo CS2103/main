@@ -8,6 +8,7 @@ import application.Constants;
 public class CommandParser {
 
 	public static String getCommand(String input) {
+		assert input != null : Constants.ERROR_NULL_INPUT;
 		String command = extractFirstWord(input.trim()).toLowerCase();
 		if (checkForWordInDictionary(Constants.DICTIONARY_ADD, command)) {
 			return Constants.DICTIONARY_ADD[0];
@@ -41,6 +42,7 @@ public class CommandParser {
 	}
 
 	private static boolean checkForWordInDictionary(String[] dictionary, String word) {
+		assert word != null : Constants.ERROR_NULL_INPUT;
 		if (Arrays.asList(dictionary).contains(word.toLowerCase())) {
 			return true;
 		} else {
