@@ -204,9 +204,7 @@ public class Storage {
 		try {
 			FileReader fr = new FileReader(savedPath);
 			BufferedReader br = new BufferedReader(fr);
-			System.out.println("here2 " + Storage.path);
 			Storage.path = br.readLine();
-			System.out.println("here3 " + Storage.path);
 			br.close();
 
 		} catch (FileNotFoundException e) {
