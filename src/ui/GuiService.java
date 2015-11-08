@@ -104,7 +104,6 @@ public class GuiService {
 
 	private void addListenersToConsoleView(Stage stage) {
 		consoleView.inputConsole.textProperty().addListener((observable, oldValue, newValue) -> {
-			LogHandler.log(Level.FINEST, "Textfield changed from " + oldValue + " to " + newValue);
 			if (newValue.equalsIgnoreCase(Constants.COMMAND_HELP)) {
 
 			} else if (CommandParser.getCommand(newValue).equalsIgnoreCase(Constants.COMMAND_ADD)) {

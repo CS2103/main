@@ -34,12 +34,14 @@ public class ListItem extends StackPane {
 		if (isOverdue) {
 			title.setId("titleOverdue");
 		} else {
-			if (taskType.equals("task")) {
+			if (taskType.equals(Constants.TYPE_FLOATING)) {
 				title.setId("titleTask");
-			} else if (taskType.equals("event")) {
+			} else if (taskType.equals(Constants.TYPE_EVENT)) {
 				title.setId("titleEvent");
-			} else if (taskType.equals("deadline")) {
+			} else if (taskType.equals(Constants.TYPE_DEADLINE)) {
 				title.setId("titleDeadline");
+			} else if (taskType.equals(Constants.TYPE_RECUR)) {
+				title.setId("titleEvent");
 			}
 		}
 
@@ -84,9 +86,9 @@ public class ListItem extends StackPane {
 
 		taskDuration = new Label();
 		taskDuration.setId("duration");
-		if (taskType.equals("deadline")) {
+		if (taskType.equals(Constants.TYPE_DEADLINE)) {
 			taskDuration.setText(String.format(Constants.FORMAT_DEADLINE, endDate, endTime));
-		} else if (taskType.equals("event")) {
+		} else if (taskType.equals(Constants.TYPE_EVENT)) {
 			if (checkIfOnSameDay(taskStartTime, taskEndTime)) {
 				if (startTime.equals(Constants.TIME_START_OF_DAY) && endTime.equals(Constants.TIME_END_OF_DAY)) {
 					taskDuration.setText(String.format(Constants.FORMAT_WHOLE_DAY, endDate));
@@ -109,7 +111,7 @@ public class ListItem extends StackPane {
 
 		VBox detailsLayout = new VBox();
 
-		if (taskType.equals("task")) {
+		if (taskType.equals(Constants.TYPE_FLOATING)) {
 			detailsLayout.getChildren().addAll(titleNstatus);
 		} else {
 			detailsLayout.getChildren().addAll(titleNstatus, timeLayout);
