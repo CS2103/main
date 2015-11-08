@@ -1,6 +1,8 @@
 //@@author A0124127R
 package parser;
 
+import java.util.logging.Level;
+
 /**
  * Accepted date formats
  * 10/12
@@ -23,8 +25,10 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 
 import application.Constants;
+import application.LogHandler;
 
 public class DateParser {
+
 
 	public static DateTime getDateTime(String input) {
 		DateTime dateTime;
@@ -87,6 +91,7 @@ public class DateParser {
 				}
 			} catch (NullPointerException e) {
 			} catch (IllegalArgumentException e) {
+				LogHandler.log(Level.SEVERE, Constants.ERROR_INPUT_DATE);
 			}
 		}
 		return timeString;
@@ -122,6 +127,7 @@ public class DateParser {
 				date = DateTimeFormat.forPattern(formatString).parseDateTime(dateString);
 			} catch (NullPointerException e) {
 			} catch (IllegalArgumentException e) {
+				LogHandler.log(Level.SEVERE, Constants.ERROR_INPUT_TIME);
 			}
 		}
 		if (date.getYear() == 2000) {
