@@ -9,6 +9,7 @@
 	-fx-background-color: linear-gradient( from 100.0% 0.0% to 100.0% 100.0%, rgb(26,77,77) 0.0, rgb(51,102,102) 100.0);
 	-fx-font-size: 30px;
 	-fx-background-radius: 20 0 0 0 ;
+	-fx-padding: 0 0 0 20;
 }
 
 #timeDisplay {
@@ -17,6 +18,7 @@
 	-fx-text-fill:rgb(214, 255, 255);
 	-fx-font-size: 30px;
 	-fx-background-radius: 0 20 0 0 ;
+	-fx-padding: 0 20 0 0;	
 }
 
 #scrollPane .scroll-bar:horizontal .track,
@@ -62,6 +64,10 @@
 
 #scrollPane {
 	-fx-background-color:linear-gradient( from 100.0% 0.0% to 100.0% 100.0%, rgb(51,51,51) 0.0, rgb(179,179,179) 40.0, rgb(51,51,51) 100.0);
+	-fx-max-height:470px;
+	-fx-min-height:470px;
+	-fx-focus-traversable:false;
+	-fx-pref-width:800px;
 }
 
 #inputConsole {
@@ -71,15 +77,18 @@
 	-fx-text-inner-color: black;
 	-fx-font-size: 15;
 	-fx-font-family: "sans-serif";
+	-fx-focus-traversable:true;
 }
 
 #timedList {
-	
+	-fx-focus-traversable:false;
 	-fx-background-color:rgb(221,255,213);
+	-fx-min-width:350px;
+	-fx-fill-width:true;
 }
 
 #floatingList {
-	
+	-fx-focus-traversable:false;
 	-fx-background-color:rgb(212,244,204);
 }
 
@@ -91,6 +100,7 @@
 	-fx-padding: 0 0 0 10;
 	-fx-pref-height: 30;
 	-fx-background-radius: 0 0 20 20 ;
+	-fx-alignment:center-left;
 	
 }
 

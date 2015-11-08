@@ -93,7 +93,11 @@ public class ListItem extends StackPane {
 			taskDuration.setText("By [" + endDate + "] " + endTime + " hrs");
 		} else if (taskType.equals("event")) {
 			if (checkIfOnSameDay(taskStartTime, taskEndTime)) {
-				taskDuration.setText("[" + endDate + "] Whole day");
+				if (startTime.equals("0000") && endTime.equals("2359")) {
+					taskDuration.setText("[" + endDate + "] Whole day");
+				} else {
+					taskDuration.setText("[" + endDate + "] " + startTime + " hrs - " + endTime + " hrs");
+				}
 			} else {
 				taskDuration
 						.setText("[" + startDate + "] " + startTime + " hrs  -  [" + endDate + "] " + endTime + " hrs");
