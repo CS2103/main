@@ -1,3 +1,5 @@
+//@@author A0129699E -reused
+
 package storage;
 
 /*
@@ -44,77 +46,77 @@ import java.lang.reflect.Type;
 @SuppressWarnings("deprecation")
 public class Converters
 {
-  /** The specific genericized type for {@code DateMidnight}. */
-  public static final Type DATE_MIDNIGHT_TYPE = new TypeToken<DateMidnight>(){}.getType();
+	/** The specific genericized type for {@code DateMidnight}. */
+	public static final Type DATE_MIDNIGHT_TYPE = new TypeToken<DateMidnight>(){}.getType();
 
-  /** The specific genericized type for {@code DateTime}. */
-  public static final Type DATE_TIME_TYPE = new TypeToken<DateTime>(){}.getType();
+	/** The specific genericized type for {@code DateTime}. */
+	public static final Type DATE_TIME_TYPE = new TypeToken<DateTime>(){}.getType();
 
-  /** The specific genericized type for {@code LocalDate}. */
-  public static final Type LOCAL_DATE_TYPE = new TypeToken<LocalDate>(){}.getType();
+	/** The specific genericized type for {@code LocalDate}. */
+	public static final Type LOCAL_DATE_TYPE = new TypeToken<LocalDate>(){}.getType();
 
-  /** The specific genericized type for {@code LocalDateTime}. */
-  public static final Type LOCAL_DATE_TIME_TYPE = new TypeToken<LocalDateTime>(){}.getType();
+	/** The specific genericized type for {@code LocalDateTime}. */
+	public static final Type LOCAL_DATE_TIME_TYPE = new TypeToken<LocalDateTime>(){}.getType();
 
-  /** The specific genericized type for {@code LocalTime}. */
-  public static final Type LOCAL_TIME_TYPE = new TypeToken<LocalTime>(){}.getType();
+	/** The specific genericized type for {@code LocalTime}. */
+	public static final Type LOCAL_TIME_TYPE = new TypeToken<LocalTime>(){}.getType();
 
-  /** The specific genericized type for {@code Interval}. */
-  public static final Type INTERVAL_TYPE = new TypeToken<Interval>(){}.getType();
+	/** The specific genericized type for {@code Interval}. */
+	public static final Type INTERVAL_TYPE = new TypeToken<Interval>(){}.getType();
 
-  /** The specific genericized type for {@code Duration}. */
-  public static final Type DURATION_TYPE = new TypeToken<Duration>(){}.getType();
+	/** The specific genericized type for {@code Duration}. */
+	public static final Type DURATION_TYPE = new TypeToken<Duration>(){}.getType();
 
-  /**
-   * Registers all the Joda Time converters.
-   * @param builder The GSON builder to register the converters with.
-   * @return A reference to {@code builder}.
-   */
-  public static GsonBuilder registerAll(GsonBuilder builder)
-  {
-    if (builder == null) { throw new NullPointerException("builder cannot be null"); }
+	/**
+	 * Registers all the Joda Time converters.
+	 * @param builder The GSON builder to register the converters with.
+	 * @return A reference to {@code builder}.
+	 */
+	public static GsonBuilder registerAll(GsonBuilder builder)
+	{
+		if (builder == null) { throw new NullPointerException("builder cannot be null"); }
 
-//    registerDateMidnight(builder);
-    registerDateTime(builder);
-//    registerDuration(builder);
-//    registerLocalDate(builder);
-//    registerLocalDateTime(builder);
-//    registerLocalTime(builder);
-//    registerInterval(builder);
+		//    registerDateMidnight(builder);
+		registerDateTime(builder);
+		//    registerDuration(builder);
+		//    registerLocalDate(builder);
+		//    registerLocalDateTime(builder);
+		//    registerLocalTime(builder);
+		//    registerInterval(builder);
 
-    return builder;
-  }
+		return builder;
+	}
 
-  /**
-   * Registers the {@link DateMidnight} converter.
-   * @param builder The GSON builder to register the converter with.
-   * @return A reference to {@code builder}.
-   */
-  public static GsonBuilder registerDateMidnight(GsonBuilder builder)
-  {
-    if (builder == null) { throw new NullPointerException("builder cannot be null"); }
+	/**
+	 * Registers the {@link DateMidnight} converter.
+	 * @param builder The GSON builder to register the converter with.
+	 * @return A reference to {@code builder}.
+	 */
+	public static GsonBuilder registerDateMidnight(GsonBuilder builder)
+	{
+		if (builder == null) { throw new NullPointerException("builder cannot be null"); }
 
-//    builder.registerTypeAdapter(DATE_MIDNIGHT_TYPE, new DateMidnightConverter());
+		//    builder.registerTypeAdapter(DATE_MIDNIGHT_TYPE, new DateMidnightConverter());
 
-    return builder;
-  }
+		return builder;
+	}
 
-  /**
-   * Registers the {@link DateTime} converter.
-   * @param builder The GSON builder to register the converter with.
-   * @return A reference to {@code builder}.
-   */
-  public static GsonBuilder registerDateTime(GsonBuilder builder)
-  {
-    if (builder == null) { throw new NullPointerException("builder cannot be null"); }
+	/**
+	 * Registers the {@link DateTime} converter.
+	 * @param builder The GSON builder to register the converter with.
+	 * @return A reference to {@code builder}.
+	 */
+	public static GsonBuilder registerDateTime(GsonBuilder builder)
+	{
+		if (builder == null) { throw new NullPointerException("builder cannot be null"); }
 
-    builder.registerTypeAdapter(DATE_TIME_TYPE, new DateTimeConverter());
+		builder.registerTypeAdapter(DATE_TIME_TYPE, new DateTimeConverter());
 
-    return builder;
-  }
+		return builder;
+	}
 
 
-  	/**
+	/**
 	 * Registers the {@link Duration} converter. + @param builder The GSON
 	 * builder to register the converter with.
 	 * 
