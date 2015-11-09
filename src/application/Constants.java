@@ -253,4 +253,7 @@ public class Constants {
 
 	// used in TestStorage.java to fix number of characters needed
 	public static final int FIX_CORRECT_LENGTH = 1;
+	
+	// used in Storage.java to check max length of filename
+	public static final int MAX_PATH_LENGTH = 260;
 }

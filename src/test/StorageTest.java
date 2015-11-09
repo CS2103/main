@@ -138,7 +138,7 @@ public class StorageTest {
 			taskList.add(inputTasks[i]);
 		}
 	}
-	 */
+	*/
 
 	@After
 	public void reset() throws Exception {
