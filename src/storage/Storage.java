@@ -41,6 +41,7 @@ public class Storage {
 
 	private static ArrayList<Task> currentTaskList = new ArrayList<Task>();
 
+	// change saving location to "newPath"
 	public static boolean setPath(String newPath) {
 		assert (newPath != null);
 		if (!isValidLength(newPath)) {
@@ -50,6 +51,7 @@ public class Storage {
 		}
 	}
 
+	// check "newPath"
 	private static boolean processNewPath(String newPath) {
 		File checkFile = new File(newPath);
 		boolean canSetPath;
@@ -68,6 +70,8 @@ public class Storage {
 	}
 
 	private static boolean isValidLength(String newPath) {
+		assert (newPath != null);
+
 		if (newPath.length() > Constants.MAX_PATH_LENGTH) {
 			return false;
 		}
@@ -83,16 +87,18 @@ public class Storage {
 	}
 
 	public static String extractDirectory(String path) {
-		int i = path.lastIndexOf("/"); // for mac
-		//		int i = path.lastIndexOf("\\"); // for windows
+		assert (path != null);
+
+		//int i = path.lastIndexOf("/"); // for mac
+		int i = path.lastIndexOf("\\"); // for windows
 
 		String subPath = path.substring(0, i);
 		return subPath;
 	}
 
 	public static String extractFilename(String path) {
-		int i = path.lastIndexOf("/"); // for mac
-		//		int i = path.lastIndexOf("\\"); // for windows
+		//int i = path.lastIndexOf("/"); // for mac
+		int i = path.lastIndexOf("\\"); // for windows
 
 		String subPath = path.substring(i + Constants.FIX_CORRECT_INDEX);
 		return subPath;
@@ -108,6 +114,7 @@ public class Storage {
 		}
 	}
 
+	// process the "newPath" if it passes the isValidPath check
 	private static boolean processValidPath(String newPath, File checkFile) {
 		Storage.currentTaskList = read();
 		deleteOldSaveFile();
@@ -128,7 +135,10 @@ public class Storage {
 		return true;
 	}
 
+	// process the "newPath" if it passes the isValidPath check
 	private static boolean processInvalidPath(String newPath) {
+		assert (newPath != null);
+
 		String filename = extractFilename(newPath);
 		Storage.currentTaskList = read();
 
@@ -149,6 +159,7 @@ public class Storage {
 		}
 	}
 
+	// delete old save file after calling setPath()
 	private static void deleteOldSaveFile() {
 		try {
 			FileReader fr = new FileReader(savedPath);
@@ -175,10 +186,11 @@ public class Storage {
 	}
 
 	public static void appendSaveName(String newPath) {
-		// Storage.path = newPath + "\\TBAsave.txt"; // for windows
-		Storage.path = newPath + "/TBAsave.txt"; // for macOS
+		Storage.path = newPath + "\\TBAsave.txt"; // for windows
+		//Storage.path = newPath + "/TBAsave.txt"; // for macOS
 	}
 
+	// write Storage.path to TBAsave.txt
 	public static void writePathToFile() {
 		try {
 			FileWriter fw = new FileWriter(savedPath.getAbsoluteFile());
@@ -191,15 +203,18 @@ public class Storage {
 		}
 	}
 
+	// return current saving location
 	public static String enquirePath() {
 		return Storage.path;
 	}
 
+	// main method to call when writing data to save file
 	public static void write(ArrayList<Task> tasks) {
 		handleNullPath();
 		writeTasksToFile(tasks);
 	}
 
+	// write data to file in json format
 	private static void writeTasksToFile(ArrayList<Task> tasks) {
 		try {
 			File file = new File(path);
@@ -213,12 +228,14 @@ public class Storage {
 		}
 	}
 
+	// update Storage.path if it is null
 	private static void handleNullPath() {
 		if (Storage.path == null) {
 			Storage.path = savedTask.getAbsolutePath();
 		}
 	}
 
+	// main method to call when reading data from save file
 	public static ArrayList<Task> read() {
 		getSavePath();
 		return readFromSaveFile();
@@ -230,6 +247,7 @@ public class Storage {
 		return convertSaveData(taskList);
 	}
 
+	// read save file and convert data read to ArrayList<Task>
 	private static ArrayList<Task> convertSaveData(ArrayList<Task> taskList) {
 		String line;
 		try {
@@ -255,6 +273,7 @@ public class Storage {
 		return taskList;
 	}
 
+	// Read path directory in savedPath and update Storage.path
 	private static void getSavePath() {
 		try {
 			FileReader fr = new FileReader(savedPath);
@@ -270,4 +289,10 @@ public class Storage {
 		}
 	}
 
+	// for testing purpose
+	public static void deleteAllFiles() {
+		File f = new File(Storage.path);
+		f.delete();
+		savedPath.delete();
+	}
 }
