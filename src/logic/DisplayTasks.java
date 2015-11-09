@@ -1,3 +1,5 @@
+//@@author A0129708X
+
 package logic;
 
 import java.util.ArrayList;
@@ -6,7 +8,6 @@ import org.joda.time.DateTime;
 
 import application.Constants;
 
-//@@Liu Xiaoming
 public class DisplayTasks {
 	ArrayList<Task> bufferList;
 	ArrayList<Task> displayList;

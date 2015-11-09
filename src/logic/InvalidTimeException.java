@@ -1,18 +1,18 @@
-//@@author A0129708
+//@@author A0129708X
 package logic;
 
 public class InvalidTimeException extends Exception {
-	/**
-	* 
-	*/
-	private static final long serialVersionUID = 1L;
+    /**
+    * 
+    */
+    private static final long serialVersionUID = 1L;
 
-	// Parameterless Constructor
-	public InvalidTimeException() {
-	}
+    // Parameterless Constructor
+    public InvalidTimeException() {
+    }
 
-	// Constructor that accepts a message
-	public InvalidTimeException(String message) {
-		super(message);
-	}
+    // Constructor that accepts a message
+    public InvalidTimeException(String message) {
+	super(message);
+    }
 }

@@ -25,6 +25,8 @@ public class ListItem extends StackPane {
     public ListItem(String taskTitle, DateTime taskStartTime, DateTime taskEndTime, String taskType, boolean isDone,
 	    boolean isOverdue, String recurValue, int taskIndex) {
 
+	assert taskTitle != null : Constants.ERROR_NULL_INPUT;
+
 	title = new Label(taskTitle);
 	title.setPadding(new Insets(0, 0, 0, 5));
 	title.setMaxWidth(Double.MAX_VALUE);
@@ -62,14 +64,13 @@ public class ListItem extends StackPane {
 	    statusIcon.setFill(Color.RED);
 	}
 
-	String startDate = (taskStartTime.getYear() == DateTime.now().getYear())
-		? taskStartTime.toLocalDate().toString(Constants.FORMAT_DATE_WITHOUT_YEAR)
-		: taskStartTime.toLocalDate().toString(Constants.FORMAT_FULL_DATE);
-	String startTime = taskStartTime.toLocalTime().toString(Constants.FORMAT_TWENTYFOURHOUR);
-	String endDate = (taskEndTime.getYear() == DateTime.now().getYear())
-		? taskEndTime.toLocalDate().toString(Constants.FORMAT_DATE_WITHOUT_YEAR)
-		: taskEndTime.toLocalDate().toString(Constants.FORMAT_FULL_DATE);
-	String endTime = taskEndTime.toLocalTime().toString(Constants.FORMAT_TWENTYFOURHOUR);
+	String startDate = checkIfThisYear(taskStartTime)
+		? formatDateTime(taskStartTime, Constants.FORMAT_DATE_WITHOUT_YEAR)
+		: formatDateTime(taskStartTime, Constants.FORMAT_FULL_DATE);
+	String startTime = formatDateTime(taskStartTime, Constants.FORMAT_TWENTYFOURHOUR);
+	String endDate = checkIfThisYear(taskEndTime) ? formatDateTime(taskEndTime, Constants.FORMAT_DATE_WITHOUT_YEAR)
+		: formatDateTime(taskEndTime, Constants.FORMAT_FULL_DATE);
+	String endTime = formatDateTime(taskEndTime, Constants.FORMAT_TWENTYFOURHOUR);
 
 	if (taskEndTime.isBefore(taskStartTime)) {
 	    endDate = Constants.FORMAT_UNKNOWN;
@@ -121,7 +122,7 @@ public class ListItem extends StackPane {
 	HBox consoleLayout = new HBox();
 	HBox.setHgrow(detailsLayout, Priority.ALWAYS);
 	consoleLayout.getChildren().addAll(detailsLayout, statusLayout);
-	this.setId("listItem");
+	this.setId(Constants.CSS_LIST_ITEM);
 	this.getChildren().add(consoleLayout);
 	this.setPadding(new Insets(2, 10, 2, 2));
 	this.setMinHeight(40);
@@ -131,11 +132,15 @@ public class ListItem extends StackPane {
 	return this.title.getText();
     }
 
+    private String formatDateTime(DateTime dateTime, String regex) {
+	return dateTime.toLocalDateTime().toString(regex);
+    }
+
     public String getIsOverdue() {
 	return this.title.getText();
     }
 
-    public boolean checkIfOnSameDay(DateTime dateTime1, DateTime dateTime2) {
+    private boolean checkIfOnSameDay(DateTime dateTime1, DateTime dateTime2) {
 	if (dateTime1.getDayOfMonth() == dateTime2.getDayOfMonth()
 		&& dateTime1.getMonthOfYear() == dateTime2.getMonthOfYear()
 		&& dateTime1.getYear() == dateTime2.getYear()) {
@@ -143,5 +148,9 @@ public class ListItem extends StackPane {
 	} else {
 	    return false;
 	}
+    }
+
+    private boolean checkIfThisYear(DateTime dateTime) {
+	return dateTime.getYear() == DateTime.now().getYear();
     }
 }
