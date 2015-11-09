@@ -270,4 +270,10 @@ public class Storage {
 		}
 	}
 
+	// for testing purpose
+	public static void deleteAllFiles() {
+		File f = new File(Storage.path);
+		f.delete();
+		savedPath.delete();
+	}
 }
