@@ -286,6 +286,9 @@ public class Constants {
 
     // used in Storage.java to correct index when calling String.substring()
     public static final int FIX_CORRECT_INDEX = 1;
+    
+    // used in TestStorage.java to fix number of characters needed
+ 	public static final int FIX_CORRECT_LENGTH = 1;
 
     public static final String CSS_CONTENT = "content";
     public static final String CSS_DATE_DISPLAY = "dateDisplay";
