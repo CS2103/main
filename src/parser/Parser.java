@@ -15,21 +15,6 @@ public class Parser implements ParserInterface {
 	}
 
 	@Override
-	public String getStart(String input) {
-		return TitleParser.splitInputWithDictionary(Constants.TASK_START_DATETIME, input);
-	}
-
-	@Override
-	public String getEnd(String input) {
-		return TitleParser.splitInputWithDictionary(Constants.TASK_END_DATETIME, input);
-	}
-
-	@Override
-	public String getField(String input) {
-		return input.split(Constants.SPACE)[2].trim().toLowerCase();
-	}
-
-	@Override
 	public DateTime getDateTime(String input) {
 		return DateParser.getDateTime(input);
 	}
@@ -38,33 +23,59 @@ public class Parser implements ParserInterface {
 	public DateTime getStartDateTime(String input) {
 		return DateParser.getDateTime(getStart(input));
 	}
-	
+
 	@Override
 	public DateTime getEndDateTime(String input) {
 		DateTime endDate = DateParser.getDateTime(getEnd(input));
 
-		if (endDate.getHourOfDay() == 0 && endDate.getMinuteOfHour() == 0){
-			endDate = endDate.withHourOfDay(23).withMinuteOfHour(59);
+		if (endDate.getHourOfDay() == Constants.TIME_START_OF_DAY_HOUR && endDate.getMinuteOfHour() == Constants.TIME_START_OF_DAY_MINUTE) {
+			endDate = endDate.withHourOfDay(Constants.TIME_END_OF_DAY_HOUR).withMinuteOfHour(Constants.TIME_END_OF_DAY_MINUTE);
 		}
 
 		return endDate;
 
+	}
+	
+	@Override
+	public boolean isValidEndingTime(DateTime startTime, DateTime endTime) {
+		return startTime.isBefore(endTime);
 	}
 
 	@Override
 	public String getTitle(String input) {
 		return TitleParser.getTitle(input);
 	}
-	
+
+	// Returns the second non-space character of an EDIT input == the index of
+	// tasks
 	@Override
 	public int getIndex(String input) {
-		input = input.split(Constants.SPACE)[1].trim();
+
+		input = TitleParser.extractFirstWord(TitleParser.excludeFirstWord(input.trim()));
 		return Integer.parseInt(input);
+	}
+
+	// Returns the third non-space String of an EDIT input == field to change
+	@Override
+	public String getField(String input) {
+		for (int i = Constants.BEGINNING_OF_INDEX; i < Constants.EDIT_INDEX_FIELD; i++) {
+			input = TitleParser.excludeFirstWord(input.trim());
+		}
+		return TitleParser.extractFirstWord(input);
+	}
+	
+	@Override
+	public String getEditTitle(String input) {
+		return TitleParser.getEditTitle(input);
+	}
+	
+	public String getRecurValue(String input) {
+		return DateParser.getRecurValue(input);
 	}
 
 	public ArrayList<Integer> getIndexes(String input) {
 		ArrayList<Integer> indexArray = new ArrayList<Integer>();
-		input = input.split(Constants.SPACE)[1].trim();
+		input = input.split(Constants.SPACE)[Constants.BEGINNING_OF_LIST].trim();
 		if (input.length() == 1) {
 			indexArray.add(Integer.parseInt(input));
 			return indexArray;
@@ -77,21 +88,13 @@ public class Parser implements ParserInterface {
 		}
 	}
 
-	@Override
-	public boolean isValidEndingTime(DateTime startTime, DateTime endTime) {
-		return startTime.isBefore(endTime);
+	private String getStart(String input) {
+		return TitleParser.splitInputWithDictionary(Constants.TASK_START_DATETIME, input);
 	}
 
-	public String getRecurValue(String input) {
-
-		String recurValue = new String();
-
-		for (int i = 0; i < Constants.TASK_RECURRING.length; i++) {
-			if (input.toLowerCase().contains(Constants.TASK_RECURRING[i])) {
-				recurValue = Constants.TASK_RECURRING[i];
-			}
-		}
-		return recurValue;
+	private String getEnd(String input) {
+		return TitleParser.splitInputWithDictionary(Constants.TASK_END_DATETIME, input);
 	}
+	
 
 }

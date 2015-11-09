@@ -1,6 +1,7 @@
 //@@author A0121442X
 package test;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -16,6 +17,7 @@ public class DateParserTest {
 	public static final String INCORRECT_YEAR = new String("Year is incorrect");
 	public static final String INCORRECT_HOUR = new String("Hour is incorrect");
 	public static final String INCORRECT_MINUTE = new String("Minute is incorrect");
+	public static final String INCORRECT_RECUR_VALUE = new String("Recur value is incorrect");
 
 	@Test
 	public void testGetDateTime_Dash1() { // dd-MM-yyyy
@@ -327,5 +329,31 @@ public class DateParserTest {
 		assertTrue(INCORRECT_YEAR, dateTime.getYear() == DateTime.now().getYear());
 		assertTrue(INCORRECT_HOUR, dateTime.getHourOfDay() == 10);
 		assertTrue(INCORRECT_MINUTE, dateTime.getMinuteOfHour() == 25);
+	}
+
+	@Test
+	public void testGetDateTime_NullInput() {
+		DateTime dateTime = DateParser.getDateTime(null);
+		assertTrue(INCORRECT_DAY, dateTime.getDayOfMonth() == DateTime.now().getDayOfMonth());
+		assertTrue(INCORRECT_MONTH, dateTime.getMonthOfYear() == DateTime.now().getMonthOfYear());
+		assertTrue(INCORRECT_YEAR, dateTime.getYear() == 0);
+		assertTrue(INCORRECT_HOUR, dateTime.getHourOfDay() == 0);
+		assertTrue(INCORRECT_MINUTE, dateTime.getMinuteOfHour() == 0);
+	}
+
+	@Test
+	public void testGetDateTime_EmptyString() {
+		DateTime dateTime = DateParser.getDateTime("");
+		assertTrue(INCORRECT_DAY, dateTime.getDayOfMonth() == DateTime.now().getDayOfMonth());
+		assertTrue(INCORRECT_MONTH, dateTime.getMonthOfYear() == DateTime.now().getMonthOfYear());
+		assertTrue(INCORRECT_YEAR, dateTime.getYear() == 0);
+		assertTrue(INCORRECT_HOUR, dateTime.getHourOfDay() == 0);
+		assertTrue(INCORRECT_MINUTE, dateTime.getMinuteOfHour() == 0);
+	}
+
+	@Test
+	public void testGetRecurValue_InconsistentCase() { // wEeKly
+		assertEquals(INCORRECT_RECUR_VALUE, "weekly",
+				DateParser.getRecurValue("add buy food from 1300 to 1500 wEeKly"));
 	}
 }

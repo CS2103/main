@@ -1,3 +1,4 @@
+//@@author A0124127R
 package parser;
 
 import org.joda.time.DateTime;
@@ -5,19 +6,6 @@ import org.joda.time.DateTime;
 public interface ParserInterface {
 
 	String getCommand(String input);
-	
-	/*
-	 * Extracts the keyword from the input given,
-	 * and returns the following portion after the keyword
-	 */
-	
-	String getTitle(String input);
-	
-	String getStart(String input);
-	
-	String getEnd(String input);
-	
-	String getField(String input);
 	
 	/*
 	 * Checks if input has a valid Date and Time format with 
@@ -41,9 +29,20 @@ public interface ParserInterface {
 	
 	DateTime getEndDateTime(String input);
 	
+	boolean isValidEndingTime(DateTime startTime, DateTime endTime);
+	
+	/*
+	 * Extracts the keyword from the input given,
+	 * and returns the following portion after the keyword
+	 */
+	
+	String getTitle(String input);
+
 	int getIndex(String input);
 	
-	boolean isValidEndingTime(DateTime startTime, DateTime endTime);
+	String getField(String input);
+	
+	String getEditTitle(String input);
 	
 	String getRecurValue(String input);
 	

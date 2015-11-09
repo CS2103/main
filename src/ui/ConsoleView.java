@@ -29,161 +29,164 @@ import parser.TitleParser;
 
 public class ConsoleView extends Pane {
 
-	Label dateDisplay;
-	Label clockDisplay;
-	AutoCompleteTextField inputConsole;
-	Label status;
+    protected Label dateDisplay;
+    protected Label clockDisplay;
+    protected AutoCompleteTextField inputConsole;
+    protected Label status;
 
-	HBox listDisplay;
-	AddTaskPreview addTaskPreview;
-	EditTaskPreview editTaskPreview;
-	HelpScreen helpScreen;
+    protected HBox listDisplay;
+    protected AddTaskPreview addTaskPreview;
+    protected EditTaskPreview editTaskPreview;
+    protected HelpScreen helpScreen;
 
-	VBox timedList;
-	VBox floatingList;
-	ScrollPane scrollPane;
-	StackPane mainDisplay;
+    protected VBox timedList;
+    protected VBox floatingList;
+    protected ScrollPane scrollPane;
+    private StackPane mainDisplay;
 
-	Parser parser = new Parser();
+    private Parser parser = new Parser();
 
-	public ConsoleView() {
+    public ConsoleView() {
+	instantiateAndStyleComponents();
+	setUpDynamicClock();
+	layoutComponents();
+    }
 
-		dateDisplay = new Label();
-		clockDisplay = new Label();
+    private void layoutComponents() {
+	mainDisplay = new StackPane(editTaskPreview, addTaskPreview, scrollPane, helpScreen);
 
-		timedList = new VBox();
-		floatingList = new VBox();
-		listDisplay = new HBox();
-		scrollPane = new ScrollPane();
+	HBox dateTime = new HBox(dateDisplay, clockDisplay);
+	HBox.setHgrow(clockDisplay, Priority.ALWAYS);
+	dateTime.setPrefWidth(800);
 
-		inputConsole = new AutoCompleteTextField();
-		status = new Label();
+	VBox consoleLayout = new VBox(dateTime, mainDisplay, inputConsole, status);
+	VBox.setVgrow(consoleLayout, Priority.ALWAYS);
+	this.getChildren().add(consoleLayout);
+    }
 
-		dateDisplay.setId("dateDisplay");
-		dateDisplay.setAlignment(Pos.CENTER_LEFT);
-		dateDisplay.setMaxWidth(Double.MAX_VALUE);
+    private void setUpDynamicClock() {
+	dateDisplay = new Label();
+	dateDisplay.setId(Constants.CSS_DATE_DISPLAY);
+	dateDisplay.setAlignment(Pos.CENTER_LEFT);
+	dateDisplay.setMaxWidth(Double.MAX_VALUE);
 
-		clockDisplay.setId("timeDisplay");
-		clockDisplay.setAlignment(Pos.CENTER_RIGHT);
-		clockDisplay.setMaxWidth(Double.MAX_VALUE);
+	clockDisplay = new Label();
+	clockDisplay.setId(Constants.CSS_TIME_DISPLAY);
+	clockDisplay.setAlignment(Pos.CENTER_RIGHT);
+	clockDisplay.setMaxWidth(Double.MAX_VALUE);
 
-		SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy");
-		SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
-		Timeline timeline = new Timeline();
-		EventHandler<ActionEvent> onFinished = new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent t) {
-				dateDisplay.setText(Calendar.getInstance().getTime().toString().split(" ")[0].trim() + ", "
-						+ dateFormat.format(Calendar.getInstance().getTime()));
-				clockDisplay.setText(timeFormat.format(Calendar.getInstance().getTime()));
-			}
-		};
-		timeline.getKeyFrames().add(new KeyFrame(Duration.millis(500), onFinished));
-		timeline.setCycleCount(Animation.INDEFINITE);
-		timeline.play();
+	SimpleDateFormat dateFormat = new SimpleDateFormat(Constants.FORMAT_DATE);
+	SimpleDateFormat timeFormat = new SimpleDateFormat(Constants.FORMAT_CLOCK);
+	Timeline timeline = new Timeline();
+	EventHandler<ActionEvent> onFinished = new EventHandler<ActionEvent>() {
+	    @Override
+	    public void handle(ActionEvent t) {
+		dateDisplay.setText(Calendar.getInstance().getTime().toString().split(Constants.SPACE)[0].trim()
+			+ Constants.COMMA + Constants.SPACE + dateFormat.format(Calendar.getInstance().getTime()));
+		clockDisplay.setText(timeFormat.format(Calendar.getInstance().getTime()));
+	    }
+	};
+	timeline.getKeyFrames().add(new KeyFrame(Duration.millis(500), onFinished));
+	timeline.setCycleCount(Animation.INDEFINITE);
+	timeline.play();
+    }
 
-		timedList.setId("timedList");
+    private void instantiateAndStyleComponents() {
+	timedList = new VBox();
+	timedList.setId(Constants.CSS_TIMED_LIST);
 
-		floatingList.setId("floatingList");
-		floatingList.setFillWidth(true);
+	floatingList = new VBox();
+	floatingList.setId(Constants.CSS_FLOATING_LIST);
+	floatingList.setFillWidth(true);
 
-		HBox.setHgrow(floatingList, Priority.ALWAYS);
-		HBox.setHgrow(timedList, Priority.ALWAYS);
+	listDisplay = new HBox();
+	listDisplay.setSpacing(0);
+	listDisplay.setFillHeight(true);
+	listDisplay.setPrefWidth(700);
+	listDisplay.setPadding(new Insets(0, 0, 0, 0));
 
-		listDisplay.setSpacing(0);
-		listDisplay.setFillHeight(true);
-		listDisplay.setPrefWidth(700);
-		listDisplay.setPadding(new Insets(0, 0, 0, 0));
+	scrollPane = new ScrollPane();
 
-		scrollPane.setId("scrollPane");
-		scrollPane.setContent(listDisplay);
-		scrollPane.setFitToHeight(true);
-		scrollPane.setFitToWidth(true);
-		scrollPane.setHbarPolicy(ScrollBarPolicy.NEVER);
-		scrollPane.setBorder(null);
-		scrollPane.setPickOnBounds(false);
+	inputConsole = new AutoCompleteTextField();
+	status = new Label();
 
-		mainDisplay = new StackPane();
+	HBox.setHgrow(floatingList, Priority.ALWAYS);
+	HBox.setHgrow(timedList, Priority.ALWAYS);
 
-		addTaskPreview = new AddTaskPreview();
-		editTaskPreview = new EditTaskPreview();
-		helpScreen = new HelpScreen();
-		mainDisplay.getChildren().addAll(editTaskPreview, addTaskPreview, scrollPane, helpScreen);
+	scrollPane.setId(Constants.CSS_SCROLLPANE);
+	scrollPane.setContent(listDisplay);
+	scrollPane.setFitToHeight(true);
+	scrollPane.setFitToWidth(true);
+	scrollPane.setHbarPolicy(ScrollBarPolicy.NEVER);
+	scrollPane.setBorder(null);
+	scrollPane.setPickOnBounds(false);
 
-		inputConsole.setId("inputConsole");
-		inputConsole.setEditable(true);
+	addTaskPreview = new AddTaskPreview();
+	editTaskPreview = new EditTaskPreview();
+	helpScreen = new HelpScreen();
 
-		status.setMaxWidth(Double.MAX_VALUE);
-		status.setId("statusBar");
+	inputConsole.setId(Constants.CSS_INPUT_CONSOLE);
+	inputConsole.setEditable(true);
 
-		HBox dateTime = new HBox();
-		HBox.setHgrow(clockDisplay, Priority.ALWAYS);
-		dateTime.setMaxWidth(Double.MAX_VALUE);
-		dateTime.setSpacing(0);
-		dateTime.setPadding(new Insets(0, 0, 0, 0));
-		dateTime.getChildren().addAll(dateDisplay, clockDisplay);
+	status.setMaxWidth(Double.MAX_VALUE);
+	status.setId(Constants.CSS_STATUS_BAR);
+    }
 
-		VBox consoleLayout = new VBox();
-		VBox.setVgrow(consoleLayout, Priority.ALWAYS);
-		consoleLayout.getChildren().addAll(dateTime, mainDisplay, inputConsole, status);
-		this.getChildren().add(consoleLayout);
+    protected void updateAddTaskPreviewDetails(String title, DateTime startTime, DateTime endTime, String recurring) {
+	addTaskPreview.clearAllDetails();
+	addTaskPreview.tempTitle.setText(title);
+	addTaskPreview.tempStartTime.setText(this.showIfValidDate(startTime));
+	addTaskPreview.tempEndTime.setText(this.showIfValidDate(endTime));
+	addTaskPreview.tempRecurring.setText(recurring);
+    }
+
+    protected void updateEditTaskPreviewDetails(Task toEdit, String input) {
+
+	editTaskPreview.clearAllDetails();
+	editTaskPreview.detailsToShow(parser.getField(input));
+	editTaskPreview.oldTitle.setText(toEdit.getTitle());
+	editTaskPreview.newTitleField.setText(TitleParser.getEditTitle(input));
+
+	editTaskPreview.oldStartTime.setText(showIfValidDate(toEdit.getStartingTime()));
+	editTaskPreview.oldEndTime.setText(showIfValidDate(toEdit.getEndingTime()));
+
+	editTaskPreview.newStartTimeField.setText(showIfValidDate(parser.getDateTime(input)));
+	editTaskPreview.newEndTimeField.setText(showIfValidDate(parser.getDateTime(input)));
+
+	editTaskPreview.oldDurationStartTime.setText(showIfValidDate(toEdit.getStartingTime()));
+	editTaskPreview.oldDurationEndTime.setText(showIfValidDate(toEdit.getEndingTime()));
+	editTaskPreview.newDurationStartTimeField.setText(showIfValidDate(parser.getStartDateTime(input)));
+	editTaskPreview.newDurationEndTimeField.setText(showIfValidDate(parser.getEndDateTime(input)));
+    }
+
+    private String showIfValidDate(DateTime dateTime) {
+	if (dateTime.getYear() != 0000) {
+	    return dateTime.toLocalDateTime().toString(Constants.FORMAT_FULL_TIME);
+	} else {
+	    return Constants.NOT_APPLICABLE;
 	}
+    }
 
-	public void updateAddTaskPreviewDetails(String title, DateTime startTime, DateTime endTime, String recurring) {
-		addTaskPreview.clearAllDetails();
-		addTaskPreview.tempTitle.setText(title);
-		addTaskPreview.tempStartTime.setText(this.showIfValidDate(startTime));
-		addTaskPreview.tempEndTime.setText(this.showIfValidDate(endTime));
-		addTaskPreview.tempRecurring.setText(recurring);
-	}
+    protected void showEditPopup() {
+	editTaskPreview.toFront();
+    }
 
-	public void updateEditTaskPreviewDetails(Task toEdit, String input) {
+    protected void showAddPopup() {
+	addTaskPreview.toFront();
+    }
 
-		editTaskPreview.clearAllDetails();
-		editTaskPreview.detailsToShow(parser.getField(input));
-		editTaskPreview.oldTitle.setText(toEdit.getTitle());
-		editTaskPreview.newTitleField.setText(TitleParser.getEditTitle(input));
+    protected void showHelpPopup() {
+	helpScreen.toFront();
+    }
 
-		editTaskPreview.oldStartTime.setText(showIfValidDate(toEdit.getStartingTime()));
-		editTaskPreview.oldEndTime.setText(showIfValidDate(toEdit.getEndingTime()));
+    protected void showDefaultView() {
+	addTaskPreview.toBack();
+	editTaskPreview.toBack();
+	helpScreen.toBack();
+	scrollPane.toFront();
+    }
 
-		editTaskPreview.newStartTimeField.setText(showIfValidDate(parser.getDateTime(input)));
-		editTaskPreview.newEndTimeField.setText(showIfValidDate(parser.getDateTime(input)));
-
-		editTaskPreview.oldDurationStartTime.setText(showIfValidDate(toEdit.getStartingTime()));
-		editTaskPreview.oldDurationEndTime.setText(showIfValidDate(toEdit.getEndingTime()));
-		editTaskPreview.newDurationStartTimeField.setText(showIfValidDate(parser.getStartDateTime(input)));
-		editTaskPreview.newDurationEndTimeField.setText(showIfValidDate(parser.getEndDateTime(input)));
-	}
-
-	private String showIfValidDate(DateTime dateTime) {
-		if (dateTime.getYear() != 0000) {
-			return dateTime.toLocalDateTime().toString("HHmm dd MMM yyyy");
-		} else {
-			return Constants.NOT_APPLICABLE;
-		}
-	}
-
-	public void showEditPopup() {
-		editTaskPreview.toFront();
-	}
-
-	public void showAddPopup() {
-		addTaskPreview.toFront();
-	}
-
-	public void showHelpPopup() {
-		helpScreen.toFront();
-	}
-
-	public void showDefaultView() {
-		addTaskPreview.toBack();
-		editTaskPreview.toBack();
-		helpScreen.toBack();
-		scrollPane.toFront();
-	}
-
-	public void clearInputConsole() {
-		inputConsole.clear();
-	}
+    protected void clearInputConsole() {
+	inputConsole.clear();
+    }
 }
