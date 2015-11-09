@@ -15,7 +15,6 @@ public class Main extends Application {
 	public void start(Stage stage) {
 		LogHandler.setUpLogger();
 		GuiService myGui = new GuiService(stage);
-
 		myGui.showStage(); // Loads the GUI application window
 		// HotKeyListener hkl = new HotKeyListener(stage);
 		myGui.showTray();
