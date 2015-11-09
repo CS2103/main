@@ -282,5 +282,9 @@ public class Constants {
 
 	public static final String TEXT_HELP_COMMAND_LIST = "add\ndelete\nedit\nmark\nunmark\nundo\nredo\nsearch\nshow\nsetpath\nenquirepath\nexit";
 	public static final String TEXT_HELP_FLEXI_COMMAND_LIST = "a [title] from [start] to [end]\ndel [index]\ne [index] [field] [new value]\nm [index]\num [index]\nun\nre\nsearch [keyword]\nshow [date]\nset [filepath]\nen\nexit";
+	public static final String FEEDBACK_SETPATH_LONGFILE = "File path is too long! Save location is not changed";
+	
+	// used in Storage.java and Logic.java to check valid path length
+	public static final int MAX_PATH_LENGTH = 260;
 
 }
