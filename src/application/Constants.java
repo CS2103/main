@@ -60,7 +60,7 @@ public class Constants {
     public static final String DOT = ".";
 
     // Dictionaries
-    public static final String[] DICTIONARY_ADD = { "add", "plus", "create", "a" };
+    public static final String[] DICTIONARY_ADD = { "add", "plus", "create" };
     public static final String[] DICTIONARY_DELETE = { "delete", "rm", "del", "remove" };
     public static final String[] DICTIONARY_SHOW = { "show", "display", "sh" };
     public static final String[] DICTIONARY_SEARCH = { "search", "find", "sr" };
@@ -73,7 +73,7 @@ public class Constants {
     public static final String[] DICTIONARY_SETPATH = { "setpath", "set" };
     public static final String[] DICTIONARY_HELP = { "help" };
     public static final String[] DICTIONARY_EXIT = { "exit", "ex", "quit" };
-    public static final String[] DICTIONARY_ENQUIREPATH = { "enquirepath", "en" };
+    public static final String[] DICTIONARY_ENQUIREPATH = { "enquirepath", "en", "viewpath" };
     public static final String[] DICTIONARY_PARAMETERS = { "location", "loc", "date", "startdate", "enddate", "sd",
 	    "ed", "time", "starttime", "endtime", "st", "et", "from", "to" };
 
@@ -168,6 +168,7 @@ public class Constants {
     public static final String FEEDBACK_INVALID_PARAMETERS_FOR_EDIT = "Invalid parameters for edit command";
     public static final String FEEDBACK_SETPATH_SUCCESS = "New save location is: ";
     public static final String FEEDBACK_SETPATH_FAILURE = " not found! Save location is not changed";
+    public static final String FEEDBACK_SETPATH_LONGFILE = "File path is too long! Save location is not changed";
 
     // date formats
     public static String[] dateFormats = { "dd MMM yy", "d/M/yy", "d/M", "d-M-yy", "d MMM", "dd MMMM", "dd.MM.yy",
@@ -297,4 +298,5 @@ public class Constants {
     public static final String TEXT_HELP_COMMAND_LIST = "add\ndelete\nedit\nmark\nunmark\nundo\nredo\nsearch\nshow\nsetpath\nenquirepath\nexit";
     public static final String TEXT_HELP_FLEXI_COMMAND_LIST = "a [title] from [start] to [end]\ndel [index]\ne [index] [field] [new value]\nm [index]\num [index]\nun\nre\nsearch [keyword]\nshow [date]\nset [filepath]\nen\nexit";
 
+    public static final int MAX_PATH_LENGTH = 260;
 }
