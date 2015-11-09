@@ -28,8 +28,8 @@ public class Parser implements ParserInterface {
 	public DateTime getEndDateTime(String input) {
 		DateTime endDate = DateParser.getDateTime(getEnd(input));
 
-		if (endDate.getHourOfDay() == 0 && endDate.getMinuteOfHour() == 0) {
-			endDate = endDate.withHourOfDay(23).withMinuteOfHour(59);
+		if (endDate.getHourOfDay() == Constants.TIME_START_OF_DAY_HOUR && endDate.getMinuteOfHour() == Constants.TIME_START_OF_DAY_MINUTE) {
+			endDate = endDate.withHourOfDay(Constants.TIME_END_OF_DAY_HOUR).withMinuteOfHour(Constants.TIME_END_OF_DAY_MINUTE);
 		}
 
 		return endDate;
@@ -58,7 +58,7 @@ public class Parser implements ParserInterface {
 	// Returns the third non-space String of an EDIT input == field to change
 	@Override
 	public String getField(String input) {
-		for (int i = 0; i < 2; i++) {
+		for (int i = Constants.BEGINNING_OF_INDEX; i < Constants.EDIT_INDEX_FIELD; i++) {
 			input = TitleParser.excludeFirstWord(input.trim());
 		}
 		return TitleParser.extractFirstWord(input);
@@ -75,7 +75,7 @@ public class Parser implements ParserInterface {
 
 	public ArrayList<Integer> getIndexes(String input) {
 		ArrayList<Integer> indexArray = new ArrayList<Integer>();
-		input = input.split(Constants.SPACE)[1].trim();
+		input = input.split(Constants.SPACE)[Constants.BEGINNING_OF_LIST].trim();
 		if (input.length() == 1) {
 			indexArray.add(Integer.parseInt(input));
 			return indexArray;

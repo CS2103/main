@@ -1,3 +1,4 @@
+//@@author A0129708
 package logic;
 
 import java.util.ArrayList;
@@ -16,9 +17,10 @@ public class BinDisplay {
 		displayList = new ArrayList<Task>();
 		sorter = new BinSorter();
 	}
-
+	//
 	public ArrayList<Task> initDisplay(ArrayList<Task> taskList) {
 		bufferList = taskList;
+		sorter.sortArrayByTime(bufferList);
 		setDisplay(bufferList);
 		return bufferList;
 	}
@@ -68,9 +70,8 @@ public class BinDisplay {
 				dis.add(t);
 			}
 		}
+
 		dis = sorter.sortArrayByTime(dis);
-		for (int i = 0; i < dis.size(); i++) {
-		}
 		displayList = dis;
 	}
 
@@ -119,7 +120,7 @@ public class BinDisplay {
 			}
 		}
 	}
-
+	//Update the display list after each action is performed
 	public void updateDisplay(Command command, boolean todo) {
 		if (todo) {
 			switch (command.returnCommand()) {
@@ -134,12 +135,16 @@ public class BinDisplay {
 			case Constants.unmark_tag:
 				displayList.get(displayList.indexOf(command.returnMani())).unMark();
 				break;
+			default:
+				System.out.println("Error: Unable to identify the command type");
 			}
 		} else {
 			switch (command.returnCommand()) {
 			case Constants.alter_tag:
-				displayList.add(displayList.get(displayList.indexOf(command.returnOrigin())));
-				displayList.remove(command.returnMani());
+				if(displayList.contains(command.returnOrigin())){
+					displayList.add(displayList.get(displayList.indexOf(command.returnOrigin())));
+					displayList.remove(command.returnMani());
+				}
 				break;
 
 			case Constants.mark_tag:
@@ -148,6 +153,8 @@ public class BinDisplay {
 			case Constants.unmark_tag:
 				displayList.get(displayList.indexOf(command.returnMani())).mark();
 				break;
+			default:
+				System.out.println("Error: Unable to identify the command type");
 			}
 		}
 	}

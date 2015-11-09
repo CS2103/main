@@ -1,16 +1,11 @@
-//@@author A0129708
-
 package logic;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.logging.Level;
 
 import org.joda.time.DateTime;
 
-
 import application.Constants;
-import application.LogHandler;
 
 public class Task {
 	private String title;
@@ -25,7 +20,7 @@ public class Task {
 	private ArrayList<DateTime> recurDone;
 
 	public Task(Task task) {
-		this.isRecur = task.isTypeRecur();
+		
 		this.recurTag = task.returnRecurTag();
 		this.recurEnd = task.getRecurEnd();
 		this.title = task.getTitle();
@@ -35,7 +30,8 @@ public class Task {
 		this.endingTime = task.getEndingTime();
 		this.recurDate = task.getRecurDates();
 		this.recurDone = task.getDoneDates();
-
+		this.isRecur = task.isTypeRecur();
+		setTag();
 	}
 
 	public Task(String title) {
@@ -44,6 +40,7 @@ public class Task {
 		isFinished = false;
 		isRecur = false;
 		setTag();
+		System.out.println(this.getType() + " is Created");
 	}
 
 	public Task() {
@@ -61,16 +58,18 @@ public class Task {
 		this.startingTime = startingTime;
 		this.endingTime = endingTime;
 		isRecur = false;
+		System.out.println("is Creating");
 		try {
 			if (endingTime.isBefore(startingTime)) {
 				InvalidTimeException e = new InvalidTimeException("The ending time is prior to the starting time");
 				throw e;
 			}
 		} catch (InvalidTimeException e) {
-			String warning = "Error" + e;
-			LogHandler.log(Level.INFO,warning);
+			System.out.println("Error" + e);
+
 		}
 		setTag();
+		System.out.println(this.getType() + " is Created");
 	}
 
 	public Task(DateTime startingTime, DateTime endingTime) {
@@ -80,23 +79,26 @@ public class Task {
 		this.endingTime = endingTime;
 		this.recurTag = new String();
 		isRecur = false;
+		System.out.println("is Creating");
 		try {
 			if (endingTime.isBefore(startingTime)) {
 				InvalidTimeException e = new InvalidTimeException("The ending time is prior to the starting time");
 				throw e;
 			}
 		} catch (InvalidTimeException e) {
-			String warning = "Error" + e;
-			LogHandler.log(Level.INFO,warning);
+			System.out.println("Error" + e);
 		}
 		setTag();
+		System.out.println(this.getType() + " is Created");
 	}
 
 	public Task(String title, DateTime endingTime) {
 		this(title);
 		this.endingTime = endingTime;
 		isRecur = false;
+		System.out.println("is Creating");
 		setTag();
+		System.out.println(this.getType() + " is Created");
 	}
 
 	public Task(DateTime date) {
@@ -104,9 +106,9 @@ public class Task {
 		this.endingTime = date;
 		isRecur = false;
 		setTag();
+		System.out.println(this.getType() + " is Created");
 	}
-	
-	//Construction method for creating a recurring task
+
 	public Task(String title, DateTime startingTime, DateTime endingTime, DateTime recurEnding, String recurTag) {
 		isRecur = true;
 		isFinished = false;
@@ -147,14 +149,13 @@ public class Task {
 			}
 			break;
 		}
+		System.out.println(this.getType() + " is Created");
 	}
 
 	public String getTitle() {
 		return title;
 	}
 
-	//Return whether a task is finished,
-	//for a recurring task, if the recurring instance for today is finished, it will be marked as finishied
 	public boolean getStatus() {
 		if (!isTypeRecur()) {
 			return isFinished;
@@ -170,9 +171,7 @@ public class Task {
 	public DateTime getStartingTime() {
 		return startingTime;
 	}
-	
-	//Return the ending time of a task
-	//If the task is a recurring task, the task would return the upcoming recurring date
+
 	public DateTime getEndingTime() {
 		if(!isTypeRecur()){
 			return endingTime;
@@ -187,8 +186,11 @@ public class Task {
 		}
 		
 	}
-	
-	//Check whether the task is overdue 
+
+	public boolean isAfterNow() {
+		return endingTime.isBeforeNow() && !type_tag.equals(Constants.TYPE_FLOATING);
+	}
+
 	public boolean isOverDue() {
 		if (!isTypeRecur()) {
 			return endingTime.isBeforeNow() && !type_tag.equals(Constants.TYPE_FLOATING) && (!isFinished);
@@ -219,7 +221,6 @@ public class Task {
 			for (DateTime t : recurDate) {
 				if (t.getDayOfYear() == now.getDayOfYear()) {
 					recurDone.add(t);
-					return;
 				}
 			}
 		}
@@ -233,7 +234,6 @@ public class Task {
 			for (DateTime t : recurDone) {
 				if (t.getDayOfYear() == now.getDayOfYear()) {
 					recurDone.remove(t);
-					return;
 				}
 			}
 		}
@@ -250,6 +250,7 @@ public class Task {
 	}
 
 	public void setTag() {
+		System.out.println("Setting Tag");
 		if (isTypeRecur()) {
 			this.type_tag = Constants.TYPE_RECUR;
 		}
@@ -266,6 +267,7 @@ public class Task {
 			this.type_tag = Constants.TYPE_FLOATING; // Floating Tasks (no start
 														// and end date/time)
 		}
+		System.out.println("Tag set");
 	}
 
 	public boolean isValidDate(DateTime date) {
@@ -294,27 +296,26 @@ public class Task {
 		}
 	}
 	
-	//Return the ending date of the recurring task
 	public DateTime getRecurEnd(){
 		return recurEnd;
 	}
-	//Check whether the type of the task is a recurring task
+
 	public boolean isTypeRecur() {
 		return this.isRecur;
 	}
-	//Return the list of dates the task is recurring at
+
 	public ArrayList<DateTime> getRecurDates() {
 		if (isTypeRecur())
 			return recurDate;
 		return null;
 	}
-	//Return the list of dates the has been finished in 
+
 	public ArrayList<DateTime> getDoneDates() {
 		if (isTypeRecur())
 			return recurDone;
 		return null;
 	}
-	//Check whether the task is recurring at the day
+
 	public boolean isRecur() {
 		if (!isTypeRecur()) {
 			return false;
@@ -327,24 +328,24 @@ public class Task {
 		}
 		return false;
 	}
-	
-	public boolean isRecur(DateTime time){
+
+	public boolean isRecur(DateTime date) {
 		if (!isTypeRecur()) {
 			return false;
 		}
 		for (DateTime t : recurDate) {
-			if (t.getDayOfYear() == time.getDayOfYear()) {
+			if (t.getDayOfYear() == date.getDayOfYear()) {
 				return true;
 			}
 		}
 		return false;
 	}
-	
+
 	public String returnRecurTag() {
 		return recurTag;
 	}
 
-	protected boolean isDone() {
+	public boolean isDone() {
 		if (!isTypeRecur()) {
 			return false;
 		}
@@ -357,7 +358,7 @@ public class Task {
 		return false;
 	}
 
-	private boolean isDone(DateTime date) {
+	public boolean isDone(DateTime date) {
 		if (!isTypeRecur()) {
 			return false;
 		}
@@ -372,8 +373,7 @@ public class Task {
 	public boolean returnIsFinished(){
 		return isFinished;
 	}
-	
-	//delete the specific day from the recurring list 
+
 	public DateTime deleteRecur(DateTime date) {
 		if (!isTypeRecur()) {
 			return null;

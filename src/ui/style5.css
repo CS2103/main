@@ -2,6 +2,7 @@
 #content {
 	-fx-background-color: rgba(255,255,255, 0);
 	-fx-background-radius: 10px;	
+	-fx-effect: dropshadow( gaussian , rgba(70,70,70,0.6) , 5, 0.01 , 4 , 3 );
 }
 
 #currentDisplay {
@@ -102,7 +103,7 @@
 	-fx-font-family: "sans-serif";
 	-fx-text-fill:rgb(255,255,255);
 	-fx-background-color:radial-gradient( focus-angle 0.0deg, focus-distance 0.0%, center 50.0% 50.0%, radius 100.0%, rgb(204,230,255) 0.0, rgb(0,26,128) 100.0 );
-	-fx-padding: 0 0 0 10;
+	-fx-padding: 0 0 0 20;
 	-fx-pref-height: 30;
 	-fx-background-radius: 0 0 20 20 ;
 	-fx-alignment:center-left;
@@ -141,6 +142,13 @@
 }
 #index {
 	-fx-text-fill:rgb(0,10,218);
+	-fx-font-family: "sans-serif";
+	-fx-font-weight: 300;
+	-fx-font-size: 22px;
+	-fx-text-alignment: right;
+	-fx-alignment:center-right;
+	-fx-padding: 0 20 0 0;
+	-fx-min-width: 50px;
 }
 #duration {
 	-fx-text-fill:rgb(0,10,218);

@@ -21,6 +21,7 @@ public class HelpScreen extends StackPane {
 
 		instantiateAndStyleComponents();
 		setUpHelpScreenPopupLayout();
+
 	}
 
 	private void instantiateAndStyleComponents() {

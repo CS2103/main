@@ -1,3 +1,5 @@
+//@@author A0129708
+
 package logic;
 
 import java.util.ArrayList;
@@ -5,7 +7,8 @@ import java.util.ArrayList;
 import application.Constants;
 
 public class BinSorter {
-
+	
+	//Check whether the target String array includes all the the keywords stored in the keyword array
 	public boolean includeAllWords(String[] keywords, String[] title) {
 		boolean isFound;
 		for (String key : keywords) {
@@ -22,70 +25,8 @@ public class BinSorter {
 		return true;
 	}
 
-	/*public ArrayList<Task> sortArrayByTime(ArrayList<Task> inboxArr) {
-		ArrayList<Task> timeUndefined = new ArrayList<Task>();
-		ArrayList<Task> recurArray = new ArrayList<Task>();
-		if (inboxArr.size() <= 1) {
-			return inboxArr;
-		}
-
-		for (int m = 1; m < inboxArr.size() - 1; m++) {
-			boolean isSorted = true;
-			for (int i = 0, len = inboxArr.size() - m; (i < len); i++) {
-				if (inboxArr.get(i).getType().equals(Constants.TYPE_FLOATING)) {
-					System.out.println("Triggered");
-					timeUndefined.add(inboxArr.get(i));
-					inboxArr.remove(inboxArr.get(i));
-					isSorted = false;
-					break;
-				}
-				if (inboxArr.get(i).isTypeRecur()) {
-					recurArray.add(inboxArr.get(i));
-					inboxArr.remove(inboxArr.get(i));
-					isSorted = false;
-					break;
-				}
-				if (inboxArr.get(i).getEndingTime().compareTo(inboxArr.get(i + 1).getEndingTime()) > 0) {
-					Task buffer = inboxArr.get(i);
-					inboxArr.set(i, inboxArr.get(i + 1));
-					inboxArr.set(i + 1, buffer);
-					isSorted = false;
-					break;
-				}
-			}
-			
-			if (isSorted) {
-				for(int i = 0; i < timeUndefined.size(); i++){
-					System.out.println(timeUndefined.get(i).getTitle());
-				}
-				timeUndefined = sortArrayByAlpha(timeUndefined);
-				recurArray = sortArrayByAlpha(recurArray);
-				inboxArr.addAll(recurArray);
-				for(int i = 0; i < timeUndefined.size(); i++){
-					inboxArr.add(inboxArr.size(),timeUndefined.get(i));
-				}
-				//inboxArr.addAll(timeUndefined);
-				
-				return inboxArr;
-			}
-		}
-		
-		for(int i = 0; i < timeUndefined.size(); i++){
-			System.out.println(timeUndefined.get(i).getTitle());
-		}
-
-		timeUndefined = sortArrayByAlpha(timeUndefined);
-		recurArray = sortArrayByAlpha(recurArray);
-		inboxArr.addAll(recurArray);
-		for(int i = 0; i < timeUndefined.size(); i++){
-			inboxArr.add(inboxArr.size(),timeUndefined.get(i));
-		}
-		//inboxArr.addAll(timeUndefined);
 	
-		return inboxArr;
-	}*/
-	
-	
+	//Sort the array in seq of time, with normal task at the top, followed by recurring tasks and finally floating task
 	public ArrayList<Task> sortArrayByTime(ArrayList<Task> inboxArr){
 		ArrayList<Task> normalTask = new ArrayList<Task>();
 		ArrayList<Task> timeUndefined = new ArrayList<Task>();
@@ -106,13 +47,10 @@ public class BinSorter {
 			}
 		}
 		timeUndefined = sortArrayByAlpha(timeUndefined);
-
 		for(int i = 1; i < normalTask.size() - 1; i++){
 			boolean isSorted = true;
-			for (int m = 1; m < inboxArr.size() - i; m++) {
-				
+			for (int m = 0; m < inboxArr.size() - i - 1; m++) {
 				if(normalTask.get(i).getEndingTime().isAfter(normalTask.get(i+1).getEndingTime())){
-						
 					Task buffer = normalTask.get(i);
 					normalTask.set(i, normalTask.get(i+1));
 					normalTask.set(i+1, buffer);
@@ -150,7 +88,8 @@ public class BinSorter {
 		
 		return inboxArr;
 	}
-
+	
+	//Sort the array in alphabetical sequence
 	public ArrayList<Task> sortArrayByAlpha(ArrayList<Task> inboxArr) {
 		for (int m = 1; m < inboxArr.size(); m++) {
 			boolean isSorted = true;

@@ -1,6 +1,8 @@
 //@@author A0124127R
 package parser;
 
+import java.util.logging.Level;
+
 /**
  * Accepted date formats
  * 10/12
@@ -23,13 +25,15 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 
 import application.Constants;
+import application.LogHandler;
 
 public class DateParser {
+
 
 	public static DateTime getDateTime(String input) {
 		DateTime dateTime;
 		if (input != null) {
-			input = input.replaceAll("\\s+", Constants.SPACE);
+			input = input.replaceAll(Constants.SEPERATOR_MULTI_SPACE, Constants.SPACE);
 		}
 
 		String dateString = new String();
@@ -45,7 +49,7 @@ public class DateParser {
 			dateTime = getDayDate(input);
 		}
 
-		if (!timeString.isEmpty() && dateTime.getYear() == 0) {
+		if (!timeString.isEmpty() && dateTime.getYear() == Constants.YEAR_0) {
 			dateTime = DateTime.now();
 		}
 
@@ -56,7 +60,7 @@ public class DateParser {
 	}
 
 	private static DateTime getDayDate(String input) {
-		DateTime dateTime = DateTime.now().withYear(0);
+		DateTime dateTime = DateTime.now().withYear(Constants.YEAR_0);
 
 		for (String regex : Constants.DICTIONARY_TODAY) {
 			if (input != null && input.contains(regex)) {
@@ -66,7 +70,7 @@ public class DateParser {
 
 		for (String regex : Constants.DICTIONARY_TOMORROW) {
 			if (input != null && input.contains(regex)) {
-				dateTime = DateTime.now().plusDays(1);
+				dateTime = DateTime.now().plusDays(Constants.NEXT_DAY_OFFSET);
 			}
 		}
 		return dateTime;
@@ -79,14 +83,15 @@ public class DateParser {
 		for (String regex : Constants.timeRegex) {
 			try {
 				tp = Pattern.compile(regex);
-				tm = tp.matcher(input.replace(dateString.trim(), "").trim());
+				tm = tp.matcher(input.replace(dateString.trim(), Constants.EMPTY_STRING).trim());
 				if (tm.find()) {
 					timeString = tm.group().trim();
-					System.out.println("[DATEPARSER] Time Match: " + timeString);
 					break;
 				}
 			} catch (NullPointerException e) {
+				LogHandler.log(Level.FINE, Constants.ERROR_EXPECTED);
 			} catch (IllegalArgumentException e) {
+				LogHandler.log(Level.SEVERE, Constants.ERROR_INPUT_TIME);
 			}
 		}
 		return timeString;
@@ -103,11 +108,12 @@ public class DateParser {
 				dm = dp.matcher(input);
 				if (dm.find()) {
 					dateString = dm.group().trim();
-					System.out.println("[DATEPARSER] Date Match: " + dateString);
 					break;
 				}
 			} catch (NullPointerException e) {
+				LogHandler.log(Level.FINE, Constants.ERROR_EXPECTED);
 			} catch (IllegalArgumentException e) {
+				LogHandler.log(Level.SEVERE, Constants.ERROR_INPUT_DATE);
 			}
 		}
 		return dateString;
@@ -115,16 +121,18 @@ public class DateParser {
 
 	private static DateTime parseDate(String dateString) {
 
-		DateTime date = DateTime.now().withYear(0);
+		DateTime date = DateTime.now().withYear(Constants.YEAR_0);
 
 		for (String formatString : Constants.dateFormats) {
 			try {
 				date = DateTimeFormat.forPattern(formatString).parseDateTime(dateString);
 			} catch (NullPointerException e) {
+				LogHandler.log(Level.FINE, Constants.ERROR_EXPECTED);
 			} catch (IllegalArgumentException e) {
+				LogHandler.log(Level.FINE, Constants.ERROR_INPUT_DATE);
 			}
 		}
-		if (date.getYear() == 2000) {
+		if (date.getYear() == Constants.YEAR_2000) {
 			date = date.withYear(DateTime.now().getYear());
 		}
 
@@ -137,10 +145,12 @@ public class DateParser {
 			try {
 				return DateTimeFormat.forPattern(formatString).parseDateTime(timeString);
 			} catch (NullPointerException e) {
+				LogHandler.log(Level.FINE, Constants.ERROR_EXPECTED);
 			} catch (IllegalArgumentException e) {
+				LogHandler.log(Level.FINE, Constants.ERROR_EXPECTED);
 			}
 		}
-		return DateTime.now().withHourOfDay(0).withMinuteOfHour(0);
+		return DateTime.now().withHourOfDay(Constants.TIME_START_OF_DAY_HOUR).withMinuteOfHour(Constants.TIME_START_OF_DAY_MINUTE);
 	}
 
 	public static String getRecurValue(String input) {

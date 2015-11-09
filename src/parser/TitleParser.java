@@ -26,7 +26,7 @@ public class TitleParser {
 	}
 
 	public static String getEditTitle(String input) {
-		for (int i = 0; i < 3; i++) {
+		for (int i = Constants.BEGINNING_OF_INDEX; i < Constants.EDIT_INDEX_TITLE; i++) {
 			input = excludeFirstWord(input.trim());
 		}
 		return input;
@@ -37,7 +37,7 @@ public class TitleParser {
 		int firstIndex = getFirstIndex(dictionary, input);
 		int lastIndex = getLastIndex(dictionary, input);
 		
-		if (firstIndex < 0) {
+		if (firstIndex < Constants.BEGINNING_OF_INDEX) {
 			return null;
 		} else if (lastIndex <= firstIndex) {
 			lastIndex = input.length();
@@ -74,7 +74,7 @@ public class TitleParser {
 	private static int getFirstIndex(String[] dictionary, String input) {
 		Pattern datePattern;
 		Matcher dateMatcher;
-		int firstIndex = -1;
+		int firstIndex = Constants.INDEX_OUT_OF_LIST;
 
 		for (String regex : dictionary) {
 
@@ -90,7 +90,7 @@ public class TitleParser {
 	}
 
 	static String extractFirstWord(String input) {
-		return input.split(Constants.SPACE)[0].trim();
+		return input.split(Constants.SPACE)[Constants.BEGINNING_OF_INDEX].trim();
 	}
 
 	static String excludeFirstWord(String input) {

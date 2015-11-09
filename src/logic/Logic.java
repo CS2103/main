@@ -7,7 +7,9 @@ import java.util.ArrayList;
 import org.joda.time.DateTime;
 
 import application.Constants;
+import parser.CommandParser;
 import parser.Parser;
+import parser.TitleParser;
 import storage.Storage;
 
 public class Logic {
@@ -20,7 +22,7 @@ public class Logic {
 	}
 
 	public ArrayList<Task> inputHandler(String input) throws ParseException, InvalidTimeException {
-		String command = parser.getCommand(input);
+		String command = CommandParser.getCommand(input);
 
 		if (command.equalsIgnoreCase((Constants.COMMAND_ADD))) {
 			return addTask(input);
@@ -32,7 +34,7 @@ public class Logic {
 		} else if (command.equalsIgnoreCase(Constants.COMMAND_DELETE)) {
 			return deleteTaskByIndex(parser.getIndex(input));
 		} else if (command.equals(Constants.COMMAND_EDIT)) {
-			return editTask(parser.getIndex(input), parser.getField(input), parser.getEditTitle(input));
+			return editTask(parser.getIndex(input), parser.getField(input), TitleParser.getEditTitle(input));
 		} else if (command.equals(Constants.COMMAND_MARK)) {
 			return markTaskByIndex(parser.getIndexes(input));
 		} else if (command.equals(Constants.COMMAND_UNMARK)) {
@@ -49,6 +51,7 @@ public class Logic {
 		} else if (command.equalsIgnoreCase(Constants.COMMAND_ENQUIREPATH)) {
 			return bin.returnDisplay();
 		} else if (command.equalsIgnoreCase(Constants.COMMAND_SHOW)) {
+			
 			if (parser.getTitle(input).equals(Constants.STATUS_INCOMPLETE)) {
 				return bin.displayUnfinished();
 			} else if (parser.getTitle(input).equals(Constants.STATUS_COMPLETE)) {
@@ -119,10 +122,11 @@ public class Logic {
 			bin.editEndingDate(toEdit, parser.getDateTime(info));
 			break;
 		case "time":
-			// TODO
 			if (toEdit.getType().equals(Constants.TYPE_RECUR)) {
 				break;
 			}
+			System.out.println("The new starting time is: " + parser.getStartDateTime(info).toString() + ".  "
+					+ "The ending Time is " + parser.getEndDateTime(info).toString() + " . ");
 			bin.editTimeField(toEdit, parser.getStartDateTime(info), parser.getEndDateTime(info));
 			break;
 		}
@@ -201,6 +205,10 @@ public class Logic {
 	public void editSettings() {
 
 	}
+	
+	public void clear(){
+		bin.clear();
+	}
 
 	public ArrayList<Task> startupDisplay() {// display the initial screen
 		ArrayList<Task> initDis = bin.displayHome();
@@ -238,7 +246,9 @@ public class Logic {
 		case Constants.COMMAND_EDIT:
 			return bin.undoStack.peek().returnMani().getTitle() + Constants.FEEDBACK_EDIT_SUCCESS;
 		case Constants.COMMAND_SETPATH:
-			if (Storage.setPath(input.split(" ")[1].trim())) {
+			if (input.split(" ")[1].trim().length() > Constants.MAX_PATH_LENGTH) {
+				return Constants.FEEDBACK_SETPATH_LONGFILE;
+			} else if (Storage.setPath(input.split(" ")[1].trim())) {
 				return Constants.FEEDBACK_SETPATH_SUCCESS + input.split(Constants.SPACE)[1].trim();
 			} else {
 				return input.split(Constants.SPACE)[1].trim() + Constants.FEEDBACK_SETPATH_FAILURE;
