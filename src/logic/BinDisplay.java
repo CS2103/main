@@ -90,7 +90,6 @@ public class BinDisplay {
 	// return the display list back
 	public ArrayList<Task> returnDisplay() {
 		displayList = sorter.sortArrayByTime(displayList);
-		System.out.println("The size of the activeList is:" + displayList.size());
 		return displayList;
 	}
 

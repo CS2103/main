@@ -39,7 +39,6 @@ public class Task {
 		isFinished = false;
 		isRecur = false;
 		setTag();
-		System.out.println(this.getType() + " is Created");
 	}
 
 	public Task() {
@@ -57,7 +56,6 @@ public class Task {
 		this.startingTime = startingTime;
 		this.endingTime = endingTime;
 		isRecur = false;
-		System.out.println("is Creating");
 		try {
 			if (endingTime.isBefore(startingTime)) {
 				InvalidTimeException e = new InvalidTimeException("The ending time is prior to the starting time");
@@ -68,7 +66,6 @@ public class Task {
 
 		}
 		setTag();
-		System.out.println(this.getType() + " is Created");
 	}
 
 	public Task(DateTime startingTime, DateTime endingTime) {
@@ -78,7 +75,6 @@ public class Task {
 		this.endingTime = endingTime;
 		this.recurTag = new String();
 		isRecur = false;
-		System.out.println("is Creating");
 		try {
 			if (endingTime.isBefore(startingTime)) {
 				InvalidTimeException e = new InvalidTimeException("The ending time is prior to the starting time");
@@ -88,16 +84,13 @@ public class Task {
 			System.out.println("Error" + e);
 		}
 		setTag();
-		System.out.println(this.getType() + " is Created");
 	}
 
 	public Task(String title, DateTime endingTime) {
 		this(title);
 		this.endingTime = endingTime;
 		isRecur = false;
-		System.out.println("is Creating");
 		setTag();
-		System.out.println(this.getType() + " is Created");
 	}
 
 	public Task(DateTime date) {
@@ -105,7 +98,6 @@ public class Task {
 		this.endingTime = date;
 		isRecur = false;
 		setTag();
-		System.out.println(this.getType() + " is Created");
 	}
 
 	public Task(String title, DateTime startingTime, DateTime endingTime, DateTime recurEnding, String recurTag) {
@@ -148,7 +140,6 @@ public class Task {
 			}
 			break;
 		}
-		System.out.println(this.getType() + " is Created");
 	}
 
 	public String getTitle() {
@@ -251,7 +242,6 @@ public class Task {
 	}
 
 	public void setTag() {
-		System.out.println("Setting Tag");
 		if (isTypeRecur()) {
 			this.type_tag = Constants.TYPE_RECUR;
 		}
@@ -268,7 +258,6 @@ public class Task {
 			this.type_tag = Constants.TYPE_FLOATING; // Floating Tasks (no start
 														// and end date/time)
 		}
-		System.out.println("Tag set");
 	}
 
 	public boolean isValidDate(DateTime date) {
