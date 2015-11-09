@@ -178,14 +178,20 @@ public class Task {
 			return endingTime;
 		}
 		else{
+			DateTime earliest = new DateTime(9999,12,31,23,59); 
 			for(DateTime date: recurDate){
-				if(date.isAfterNow()){
-					return date;
+				if(!recurDone.contains(date)){
+					if(date.isBefore(earliest)){
+						earliest = date;
+					}
 				}
 			}
-			return null;
+			if(earliest.getYear()!=9999){
+				return earliest;
+			}else{
+				return null;
+			}
 		}
-		
 	}
 	
 	//Check whether the task is overdue 
