@@ -1,3 +1,5 @@
+//@@author A0129699E -reused
+
 /*
  * GSON Joda Time Serialisers
  *
@@ -43,7 +45,7 @@ import java.lang.reflect.Type;
  */
 
 public class DateTimeConverter implements JsonSerializer<DateTime>, JsonDeserializer<DateTime> {
-	
+
 	/**
 	 * Gson invokes this call-back method during serialization when it
 	 * encounters a field of the specified type.
@@ -63,7 +65,7 @@ public class DateTimeConverter implements JsonSerializer<DateTime>, JsonDeserial
 	 *            object.
 	 * @return a JsonElement corresponding to the specified object.
 	 */
-	
+
 	@Override
 	public JsonElement serialize(DateTime src, Type typeOfSrc, JsonSerializationContext context) {
 		final DateTimeFormatter fmt = ISODateTimeFormat.dateTime();
@@ -86,7 +88,7 @@ public class DateTimeConverter implements JsonSerializer<DateTime>, JsonDeserial
 	 * @return a deserialized object of the specified type typeOfT which is a subclass of {@code T}
 	 * @throws JsonParseException if json is not in the expected format of {@code typeOfT}
 	 */
-	
+
 	@Override
 	public DateTime deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
 			throws JsonParseException {
