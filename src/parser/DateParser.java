@@ -129,7 +129,7 @@ public class DateParser {
 			} catch (NullPointerException e) {
 				LogHandler.log(Level.FINE, Constants.ERROR_EXPECTED);
 			} catch (IllegalArgumentException e) {
-				LogHandler.log(Level.SEVERE, Constants.ERROR_INPUT_DATE);
+				LogHandler.log(Level.FINE, Constants.ERROR_INPUT_DATE);
 			}
 		}
 		if (date.getYear() == Constants.YEAR_2000) {
