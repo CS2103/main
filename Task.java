@@ -1,4 +1,3 @@
-//@@author A0129708
 package logic;
 
 import java.util.ArrayList;
@@ -21,7 +20,7 @@ public class Task {
 	private ArrayList<DateTime> recurDone;
 
 	public Task(Task task) {
-		this.isRecur = task.isTypeRecur();
+		
 		this.recurTag = task.returnRecurTag();
 		this.recurEnd = task.getRecurEnd();
 		this.title = task.getTitle();
@@ -31,7 +30,8 @@ public class Task {
 		this.endingTime = task.getEndingTime();
 		this.recurDate = task.getRecurDates();
 		this.recurDone = task.getDoneDates();
-
+		this.isRecur = task.isTypeRecur();
+		setTag();
 	}
 
 	public Task(String title) {
@@ -61,11 +61,11 @@ public class Task {
 		System.out.println("is Creating");
 		try {
 			if (endingTime.isBefore(startingTime)) {
-				InvalidTimeException invalidTime = new InvalidTimeException("The ending time is prior to the starting time");
-				throw invalidTime;
+				InvalidTimeException e = new InvalidTimeException("The ending time is prior to the starting time");
+				throw e;
 			}
-		} catch (InvalidTimeException invalidTime) {
-			System.out.println("Error :" + invalidTime);
+		} catch (InvalidTimeException e) {
+			System.out.println("Error" + e);
 
 		}
 		setTag();
@@ -221,7 +221,6 @@ public class Task {
 			for (DateTime t : recurDate) {
 				if (t.getDayOfYear() == now.getDayOfYear()) {
 					recurDone.add(t);
-					return;
 				}
 			}
 		}
@@ -235,7 +234,6 @@ public class Task {
 			for (DateTime t : recurDone) {
 				if (t.getDayOfYear() == now.getDayOfYear()) {
 					recurDone.remove(t);
-					return;
 				}
 			}
 		}
@@ -330,18 +328,6 @@ public class Task {
 		}
 		return false;
 	}
-	
-	public boolean isToday(){
-		if(isTypeRecur()){
-			return isRecur();
-		}else{
-			if(this.getEndingTime().getDayOfYear()==DateTime.now().getDayOfYear()){
-				return true;
-			}else{
-				return false;
-			}
-		}
-	}
 
 	public boolean isRecur(DateTime date) {
 		if (!isTypeRecur()) {
@@ -402,14 +388,5 @@ public class Task {
 		}
 		return del;
 	}
-	
-	public String toString(){
-		String output = new String("Title: " + getTitle() + "\n" +
-								   "Status: " + getStatus() + "\n");
-		return output;
-	}
-								  
-								   
-
 
 }

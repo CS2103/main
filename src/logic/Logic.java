@@ -7,7 +7,9 @@ import java.util.ArrayList;
 import org.joda.time.DateTime;
 
 import application.Constants;
+import parser.CommandParser;
 import parser.Parser;
+import parser.TitleParser;
 import storage.Storage;
 
 public class Logic {
@@ -18,9 +20,13 @@ public class Logic {
 	public Logic() {
 		bin.init();
 	}
+	
+	public void clear(){
+		bin.clear();
+	}
 
 	public ArrayList<Task> inputHandler(String input) throws ParseException, InvalidTimeException {
-		String command = parser.getCommand(input);
+		String command = CommandParser.getCommand(input);
 
 		if (command.equalsIgnoreCase((Constants.COMMAND_ADD))) {
 			return addTask(input);
@@ -32,7 +38,7 @@ public class Logic {
 		} else if (command.equalsIgnoreCase(Constants.COMMAND_DELETE)) {
 			return deleteTaskByIndex(parser.getIndex(input));
 		} else if (command.equals(Constants.COMMAND_EDIT)) {
-			return editTask(parser.getIndex(input), parser.getField(input), parser.getEditTitle(input));
+			return editTask(parser.getIndex(input), parser.getField(input), TitleParser.getEditTitle(input));
 		} else if (command.equals(Constants.COMMAND_MARK)) {
 			return markTaskByIndex(parser.getIndexes(input));
 		} else if (command.equals(Constants.COMMAND_UNMARK)) {
@@ -49,6 +55,7 @@ public class Logic {
 		} else if (command.equalsIgnoreCase(Constants.COMMAND_ENQUIREPATH)) {
 			return bin.returnDisplay();
 		} else if (command.equalsIgnoreCase(Constants.COMMAND_SHOW)) {
+			System.out.println(toString());
 			if (parser.getTitle(input).equals(Constants.STATUS_INCOMPLETE)) {
 				return bin.displayUnfinished();
 			} else if (parser.getTitle(input).equals(Constants.STATUS_COMPLETE)) {
@@ -92,7 +99,6 @@ public class Logic {
 	}
 
 	public ArrayList<Task> displayHome() {
-
 		return bin.displayHome();
 	}
 
@@ -123,6 +129,8 @@ public class Logic {
 			if (toEdit.getType().equals(Constants.TYPE_RECUR)) {
 				break;
 			}
+			System.out.println("The new starting time is: " + parser.getStartDateTime(info).toString() + ".  "
+					+ "The ending Time is " + parser.getEndDateTime(info).toString() + " . ");
 			bin.editTimeField(toEdit, parser.getStartDateTime(info), parser.getEndDateTime(info));
 			break;
 		}
@@ -139,29 +147,12 @@ public class Logic {
 		return bin.returnDisplay();
 	}
 
-	public ArrayList<Task> deleteTaskByName(String input) throws ParseException {
-		String title = parser.getTitle(input);
-		DateTime endingDate = parser.getEndDateTime(input);
-		if (endingDate == null) {
-			endingDate = DateTime.now();
-		}
-		ArrayList<Task> result = bin.findTaskByTitle(title);
-		if (result.size() > 1) {
-			result = bin.findTaskByDate(result, endingDate);
-		}
-		bin.delete(result.get(0));
-		return bin.returnDisplay();
-	}
-
 	public ArrayList<Task> deleteTaskByIndex(int index) {
 		ArrayList<Task> display = bin.returnDisplay();
 		Task toDel = new Task();
 		toDel = display.get(index - 1);
 		bin.delete(toDel);
 		return bin.returnDisplay();
-	}
-
-	public void showOverdue() {
 	}
 
 	public ArrayList<Task> searchEntries(String keyWord) {
@@ -194,17 +185,18 @@ public class Logic {
 		return bin.returnDisplay();
 	}
 
-	public void changeDirectory() {
 
-	}
-
-	public void editSettings() {
-
-	}
-
-	public ArrayList<Task> startupDisplay() {// display the initial screen
+	public ArrayList<Task> startupDisplay() {
 		ArrayList<Task> initDis = bin.displayHome();
 		return initDis;
+	}
+	
+	public String toString(){
+		String display = new String();
+		for(Task t:bin.returnDisplay()){
+			display = display + t.toString();
+		}
+		return display;
 	}
 
 	// @@author A0121442X
@@ -264,7 +256,6 @@ public class Logic {
 			return Constants.FEEDBACK_INVALID;
 		}
 	}
-
 	public int getIndex(String input) {
 		return parser.getIndex(input);
 	}
