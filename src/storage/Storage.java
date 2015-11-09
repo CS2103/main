@@ -20,13 +20,15 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import application.Constants;
+
 import logic.Task;
 
 public class Storage {
 
 	// initial methods to serialise/deserialise savedTask.json with DateTime
 	// formats
-	final static Gson gson = Converters.registerDateTime(new GsonBuilder().setPrettyPrinting().serializeNulls()).create();
+	final static Gson gson = Converters.registerDateTime(new GsonBuilder().setPrettyPrinting().serializeNulls())
+			.create();
 	final DateTime original = new DateTime();
 	final String json = gson.toJson(original);
 	final DateTime reconstituted = gson.fromJson(json, DateTime.class);
@@ -49,6 +51,14 @@ public class Storage {
 	}
 
 	public static boolean setPath(String newPath) {
+		if (!isValidLength(newPath)) {
+			return false;
+		} else {
+			return processNewPath(newPath);
+		}
+	}
+
+	private static boolean processNewPath(String newPath) {
 		File checkFile = new File(newPath);
 		boolean canSetPath;
 		if (!isValidPath(checkFile)) {
@@ -65,6 +75,13 @@ public class Storage {
 		}
 	}
 
+	private static boolean isValidLength(String newPath) {
+		if (newPath.length() > Constants.MAX_PATH_LENGTH) {
+			return false;
+		}
+		return true;
+	}
+
 	public static boolean containSlash(String path) {
 		if (path.contains("\\") || path.contains("/")) {
 			return true;
@@ -75,7 +92,7 @@ public class Storage {
 
 	public static String extractDirectory(String path) {
 
-		int i = path.lastIndexOf("/");
+		int i = path.lastIndexOf("/"); // for mac
 		//		int i = path.lastIndexOf("\\"); // for windows
 
 		String subPath = path.substring(0, i);
@@ -83,7 +100,7 @@ public class Storage {
 	}
 
 	public static String extractFilename(String path) {
-		int i = path.lastIndexOf("/");
+		int i = path.lastIndexOf("/"); // for mac
 		//		int i = path.lastIndexOf("\\"); // for windows
 
 		String subPath = path.substring(i + Constants.FIX_CORRECT_INDEX);
@@ -237,7 +254,8 @@ public class Storage {
 
 			br.close();
 			String jsonString = stringBuilder.toString();
-			taskList = gson.fromJson(jsonString, new TypeToken<ArrayList<Task>>() {}.getType());
+			taskList = gson.fromJson(jsonString, new TypeToken<ArrayList<Task>>() {
+			}.getType());
 
 		} catch (FileNotFoundException e) {
 			Logger.getLogger("Log").log(Level.SEVERE, "Cannot find save file at specified location");

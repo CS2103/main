@@ -10,6 +10,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.joda.time.DateTime;
 import org.junit.After;
@@ -21,6 +22,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
+import application.Constants;
 import logic.Task;
 import logic.TaskBin;
 import storage.Converters;
@@ -31,7 +33,7 @@ public class StorageTest {
 	// formats
 	final static Gson gson = Converters.registerDateTime(new GsonBuilder().setPrettyPrinting().serializeNulls())
 			.create();
-	private static final int INPUTTASKS_LENGTH = 6;
+	private static final int TASKS_LENGTH = 6;
 
 	final DateTime original = new DateTime();
 	final String json = gson.toJson(original);
@@ -39,26 +41,23 @@ public class StorageTest {
 
 	private static final ArrayList<Task> taskList = new ArrayList<Task>();
 	private static ArrayList<Task> taskListForTest = new ArrayList<Task>();
+
 	private static final File pathFile = new File("savedPath.txt");
+
 	private static final String path = pathFile.getAbsolutePath();
 	private static final String pathDir = Storage.extractDirectory(path);
 	private static final String pathWithNewName = pathDir + "/TBAsave.txt";
 	private static String pathWithNewName2 = pathDir;
 	private static  String invalidPathWithSlash1;
 	private static  String invalidPathWithSlash2;
-	
-	// 255 characters
-	private static final String longName255 = "aaaaaaaaaaaasasasasasasasasasasasaaaaaaaaaaaasasasasasasasasasasasaaaaaaaaaaaasasasasasasasasasasasaaaaaaaaaaaasasasasasasasasasasasaaaaaaaaaaaasasasasasasasasasasasaaaaaaaaaaaasasasasasasasasasasasaaaaaaaaaaaasasasasasasasasasasasaasasasasasasasasasasasa";
-	
-	// 256 character
-	private static final String longName256 = "Saaaaaaaaaaaasasasasasasasasasasasaaaaaaaaaaaasasasasasasasasasasasaaaaaaaaaaaasasasasasasasasasasasaaaaaaaaaaaasasasasasasasasasasasaaaaaaaaaaaasasasasasasasasasasasaaaaaaaaaaaasasasasasasasasasasasaaaaaaaaaaaasasasasasasasasasasasaasasasasasasasasasasasa";
 
-	private static String validAnd255;
-	private static String validAnd256;
+	private static String longPath259;
+	private static String longPath260;
+	private static String longPath261;
 
 	@Before
 	public void setUp1() throws Exception {
-		Task[] inputTasks = new Task[INPUTTASKS_LENGTH];
+		Task[] inputTasks = new Task[TASKS_LENGTH];
 		DateTime d0 = new DateTime(0, 1, 1, 0, 0);
 		DateTime d1 = new DateTime(2015, 10, 21, 0, 0);
 		DateTime d2 = new DateTime(2015, 11, 25, 0, 0);
@@ -71,24 +70,58 @@ public class StorageTest {
 		inputTasks[3] = new Task("Go fishing", d5, d2);
 		inputTasks[4] = new Task("Do homework", d3, d4);
 		inputTasks[5] = new Task("Love no War", d5, d3);
-		for (int i = 0; i < INPUTTASKS_LENGTH; i++) {
+		for (int i = 0; i < TASKS_LENGTH; i++) {
 			taskList.add(inputTasks[i]);
 		}
 	}
 
 	@Before
 	public void getInvalidPathWithSlash() {
+
+		invalidPathWithSlash1 = new StringBuilder(pathDir).insert(pathDir.indexOf("/"), "xyz").toString(); // for mac
+		//invalidPathWithSlash1 = new StringBuilder(pathDir).insert(pathDir.indexOf("\\"), "xyz").toString(); // for windows
+
 		invalidPathWithSlash2 = pathDir + "ilovefood/mysave.txt"; // for mac
-		//	invalidPathWithSlash2 = pathDir + "ilovefood\\mysave.txt";  //for windows
-		int length = pathDir.length();
-		invalidPathWithSlash1 = new StringBuilder(pathDir).insert(length/3, "xyz").toString();
-		System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaa " + pathWithNewName);
-		pathWithNewName2 += "mysave.txt";
-		System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaa long " + longName255.length());
-		validAnd255 = pathDir + longName255;
-		validAnd256 = pathDir + longName256;
+		//invalidPathWithSlash2 = pathDir + "ilovefood\\mysave.txt"; // for windows
 	}
 
+	@Before
+	public void getNewFilename() {
+		pathWithNewName2 += "mysave.txt";
+	}
+
+	@Before
+	public void getLongPath261() {
+		longPath261 = pathDir;
+		int length = pathDir.length();
+		int numMoreChar = Constants.MAX_PATH_LENGTH - length;
+		char[] repeat = new char[numMoreChar];
+		Arrays.fill(repeat, 'c');
+		longPath261 += "/" + new String(repeat); // for mac
+		//	longPath261 += "\\" + new String(repeat); // for windows
+	}
+
+	@Before
+	public void getLongPath260() {
+		longPath260 = pathDir;
+		int length = pathDir.length();
+		int numMoreChar = Constants.MAX_PATH_LENGTH - length - 1;
+		char[] repeat = new char[numMoreChar];
+		Arrays.fill(repeat, 'c');
+		longPath260 += "/" + new String(repeat); // for mac
+		//	longPath261 += "\\" + new String(repeat); // for windows
+	}
+
+	@Before
+	public void getLongPath259() {
+		longPath259 = pathDir;
+		int length = pathDir.length();
+		int numMoreChar = Constants.MAX_PATH_LENGTH - length - 1 - 1;
+		char[] repeat = new char[numMoreChar];
+		Arrays.fill(repeat, 'c');
+		longPath259 += "/" + new String(repeat); // for mac
+		//	longPath261 += "\\" + new String(repeat); // for windows
+	}
 	/*
 	@Before
 	public void setUp2() throws Exception {
@@ -245,8 +278,7 @@ public class StorageTest {
 		try {
 			FileReader fr = new FileReader(pathFile);
 			BufferedReader br = new BufferedReader(fr);
-			assertEquals("test correct path writing to savedPath.txt", pathWithNewName2,
-					br.readLine());
+			assertEquals("test correct path writing to savedPath.txt", pathWithNewName2,br.readLine());
 			br.close();
 		} catch (FileNotFoundException e) {
 		} catch (IOException e) {
@@ -254,10 +286,10 @@ public class StorageTest {
 		}
 	}
 
-	
-	@Test public void testSetPath_longFilename() {
+
+	@Test public void testSetPath_validAnd261() {
 		boolean isValidPath, isSuccess;
-		isValidPath = Storage.setPath(longName255);
+		isValidPath = Storage.setPath(longPath261);
 		if (isValidPath == true) {
 			isSuccess = true;
 		} else {
@@ -265,10 +297,21 @@ public class StorageTest {
 		}
 		assertFalse("test correct processing of valid path input with name", isSuccess);
 	}
-	
-	@Test public void testSetPath_validAnd255() {
+
+	@Test public void testSetPath_validAnd259() {
 		boolean isValidPath, isSuccess;
-		isValidPath = Storage.setPath(validAnd255);
+		isValidPath = Storage.setPath(longPath259);
+		if (isValidPath == true) {
+			isSuccess = true;
+		} else {
+			isSuccess = false;
+		}
+		assertTrue("test correct processing of valid path input with name", isSuccess);
+	}
+
+	@Test public void testSetPath_validAnd260() {
+		boolean isValidPath, isSuccess;
+		isValidPath = Storage.setPath(longPath260);
 		if (isValidPath == true) {
 			isSuccess = true;
 		} else {
@@ -277,16 +320,6 @@ public class StorageTest {
 		assertTrue("test correct processing of valid path input with name", isSuccess);
 	}
 	
-	@Test public void testSetPath_validAnd256() {
-		boolean isValidPath, isSuccess;
-		isValidPath = Storage.setPath(validAnd256);
-		if (isValidPath == true) {
-			isSuccess = true;
-		} else {
-			isSuccess = false;
-		}
-		assertTrue("test correct processing of valid path input with name", isSuccess);
-	}
 	@Test
 	public void testWrite_correctContentWritten() {
 		// System.out.println("taskList " + taskList.toString());

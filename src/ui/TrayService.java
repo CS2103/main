@@ -21,119 +21,116 @@ import javafx.stage.WindowEvent;
 
 public class TrayService {
 
-	public TrayIcon trayIcon;
-	Stage stage;
-	Scene scene;
-	StackPane root;
+    public TrayIcon trayIcon;
+    Stage stage;
+    Scene scene;
+    StackPane root;
 
-	public TrayService(Stage stage) {
-		this.stage = stage;
-	}
+    public TrayService(Stage stage) {
+	this.stage = stage;
+    }
 
-	public TrayIcon createTrayIcon(final Stage stage) {
+    public TrayIcon createTrayIcon(final Stage stage) {
 
-		PopUp about = new PopUp("About", Constants.MSG_ABOUT);
+	PopUp about = new PopUp(Constants.LABEL_ABOUT, Constants.MSG_ABOUT);
 
-		if (SystemTray.isSupported()) {
-			SystemTray tray = SystemTray.getSystemTray();
-			java.awt.Image image = Toolkit.getDefaultToolkit()
-					.getImage(TrayService.class.getResource("/resource/iconTray.png"));
-			stage.getIcons().add(new Image("/resource/icon.png"));
+	if (SystemTray.isSupported()) {
+	    SystemTray tray = SystemTray.getSystemTray();
+	    java.awt.Image image = Toolkit.getDefaultToolkit()
+		    .getImage(TrayService.class.getResource("/resource/iconTray.png"));
+	    stage.getIcons().add(new Image("/resource/icon.png"));
 
-			stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-				@Override
-				public void handle(WindowEvent t) {
-					Platform.runLater(new Runnable() {
-						@Override
-						public void run() {
-							if (SystemTray.isSupported()) {
-								stage.hide();
-								showProgramIsMinimizedMsg();
-							} else {
-								System.exit(0);
-							}
-						}
-					});
-				}
-			});
-
-			final ActionListener closeListener = new ActionListener() {
-				@Override
-				public void actionPerformed(java.awt.event.ActionEvent e) {
-					System.exit(0);
-				}
-			};
-
-			ActionListener aboutListener = new ActionListener() {
-				@Override
-				public void actionPerformed(java.awt.event.ActionEvent e) {
-					Platform.runLater(new Runnable() {
-						@Override
-						public void run() {
-							about.showAndWait();
-						}
-					});
-				}
-			};
-
-			ActionListener showListener = new ActionListener() {
-				@Override
-				public void actionPerformed(java.awt.event.ActionEvent e) {
-					Platform.runLater(new Runnable() {
-						@Override
-						public void run() {
-							System.out.println("Clicked on show MenuItem");
-							stage.show();
-							stage.toFront();
-						}
-					});
-				}
-			};
-
-			PopupMenu popup = new PopupMenu();
-
-			MenuItem showItem = new MenuItem("Show");
-			showItem.addActionListener(showListener);
-			popup.add(showItem);
-
-			MenuItem aboutItem = new MenuItem("About");
-			aboutItem.addActionListener(aboutListener);
-			popup.add(aboutItem);
-
-			MenuItem closeItem = new MenuItem("Exit");
-			closeItem.addActionListener(closeListener);
-			popup.add(closeItem);
-
-			trayIcon = new TrayIcon(image, Constants.APP_NAME, popup);
-			trayIcon.setImageAutoSize(true);
-			trayIcon.addActionListener(showListener);
-			trayIcon.addMouseListener(new MouseAdapter() {
-				@Override
-				public void mouseClicked(java.awt.event.MouseEvent e) {
-					System.out.println("Clicked on tray icon :" + e.getButton());
-					if (e.getButton() == 1) {
-						Platform.runLater(new Runnable() {
-							@Override
-							public void run() {
-								stage.show();
-								stage.toFront();
-							}
-						});
-					}
-				};
-			});
-
-			try {
-				tray.add(trayIcon);
-			} catch (AWTException e) {
-				System.err.println(e);
+	    stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+		@Override
+		public void handle(WindowEvent t) {
+		    Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+			    if (SystemTray.isSupported()) {
+				stage.hide();
+				showProgramIsMinimizedMsg();
+			    } else {
+				System.exit(0);
+			    }
 			}
+		    });
 		}
-		return trayIcon;
-	}
+	    });
 
-	public void showProgramIsMinimizedMsg() {
-		trayIcon.displayMessage("Message.", Constants.APP_NAME + " is still running. You can access it from here.",
-				TrayIcon.MessageType.INFO);
+	    final ActionListener closeListener = new ActionListener() {
+		@Override
+		public void actionPerformed(java.awt.event.ActionEvent e) {
+		    System.exit(0);
+		}
+	    };
+
+	    ActionListener aboutListener = new ActionListener() {
+		@Override
+		public void actionPerformed(java.awt.event.ActionEvent e) {
+		    Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+			    about.showAndWait();
+			}
+		    });
+		}
+	    };
+
+	    ActionListener showListener = new ActionListener() {
+		@Override
+		public void actionPerformed(java.awt.event.ActionEvent e) {
+		    Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+			    stage.show();
+			    stage.toFront();
+			}
+		    });
+		}
+	    };
+
+	    PopupMenu popup = new PopupMenu();
+
+	    MenuItem showItem = new MenuItem(Constants.LABEL_SHOW);
+	    showItem.addActionListener(showListener);
+	    popup.add(showItem);
+
+	    MenuItem aboutItem = new MenuItem(Constants.LABEL_ABOUT);
+	    aboutItem.addActionListener(aboutListener);
+	    popup.add(aboutItem);
+
+	    MenuItem closeItem = new MenuItem(Constants.LABEL_EXIT);
+	    closeItem.addActionListener(closeListener);
+	    popup.add(closeItem);
+
+	    trayIcon = new TrayIcon(image, Constants.APP_NAME, popup);
+	    trayIcon.setImageAutoSize(true);
+	    trayIcon.addActionListener(showListener);
+	    trayIcon.addMouseListener(new MouseAdapter() {
+		@Override
+		public void mouseClicked(java.awt.event.MouseEvent event) {
+		    if (event.getButton() == 1) {
+			Platform.runLater(new Runnable() {
+			    @Override
+			    public void run() {
+				stage.show();
+				stage.toFront();
+			    }
+			});
+		    }
+		};
+	    });
+
+	    try {
+		tray.add(trayIcon);
+	    } catch (AWTException e) {
+		System.err.println(e);
+	    }
 	}
+	return trayIcon;
+    }
+
+    public void showProgramIsMinimizedMsg() {
+	trayIcon.displayMessage(Constants.LABEL_MESSAGE, Constants.MSG_STILL_RUNNING, TrayIcon.MessageType.INFO);
+    }
 }

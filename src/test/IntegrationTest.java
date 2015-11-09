@@ -58,4 +58,5 @@ public class IntegrationTest {
 			assertEquals("", currentArrayListSize - 1, logic.inputHandler("delete 1").size());
 		}
 	}
+
 }
