@@ -24,9 +24,16 @@ public class Constants {
 
     // Limit for number of days before current day for which task without year
     // will be entered as overdue task
+    public static final int BEGINNING_OF_INDEX = 0;
     public static final int DAYS_OFFSET = 7;
+    public static final int NEXT_DAY_OFFSET = 1;
     public static final int BEGINNING_OF_LIST = 1;
     public static final int NUMBER_ONE = 1;
+    
+    public static final int EDIT_INDEX_FIELD = 2;
+    public static final int EDIT_INDEX_TITLE = 3;
+    
+    public static final int INDEX_OUT_OF_LIST = -1;
 
     public static final String LABEL_EDIT_TASK = "Edit Task";
     public static final String LABEL_ADD_TASK = "Add New Task";
@@ -50,6 +57,7 @@ public class Constants {
     public static final String SEPARATOR_DOT = "\\.";
     public static final String SEPARATOR_TO = " to ";
     public static final String SEPARATOR_DASH = "-";
+    public static final String SEPERATOR_MULTI_SPACE = "\\s+";
 
     // double quote
     public static final String DOUBLE_QUOTE = "\"";
@@ -112,6 +120,7 @@ public class Constants {
 
     // year
     public static final int YEAR_2000 = 2000;
+    public static final int YEAR_0 = 0;
 
     // number of milliseconds in a day
     public static final int MILLISECONDS_IN_A_DAY = 1000 * 60 * 60 * 24;
@@ -250,6 +259,12 @@ public class Constants {
 
     public static final String TIME_START_OF_DAY = "0000";
     public static final String TIME_END_OF_DAY = "2359";
+    
+    public static final int TIME_START_OF_DAY_HOUR = 0;
+    public static final int TIME_START_OF_DAY_MINUTE = 0;
+    public static final int TIME_END_OF_DAY_HOUR = 23;
+    public static final int TIME_END_OF_DAY_MINUTE = 59;
+    
 
     public static final String[] AUTOCOMPLETE_ENTRIES = { "add [taskname] from [day] [time] to [day] [time]",
 	    "add [taskname] from [time] to [time]", "add [taskname]", "undo", "redo", "exit", "delete [index]",
@@ -299,4 +314,11 @@ public class Constants {
     public static final String TEXT_HELP_FLEXI_COMMAND_LIST = "a [title] from [start] to [end]\ndel [index]\ne [index] [field] [new value]\nm [index]\num [index]\nun\nre\nsearch [keyword]\nshow [date]\nset [filepath]\nen\nexit";
 
     public static final int MAX_PATH_LENGTH = 260;
+    
+    // Error Messages
+ 	public static final String ERROR_NULL_INPUT = "NULL input reached";
+ 	public static final String ERROR_INPUT_DATE = "Wrong date input";
+ 	public static final String ERROR_INPUT_TIME = "Wrong time input";
+ 	
+ 	public static final String ERROR_EXPECTED = "Error is expected";
 }
