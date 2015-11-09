@@ -1,3 +1,5 @@
+//@@author A0129708
+
 package logic;
 
 import java.util.ArrayList;
@@ -46,13 +48,15 @@ public class TaskBin {
 		displayList = sorter.sortArrayByTime(displayList);
 		return displayList;
 	}
-
+	
+	//Set the display as the initial home screen
 	public ArrayList<Task> displayHome() {
 		display.setDisplay(taskList);
 		displayList = display.returnDisplay();
 		return displayList;
 	}
 	
+	//display all the tasks that are not yet finished
 	public ArrayList<Task> displayUnfinished(){
 		ArrayList<Task> results = new ArrayList<Task>();
 		for(Task t:taskList){
@@ -65,6 +69,7 @@ public class TaskBin {
 		return results;
 	}
 	
+	//display all the tasks that are finished
 	public ArrayList<Task> displayFinished(){
 		ArrayList<Task> results = new ArrayList<Task>();
 		for(Task t:taskList){
@@ -77,12 +82,14 @@ public class TaskBin {
 		return results;
 	}
 	
+	//display all the tasks that are stored. 
 	public ArrayList<Task> displayAll(){
 		display.setDisplayAll(taskList);
 		displayList = display.returnDisplay();
 		return displayList;
 	}
 	
+	//Add a new task, and back to home display 
 	public void add(Task newTask) {
 		Command add = new Command(Constants.add_tag, newTask);
 		this.undoStack.push(add);
@@ -93,7 +100,7 @@ public class TaskBin {
 		Storage.write(taskList);
 		redoStack.clear();
 	}
-
+	//delete the task and back to home display
 	public void delete(Task task) {
 		for (int i = 0; i < taskList.size(); i++) {
 			if (taskList.get(i).equals(task)) {
@@ -109,7 +116,8 @@ public class TaskBin {
 
 		redoStack.clear();
 	}
-
+	
+	//Delete the date of the recur task out of its recurring sequence. 
 	public void delete(Task task, DateTime date) {
 		if (!task.getType().equals(Constants.TYPE_RECUR)) {
 			return;

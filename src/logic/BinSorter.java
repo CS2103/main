@@ -1,3 +1,5 @@
+//@@author A0129708
+
 package logic;
 
 import java.util.ArrayList;
@@ -87,7 +89,7 @@ public class BinSorter {
 		return inboxArr;
 	}
 	
-	//Sort the array in alphabetically sequence
+	//Sort the array in alphabetical sequence
 	public ArrayList<Task> sortArrayByAlpha(ArrayList<Task> inboxArr) {
 		for (int m = 1; m < inboxArr.size(); m++) {
 			boolean isSorted = true;
