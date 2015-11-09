@@ -250,4 +250,9 @@ public class Constants {
 
 	// used in Storage.java to correct index when calling String.substring()
 	public static final int FIX_CORRECT_INDEX = 1;
+	public static final String FEEDBACK_SETPATH_LONGFILE = "File path is too long! Save location is not changed";
+	
+	// used in Storage.java and Logic.java to check valid path length
+	public static final int MAX_PATH_LENGTH = 260;
+
 }

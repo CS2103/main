@@ -20,6 +20,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import application.Constants;
+
 import logic.Task;
 
 public class Storage {
@@ -49,6 +50,14 @@ public class Storage {
 	}
 
 	public static boolean setPath(String newPath) {
+		if (!isValidLength(newPath)) {
+			return false;
+		} else {
+			return processNewPath(newPath);
+		}
+	}
+
+	private static boolean processNewPath(String newPath) {
 		File checkFile = new File(newPath);
 		boolean canSetPath;
 		if (!isValidPath(checkFile)) {
@@ -65,6 +74,13 @@ public class Storage {
 		}
 	}
 
+	private static boolean isValidLength(String newPath) {
+		if (newPath.length() > Constants.MAX_PATH_LENGTH) {
+			return false;
+		}
+		return true;
+	}
+
 	public static boolean containSlash(String path) {
 		if (path.contains("\\") || path.contains("/")) {
 			return true;
@@ -75,7 +91,7 @@ public class Storage {
 
 	public static String extractDirectory(String path) {
 
-		int i = path.lastIndexOf("/");
+		int i = path.lastIndexOf("/"); // for mac
 		//		int i = path.lastIndexOf("\\"); // for windows
 
 		String subPath = path.substring(0, i);
@@ -83,7 +99,7 @@ public class Storage {
 	}
 
 	public static String extractFilename(String path) {
-		int i = path.lastIndexOf("/");
+		int i = path.lastIndexOf("/"); // for mac
 		//		int i = path.lastIndexOf("\\"); // for windows
 
 		String subPath = path.substring(i + Constants.FIX_CORRECT_INDEX);
