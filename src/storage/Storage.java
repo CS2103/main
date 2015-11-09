@@ -1,3 +1,4 @@
+//@@author A0129699E
 package storage;
 
 import java.io.BufferedReader;
@@ -25,32 +26,23 @@ import logic.Task;
 
 public class Storage {
 
-	// initial methods to serialise/deserialise savedTask.json with DateTime
-	// formats
-	final static Gson gson = Converters.registerDateTime(new GsonBuilder().setPrettyPrinting().serializeNulls())
-			.create();
+	// initial methods to serialise/deserialise savedTask.json with DateTime formats
+	final static Gson gson = Converters.registerDateTime(new GsonBuilder().setPrettyPrinting().serializeNulls()).create();
 	final DateTime original = new DateTime();
 	final String json = gson.toJson(original);
 	final DateTime reconstituted = gson.fromJson(json, DateTime.class);
 
 	// attributes
-	public static File savedTask = new File("TBAsave.json"); // public for
-	// testing,
-	// change after
-	// done
+	public static File savedTask = new File("TBAsave.json"); // public for testing, change after done
 
-	public static File savedPath = new File("TBApath.txt"); // public for
-	// testing, change
-	// after done
+	public static File savedPath = new File("TBApath.txt"); // public for testing, change after done
 
 	public static String path; // public for testing, change after done
 
 	private static ArrayList<Task> currentTaskList = new ArrayList<Task>();
 
-	public Storage() {
-	}
-
 	public static boolean setPath(String newPath) {
+		assert (newPath != null);
 		if (!isValidLength(newPath)) {
 			return false;
 		} else {
@@ -91,7 +83,6 @@ public class Storage {
 	}
 
 	public static String extractDirectory(String path) {
-
 		int i = path.lastIndexOf("/"); // for mac
 		//		int i = path.lastIndexOf("\\"); // for windows
 
@@ -107,7 +98,7 @@ public class Storage {
 		return subPath;
 	}
 
-	// : * ? " < > |
+	// : * ? " < > | are invalid characters for filename
 	public static boolean containInvalidChar(String path) {
 		if (path.contains(":") || path.contains("*") || path.contains("?") || path.contains("\"") || path.contains("<")
 				|| path.contains(">") || path.contains("|")) {
@@ -205,9 +196,12 @@ public class Storage {
 	}
 
 	public static void write(ArrayList<Task> tasks) {
+		handleNullPath();
+		writeTasksToFile(tasks);
+	}
+
+	private static void writeTasksToFile(ArrayList<Task> tasks) {
 		try {
-			handleNullPath();
-			System.out.println("path " + path);
 			File file = new File(path);
 			FileWriter fw = new FileWriter(file);
 			BufferedWriter bw = new BufferedWriter(fw);
@@ -226,23 +220,18 @@ public class Storage {
 	}
 
 	public static ArrayList<Task> read() {
-		try {
-			FileReader fr = new FileReader(savedPath);
-			BufferedReader br = new BufferedReader(fr);
-			Storage.path = br.readLine();
-			br.close();
+		getSavePath();
+		return readFromSaveFile();
+	}
 
-		} catch (FileNotFoundException e) {
-			Logger.getLogger("Log").log(Level.SEVERE, "Cannot find savedPath file at specified location");
-
-		} catch (IOException e) {
-			Logger.getLogger("Log").log(Level.SEVERE, "Unable to read from savedPath file");
-		}
-
+	private static ArrayList<Task> readFromSaveFile() {
 		ArrayList<Task> taskList = new ArrayList<Task>();
-		String line = "";
 		handleNullPath();
+		return convertSaveData(taskList);
+	}
 
+	private static ArrayList<Task> convertSaveData(ArrayList<Task> taskList) {
+		String line;
 		try {
 			FileReader fr = new FileReader(Storage.path);
 			BufferedReader br = new BufferedReader(fr);
@@ -264,6 +253,21 @@ public class Storage {
 			Logger.getLogger("Log").log(Level.SEVERE, "Unable to read from save file");
 		}
 		return taskList;
+	}
+
+	private static void getSavePath() {
+		try {
+			FileReader fr = new FileReader(savedPath);
+			BufferedReader br = new BufferedReader(fr);
+			Storage.path = br.readLine();
+			br.close();
+
+		} catch (FileNotFoundException e) {
+			Logger.getLogger("Log").log(Level.SEVERE, "Cannot find savedPath file at specified location");
+
+		} catch (IOException e) {
+			Logger.getLogger("Log").log(Level.SEVERE, "Unable to read from savedPath file");
+		}
 	}
 
 }

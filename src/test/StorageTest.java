@@ -1,3 +1,4 @@
+//@@author A0129699E
 package test;
 
 import static org.junit.Assert.assertEquals;
@@ -105,23 +106,24 @@ public class StorageTest {
 	public void getLongPath260() {
 		longPath260 = pathDir;
 		int length = pathDir.length();
-		int numMoreChar = Constants.MAX_PATH_LENGTH - length - 1;
+		int numMoreChar = Constants.MAX_PATH_LENGTH - length - Constants.FIX_CORRECT_LENGTH;
 		char[] repeat = new char[numMoreChar];
 		Arrays.fill(repeat, 'c');
 		longPath260 += "/" + new String(repeat); // for mac
-		//	longPath261 += "\\" + new String(repeat); // for windows
+		//	longPath260 += "\\" + new String(repeat); // for windows
 	}
 
 	@Before
 	public void getLongPath259() {
 		longPath259 = pathDir;
 		int length = pathDir.length();
-		int numMoreChar = Constants.MAX_PATH_LENGTH - length - 1 - 1;
+		int numMoreChar = Constants.MAX_PATH_LENGTH - length - Constants.FIX_CORRECT_LENGTH - Constants.FIX_CORRECT_LENGTH;
 		char[] repeat = new char[numMoreChar];
 		Arrays.fill(repeat, 'c');
 		longPath259 += "/" + new String(repeat); // for mac
-		//	longPath261 += "\\" + new String(repeat); // for windows
+		//	longPath259 += "\\" + new String(repeat); // for windows
 	}
+
 	/*
 	@Before
 	public void setUp2() throws Exception {
@@ -169,107 +171,101 @@ public class StorageTest {
 
 	@Test
 	public void testSetPath_invalidPath1() {
-		boolean isValidPath, isSuccess;
+		boolean isValidPath;
 		isValidPath = Storage.setPath("qwerty");
-		if (isValidPath == false) {
-			isSuccess = true;
-		} else {
-			isSuccess = false;
-		}
-		assertTrue("test correct processing of invalid path input (random typing)", isSuccess);
+		assertFalse("test correct processing of invalid path input (random typing)", isValidPath);
 	}
 
 	@Test
 	public void testSetPath_invalidPath2() {
-		boolean isValidPath, isSuccess;
+		boolean isValidPath;
 		isValidPath = Storage.setPath(" ");
-		if (isValidPath == false) {
-			isSuccess = true;
-		} else {
-			isSuccess = false;
-		}
-		assertTrue("test correct processing of invalid path input (space character)", isSuccess);
+		assertFalse("test correct processing of invalid path input (space character)", isValidPath);
 	}
 
 	// \ / : * ? " < > | are invalid filename characters
 	@Test
 	public void testSetPath_invalidPath3() {
-		boolean isValidPath, isSuccess;
+		boolean isValidPath;
 		isValidPath = Storage.setPath("*");
-		if (isValidPath == false) {
-			isSuccess = true;
-		} else {
-			isSuccess = false;
-		}
-		assertTrue("test correct processing of invalid path input (star character)", isSuccess);
+		assertFalse("test correct processing of invalid path input (star character)", isValidPath);
 	}
 
 	// \ / : * ? " < > | are invalid filename characters
 	@Test
 	public void testSetPath_invalidPath4() {
-		boolean isValidPath, isSuccess;
-		isValidPath = Storage.setPath("/Users/hungngth/Download/Document/<mysave>.txt");
-		if (isValidPath == false) {
-			isSuccess = true;
-		} else {
-			isSuccess = false;
-		}
-		assertTrue("test correct processing of invalid path input (triangle bracket character)", isSuccess);
+		boolean isValidPath;
+		isValidPath = Storage.setPath(pathDir + "/<mysave>.txt");
+		assertFalse("test correct processing of invalid path input (triangle bracket character)", isValidPath);
 	}
 
 	@Test
 	public void testSetPath_invalidPathWithSlash1() {
-		boolean isValidPath, isSuccess;
+		boolean isValidPath;
 		isValidPath = Storage.setPath(invalidPathWithSlash1);
-		if (isValidPath == false) {
-			isSuccess = true;
-		} else {
-			isSuccess = false;
-		}
-		assertTrue("test correct processing of invalid path input with slash", isSuccess);
+		assertFalse("test correct processing of invalid path input with slash", isValidPath);
 	}
 
 	@Test
 	public void testSetPath_invalidPathWithSlash2() {
-		boolean isValidPath, isSuccess;
+		boolean isValidPath;
 		isValidPath = Storage.setPath(invalidPathWithSlash2);
-		if (isValidPath == false) {
-			isSuccess = true;
-		} else {
-			isSuccess = false;
-		}
-		assertTrue("test correct processing of invalid path input with slash", isSuccess);
+		assertFalse("test correct processing of invalid path input with slash", isValidPath);
 	}
 
 	@Test
 	public void testSetPath_validPathWithoutName() {
-		boolean isValidPath, isSuccess;
+		boolean isValidPath;
 		isValidPath = Storage.setPath(pathDir);
-		if (isValidPath == true) {
-			isSuccess = true;
-		} else {
-			isSuccess = false;
-		}
-		assertTrue("test correct processing of valid path input without given name", isSuccess);
+		assertTrue("test correct processing of valid path input without given name", isValidPath);
 	}
 
 	@Test
 	public void testSetPath_validPathWithName1() {
-		boolean isValidPath, isSuccess;
+		boolean isValidPath;
 		isValidPath = Storage.setPath(pathWithNewName);
-		if (isValidPath == true) {
-			isSuccess = true;
-		} else {
-			isSuccess = false;
-		}
-		assertTrue("test correct processing of valid path input with name", isSuccess);
+		assertTrue("test correct processing of valid path input with name", isValidPath);
+	}
+
+	@Test
+	public void testSetPath_validPathWithName2() {
+		boolean isValidPath;
+		isValidPath = Storage.setPath(pathWithNewName2);
+		assertTrue("test correct processing of valid path input with name", isValidPath);
+	}
+
+	@Test
+	public void testSetPath_validPathWithName3() {
+		boolean isValidPath;
+		isValidPath = Storage.setPath(pathDir + "1234.txt");
+		assertTrue("test correct processing of valid path input with name", isValidPath);
+	}
+
+	@Test
+	public void testSetPath_validPathWithSpaceBetween1() {
+		boolean isValidPath;
+		isValidPath = Storage.setPath(pathDir + "hi there.txt");
+		assertTrue("test correct processing of valid path input with space in between filename", isValidPath);
+	}
+
+	@Test
+	public void testSetPath_validPathWithSpaceBetween2() {
+		Storage.setPath(pathDir + "/hi there.txt"); // for mac
+		//Storage.setPath(pathDir + "\\hi there.txt"); // for windows
+
+		
+		System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaa " + Storage.enquirePath());
+		// for mac
+		assertEquals("test correct processing of valid path input with space in between filename", pathDir + "/hi there.txt", Storage.enquirePath()); 
+
+		// for windows
+		//assertEquals("test correct processing of valid path input with space in between filename", pathDir + "\\hi there.txt", Storage.enquirePath());
 	}
 
 	@Test
 	public void testSetPath_correctAssignment() {
-		Storage.setPath("pathDir");
-		assertEquals("test correct assignment of path to Storage.path", Storage.path,
-				pathWithNewName);
+		Storage.setPath(pathDir);
+		assertEquals("test correct assignment of path to Storage.path", pathWithNewName, Storage.path);
 	}
 
 	@Test
@@ -278,7 +274,7 @@ public class StorageTest {
 		try {
 			FileReader fr = new FileReader(pathFile);
 			BufferedReader br = new BufferedReader(fr);
-			assertEquals("test correct path writing to savedPath.txt", pathWithNewName2,br.readLine());
+			assertEquals("test correct path writing to savedPath.txt", pathWithNewName2, br.readLine());
 			br.close();
 		} catch (FileNotFoundException e) {
 		} catch (IOException e) {
@@ -286,43 +282,38 @@ public class StorageTest {
 		}
 	}
 
-
 	@Test public void testSetPath_validAnd261() {
-		boolean isValidPath, isSuccess;
+		boolean isValidPath;
 		isValidPath = Storage.setPath(longPath261);
-		if (isValidPath == true) {
-			isSuccess = true;
-		} else {
-			isSuccess = false;
-		}
-		assertFalse("test correct processing of valid path input with name", isSuccess);
+		assertFalse("test correct processing of valid path input with name", isValidPath);
 	}
 
 	@Test public void testSetPath_validAnd259() {
-		boolean isValidPath, isSuccess;
+		boolean isValidPath;
 		isValidPath = Storage.setPath(longPath259);
-		if (isValidPath == true) {
-			isSuccess = true;
-		} else {
-			isSuccess = false;
-		}
-		assertTrue("test correct processing of valid path input with name", isSuccess);
+		assertTrue("test correct processing of valid path input with name", isValidPath);
 	}
 
 	@Test public void testSetPath_validAnd260() {
-		boolean isValidPath, isSuccess;
+		boolean isValidPath;
 		isValidPath = Storage.setPath(longPath260);
-		if (isValidPath == true) {
-			isSuccess = true;
-		} else {
-			isSuccess = false;
-		}
-		assertTrue("test correct processing of valid path input with name", isSuccess);
+		assertTrue("test correct processing of valid path input with name", isValidPath);
 	}
-	
+
+	@Test 
+	public void testEnquirePath_Positive1() {
+		Storage.setPath(pathDir);
+		assertEquals("test correct enquiring of path", pathWithNewName, Storage.enquirePath() );
+	}
+
+	@Test 
+	public void testEnquirePath_Positive2() {
+		Storage.setPath(pathDir + "/hi.txt");
+		assertEquals("test correct enquiring of path", pathDir + "/hi.txt", Storage.enquirePath() );
+	}
+
 	@Test
 	public void testWrite_correctContentWritten() {
-		// System.out.println("taskList " + taskList.toString());
 		Storage.write(taskList);
 		String line = "";
 		boolean isSuccess = true;
