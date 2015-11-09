@@ -125,7 +125,6 @@ public class TaskBinTest {
 				result.add(t);
 			}
 		}
-		//System.out.println("UNIT TEST INFO: " + result.size() + " " + result.get(0).getTitle());
 		assertTrue((result.size() == 4));
 	}
 
@@ -152,7 +151,6 @@ public class TaskBinTest {
 				result.add(t);
 			}
 		}
-		System.out.println(result.size());
 		assertTrue(result.size() == 2);
 	}
 
@@ -162,7 +160,7 @@ public class TaskBinTest {
 		task[0] = new Task(new DateTime(0,1,1,0,0),new DateTime(0,1,1,0,0));
 		task[1] = new Task("The title of the task is super super super super super super super super super super super super super super super super long", new DateTime(0,1,1,0,0), new DateTime(0,1,1,0,0));
 		task[2] = new Task("¶àÓïÑÔÖ§³Ö", new DateTime(0,1,1,0,0),new DateTime(0,1,1,0,0) );
-		task[3] = new Task("Task starts and end at different year", new DateTime(2015,11,12,0,0), new DateTime(2016,1,15,0,1));
+		task[3] = new Task("Recurring task", new DateTime(2015,11,10,0,0), new DateTime(2015,11,10,0,20), new DateTime(2016,5,10,0,20), Constants.tag_weekly);
 		task[4] = new Task("Task ends before it starts", new DateTime(2015,12,11,0,0), new DateTime(2015,11,15,0,0));
 		TaskBin testBin = new TaskBin();
 		testBin.add(task[0]);
