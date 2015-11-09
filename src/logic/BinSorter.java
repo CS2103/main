@@ -5,7 +5,8 @@ import java.util.ArrayList;
 import application.Constants;
 
 public class BinSorter {
-
+	
+	//Check whether the target String array includes all the the keywords stored in the keyword array
 	public boolean includeAllWords(String[] keywords, String[] title) {
 		boolean isFound;
 		for (String key : keywords) {
@@ -23,7 +24,7 @@ public class BinSorter {
 	}
 
 	
-	
+	//Sort the array in seq of time, with normal task at the top, followed by recurring tasks and finally floating task
 	public ArrayList<Task> sortArrayByTime(ArrayList<Task> inboxArr){
 		ArrayList<Task> normalTask = new ArrayList<Task>();
 		ArrayList<Task> timeUndefined = new ArrayList<Task>();
@@ -44,7 +45,6 @@ public class BinSorter {
 			}
 		}
 		timeUndefined = sortArrayByAlpha(timeUndefined);
-
 		for(int i = 1; i < normalTask.size() - 1; i++){
 			boolean isSorted = true;
 			for (int m = 1; m < inboxArr.size() - i; m++) {
@@ -87,7 +87,8 @@ public class BinSorter {
 		
 		return inboxArr;
 	}
-
+	
+	//Sort the array in alphabetically sequence
 	public ArrayList<Task> sortArrayByAlpha(ArrayList<Task> inboxArr) {
 		for (int m = 1; m < inboxArr.size(); m++) {
 			boolean isSorted = true;

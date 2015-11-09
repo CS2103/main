@@ -2,10 +2,10 @@ package logic;
 
 import java.util.ArrayList;
 import java.util.Stack;
-
+import java.util.logging.Level;
 import org.joda.time.DateTime;
-
 import application.Constants;
+import application.LogHandler;
 import storage.Storage;
 
 public class TaskBin {
@@ -32,6 +32,7 @@ public class TaskBin {
 	}
 
 	/******************************************* initialization *************************************/
+	
 	public void init() {
 		taskList = Storage.read();
 		display.setDisplay(taskList);
@@ -218,7 +219,7 @@ public class TaskBin {
 			break;
 
 		default:
-			System.out.println("Error: Unable to identify the command type");
+			LogHandler.log(Level.SEVERE, "Error: Unable to identify the command type");
 		}
 		Storage.write(taskList);
 	}
@@ -271,7 +272,7 @@ public class TaskBin {
 			break;
 
 		default:
-			System.out.println("Error: Unable to identify the command type");
+			LogHandler.log(Level.SEVERE,"Error: Unable to identify the command type");
 
 		}
 

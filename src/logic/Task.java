@@ -2,10 +2,13 @@ package logic;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.logging.Level;
 
 import org.joda.time.DateTime;
 
+
 import application.Constants;
+import application.LogHandler;
 
 public class Task {
 	private String title;
@@ -62,8 +65,8 @@ public class Task {
 				throw e;
 			}
 		} catch (InvalidTimeException e) {
-			System.out.println("Error" + e);
-
+			String warning = "Error" + e;
+			LogHandler.log(Level.INFO,warning);
 		}
 		setTag();
 	}
@@ -81,7 +84,8 @@ public class Task {
 				throw e;
 			}
 		} catch (InvalidTimeException e) {
-			System.out.println("Error" + e);
+			String warning = "Error" + e;
+			LogHandler.log(Level.INFO,warning);
 		}
 		setTag();
 	}
@@ -99,7 +103,8 @@ public class Task {
 		isRecur = false;
 		setTag();
 	}
-
+	
+	//Construction method for creating a recurring task
 	public Task(String title, DateTime startingTime, DateTime endingTime, DateTime recurEnding, String recurTag) {
 		isRecur = true;
 		isFinished = false;
@@ -146,6 +151,8 @@ public class Task {
 		return title;
 	}
 
+	//Return whether a task is finished,
+	//for a recurring task, if the recurring instance for today is finished, it will be marked as finishied
 	public boolean getStatus() {
 		if (!isTypeRecur()) {
 			return isFinished;
@@ -161,7 +168,9 @@ public class Task {
 	public DateTime getStartingTime() {
 		return startingTime;
 	}
-
+	
+	//Return the ending time of a task
+	//If the task is a recurring task, the task would return the upcoming recurring date
 	public DateTime getEndingTime() {
 		if(!isTypeRecur()){
 			return endingTime;
@@ -176,11 +185,8 @@ public class Task {
 		}
 		
 	}
-
-	public boolean isAfterNow() {
-		return endingTime.isBeforeNow() && !type_tag.equals(Constants.TYPE_FLOATING);
-	}
-
+	
+	//Check whether the task is overdue 
 	public boolean isOverDue() {
 		if (!isTypeRecur()) {
 			return endingTime.isBeforeNow() && !type_tag.equals(Constants.TYPE_FLOATING) && (!isFinished);
@@ -286,26 +292,27 @@ public class Task {
 		}
 	}
 	
+	//Return the ending date of the recurring task
 	public DateTime getRecurEnd(){
 		return recurEnd;
 	}
-
+	//Check whether the type of the task is a recurring task
 	public boolean isTypeRecur() {
 		return this.isRecur;
 	}
-
+	//Return the list of dates the task is recurring at
 	public ArrayList<DateTime> getRecurDates() {
 		if (isTypeRecur())
 			return recurDate;
 		return null;
 	}
-
+	//Return the list of dates the has been finished in 
 	public ArrayList<DateTime> getDoneDates() {
 		if (isTypeRecur())
 			return recurDone;
 		return null;
 	}
-
+	//Check whether the task is recurring at the day
 	public boolean isRecur() {
 		if (!isTypeRecur()) {
 			return false;
@@ -313,6 +320,18 @@ public class Task {
 		DateTime now = new DateTime();
 		for (DateTime t : recurDate) {
 			if (t.getDayOfYear() == now.getDayOfYear()) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public boolean isRecur(DateTime time){
+		if (!isTypeRecur()) {
+			return false;
+		}
+		for (DateTime t : recurDate) {
+			if (t.getDayOfYear() == time.getDayOfYear()) {
 				return true;
 			}
 		}
@@ -351,7 +370,8 @@ public class Task {
 	public boolean returnIsFinished(){
 		return isFinished;
 	}
-
+	
+	//delete the specific day from the recurring list 
 	public DateTime deleteRecur(DateTime date) {
 		if (!isTypeRecur()) {
 			return null;
