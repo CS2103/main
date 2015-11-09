@@ -91,7 +91,7 @@ public class DateParser {
 				}
 			} catch (NullPointerException e) {
 			} catch (IllegalArgumentException e) {
-				LogHandler.log(Level.SEVERE, Constants.ERROR_INPUT_DATE);
+				LogHandler.log(Level.FINE, Constants.ERROR_INPUT_DATE);
 			}
 		}
 		return timeString;
@@ -113,6 +113,7 @@ public class DateParser {
 				}
 			} catch (NullPointerException e) {
 			} catch (IllegalArgumentException e) {
+				LogHandler.log(Level.SEVERE, Constants.ERROR_INPUT_DATE);
 			}
 		}
 		return dateString;
