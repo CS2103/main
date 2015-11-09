@@ -25,7 +25,6 @@ import com.google.gson.reflect.TypeToken;
 
 import application.Constants;
 import logic.Task;
-import logic.TaskBin;
 import storage.Converters;
 import storage.Storage;
 
@@ -79,11 +78,11 @@ public class StorageTest {
 	@Before
 	public void getInvalidPathWithSlash() {
 
-		invalidPathWithSlash1 = new StringBuilder(pathDir).insert(pathDir.indexOf("/"), "xyz").toString(); // for mac
-		//invalidPathWithSlash1 = new StringBuilder(pathDir).insert(pathDir.indexOf("\\"), "xyz").toString(); // for windows
+		//invalidPathWithSlash1 = new StringBuilder(pathDir).insert(pathDir.indexOf("/"), "xyz").toString(); // for mac
+		invalidPathWithSlash1 = new StringBuilder(pathDir).insert(pathDir.indexOf("\\"), "xyz").toString(); // for windows
 
-		invalidPathWithSlash2 = pathDir + "ilovefood/mysave.txt"; // for mac
-		//invalidPathWithSlash2 = pathDir + "ilovefood\\mysave.txt"; // for windows
+		//invalidPathWithSlash2 = pathDir + "ilovefood/mysave.txt"; // for mac
+		invalidPathWithSlash2 = pathDir + "ilovefood\\mysave.txt"; // for windows
 	}
 
 	@Before
@@ -98,8 +97,8 @@ public class StorageTest {
 		int numMoreChar = Constants.MAX_PATH_LENGTH - length;
 		char[] repeat = new char[numMoreChar];
 		Arrays.fill(repeat, 'c');
-		longPath261 += "/" + new String(repeat); // for mac
-		//	longPath261 += "\\" + new String(repeat); // for windows
+		//longPath261 += "/" + new String(repeat); // for mac
+		longPath261 += "\\" + new String(repeat); // for windows
 	}
 
 	@Before
@@ -109,8 +108,8 @@ public class StorageTest {
 		int numMoreChar = Constants.MAX_PATH_LENGTH - length - Constants.FIX_CORRECT_LENGTH;
 		char[] repeat = new char[numMoreChar];
 		Arrays.fill(repeat, 'c');
-		longPath260 += "/" + new String(repeat); // for mac
-		//	longPath260 += "\\" + new String(repeat); // for windows
+		//longPath260 += "/" + new String(repeat); // for mac
+		longPath260 += "\\" + new String(repeat); // for windows
 	}
 
 	@Before
@@ -120,8 +119,8 @@ public class StorageTest {
 		int numMoreChar = Constants.MAX_PATH_LENGTH - length - Constants.FIX_CORRECT_LENGTH - Constants.FIX_CORRECT_LENGTH;
 		char[] repeat = new char[numMoreChar];
 		Arrays.fill(repeat, 'c');
-		longPath259 += "/" + new String(repeat); // for mac
-		//	longPath259 += "\\" + new String(repeat); // for windows
+		//longPath259 += "/" + new String(repeat); // for mac
+		longPath259 += "\\" + new String(repeat); // for windows
 	}
 
 	/*
@@ -138,7 +137,7 @@ public class StorageTest {
 			taskList.add(inputTasks[i]);
 		}
 	}
-	*/
+	 */
 
 	@After
 	public void reset() throws Exception {
@@ -250,16 +249,15 @@ public class StorageTest {
 
 	@Test
 	public void testSetPath_validPathWithSpaceBetween2() {
-		Storage.setPath(pathDir + "/hi there.txt"); // for mac
-		//Storage.setPath(pathDir + "\\hi there.txt"); // for windows
-
+		//Storage.setPath(pathDir + "/hi there.txt"); // for mac
+		Storage.setPath(pathDir + "\\hi there.txt"); // for windows
 		
-		System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaa " + Storage.enquirePath());
 		// for mac
-		assertEquals("test correct processing of valid path input with space in between filename", pathDir + "/hi there.txt", Storage.enquirePath()); 
+		//assertEquals("test correct processing of valid path input with space in between filename", pathDir + "/hi there.txt", Storage.enquirePath()); 
 
 		// for windows
-		//assertEquals("test correct processing of valid path input with space in between filename", pathDir + "\\hi there.txt", Storage.enquirePath());
+		assertEquals("test correct processing of valid path input with space in between filename", pathDir + "\\hi there.txt", Storage.enquirePath());
+		Storage.deleteAllFiles();
 	}
 
 	@Test
