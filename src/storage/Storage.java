@@ -70,6 +70,8 @@ public class Storage {
 	}
 
 	private static boolean isValidLength(String newPath) {
+		assert (newPath != null);
+
 		if (newPath.length() > Constants.MAX_PATH_LENGTH) {
 			return false;
 		}
@@ -85,6 +87,8 @@ public class Storage {
 	}
 
 	public static String extractDirectory(String path) {
+		assert (path != null);
+
 		//int i = path.lastIndexOf("/"); // for mac
 		int i = path.lastIndexOf("\\"); // for windows
 
@@ -133,6 +137,8 @@ public class Storage {
 
 	// process the "newPath" if it passes the isValidPath check
 	private static boolean processInvalidPath(String newPath) {
+		assert (newPath != null);
+
 		String filename = extractFilename(newPath);
 		Storage.currentTaskList = read();
 
