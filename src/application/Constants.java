@@ -319,8 +319,12 @@ public class Constants {
 
     // Error Messages
     public static final String ERROR_NULL_INPUT = "NULL input reached";
+    public static final String ERROR_NULL_OBJECT = "Object not instantiated";
     public static final String ERROR_INPUT_DATE = "Wrong date input";
     public static final String ERROR_INPUT_TIME = "Wrong time input";
-
+    public static final String ERROR_NULL_TASKS = "Unable to display tasks";
+    public static final String ERROR_NULL_STATUS_TEXT = "Null string received for status bar";
     public static final String ERROR_EXPECTED = "Error is expected";
+    public static final String ERROR_STYLESHEET_LOAD_FAILURE = "Unable to load stylesheet";
+    public static final String ERROR_INVALID_THEME_INDEX = "Theme index out of range";
 }

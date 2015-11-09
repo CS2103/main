@@ -16,6 +16,7 @@ import javafx.stage.Stage;
 public class HotKeyListener extends JFrame implements HotkeyListener {
 
     final JFrame frame = new JFrame(Constants.APP_NAME);
+    static boolean isHidden = false;
 
     public HotKeyListener(Stage stage) {
 	this.enableHotKey(stage);
@@ -32,23 +33,8 @@ public class HotKeyListener extends JFrame implements HotkeyListener {
     }
 
     private void enableHotKey(Stage stage) {
-	JIntellitype.getInstance().registerHotKey(1, JIntellitype.MOD_CONTROL, 'L');
+	JIntellitype.getInstance().registerHotKey(1, 0, KeyEvent.VK_F8);
 	JIntellitype.getInstance().registerHotKey(2, 0, KeyEvent.VK_ESCAPE);
-	/*
-	 * JIntellitype.getInstance().registerHotKey(3, 0, KeyEvent.VK_HOME);
-	 * JIntellitype.getInstance().registerHotKey(4, 0, 46);
-	 * JIntellitype.getInstance().registerHotKey(5,
-	 * JIntellitype.MOD_CONTROL, 'Z');
-	 * JIntellitype.getInstance().registerHotKey(6,
-	 * JIntellitype.MOD_CONTROL, 'Y');
-	 * JIntellitype.getInstance().registerHotKey(7,
-	 * JIntellitype.MOD_CONTROL, 'F');
-	 * JIntellitype.getInstance().registerHotKey(8,
-	 * JIntellitype.MOD_CONTROL, 'D');
-	 * JIntellitype.getInstance().registerHotKey(9,
-	 * JIntellitype.MOD_CONTROL, 'U');
-	 * JIntellitype.getInstance().registerHotKey(10, 0, 112);
-	 */
 
 	JIntellitype.getInstance().addHotKeyListener(new HotkeyListener() {
 	    @Override
@@ -57,8 +43,14 @@ public class HotKeyListener extends JFrame implements HotkeyListener {
 		    Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
-			    stage.show();
-			    stage.toFront();
+			    if (isHidden == true) {
+				stage.show();
+				stage.toFront();
+			    } else {
+				stage.hide();
+				stage.toBack();
+			    }
+			    isHidden = !isHidden;
 			}
 		    });
 
@@ -68,6 +60,7 @@ public class HotKeyListener extends JFrame implements HotkeyListener {
 			public void run() {
 			    stage.hide();
 			    stage.toBack();
+			    isHidden = true;
 			}
 		    });
 		}

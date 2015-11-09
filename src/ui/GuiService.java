@@ -2,7 +2,6 @@
 package ui;
 
 import java.awt.TrayIcon;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 
@@ -23,7 +22,6 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import logic.InvalidTimeException;
 import logic.Logic;
 import logic.Task;
 import parser.CommandParser;
@@ -78,6 +76,9 @@ public class GuiService {
 	taskIndex = Constants.BEGINNING_OF_LIST;
 	ObservableList<ListItem> timedTasks = FXCollections.observableArrayList();
 	ObservableList<ListItem> floatingTasks = FXCollections.observableArrayList();
+
+	assert tasksArr != null : Constants.ERROR_NULL_INPUT;
+
 	for (Task task : tasksArr) {
 	    ListItem newListItem = new ListItem(task.getTitle(), task.getStartingTime(), task.getEndingTime(),
 		    task.getType(), task.getStatus(), task.isOverDue(), task.returnRecurTag(), taskIndex++);
@@ -114,8 +115,6 @@ public class GuiService {
 			parser.getRecurValue(newValue));
 	    } else if (checkIfInputConsoleEqualsCommand(newValue, Constants.COMMAND_INVALID)) {
 		consoleView.showDefaultView();
-	    } else if (checkIfInputConsoleEqualsCommand(newValue, Constants.COMMAND_DELETE)) {
-
 	    } else if (checkIfInputConsoleEqualsCommand(newValue, Constants.COMMAND_EDIT)
 		    && newValue.matches(Constants.REGEX_EDIT_POPUP)) {
 		consoleView.showEditPopup();
@@ -157,8 +156,8 @@ public class GuiService {
 		} else if (event.getCode() == KeyCode.BACK_SPACE && checkIfInputConsoleIsEmpty()) {
 		    consoleView.showDefaultView();
 		    populateList(logic.displayHome());
-		    updateStatusLabel(Constants.FEEDBACK_VIEW_TODAY
-			    + DateTime.now().plusWeeks(1).toLocalDateTime().toString(Constants.FORMAT_DATE_VERBOSE));
+		    updateStatusLabel(Constants.FEEDBACK_VIEW_TODAY + DateTime.now().plusWeeks(Constants.NUMBER_ONE)
+			    .toLocalDateTime().toString(Constants.FORMAT_DATE_VERBOSE));
 		} else if (event.getCode() == KeyCode.DOWN) {
 		    consoleView.scrollPane.setVvalue(consoleView.scrollPane.getVvalue() + SCROLL_SPEED);
 		} else if (event.getCode() == KeyCode.UP) {
@@ -194,20 +193,16 @@ public class GuiService {
 		String input = consoleView.inputConsole.getText();
 
 		try {
-
 		    populateList(logic.inputHandler(input));
 		    consoleView.clearInputConsole();
-		} catch (ParseException e) {
-		    LogHandler.log(Level.WARNING, "Unable to parse user input");
-		} catch (InvalidTimeException e) {
-		} catch (NullPointerException e) {
-		    LogHandler.log(Level.INFO, "Current user input not returning anything for GUI to display");
+		} catch (Exception e) {
+		    LogHandler.log(Level.WARNING, Constants.ERROR_NULL_TASKS);
 		}
 
 		try {
 		    updateStatusLabel(logic.getStatusBarText(input));
 		} catch (NullPointerException e) {
-		    LogHandler.log(Level.INFO, "Nothing for status bar to display");
+		    LogHandler.log(Level.SEVERE, Constants.ERROR_NULL_STATUS_TEXT);
 		}
 
 		if (CommandParser.getCommand(input).trim().equalsIgnoreCase(Constants.COMMAND_HELP)) {
@@ -222,7 +217,15 @@ public class GuiService {
 	Scene myScene = new Scene(content, APP_DIMENSIONS_WIDTH, APP_DIMENSIONS_HEIGHT);
 	myScene.setFill(Color.TRANSPARENT);
 	myScene.getStylesheets().clear();
-	myScene.getStylesheets().add(this.getClass().getResource("style0.css").toExternalForm());
+	themeIndex = logic.readTheme();
+	assert themeIndex >= 0 : Constants.ERROR_NULL_INPUT;
+	try {
+	    myScene.getStylesheets()
+		    .add(this.getClass().getResource(Constants.THEME_LIST[themeIndex]).toExternalForm());
+	} catch (Exception e) {
+	    LogHandler.log(Level.SEVERE, Constants.ERROR_STYLESHEET_LOAD_FAILURE);
+	    myScene.getStylesheets().add(this.getClass().getResource(Constants.THEME_LIST[0]).toExternalForm());
+	}
 	showConsolePane();
 	return myScene;
     }
@@ -231,6 +234,7 @@ public class GuiService {
 	stage.getScene().getStylesheets().clear();
 	stage.getScene().getStylesheets().add(this.getClass()
 		.getResource(Constants.THEME_LIST[(++themeIndex) % Constants.THEME_LIST.length]).toExternalForm());
+	logic.saveTheme(themeIndex % Constants.THEME_LIST.length);
     }
 
     protected void showConsolePane() {
@@ -272,6 +276,7 @@ public class GuiService {
     }
 
     protected boolean checkIfInputConsoleIsEmpty() {
+	assert consoleView.inputConsole != null : Constants.ERROR_NULL_OBJECT;
 	return (consoleView.inputConsole.getText().length() == 0);
     }
 }

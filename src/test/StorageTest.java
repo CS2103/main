@@ -12,6 +12,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.logging.Level;
 
 import org.joda.time.DateTime;
 import org.junit.After;
@@ -24,6 +25,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import application.Constants;
+import application.LogHandler;
 import logic.Task;
 import storage.Converters;
 import storage.Storage;
@@ -43,6 +45,7 @@ public class StorageTest {
     private static ArrayList<Task> taskListForTest = new ArrayList<Task>();
 
     private static final File pathFile = new File("savedPath.txt");
+    private static final File savedTheme = new File("savedTheme.txt");
 
     private static final String path = pathFile.getAbsolutePath();
     private static final String pathDir = Storage.extractDirectory(path);
@@ -54,6 +57,9 @@ public class StorageTest {
     private static String longPath259;
     private static String longPath260;
     private static String longPath261;
+
+    private static int themeIndex = 1;
+    private static int themeIndexActual;
 
     @Before
     public void setUp1() throws Exception {
@@ -82,11 +88,11 @@ public class StorageTest {
 	// StringBuilder(pathDir).insert(pathDir.indexOf("/"),
 	// "xyz").toString(); // for mac
 	invalidPathWithSlash1 = new StringBuilder(pathDir).insert(pathDir.indexOf("\\"), "xyz").toString(); // for
-													    // windows
+	// windows
 
 	// invalidPathWithSlash2 = pathDir + "ilovefood/mysave.txt"; // for mac
 	invalidPathWithSlash2 = pathDir + "ilovefood\\mysave.txt"; // for
-								   // windows
+	// windows
     }
 
     @Before
@@ -127,23 +133,6 @@ public class StorageTest {
 	// longPath259 += "/" + new String(repeat); // for mac
 	longPath259 += "\\" + new String(repeat); // for windows
     }
-
-    /*
-     * @Before public void setUp2() throws Exception { Task[] inputTasks = new
-     * Task[INPUTTASKS_LENGTH]; inputTasks[0] = new Task(new
-     * DateTime(0,1,1,0,0),new DateTime(0,1,1,0,0)); inputTasks[1] = new
-     * Task(new DateTime(0,1,1,0,0),new DateTime(0,1,1,0,0)); inputTasks[2] =
-     * new Task(
-     * "The title of the task is super super super super super super super super super super super super super super super super long"
-     * , new DateTime(0,1,1,0,0), new DateTime(0,1,1,0,0)); inputTasks[3] = new
-     * Task("������֧��", new DateTime(0,1,1,0,0),new
-     * DateTime(0,1,1,0,0) ); inputTasks[4] = new
-     * Task("Task starts and end at different year", new
-     * DateTime(2015,11,12,0,0), new DateTime(2016,1,15,0,1)); inputTasks[5] =
-     * new Task("Task ends before it starts", new DateTime(2015,12,11,0,0), new
-     * DateTime(2015,11,15,0,0)); for (int i = 0; i < INPUTTASKS_LENGTH; i++) {
-     * taskList.add(inputTasks[i]); } }
-     */
 
     @After
     public void reset() throws Exception {
@@ -379,4 +368,22 @@ public class StorageTest {
 	assertTrue("test correct tasks read from savedTask.json", isSuccess);
     }
 
+    @Test
+    public void testSaveAndReadThemeIndex_correctContentWritten() {
+	Storage.saveThemeIndex(themeIndex);
+	try {
+	    FileReader fr = new FileReader(savedTheme.getAbsolutePath());
+	    BufferedReader br = new BufferedReader(fr);
+	    String themeIndexStr = br.readLine();
+	    themeIndexActual = Integer.parseInt(themeIndexStr);
+	    br.close();
+	    assertEquals("test correct theme index written and read", themeIndex, themeIndexActual);
+
+	} catch (FileNotFoundException e) {
+	    LogHandler.log(Level.SEVERE, "Cannot find savedPath file at specified location");
+
+	} catch (IOException e) {
+	    LogHandler.log(Level.SEVERE, "Unable to read from savedTheme file");
+	}
+    }
 }
