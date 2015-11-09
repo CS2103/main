@@ -229,7 +229,6 @@ public class Logic {
 					return parser.getTitle(input) + " has a time clash with existing events";
 				}
 			}
-
 			return parser.getTitle(input) + Constants.FEEDBACK_ADD_SUCCESS;
 		case Constants.COMMAND_MARK:
 			return bin.undoStack.peek().returnMani().getTitle() + Constants.FEEDBACK_DONE_SUCCESS;
