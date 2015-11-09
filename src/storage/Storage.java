@@ -1,3 +1,4 @@
+//@@author A0129699E
 package storage;
 
 import java.io.BufferedReader;
@@ -20,35 +21,36 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import application.Constants;
+
 import logic.Task;
 
 public class Storage {
 
-	// initial methods to serialise/deserialise savedTask.json with DateTime
-	// formats
+	// initial methods to serialise/deserialise savedTask.json with DateTime formats
 	final static Gson gson = Converters.registerDateTime(new GsonBuilder().setPrettyPrinting().serializeNulls()).create();
 	final DateTime original = new DateTime();
 	final String json = gson.toJson(original);
 	final DateTime reconstituted = gson.fromJson(json, DateTime.class);
 
 	// attributes
-	public static File savedTask = new File("TBAsave.json"); // public for
-	// testing,
-	// change after
-	// done
+	public static File savedTask = new File("TBAsave.json"); // public for testing, change after done
 
-	public static File savedPath = new File("TBApath.txt"); // public for
-	// testing, change
-	// after done
+	public static File savedPath = new File("TBApath.txt"); // public for testing, change after done
 
 	public static String path; // public for testing, change after done
 
 	private static ArrayList<Task> currentTaskList = new ArrayList<Task>();
 
-	public Storage() {
+	public static boolean setPath(String newPath) {
+		assert (newPath != null);
+		if (!isValidLength(newPath)) {
+			return false;
+		} else {
+			return processNewPath(newPath);
+		}
 	}
 
-	public static boolean setPath(String newPath) {
+	private static boolean processNewPath(String newPath) {
 		File checkFile = new File(newPath);
 		boolean canSetPath;
 		if (!isValidPath(checkFile)) {
@@ -65,6 +67,13 @@ public class Storage {
 		}
 	}
 
+	private static boolean isValidLength(String newPath) {
+		if (newPath.length() > Constants.MAX_PATH_LENGTH) {
+			return false;
+		}
+		return true;
+	}
+
 	public static boolean containSlash(String path) {
 		if (path.contains("\\") || path.contains("/")) {
 			return true;
@@ -74,8 +83,7 @@ public class Storage {
 	}
 
 	public static String extractDirectory(String path) {
-
-		int i = path.lastIndexOf("/");
+		int i = path.lastIndexOf("/"); // for mac
 		//		int i = path.lastIndexOf("\\"); // for windows
 
 		String subPath = path.substring(0, i);
@@ -83,14 +91,14 @@ public class Storage {
 	}
 
 	public static String extractFilename(String path) {
-		int i = path.lastIndexOf("/");
+		int i = path.lastIndexOf("/"); // for mac
 		//		int i = path.lastIndexOf("\\"); // for windows
 
 		String subPath = path.substring(i + Constants.FIX_CORRECT_INDEX);
 		return subPath;
 	}
 
-	// : * ? " < > |
+	// : * ? " < > | are invalid characters for filename
 	public static boolean containInvalidChar(String path) {
 		if (path.contains(":") || path.contains("*") || path.contains("?") || path.contains("\"") || path.contains("<")
 				|| path.contains(">") || path.contains("|")) {
@@ -188,9 +196,12 @@ public class Storage {
 	}
 
 	public static void write(ArrayList<Task> tasks) {
+		handleNullPath();
+		writeTasksToFile(tasks);
+	}
+
+	private static void writeTasksToFile(ArrayList<Task> tasks) {
 		try {
-			handleNullPath();
-			System.out.println("path " + path);
 			File file = new File(path);
 			FileWriter fw = new FileWriter(file);
 			BufferedWriter bw = new BufferedWriter(fw);
@@ -209,6 +220,42 @@ public class Storage {
 	}
 
 	public static ArrayList<Task> read() {
+		getSavePath();
+		return readFromSaveFile();
+	}
+
+	private static ArrayList<Task> readFromSaveFile() {
+		ArrayList<Task> taskList = new ArrayList<Task>();
+		handleNullPath();
+		return convertSaveData(taskList);
+	}
+
+	private static ArrayList<Task> convertSaveData(ArrayList<Task> taskList) {
+		String line;
+		try {
+			FileReader fr = new FileReader(Storage.path);
+			BufferedReader br = new BufferedReader(fr);
+			StringBuilder stringBuilder = new StringBuilder();
+
+			while ((line = br.readLine()) != null) {
+				stringBuilder.append(line).append("\n");
+			}
+
+			br.close();
+			String jsonString = stringBuilder.toString();
+			taskList = gson.fromJson(jsonString, new TypeToken<ArrayList<Task>>() {
+			}.getType());
+
+		} catch (FileNotFoundException e) {
+			Logger.getLogger("Log").log(Level.SEVERE, "Cannot find save file at specified location");
+
+		} catch (IOException e) {
+			Logger.getLogger("Log").log(Level.SEVERE, "Unable to read from save file");
+		}
+		return taskList;
+	}
+
+	private static void getSavePath() {
 		try {
 			FileReader fr = new FileReader(savedPath);
 			BufferedReader br = new BufferedReader(fr);
@@ -221,31 +268,6 @@ public class Storage {
 		} catch (IOException e) {
 			Logger.getLogger("Log").log(Level.SEVERE, "Unable to read from savedPath file");
 		}
-
-		ArrayList<Task> taskList = new ArrayList<Task>();
-		String line = "";
-		handleNullPath();
-
-		try {
-			FileReader fr = new FileReader(Storage.path);
-			BufferedReader br = new BufferedReader(fr);
-			StringBuilder stringBuilder = new StringBuilder();
-
-			while ((line = br.readLine()) != null) {
-				stringBuilder.append(line).append("\n");
-			}
-
-			br.close();
-			String jsonString = stringBuilder.toString();
-			taskList = gson.fromJson(jsonString, new TypeToken<ArrayList<Task>>() {}.getType());
-
-		} catch (FileNotFoundException e) {
-			Logger.getLogger("Log").log(Level.SEVERE, "Cannot find save file at specified location");
-
-		} catch (IOException e) {
-			Logger.getLogger("Log").log(Level.SEVERE, "Unable to read from save file");
-		}
-		return taskList;
 	}
 
 }
