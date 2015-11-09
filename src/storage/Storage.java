@@ -83,16 +83,16 @@ public class Storage {
 	}
 
 	public static String extractDirectory(String path) {
-		int i = path.lastIndexOf("/"); // for mac
-		//		int i = path.lastIndexOf("\\"); // for windows
+		//int i = path.lastIndexOf("/"); // for mac
+		int i = path.lastIndexOf("\\"); // for windows
 
 		String subPath = path.substring(0, i);
 		return subPath;
 	}
 
 	public static String extractFilename(String path) {
-		int i = path.lastIndexOf("/"); // for mac
-		//		int i = path.lastIndexOf("\\"); // for windows
+		//int i = path.lastIndexOf("/"); // for mac
+		int i = path.lastIndexOf("\\"); // for windows
 
 		String subPath = path.substring(i + Constants.FIX_CORRECT_INDEX);
 		return subPath;
@@ -175,8 +175,8 @@ public class Storage {
 	}
 
 	public static void appendSaveName(String newPath) {
-		// Storage.path = newPath + "\\TBAsave.txt"; // for windows
-		Storage.path = newPath + "/TBAsave.txt"; // for macOS
+		Storage.path = newPath + "\\TBAsave.txt"; // for windows
+		//Storage.path = newPath + "/TBAsave.txt"; // for macOS
 	}
 
 	public static void writePathToFile() {

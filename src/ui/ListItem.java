@@ -91,7 +91,7 @@ public class ListItem extends StackPane {
 		taskDuration.setText(String.format(Constants.FORMAT_EVENT, startDate, startTime, endDate, endTime));
 	    }
 	} else if (taskType.equals(Constants.TYPE_RECUR)) {
-	    taskDuration.setText(String.format(Constants.FORMAT_RECURRING, recurValue, startTime, endTime));
+	    taskDuration.setText(String.format(Constants.FORMAT_RECURRING, recurValue, startDate, startTime, endTime));
 	}
 
 	HBox titleNstatus = new HBox();

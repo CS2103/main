@@ -29,10 +29,10 @@ public class Constants {
     public static final int NEXT_DAY_OFFSET = 1;
     public static final int BEGINNING_OF_LIST = 1;
     public static final int NUMBER_ONE = 1;
-    
+
     public static final int EDIT_INDEX_FIELD = 2;
     public static final int EDIT_INDEX_TITLE = 3;
-    
+
     public static final int INDEX_OUT_OF_LIST = -1;
 
     public static final String LABEL_EDIT_TASK = "Edit Task";
@@ -246,7 +246,7 @@ public class Constants {
     public static final String FORMAT_SAME_DAY = "[%1$s] %2$s hrs - %3$s hrs";
     public static final String FORMAT_EVENT = "[%1$s] %2$s hrs - [%3$s] %4$s hrs";
     public static final String FORMAT_DEADLINE = "By [%1$s] %2$s hrs";
-    public static final String FORMAT_RECURRING = "Repeat %1$s %2$s hrs - %3$s hrs";
+    public static final String FORMAT_RECURRING = "Repeat %1$s [%2$s] %3$shrs - %4$s hrs";
     public static final String FORMAT_UNKNOWN = "????";
 
     public static final String FORMAT_FULL_DATE = "EEE dd MMM yyy";
@@ -259,12 +259,11 @@ public class Constants {
 
     public static final String TIME_START_OF_DAY = "0000";
     public static final String TIME_END_OF_DAY = "2359";
-    
+
     public static final int TIME_START_OF_DAY_HOUR = 0;
     public static final int TIME_START_OF_DAY_MINUTE = 0;
     public static final int TIME_END_OF_DAY_HOUR = 23;
     public static final int TIME_END_OF_DAY_MINUTE = 59;
-    
 
     public static final String[] AUTOCOMPLETE_ENTRIES = { "add [taskname] from [day] [time] to [day] [time]",
 	    "add [taskname] from [time] to [time]", "add [taskname]", "undo", "redo", "exit", "delete [index]",
@@ -286,9 +285,9 @@ public class Constants {
 
     // used in Storage.java to correct index when calling String.substring()
     public static final int FIX_CORRECT_INDEX = 1;
-    
+
     // used in TestStorage.java to fix number of characters needed
- 	public static final int FIX_CORRECT_LENGTH = 1;
+    public static final int FIX_CORRECT_LENGTH = 1;
 
     public static final String CSS_CONTENT = "content";
     public static final String CSS_DATE_DISPLAY = "dateDisplay";
@@ -317,11 +316,11 @@ public class Constants {
     public static final String TEXT_HELP_FLEXI_COMMAND_LIST = "create / make / plus\ndel / remove / rm / minus\nchange / update / modify\nm / complete / comp\num / incomplete / incomp\nun\nre\nfind / sr\ndisplay / sh\nset\nen / viewpath";
 
     public static final int MAX_PATH_LENGTH = 260;
-    
+
     // Error Messages
- 	public static final String ERROR_NULL_INPUT = "NULL input reached";
- 	public static final String ERROR_INPUT_DATE = "Wrong date input";
- 	public static final String ERROR_INPUT_TIME = "Wrong time input";
- 	
- 	public static final String ERROR_EXPECTED = "Error is expected";
+    public static final String ERROR_NULL_INPUT = "NULL input reached";
+    public static final String ERROR_INPUT_DATE = "Wrong date input";
+    public static final String ERROR_INPUT_TIME = "Wrong time input";
+
+    public static final String ERROR_EXPECTED = "Error is expected";
 }
