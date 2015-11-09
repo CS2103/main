@@ -29,8 +29,6 @@ public class TaskBinTest {
 
 	@Before
 	public void setUp() throws Exception {
-
-
 	}
 
 	@Test
@@ -64,8 +62,7 @@ public class TaskBinTest {
 					success = false;
 				}
 			}
-		}
-		
+		}	
 	}
 
 	@Test
@@ -101,7 +98,6 @@ public class TaskBinTest {
 		}
 		assertTrue(success);
 	}
-
 	@Test
 	public void testMarkTaskInstance() throws InvalidTimeException {
 		Task task1 = new Task(new DateTime(0,1,1,0,0),new DateTime(0,1,1,0,0));
@@ -178,8 +174,7 @@ public class TaskBinTest {
 		}
 		assertEquals(output, "01234");
 	}
-
-
+	
 	@Test
 	public void testIsClashedDateTimeArray() throws InvalidTimeException {
 		TaskBin testBin = new TaskBin();
@@ -199,8 +194,4 @@ public class TaskBinTest {
 		boolean[] expected = {true,true,true, true, true};
 		assertArrayEquals(result1, expected);
 	}
-		
-		
-
-
 }
