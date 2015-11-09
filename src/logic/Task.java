@@ -319,38 +319,11 @@ public class Task {
 		return false;
 	}
 	
-	public boolean isToday(){
-		if(isTypeRecur()){
-			return isRecur();
-		}
-		else{
-			
-			//TODO
-			if(this.getEndingTime().getDayOfYear()==DateTime.now().getDayOfYear()){
-				return true;
-			}else{
-				return false;
-			}
-		}
-	}
-
-	public boolean isRecur(DateTime date) {
-		if (!isTypeRecur()) {
-			return false;
-		}
-		for (DateTime t : recurDate) {
-			if (t.getDayOfYear() == date.getDayOfYear()) {
-				return true;
-			}
-		}
-		return false;
-	}
-
 	public String returnRecurTag() {
 		return recurTag;
 	}
 
-	public boolean isDone() {
+	protected boolean isDone() {
 		if (!isTypeRecur()) {
 			return false;
 		}
@@ -363,7 +336,7 @@ public class Task {
 		return false;
 	}
 
-	public boolean isDone(DateTime date) {
+	private boolean isDone(DateTime date) {
 		if (!isTypeRecur()) {
 			return false;
 		}
