@@ -75,13 +75,18 @@ public class Storage {
 	}
 
 	public static String extractDirectory(String path) {
-		int i = path.lastIndexOf("\\");
+
+		int i = path.lastIndexOf("/");
+		// int i = path.lastIndexOf("\\"); // for windows
+
 		String subPath = path.substring(0, i);
 		return subPath;
 	}
 
 	public static String extractFilename(String path) {
-		int i = path.lastIndexOf("\\");
+		int i = path.lastIndexOf("/");
+		// int i = path.lastIndexOf("\\"); // for windows
+
 		String subPath = path.substring(i + Constants.FIX_CORRECT_INDEX);
 		return subPath;
 	}
@@ -98,12 +103,14 @@ public class Storage {
 
 	private static boolean processValidPath(String newPath, File checkFile) {
 		Storage.currentTaskList = read();
+		deleteOldSaveFile();
 
 		if (checkFile.isDirectory()) {
 			appendSaveName(newPath);
 			writePathToFile();
 		} else {
 			Storage.path = newPath;
+			writePathToFile();
 		}
 		return cleanUpUnusedFile();
 	}
@@ -116,6 +123,7 @@ public class Storage {
 
 	private static boolean processInvalidPath(String newPath) {
 		String filename = extractFilename(newPath);
+		Storage.currentTaskList = read();
 
 		if (containInvalidChar(filename)) {
 			return false;
@@ -127,10 +135,9 @@ public class Storage {
 		if (!isValidPath(file)) {
 			return false;
 		} else {
-			Storage.path = newPath;
 			deleteOldSaveFile();
+			Storage.path = newPath;
 			writePathToFile();
-			Storage.currentTaskList = read();
 			return cleanUpUnusedFile();
 		}
 	}
@@ -184,7 +191,8 @@ public class Storage {
 	public static void write(ArrayList<Task> tasks) {
 		try {
 			handleNullPath();
-			File file = new File(Storage.path);
+			System.out.println("path " + path);
+			File file = new File(path);
 			FileWriter fw = new FileWriter(file);
 			BufferedWriter bw = new BufferedWriter(fw);
 			bw.write(gson.toJson(tasks));
