@@ -68,13 +68,13 @@ public class Constants {
     public static final String DOT = ".";
 
     // Dictionaries
-    public static final String[] DICTIONARY_ADD = { "add", "plus", "create" };
-    public static final String[] DICTIONARY_DELETE = { "delete", "rm", "del", "remove" };
+    public static final String[] DICTIONARY_ADD = { "add", "plus", "create", "make" };
+    public static final String[] DICTIONARY_DELETE = { "delete", "rm", "del", "remove", "minus" };
     public static final String[] DICTIONARY_SHOW = { "show", "display", "sh" };
     public static final String[] DICTIONARY_SEARCH = { "search", "find", "sr" };
-    public static final String[] DICTIONARY_EDIT = { "edit", "change", "e", "modify" };
-    public static final String[] DICTIONARY_MARK = { "mark", "m" };
-    public static final String[] DICTIONARY_UNMARK = { "unmark", "um" };
+    public static final String[] DICTIONARY_EDIT = { "edit", "change", "modify" };
+    public static final String[] DICTIONARY_MARK = { "mark", "m", "complete", "comp" };
+    public static final String[] DICTIONARY_UNMARK = { "unmark", "um", "incomplete", "incomp" };
     public static final String[] DICTIONARY_UNDO = { "undo", "un" };
     public static final String[] DICTIONARY_REDO = { "redo", "re" };
     public static final String[] DICTIONARY_VIEW_HOMESCREEN = { "home", "h" };
@@ -314,7 +314,7 @@ public class Constants {
     public static final String CSS_HELP_TEXT = "helpText";
 
     public static final String TEXT_HELP_COMMAND_LIST = "add\ndelete\nedit\nmark\nunmark\nundo\nredo\nsearch\nshow\nsetpath\nenquirepath\nexit";
-    public static final String TEXT_HELP_FLEXI_COMMAND_LIST = "a [title] from [start] to [end]\ndel [index]\ne [index] [field] [new value]\nm [index]\num [index]\nun\nre\nsearch [keyword]\nshow [date]\nset [filepath]\nen\nexit";
+    public static final String TEXT_HELP_FLEXI_COMMAND_LIST = "create / make / plus\ndel / remove / rm / minus\nchange / update / modify\nm / complete / comp\num / incomplete / incomp\nun\nre\nfind / sr\ndisplay / sh\nset\nen / viewpath";
 
     public static final int MAX_PATH_LENGTH = 260;
     
