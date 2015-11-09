@@ -1,4 +1,5 @@
 //@@author A0129708
+
 package logic;
 
 import java.util.ArrayList;
@@ -6,7 +7,8 @@ import java.util.ArrayList;
 import application.Constants;
 
 public class BinSorter {
-
+	
+	//Check whether the target String array includes all the the keywords stored in the keyword array
 	public boolean includeAllWords(String[] keywords, String[] title) {
 		boolean isFound;
 		for (String key : keywords) {
@@ -22,11 +24,10 @@ public class BinSorter {
 		}
 		return true;
 	}
+
 	
-	
+	//Sort the array in seq of time, with normal task at the top, followed by recurring tasks and finally floating task
 	public ArrayList<Task> sortArrayByTime(ArrayList<Task> inboxArr){
-		System.out.println("Is sorting");
-		ArrayList<Task> result = new ArrayList<Task>();
 		ArrayList<Task> normalTask = new ArrayList<Task>();
 		ArrayList<Task> timeUndefined = new ArrayList<Task>();
 		ArrayList<Task> recurList = new ArrayList<Task>();
@@ -46,10 +47,9 @@ public class BinSorter {
 			}
 		}
 		timeUndefined = sortArrayByAlpha(timeUndefined);
-
 		for(int i = 1; i < normalTask.size() - 1; i++){
 			boolean isSorted = true;
-			for (int m = 1; m < inboxArr.size() - i; m++) {
+			for (int m = 0; m < inboxArr.size() - i - 1; m++) {
 				if(normalTask.get(i).getEndingTime().isAfter(normalTask.get(i+1).getEndingTime())){
 					Task buffer = normalTask.get(i);
 					normalTask.set(i, normalTask.get(i+1));
@@ -79,13 +79,17 @@ public class BinSorter {
 				break;
 			}
 		}
-
-		result.addAll(normalTask);
-		result.addAll(recurList);
-		result.addAll(timeUndefined);
-		return result;
+		
+		inboxArr.clear();
+		inboxArr.addAll(normalTask);
+		inboxArr.addAll(recurList);
+		inboxArr.addAll(timeUndefined);
+		
+		
+		return inboxArr;
 	}
-
+	
+	//Sort the array in alphabetical sequence
 	public ArrayList<Task> sortArrayByAlpha(ArrayList<Task> inboxArr) {
 		for (int m = 1; m < inboxArr.size(); m++) {
 			boolean isSorted = true;
@@ -104,6 +108,7 @@ public class BinSorter {
 						break;
 					}
 				}
+
 			}
 			if (isSorted == true) {
 				return inboxArr;

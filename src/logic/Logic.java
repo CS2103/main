@@ -20,10 +20,6 @@ public class Logic {
 	public Logic() {
 		bin.init();
 	}
-	
-	public void clear(){
-		bin.clear();
-	}
 
 	public ArrayList<Task> inputHandler(String input) throws ParseException, InvalidTimeException {
 		String command = CommandParser.getCommand(input);
@@ -55,7 +51,7 @@ public class Logic {
 		} else if (command.equalsIgnoreCase(Constants.COMMAND_ENQUIREPATH)) {
 			return bin.returnDisplay();
 		} else if (command.equalsIgnoreCase(Constants.COMMAND_SHOW)) {
-			System.out.println(toString());
+			
 			if (parser.getTitle(input).equals(Constants.STATUS_INCOMPLETE)) {
 				return bin.displayUnfinished();
 			} else if (parser.getTitle(input).equals(Constants.STATUS_COMPLETE)) {
@@ -99,6 +95,7 @@ public class Logic {
 	}
 
 	public ArrayList<Task> displayHome() {
+
 		return bin.displayHome();
 	}
 
@@ -146,12 +143,29 @@ public class Logic {
 		return bin.returnDisplay();
 	}
 
+	public ArrayList<Task> deleteTaskByName(String input) throws ParseException {
+		String title = parser.getTitle(input);
+		DateTime endingDate = parser.getEndDateTime(input);
+		if (endingDate == null) {
+			endingDate = DateTime.now();
+		}
+		ArrayList<Task> result = bin.findTaskByTitle(title);
+		if (result.size() > 1) {
+			result = bin.findTaskByDate(result, endingDate);
+		}
+		bin.delete(result.get(0));
+		return bin.returnDisplay();
+	}
+
 	public ArrayList<Task> deleteTaskByIndex(int index) {
 		ArrayList<Task> display = bin.returnDisplay();
 		Task toDel = new Task();
 		toDel = display.get(index - 1);
 		bin.delete(toDel);
 		return bin.returnDisplay();
+	}
+
+	public void showOverdue() {
 	}
 
 	public ArrayList<Task> searchEntries(String keyWord) {
@@ -184,18 +198,21 @@ public class Logic {
 		return bin.returnDisplay();
 	}
 
+	public void changeDirectory() {
 
-	public ArrayList<Task> startupDisplay() {
-		ArrayList<Task> initDis = bin.displayHome();
-		return initDis;
+	}
+
+	public void editSettings() {
+
 	}
 	
-	public String toString(){
-		String display = new String();
-		for(Task t:bin.returnDisplay()){
-			display = display + t.toString();
-		}
-		return display;
+	public void clear(){
+		bin.clear();
+	}
+
+	public ArrayList<Task> startupDisplay() {// display the initial screen
+		ArrayList<Task> initDis = bin.displayHome();
+		return initDis;
 	}
 
 	// @@author A0121442X
@@ -257,6 +274,7 @@ public class Logic {
 			return Constants.FEEDBACK_INVALID;
 		}
 	}
+
 	public int getIndex(String input) {
 		return parser.getIndex(input);
 	}

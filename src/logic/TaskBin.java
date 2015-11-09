@@ -1,12 +1,13 @@
 //@@author A0129708
+
 package logic;
 
 import java.util.ArrayList;
 import java.util.Stack;
-
+import java.util.logging.Level;
 import org.joda.time.DateTime;
-
 import application.Constants;
+import application.LogHandler;
 import storage.Storage;
 
 public class TaskBin {
@@ -33,24 +34,29 @@ public class TaskBin {
 	}
 
 	/******************************************* initialization *************************************/
+	
 	public void init() {
 		taskList = Storage.read();
 		display.setDisplay(taskList);
 		displayList = display.returnDisplay();
 	}
 
+	//Return the list that is current in display. 
 	public ArrayList<Task> returnDisplay() {
+		
 		displayList = display.returnDisplay();
-		return displayList;
-	}
-
-	public ArrayList<Task> displayHome() {
-		display.setDisplay(taskList);
-		displayList = display.returnDisplay();
-		sorter.sortArrayByTime(displayList);
+		displayList = sorter.sortArrayByTime(displayList);
 		return displayList;
 	}
 	
+	//Set the display as the initial home screen
+	public ArrayList<Task> displayHome() {
+		display.setDisplay(taskList);
+		displayList = display.returnDisplay();
+		return displayList;
+	}
+	
+	//display all the tasks that are not yet finished
 	public ArrayList<Task> displayUnfinished(){
 		ArrayList<Task> results = new ArrayList<Task>();
 		for(Task t:taskList){
@@ -63,6 +69,7 @@ public class TaskBin {
 		return results;
 	}
 	
+	//display all the tasks that are finished
 	public ArrayList<Task> displayFinished(){
 		ArrayList<Task> results = new ArrayList<Task>();
 		for(Task t:taskList){
@@ -75,12 +82,14 @@ public class TaskBin {
 		return results;
 	}
 	
+	//display all the tasks that are stored. 
 	public ArrayList<Task> displayAll(){
 		display.setDisplayAll(taskList);
 		displayList = display.returnDisplay();
 		return displayList;
 	}
 	
+	//Add a new task, and back to home display 
 	public void add(Task newTask) {
 		Command add = new Command(Constants.add_tag, newTask);
 		this.undoStack.push(add);
@@ -91,7 +100,7 @@ public class TaskBin {
 		Storage.write(taskList);
 		redoStack.clear();
 	}
-
+	//delete the task and back to home display
 	public void delete(Task task) {
 		for (int i = 0; i < taskList.size(); i++) {
 			if (taskList.get(i).equals(task)) {
@@ -107,7 +116,8 @@ public class TaskBin {
 
 		redoStack.clear();
 	}
-
+	
+	//Delete the date of the recur task out of its recurring sequence. 
 	public void delete(Task task, DateTime date) {
 		if (!task.getType().equals(Constants.TYPE_RECUR)) {
 			return;
@@ -119,13 +129,9 @@ public class TaskBin {
 		}
 	}
 	
-	public void clear(){
-		taskList.clear();
-		Storage.write(taskList);
-	}
-
+	//Mark the task instance as finished
+	//If its a recurring task, mark today as finished. 
 	public ArrayList<Task> markTaskInstance(Task task) {
-
 		for (Task obj : taskList) {
 			boolean isFoundRecur = false;
 			if(obj.isTypeRecur()){
@@ -149,9 +155,10 @@ public class TaskBin {
 		Storage.write(taskList);
 		displayList = display.returnDisplay();
 		return displayList;
-
 	}
-
+	
+	//Mark the task instance as unfinished
+	//If its a recurring task, mark today as unfinished
 	public ArrayList<Task> unmarkTaskInstance(Task task) {
 		for (Task obj : taskList) {
 			if (obj.equals(task)) {
@@ -167,7 +174,7 @@ public class TaskBin {
 		return displayList;
 
 	}
-
+	//Undo the previous user action
 	public void undo() {
 		if (this.undoStack.isEmpty()) {
 			return;
@@ -200,14 +207,13 @@ public class TaskBin {
 			break;
 
 		case Constants.alter_tag:
-
+			
 			redoStack.push(previousComm);
 			displayList = display.returnDisplay();
-			//taskList.remove(taskList.get(taskList.indexOf(previousComm.returnMani())));
 			taskList.remove(previousComm.returnMani());
 			taskList.add(previousComm.returnOrigin());
-			
 			if(!displayList.equals(taskList)){
+				displayList.remove(displayList.get(displayList.indexOf(previousComm.returnMani())));
 				displayList.add(previousComm.returnOrigin());
 			}
 			display.setDisplayAll(displayList);
@@ -226,11 +232,12 @@ public class TaskBin {
 			break;
 
 		default:
-			System.out.println("Error: Unable to identify the command type");
+			LogHandler.log(Level.SEVERE, "Error: Unable to identify the command type");
 		}
 		Storage.write(taskList);
 	}
-
+	
+	//Redo the previous undo action
 	public void redo() {
 		if (this.redoStack.isEmpty()) {
 			return;
@@ -250,7 +257,6 @@ public class TaskBin {
 			display.setDisplay(taskList);
 			displayList = display.returnDisplay();
 			break;
-			
 		case Constants.alter_tag:
 			displayList = display.returnDisplay();
 			undoStack.push(redoComm);
@@ -260,6 +266,7 @@ public class TaskBin {
 			if(!displayList.equals(taskList)){
 				displayList.remove(displayList.get(displayList.indexOf(redoComm.returnOrigin())));
 				displayList.add(redoComm.returnMani());
+				
 			}
 			display.setDisplayAll(displayList);
 			break;
@@ -279,10 +286,13 @@ public class TaskBin {
 			break;
 
 		default:
-			System.out.println("Error: Unable to identify the command type");
-		}
-	}
+			LogHandler.log(Level.SEVERE,"Error: Unable to identify the command type");
 
+		}
+
+	}
+	
+	//Retrieve the tasks with its title includes the keyword in the designated list of task
 	public ArrayList<Task> findTaskByTitle(ArrayList<Task> list, String title) {
 		ArrayList<Task> result = new ArrayList<Task>();
 		String[] keywords = title.split(" ");
@@ -296,7 +306,7 @@ public class TaskBin {
 		display.setDisplayAll(result);
 		return result;
 	}
-
+	//Retrieve the tasks with its title includes the keyword in the task list
 	public ArrayList<Task> findTaskByTitle(String title) {
 		ArrayList<Task> result = new ArrayList<Task>();
 		String[] keywords = title.split(" ");
@@ -312,6 +322,7 @@ public class TaskBin {
 
 	}
 
+	//Retrieve the task with the specified date in the list
 	public ArrayList<Task> findTaskByDate(ArrayList<Task> list, DateTime date) {
 		ArrayList<Task> result = new ArrayList<Task>();
 		for (Task task : list) {
@@ -331,7 +342,8 @@ public class TaskBin {
 		display.setDisplayAll(result);
 		return result;
 	}
-
+	
+	//Retrieve the task with the specific date in the task list
 	public ArrayList<Task> findTaskByDate(DateTime date) {
 		ArrayList<Task> result = new ArrayList<Task>();
 		for (Task task : taskList) {
@@ -351,29 +363,25 @@ public class TaskBin {
 		display.setDisplayAll(result);
 		return result;
 	}
-
+	//edit the title of the specified task
 	public void editTitle(Task task, String newTitle) {
 				
 		Task buffer = new Task(task);
 		Task tar = new Task (taskList.get(taskList.indexOf(task)));
-		
+		Task tarDis = new Task (displayList.get(displayList.indexOf(tar)));
 		taskList.remove(taskList.get(taskList.indexOf(task)));
-		if(displayList.contains(tar)){
-			Task tarDis = new Task (displayList.get(displayList.indexOf(tar)));
-			displayList.remove(displayList.get(displayList.indexOf(task)));
-			tarDis.setTitle(newTitle);
-			displayList.add(tarDis);
-		}
-		
+		displayList.remove(displayList.get(displayList.indexOf(task)));
+		tarDis.setTitle(newTitle);
 		tar.setTitle(newTitle);
 		taskList.add(tar);
+		displayList.add(tarDis);
 		Command editTil = new Command(Constants.alter_tag, tar, buffer);
 		display.setDisplayAll(displayList);
 		undoStack.push(editTil);
 		Storage.write(taskList);
 		redoStack.clear();
 	}
-	
+	//Edit the time field of task, editing both starting time and ending time
 	public void editTimeField(Task task, DateTime startDate, DateTime endDate){
 		if (task.getType().equals(Constants.recur_tag)) {
 			return;
@@ -403,10 +411,12 @@ public class TaskBin {
 		redoStack.clear();
 	}
 
+	//Edit the start date of the task to a new date 
 	public void editStartingDate(Task task, DateTime date){
 		if (task.getType().equals(Constants.recur_tag)) {
 			return;
 		}
+		
 		Task buffer = new Task(task);
 		Task tar = new Task (taskList.get(taskList.indexOf(task)));
 		Task tarDis = new Task (displayList.get(displayList.indexOf(tar)));
@@ -445,7 +455,8 @@ public class TaskBin {
 		Storage.write(taskList);
 		redoStack.clear();
 	}
-
+	
+	//Return all the tasks that are overdue
 	public ArrayList<Task> returnOverdue() {
 		ArrayList<Task> overdue = new ArrayList<Task>();
 		DateTime now = DateTime.now();
@@ -458,7 +469,8 @@ public class TaskBin {
 		return overdue;
 
 	}
-
+	
+	//Return all the unfinished tasks
 	public ArrayList<Task> getUnfinished() {
 		ArrayList<Task> result = new ArrayList<Task>();
 		for (Task task : taskList) {
@@ -469,24 +481,7 @@ public class TaskBin {
 		return result;
 	}
 
-	public boolean isClashed(Task task) {
-		if (!task.getType().equals(Constants.TYPE_FLOATING)) {
-			DateTime start = task.getStartingTime();
-			DateTime end = task.getEndingTime();
-			for (Task t : taskList) {
-				if((t.getStartingTime().getYear() == 0) || (t.getEndingTime().getYear()==0)){
-					return false;
-				}else if ((t.getStartingTime().isBefore(end)) && (t.getStartingTime().isAfter(start))) {
-					return true;
-				}else if ((t.getEndingTime().isAfter(start)) && (t.getEndingTime().isBefore(end))) {
-					return true;
-				}
-			}
-			return false;
-		}
-		return false;
-	}
-
+	//Check whether the period of time has clashed with time of existing tasks in the tasklist
 	public boolean isClashed(DateTime[] time) {
 		DateTime start = time[0];
 		DateTime end = time[1];
@@ -507,8 +502,15 @@ public class TaskBin {
 		return false;
 	}
 	
+	//Return all the tasks that are inbox
 	public ArrayList<Task> returnAllInbox(){
 		return new ArrayList<Task>(taskList);
+	}
+	
+	//Clear all tasks in the taskBin and storage
+	public void clear() {
+		taskList.clear();
+		Storage.write(taskList);
 	}
 
 }
