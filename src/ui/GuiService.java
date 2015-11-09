@@ -81,6 +81,8 @@ public class GuiService {
 	for (Task task : tasksArr) {
 	    ListItem newListItem = new ListItem(task.getTitle(), task.getStartingTime(), task.getEndingTime(),
 		    task.getType(), task.getStatus(), task.isOverDue(), task.returnRecurTag(), taskIndex++);
+	    System.out.println(task.getEndingTime().toString());
+
 	    if (task.getType().equalsIgnoreCase(Constants.TYPE_FLOATING)) {
 		floatingTasks.add(newListItem);
 	    } else {
