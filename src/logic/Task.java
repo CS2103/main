@@ -181,7 +181,7 @@ public class Task {
 			DateTime earliest = new DateTime(9999,12,31,23,59); 
 			for(DateTime date: recurDate){
 				if(!recurDone.contains(date)){
-					if(date.isBefore(earliest)){
+					if(earliest.getMillis() - date.getMillis() > 100000){
 						earliest = date;
 					}
 				}
@@ -214,6 +214,26 @@ public class Task {
 		this.title = title;
 		if(isTypeRecur()){
 			isRecur = true;
+		}
+	}
+	
+	public DateTime nextRecur(){
+		DateTime earliest = new DateTime(9999,12,31,23,59); 
+		for(DateTime date: recurDate){
+			if(!recurDone.contains(date)){
+				if(earliest.getMillis() - date.getMillis() > 100000){
+					earliest = date;
+				}
+			}
+		}
+		for(DateTime t: recurDone){
+			System.out.println("The done date: "+t.toString());
+		}
+		System.out.println("This is the ending date: " + earliest.toString());
+		if(earliest.getYear()!=9999){
+			return earliest;
+		}else{
+			return null;
 		}
 	}
 
