@@ -43,6 +43,7 @@ public class AddTaskPreview extends StackPane {
 		tempEndTime = new Label();
 		tempEndTime.setId("taskPreviewDetails");
 		tempRecurring = new Label();
+		tempRecurring.setId("taskPreviewDetails");
 
 		header.setText("Add new task");
 		header.setFont(Font.font("SansSerif", FontWeight.BOLD, 16));

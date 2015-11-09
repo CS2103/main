@@ -1,3 +1,4 @@
+/*@@author A0121442X  */
 #currentDisplay {
 		
 }
@@ -106,21 +107,43 @@
 	-fx-background-color: rgba(0,0,0,0.04);
 }
 
+#titleOverdue {
+	-fx-text-fill: palevioletred ;
+	-fx-font-family: "sans-serif";
+	-fx-font-weight: bold;
+	-fx-font-style: italic;
+	-fx-font-size:16px; 
+}
+
 #titleTask {
 	-fx-text-fill:linear-gradient( from 0.0% 0.0% to 100.0% 100.0%, rgb(51,102,102) 0.0, rgb(204,102,51) 100.0);
+	-fx-font-family: "sans-serif";
+	-fx-font-weight: bold;
+	-fx-font-size:16px; 
 }
 
 #titleEvent {
 	-fx-text-fill:linear-gradient( from 0.0% 0.0% to 100.0% 100.0%, rgb(51,102,102) 0.0, rgb(204,102,51) 100.0);
+	-fx-font-family: "sans-serif";
+	-fx-font-weight: bold;
+	-fx-font-size:16px; 
 }
 #titleDeadline {
 	-fx-text-fill:chocolate;
+	-fx-font-family: "sans-serif";
+	-fx-font-weight: bold;
+	-fx-font-size:16px; 
 }
 #index {
 	-fx-text-fill:linear-gradient( from 100.0% 0.0% to 100.0% 100.0%, rgb(153,51,0) 0.0, rgb(204,102,51) 100.0) ;
 }
+
 #duration {
 	-fx-text-fill:linear-gradient( from 100.0% 0.0% to 100.0% 100.0%, rgb(153,51,0) 0.0, rgb(204,102,51) 100.0) ;
+	-fx-padding: 0 0 0 15;
+	-fx-font-family: sans-serif;
+	-fx-font-style: italic;
+	-fx-font-size: 11px; 
 }
 
 #statusIcon {

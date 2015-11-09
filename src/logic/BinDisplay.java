@@ -1,3 +1,4 @@
+//@@author A0129708
 package logic;
 
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ public class BinDisplay {
 
 	public ArrayList<Task> initDisplay(ArrayList<Task> taskList) {
 		bufferList = taskList;
+		sorter.sortArrayByTime(bufferList);
 		setDisplay(bufferList);
 		return bufferList;
 	}
@@ -68,10 +70,11 @@ public class BinDisplay {
 				dis.add(t);
 			}
 		}
-		dis = sorter.sortArrayByTime(dis);
+		
 		for(int i = 0; i < dis.size();i++ ){
 			System.out.println("The titles in display list is: " + dis.get(i).getTitle());
 		}
+		dis = sorter.sortArrayByTime(dis);
 		displayList = dis;
 	}
 
@@ -120,7 +123,7 @@ public class BinDisplay {
 			}
 		}
 	}
-
+	//Update the display list after each action is performed
 	public void updateDisplay(Command command, boolean todo) {
 		if (todo) {
 			switch (command.returnCommand()) {
@@ -141,8 +144,10 @@ public class BinDisplay {
 		} else {
 			switch (command.returnCommand()) {
 			case Constants.alter_tag:
-				displayList.add(displayList.get(displayList.indexOf(command.returnOrigin())));
-				displayList.remove(command.returnMani());
+				if(displayList.contains(command.returnOrigin())){
+					displayList.add(displayList.get(displayList.indexOf(command.returnOrigin())));
+					displayList.remove(command.returnMani());
+				}
 				break;
 
 			case Constants.mark_tag:
