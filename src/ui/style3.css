@@ -1,4 +1,9 @@
 /*@@author A0121442X  */
+#content {
+	-fx-background-color: rgba(255,255,255, 0);
+	-fx-background-radius: 10px;	
+}
+
 #currentDisplay {
 		
 }
@@ -179,4 +184,24 @@
 	-fx-text-fill: antiquewhite ;
 	-fx-font-family: SansSerif;
 	-fx-font-size: 11pt;
+}
+
+#popupLayout {
+	-fx-pref-height: 50;
+	-fx-pref-width: 700;
+	-fx-padding: 20 20 20 20;
+	-fx-background-color: rgba(0,0,0,0.5);
+	-fx-background-radius:20
+}
+
+#popupPane {
+	-fx-background-color: rgba(255,255,255,0.5);
+	-fx-pref-height: 50;
+	-fx-pref-width: 700;
+}
+
+#helpText {
+	-fx-fill: rgba(255,255,255,1);
+	-fx-font-size:18;
+	-fx-font-weight:400;
 }

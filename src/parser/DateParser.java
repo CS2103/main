@@ -28,10 +28,10 @@ public class DateParser {
 
 	public static DateTime getDateTime(String input) {
 		DateTime dateTime;
-		if(input != null){
+		if (input != null) {
 			input = input.replaceAll("\\s+", Constants.SPACE);
 		}
-		
+
 		String dateString = new String();
 		String timeString = new String();
 
@@ -142,7 +142,7 @@ public class DateParser {
 		}
 		return DateTime.now().withHourOfDay(0).withMinuteOfHour(0);
 	}
-	
+
 	public static String getRecurValue(String input) {
 
 		String recurValue = new String();

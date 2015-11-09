@@ -16,6 +16,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
+import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -33,8 +34,8 @@ import parser.TitleParser;
 
 public class GuiService {
 
-	StackPane content;
-	ConsoleView consoleView;
+	protected StackPane content;
+	protected ConsoleView consoleView;
 
 	private Logic logic;
 	private Parser parser;
@@ -53,24 +54,34 @@ public class GuiService {
 
 	public GuiService(Stage stage) {
 		this.stage = stage;
-		this.logic = new Logic();
-		this.parser = new Parser();
+		instantiateHelperClasses();
+		applyDropShadowEffect();
+		setTextFieldOnAction();
+		setUpDraggableStage();
+		setUpResponsivePopups();
+		setUpTextFieldKeystrokeListeners();
+		setUpMainDisplayKeystrokeListeners();
+		populateList(logic.startupDisplay());
+	}
 
+	private void applyDropShadowEffect() {
 		content = new StackPane();
-		consoleView = new ConsoleView();
-
-		content.setStyle("-fx-background-color: rgba(255,255,255, 0); -fx-background-radius: 10px;");
+		content.setId("content");
 
 		DropShadow dropShadow = new DropShadow();
 		dropShadow.setRadius(5.0);
 		dropShadow.setOffsetX(4.0);
+		dropShadow.setBlurType(BlurType.GAUSSIAN);
+		dropShadow.setSpread(0.01);
 		dropShadow.setOffsetY(3.0);
 		dropShadow.setColor(Color.color(0.4, 0.5, 0.5));
 		content.setEffect(dropShadow);
+	}
 
-		addListenersToConsoleView(stage);
-		populateList(logic.startupDisplay());
-		content.getChildren().addAll(consoleView);
+	private void instantiateHelperClasses() {
+		this.logic = new Logic();
+		this.parser = new Parser();
+		this.consoleView = new ConsoleView();
 	}
 
 	private void populateList(ArrayList<Task> tasksArr) {
@@ -80,7 +91,7 @@ public class GuiService {
 		for (Task task : tasksArr) {
 			ListItem newListItem = new ListItem(task.getTitle(), task.getStartingTime(), task.getEndingTime(),
 					task.getType(), task.getStatus(), task.isOverDue(), task.returnRecurTag(), taskIndex++);
-			if (task.getType().equalsIgnoreCase("task")) {
+			if (task.getType().equalsIgnoreCase(Constants.TYPE_FLOATING)) {
 				floatingTasks.add(newListItem);
 			} else {
 				timedTasks.add(newListItem);
@@ -98,30 +109,31 @@ public class GuiService {
 		} else {
 			consoleView.listDisplay.getChildren().setAll(consoleView.timedList, consoleView.floatingList);
 		}
-		consoleView.addTaskPreview.toBack();
-		consoleView.scrollPane.toFront();
+		consoleView.showDefaultView();
 	}
 
-	private void addListenersToConsoleView(Stage stage) {
-		consoleView.inputConsole.textProperty().addListener((observable, oldValue, newValue) -> {
-			if (newValue.equalsIgnoreCase(Constants.COMMAND_HELP)) {
+	private void setUpResponsivePopups() {
 
-			} else if (CommandParser.getCommand(newValue).equalsIgnoreCase(Constants.COMMAND_ADD)) {
+		consoleView.inputConsole.textProperty().addListener((observable, oldValue, newValue) -> {
+			if (checkIfInputConsoleEqualsCommand(newValue, Constants.COMMAND_ADD)) {
 				consoleView.showAddPopup();
 				consoleView.updateAddTaskPreviewDetails(TitleParser.getTitle(newValue),
-						parser.getStartDateTime(newValue), this.parser.getEndDateTime(newValue),
+						parser.getStartDateTime(newValue), parser.getEndDateTime(newValue),
 						parser.getRecurValue(newValue));
-			} else if (CommandParser.getCommand(newValue).equalsIgnoreCase(Constants.COMMAND_INVALID)) {
+			} else if (checkIfInputConsoleEqualsCommand(newValue, Constants.COMMAND_INVALID)) {
 				consoleView.showDefaultView();
-			} else if (CommandParser.getCommand(newValue).equalsIgnoreCase(Constants.COMMAND_DELETE)) {
+			} else if (checkIfInputConsoleEqualsCommand(newValue, Constants.COMMAND_DELETE)) {
 
-			} else if (CommandParser.getCommand(newValue).equalsIgnoreCase(Constants.COMMAND_EDIT)
+			} else if (checkIfInputConsoleEqualsCommand(newValue, Constants.COMMAND_EDIT)
 					&& newValue.matches("\\D+\\s\\d+\\s\\D+.+\\z")) {
 				consoleView.showEditPopup();
-				Task toEdit = this.logic.displayCurrent().get(parser.getIndex(newValue) - 1);
+				Task toEdit = logic.displayCurrent().get(parser.getIndex(newValue) - 1);
 				consoleView.updateEditTaskPreviewDetails(toEdit, newValue);
 			}
 		});
+	}
+
+	private void setUpDraggableStage() {
 
 		consoleView.addEventHandler(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
 			@Override
@@ -138,32 +150,24 @@ public class GuiService {
 				stage.setY(event.getScreenY() + yOffset);
 			}
 		});
+	}
 
-		consoleView.scrollPane.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
-			@Override
-			public void handle(KeyEvent event) {
-				if (event.getCode() == KeyCode.ESCAPE) {
-					System.exit(0);
-				}
-			}
-		});
-
+	private void setUpTextFieldKeystrokeListeners() {
 		consoleView.inputConsole.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
 			@Override
 			public void handle(KeyEvent event) {
 				if (event.getCode() == KeyCode.ESCAPE) {
-					if (consoleView.inputConsole.getText().length() == 0) {
+					if (checkIfInputConsoleIsEmpty()) {
 						System.exit(0);
 					} else {
 						consoleView.clearInputConsole();
 					}
-				} else if (event.getCode() == KeyCode.BACK_SPACE && consoleView.inputConsole.getText().length() == 0) {
+				} else if (event.getCode() == KeyCode.BACK_SPACE && checkIfInputConsoleIsEmpty()) {
 					consoleView.showDefaultView();
 					populateList(logic.displayHome());
 					updateStatusLabel(Constants.FEEDBACK_VIEW_TODAY
 							+ DateTime.now().plusWeeks(1).toLocalDateTime().toString(Constants.FORMAT_DATE_VERBOSE));
 				} else if (event.getCode() == KeyCode.DOWN) {
-
 					consoleView.scrollPane.setVvalue(consoleView.scrollPane.getVvalue() + 0.2);
 				} else if (event.getCode() == KeyCode.UP) {
 					consoleView.scrollPane.setVvalue(consoleView.scrollPane.getVvalue() - 0.2);
@@ -178,7 +182,20 @@ public class GuiService {
 				}
 			}
 		});
+	}
 
+	private void setUpMainDisplayKeystrokeListeners() {
+		consoleView.scrollPane.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
+			@Override
+			public void handle(KeyEvent event) {
+				if (event.getCode() == KeyCode.ESCAPE) {
+					System.exit(0);
+				}
+			}
+		});
+	}
+
+	private void setTextFieldOnAction() {
 		consoleView.inputConsole.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -209,6 +226,7 @@ public class GuiService {
 	}
 
 	public Scene buildScene(StackPane content) {
+		content.getChildren().addAll(consoleView);
 		Scene myScene = new Scene(content, APP_DIMENSIONS_WIDTH, APP_DIMENSIONS_HEIGHT);
 		myScene.setFill(Color.TRANSPARENT);
 		myScene.getStylesheets().clear();
@@ -217,13 +235,13 @@ public class GuiService {
 		return myScene;
 	}
 
-	public void changeTheme() {
+	protected void changeTheme() {
 		stage.getScene().getStylesheets().clear();
 		stage.getScene().getStylesheets().add(this.getClass()
 				.getResource(Constants.THEME_LIST[(++themeIndex) % Constants.THEME_LIST.length]).toExternalForm());
 	}
 
-	public void showConsolePane() {
+	protected void showConsolePane() {
 		consoleView.toFront();
 		consoleView.setVisible(true);
 		consoleView.setDisable(false);
@@ -243,11 +261,11 @@ public class GuiService {
 		return trayService.createTrayIcon(this.stage);
 	}
 
-	public void updateStatusLabel(String text) {
+	protected void updateStatusLabel(String text) {
 		consoleView.status.setText(text);
 	}
 
-	public void toggleDisplayHelpPopup() {
+	protected void toggleDisplayHelpPopup() {
 		if (!isShowingHelpPopup) {
 			consoleView.showHelpPopup();
 			updateStatusLabel(Constants.FEEDBACK_VIEW_HELP);
@@ -257,7 +275,11 @@ public class GuiService {
 		isShowingHelpPopup = !isShowingHelpPopup;
 	}
 
-	public void updateInterface(String input, ArrayList<Task> taskArray) {
-		populateList(taskArray);
+	protected boolean checkIfInputConsoleEqualsCommand(String input, String command) {
+		return CommandParser.getCommand(input).equalsIgnoreCase(command);
+	}
+
+	protected boolean checkIfInputConsoleIsEmpty() {
+		return (consoleView.inputConsole.getText().length() == 0);
 	}
 }

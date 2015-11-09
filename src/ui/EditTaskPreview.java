@@ -19,84 +19,85 @@ public class EditTaskPreview extends StackPane {
 
 	private Label header, oldTitleLabel;
 
-	Label oldTitle, oldStartTime, oldEndTime, oldRecurring, oldDurationStartTime, oldDurationEndTime;
+	protected Label oldTitle, oldStartTime, oldEndTime, oldRecurring, oldDurationStartTime, oldDurationEndTime;
 
-	StackPane newDetailsLayout;
+	protected StackPane newDetailsLayout;
 
-	Label newTitleField;
-	Label newStartTimeField, newDurationStartTimeField;
-	Label newEndTimeField, newDurationEndTimeField;
+	protected Label newTitleField;
+	protected Label newStartTimeField, newDurationStartTimeField;
+	protected Label newEndTimeField, newDurationEndTimeField;
 
-	ColumnConstraints columnConstraint = new ColumnConstraints(150);
-	ColumnConstraints columnConstraint1 = new ColumnConstraints(400);
+	private ColumnConstraints columnConstraint = new ColumnConstraints(150);
+	private ColumnConstraints columnConstraint1 = new ColumnConstraints(400);
 
 	public EditTaskPreview() {
 
-		header = new Label("Edit task");
-		header.setId("taskPreviewHeader");
+		instantiateAndStyleComponents();
+		setUpEditTitleLayout();
+		setUpEditStartTimeLayout();
+		setUpEditEndTimeLayout();
+		setUpEditDurationLayout();
+		setUpEditPopupLayout();
 
-		oldTitleLabel = new Label("Title:");
-		oldTitleLabel.setId("taskPreviewLabel");
+	}
+
+	private void setUpEditPopupLayout() {
+		taskPreviewLayout.getColumnConstraints().add(columnConstraint);
+		taskPreviewLayout.getChildren().addAll(header, oldTitleLabel, oldTitle, newDetailsLayout);
+		taskPreviewLayout.setId(Constants.CSS_POPUP_LAYOUT);
+		this.getChildren().addAll(taskPreviewLayout);
+		this.setId(Constants.CSS_POPUP_PANE);
+		this.setPadding(new Insets(200, 50, 100, 50));
+	}
+
+	private void instantiateAndStyleComponents() {
+		header = new Label(Constants.LABEL_EDIT_TASK);
+		header.setId(Constants.CSS_TASK_PREVIEW_HEADER);
+
+		oldTitleLabel = new Label(Constants.LABEL_TITLE);
+		oldTitleLabel.setId(Constants.CSS_TASK_PREVIEW_LABEL);
 
 		oldTitle = new Label(Constants.COMMAND_INVALID);
-		oldTitle.setId("taskPreviewDetails");
+		oldTitle.setId(Constants.CSS_TASK_PREVIEW_DETAILS);
 
 		oldStartTime = new Label();
-		oldStartTime.setId("taskPreviewDetails");
+		oldStartTime.setId(Constants.CSS_TASK_PREVIEW_DETAILS);
 
 		oldEndTime = new Label();
-		oldEndTime.setId("taskPreviewDetails");
+		oldEndTime.setId(Constants.CSS_TASK_PREVIEW_DETAILS);
 
 		oldDurationStartTime = new Label();
-		oldDurationStartTime.setId("taskPreviewDetails");
+		oldDurationStartTime.setId(Constants.CSS_TASK_PREVIEW_DETAILS);
 
 		oldDurationEndTime = new Label();
-		oldDurationEndTime.setId("taskPreviewDetails");
+		oldDurationEndTime.setId(Constants.CSS_TASK_PREVIEW_DETAILS);
 
 		newTitleField = new Label();
-		newTitleField.setId("taskPreviewDetails");
+		newTitleField.setId(Constants.CSS_TASK_PREVIEW_DETAILS);
 
 		newStartTimeField = new Label();
-		newStartTimeField.setId("taskPreviewDetails");
+		newStartTimeField.setId(Constants.CSS_TASK_PREVIEW_DETAILS);
 
 		newEndTimeField = new Label();
-		newEndTimeField.setId("taskPreviewDetails");
+		newEndTimeField.setId(Constants.CSS_TASK_PREVIEW_DETAILS);
 
 		newDurationStartTimeField = new Label();
-		newDurationStartTimeField.setId("taskPreviewDetails");
+		newDurationStartTimeField.setId(Constants.CSS_TASK_PREVIEW_DETAILS);
 
 		newDurationEndTimeField = new Label();
-		newDurationEndTimeField.setId("taskPreviewDetails");
+		newDurationEndTimeField.setId(Constants.CSS_TASK_PREVIEW_DETAILS);
 
 		editTitleLayout = new GridPane();
 		editStartTimeLayout = new GridPane();
 		editEndTimeLayout = new GridPane();
 		editDurationLayout = new GridPane();
-
 		newDetailsLayout = new StackPane();
-
 		taskPreviewLayout = new GridPane();
+
 		GridPane.setConstraints(header, 0, 0, 2, 1);
 		GridPane.setConstraints(oldTitleLabel, 0, 1);
 		GridPane.setConstraints(oldTitle, 1, 1);
 		GridPane.setConstraints(newDetailsLayout, 0, 2);
-
-		setUpEditTitleLayout();
-		setUpEditStartTimeLayout();
-		setUpEditEndTimeLayout();
-		setUpEditDurationLayout();
-
-		taskPreviewLayout.setPrefSize(700, 50);
-		taskPreviewLayout.setPadding(new Insets(20, 20, 20, 20));
-		taskPreviewLayout.setStyle("-fx-background-color: rgba(0,0,0,0.5); -fx-background-radius:20");
-
-		taskPreviewLayout.getColumnConstraints().add(columnConstraint);
-		taskPreviewLayout.getChildren().addAll(header, oldTitleLabel, oldTitle, newDetailsLayout);
-
-		getChildren().addAll(taskPreviewLayout);
-		setPrefSize(700, 50);
-		setStyle("-fx-background-color: rgba(255,255,255,0.5)");
-		setPadding(new Insets(200, 50, 100, 50));
 	}
 
 	public void clearAllDetails() {
@@ -117,18 +118,18 @@ public class EditTaskPreview extends StackPane {
 	}
 
 	private void setUpEditTitleLayout() {
-		Label newTitleLabel = new Label("New Title:");
-		newTitleLabel.setId("taskPreviewLabel");
+		Label newTitleLabel = new Label(Constants.LABEL_NEW_TITLE);
+		newTitleLabel.setId(Constants.CSS_TASK_PREVIEW_LABEL);
 		editTitleLayout.add(newTitleLabel, 0, 0);
 		editTitleLayout.add(newTitleField, 1, 0);
 		editTitleLayout.getColumnConstraints().addAll(columnConstraint, columnConstraint1);
 	}
 
 	private void setUpEditStartTimeLayout() {
-		Label newStartTimeLabel = new Label("New Start Time:");
-		newStartTimeLabel.setId("taskPreviewLabel");
-		Label oldStartTimeLabel = new Label("Current Start Time:");
-		oldStartTimeLabel.setId("taskPreviewLabel");
+		Label newStartTimeLabel = new Label(Constants.LABEL_NEW_START_TIME);
+		newStartTimeLabel.setId(Constants.CSS_TASK_PREVIEW_LABEL);
+		Label oldStartTimeLabel = new Label(Constants.LABEL_CURRENT_END_TIME);
+		oldStartTimeLabel.setId(Constants.CSS_TASK_PREVIEW_LABEL);
 		editStartTimeLayout.add(oldStartTimeLabel, 0, 0);
 		editStartTimeLayout.add(oldStartTime, 1, 0);
 		editStartTimeLayout.add(newStartTimeLabel, 0, 1);
@@ -137,10 +138,10 @@ public class EditTaskPreview extends StackPane {
 	}
 
 	private void setUpEditEndTimeLayout() {
-		Label newEndTimeLabel = new Label("New End Time:");
-		newEndTimeLabel.setId("taskPreviewLabel");
-		Label oldEndTimeLabel = new Label("Current End Time:");
-		oldEndTimeLabel.setId("taskPreviewLabel");
+		Label newEndTimeLabel = new Label(Constants.LABEL_NEW_END_TIME);
+		newEndTimeLabel.setId(Constants.CSS_TASK_PREVIEW_LABEL);
+		Label oldEndTimeLabel = new Label(Constants.LABEL_CURRENT_END_TIME);
+		oldEndTimeLabel.setId(Constants.CSS_TASK_PREVIEW_LABEL);
 		editEndTimeLayout.add(oldEndTimeLabel, 0, 0);
 		editEndTimeLayout.add(oldEndTime, 1, 0);
 		editEndTimeLayout.add(newEndTimeLabel, 0, 1);
@@ -149,14 +150,14 @@ public class EditTaskPreview extends StackPane {
 	}
 
 	private void setUpEditDurationLayout() {
-		Label newStartTimeLabel = new Label("New Start Time:");
-		newStartTimeLabel.setId("taskPreviewLabel");
-		Label oldStartTimeLabel = new Label("Current Start Time:");
-		oldStartTimeLabel.setId("taskPreviewLabel");
-		Label newEndTimeLabel = new Label("New End Time:");
-		newEndTimeLabel.setId("taskPreviewLabel");
-		Label oldEndTimeLabel = new Label("Current End Time:");
-		oldEndTimeLabel.setId("taskPreviewLabel");
+		Label newStartTimeLabel = new Label(Constants.LABEL_NEW_START_TIME);
+		newStartTimeLabel.setId(Constants.CSS_TASK_PREVIEW_LABEL);
+		Label oldStartTimeLabel = new Label(Constants.LABEL_CURRENT_START_TIME);
+		oldStartTimeLabel.setId(Constants.CSS_TASK_PREVIEW_LABEL);
+		Label newEndTimeLabel = new Label(Constants.LABEL_NEW_END_TIME);
+		newEndTimeLabel.setId(Constants.CSS_TASK_PREVIEW_LABEL);
+		Label oldEndTimeLabel = new Label(Constants.LABEL_CURRENT_END_TIME);
+		oldEndTimeLabel.setId(Constants.CSS_TASK_PREVIEW_LABEL);
 
 		editDurationLayout.add(oldStartTimeLabel, 0, 0);
 		editDurationLayout.add(oldDurationStartTime, 1, 0);

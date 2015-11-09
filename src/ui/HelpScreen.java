@@ -1,6 +1,7 @@
 //@@author A0121442X
 package ui;
 
+import application.Constants;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
@@ -18,27 +19,30 @@ public class HelpScreen extends StackPane {
 
 	public HelpScreen() {
 
-		header = new Label("Help");
-		header.setId("taskPreviewHeader");
+		instantiateAndStyleComponents();
+		setUpHelpScreenPopupLayout();
+	}
 
-		helpCommandsText = new Text(
-				"add\ndelete\nedit\nmark\nunmark\nundo\nredo\nsearch\nshow\nsetpath\nenquirepath\nexit");
-		helpCommandsText.setStyle("-fx-fill: rgba(255,255,255,1); -fx-font-size:18; -fx-font-weight:400");
+	private void instantiateAndStyleComponents() {
+		header = new Label(Constants.LABEL_HELP);
+		header.setId(Constants.CSS_TASK_PREVIEW_HEADER);
 
-		helpFlexiText = new Text(
-				"a [title] from [start] to [end]\ndel [index]\ne [index] [field] [new value]\nm [index]\num [index]\nun\nre\nsearch [keyword]\nshow [date]\nset [filepath]\nen\nexit");
-		helpFlexiText.setStyle("-fx-fill: rgba(255,255,255,1); -fx-font-size:18; -fx-font-weight:400");
+		helpCommandsText = new Text(Constants.TEXT_HELP_COMMAND_LIST);
+		helpCommandsText.setId(Constants.CSS_HELP_TEXT);
+
+		helpFlexiText = new Text(Constants.TEXT_HELP_FLEXI_COMMAND_LIST);
+		helpFlexiText.setId(Constants.CSS_HELP_TEXT);
+	}
+
+	private void setUpHelpScreenPopupLayout() {
 		HBox helpTextLayout = new HBox(helpCommandsText, helpFlexiText);
 		helpTextLayout.setSpacing(50);
 		helpScreenLayout = new VBox();
-		helpScreenLayout.setPrefSize(700, 50);
-		helpScreenLayout.setPadding(new Insets(20, 20, 20, 20));
+		helpScreenLayout.setId(Constants.CSS_POPUP_LAYOUT);
 		helpScreenLayout.getChildren().addAll(header, helpTextLayout);
-		helpScreenLayout.setStyle("-fx-background-color: rgba(0,0,0,0.5); -fx-background-radius:20");
 
 		this.getChildren().addAll(helpScreenLayout);
-		this.setPrefSize(700, 50);
-		this.setStyle("-fx-background-color: rgba(255,255,255,0.5)");
+		this.setId(Constants.CSS_POPUP_PANE);
 		this.setPadding(new Insets(50, 50, 50, 50));
 	}
 }

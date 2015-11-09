@@ -29,71 +29,89 @@ import parser.TitleParser;
 
 public class ConsoleView extends Pane {
 
-	Label dateDisplay;
-	Label clockDisplay;
-	AutoCompleteTextField inputConsole;
-	Label status;
+	protected Label dateDisplay;
+	protected Label clockDisplay;
+	protected AutoCompleteTextField inputConsole;
+	protected Label status;
 
-	HBox listDisplay;
-	AddTaskPreview addTaskPreview;
-	EditTaskPreview editTaskPreview;
-	HelpScreen helpScreen;
+	protected HBox listDisplay;
+	protected AddTaskPreview addTaskPreview;
+	protected EditTaskPreview editTaskPreview;
+	protected HelpScreen helpScreen;
 
-	VBox timedList;
-	VBox floatingList;
-	ScrollPane scrollPane;
-	StackPane mainDisplay;
+	protected VBox timedList;
+	protected VBox floatingList;
+	protected ScrollPane scrollPane;
+	private StackPane mainDisplay;
 
-	Parser parser = new Parser();
+	private Parser parser = new Parser();
 
 	public ConsoleView() {
+		instantiateAndStyleComponents();
+		setUpDynamicClock();
+		layoutComponents();
+	}
 
+	private void layoutComponents() {
+		mainDisplay = new StackPane(editTaskPreview, addTaskPreview, scrollPane, helpScreen);
+
+		HBox dateTime = new HBox(dateDisplay, clockDisplay);
+		HBox.setHgrow(clockDisplay, Priority.ALWAYS);
+		dateTime.setMaxWidth(Double.MAX_VALUE);
+
+		VBox consoleLayout = new VBox(dateTime, mainDisplay, inputConsole, status);
+		VBox.setVgrow(consoleLayout, Priority.ALWAYS);
+		this.getChildren().add(consoleLayout);
+	}
+
+	private void setUpDynamicClock() {
 		dateDisplay = new Label();
-		clockDisplay = new Label();
-
-		timedList = new VBox();
-		floatingList = new VBox();
-		listDisplay = new HBox();
-		scrollPane = new ScrollPane();
-
-		inputConsole = new AutoCompleteTextField();
-		status = new Label();
-
 		dateDisplay.setId("dateDisplay");
 		dateDisplay.setAlignment(Pos.CENTER_LEFT);
 		dateDisplay.setMaxWidth(Double.MAX_VALUE);
 
+		clockDisplay = new Label();
 		clockDisplay.setId("timeDisplay");
 		clockDisplay.setAlignment(Pos.CENTER_RIGHT);
 		clockDisplay.setMaxWidth(Double.MAX_VALUE);
 
-		SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy");
-		SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+		SimpleDateFormat dateFormat = new SimpleDateFormat(Constants.FORMAT_DATE);
+		SimpleDateFormat timeFormat = new SimpleDateFormat(Constants.FORMAT_CLOCK);
 		Timeline timeline = new Timeline();
 		EventHandler<ActionEvent> onFinished = new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent t) {
-				dateDisplay.setText(Calendar.getInstance().getTime().toString().split(" ")[0].trim() + ", "
-						+ dateFormat.format(Calendar.getInstance().getTime()));
+				dateDisplay.setText(Calendar.getInstance().getTime().toString().split(Constants.SPACE)[0].trim()
+						+ Constants.COMMA + Constants.SPACE + dateFormat.format(Calendar.getInstance().getTime()));
 				clockDisplay.setText(timeFormat.format(Calendar.getInstance().getTime()));
 			}
 		};
 		timeline.getKeyFrames().add(new KeyFrame(Duration.millis(500), onFinished));
 		timeline.setCycleCount(Animation.INDEFINITE);
 		timeline.play();
+	}
 
+	private void instantiateAndStyleComponents() {
+		timedList = new VBox();
 		timedList.setId("timedList");
 
+		floatingList = new VBox();
 		floatingList.setId("floatingList");
 		floatingList.setFillWidth(true);
 
-		HBox.setHgrow(floatingList, Priority.ALWAYS);
-		HBox.setHgrow(timedList, Priority.ALWAYS);
-
+		listDisplay = new HBox();
 		listDisplay.setSpacing(0);
 		listDisplay.setFillHeight(true);
 		listDisplay.setPrefWidth(700);
 		listDisplay.setPadding(new Insets(0, 0, 0, 0));
+
+		scrollPane = new ScrollPane();
+
+		inputConsole = new AutoCompleteTextField();
+		status = new Label();
+
+		HBox.setHgrow(floatingList, Priority.ALWAYS);
+		HBox.setHgrow(timedList, Priority.ALWAYS);
 
 		scrollPane.setId("scrollPane");
 		scrollPane.setContent(listDisplay);
@@ -103,33 +121,18 @@ public class ConsoleView extends Pane {
 		scrollPane.setBorder(null);
 		scrollPane.setPickOnBounds(false);
 
-		mainDisplay = new StackPane();
-
 		addTaskPreview = new AddTaskPreview();
 		editTaskPreview = new EditTaskPreview();
 		helpScreen = new HelpScreen();
-		mainDisplay.getChildren().addAll(editTaskPreview, addTaskPreview, scrollPane, helpScreen);
 
 		inputConsole.setId("inputConsole");
 		inputConsole.setEditable(true);
 
 		status.setMaxWidth(Double.MAX_VALUE);
 		status.setId("statusBar");
-
-		HBox dateTime = new HBox();
-		HBox.setHgrow(clockDisplay, Priority.ALWAYS);
-		dateTime.setMaxWidth(Double.MAX_VALUE);
-		dateTime.setSpacing(0);
-		dateTime.setPadding(new Insets(0, 0, 0, 0));
-		dateTime.getChildren().addAll(dateDisplay, clockDisplay);
-
-		VBox consoleLayout = new VBox();
-		VBox.setVgrow(consoleLayout, Priority.ALWAYS);
-		consoleLayout.getChildren().addAll(dateTime, mainDisplay, inputConsole, status);
-		this.getChildren().add(consoleLayout);
 	}
 
-	public void updateAddTaskPreviewDetails(String title, DateTime startTime, DateTime endTime, String recurring) {
+	protected void updateAddTaskPreviewDetails(String title, DateTime startTime, DateTime endTime, String recurring) {
 		addTaskPreview.clearAllDetails();
 		addTaskPreview.tempTitle.setText(title);
 		addTaskPreview.tempStartTime.setText(this.showIfValidDate(startTime));
@@ -137,7 +140,7 @@ public class ConsoleView extends Pane {
 		addTaskPreview.tempRecurring.setText(recurring);
 	}
 
-	public void updateEditTaskPreviewDetails(Task toEdit, String input) {
+	protected void updateEditTaskPreviewDetails(Task toEdit, String input) {
 
 		editTaskPreview.clearAllDetails();
 		editTaskPreview.detailsToShow(parser.getField(input));
@@ -164,26 +167,26 @@ public class ConsoleView extends Pane {
 		}
 	}
 
-	public void showEditPopup() {
+	protected void showEditPopup() {
 		editTaskPreview.toFront();
 	}
 
-	public void showAddPopup() {
+	protected void showAddPopup() {
 		addTaskPreview.toFront();
 	}
 
-	public void showHelpPopup() {
+	protected void showHelpPopup() {
 		helpScreen.toFront();
 	}
 
-	public void showDefaultView() {
+	protected void showDefaultView() {
 		addTaskPreview.toBack();
 		editTaskPreview.toBack();
 		helpScreen.toBack();
 		scrollPane.toFront();
 	}
 
-	public void clearInputConsole() {
+	protected void clearInputConsole() {
 		inputConsole.clear();
 	}
 }

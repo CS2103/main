@@ -98,6 +98,7 @@ public class Storage {
 
 	private static boolean processValidPath(String newPath, File checkFile) {
 		Storage.currentTaskList = read();
+
 		if (checkFile.isDirectory()) {
 			appendSaveName(newPath);
 			writePathToFile();
@@ -196,7 +197,7 @@ public class Storage {
 
 	private static void handleNullPath() {
 		if (Storage.path == null) {
-			Storage.path = savedPath.getAbsolutePath();
+			Storage.path = savedTask.getAbsolutePath();
 		}
 	}
 

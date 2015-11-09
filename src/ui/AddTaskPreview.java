@@ -6,48 +6,49 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 
 public class AddTaskPreview extends StackPane {
 
-	Label header;
-	Label titleLabel;
-	Label startLabel;
-	Label endLabel;
-	Label recurringLabel;
+	protected Label header;
+	protected Label titleLabel;
+	protected Label startLabel;
+	protected Label endLabel;
+	protected Label recurringLabel;
 
-	Label tempTitle;
-	Label tempStartTime;
-	Label tempEndTime;
-	Label tempRecurring;
+	protected Label tempTitle;
+	protected Label tempStartTime;
+	protected Label tempEndTime;
+	protected Label tempRecurring;
 
 	public AddTaskPreview() {
+		instantiateAndStyleComponents();
+		setUpAddPopupLayout();
+	}
 
-		header = new Label("Add new task");
-		header.setId("taskPreviewHeader");
+	private void instantiateAndStyleComponents() {
+		header = new Label(Constants.LABEL_ADD_TASK);
+		header.setId(Constants.CSS_TASK_PREVIEW_HEADER);
 
-		titleLabel = new Label("Title:");
-		titleLabel.setId("taskPreviewLabel");
-		startLabel = new Label("Start:");
-		startLabel.setId("taskPreviewLabel");
-		endLabel = new Label("End:");
-		endLabel.setId("taskPreviewLabel");
-		recurringLabel = new Label("Repeat:");
-		recurringLabel.setId("taskPreviewLabel");
+		titleLabel = new Label(Constants.LABEL_TITLE);
+		titleLabel.setId(Constants.CSS_TASK_PREVIEW_LABEL);
+		startLabel = new Label(Constants.LABEL_START);
+		startLabel.setId(Constants.CSS_TASK_PREVIEW_LABEL);
+		endLabel = new Label(Constants.LABEL_END);
+		endLabel.setId(Constants.CSS_TASK_PREVIEW_LABEL);
+		recurringLabel = new Label(Constants.LABEL_RECURRING);
+		recurringLabel.setId(Constants.CSS_TASK_PREVIEW_LABEL);
 
 		tempTitle = new Label();
-		tempTitle.setId("taskPreviewDetails");
+		tempTitle.setId(Constants.CSS_TASK_PREVIEW_DETAILS);
 		tempStartTime = new Label();
-		tempStartTime.setId("taskPreviewDetails");
+		tempStartTime.setId(Constants.CSS_TASK_PREVIEW_DETAILS);
 		tempEndTime = new Label();
-		tempEndTime.setId("taskPreviewDetails");
+		tempEndTime.setId(Constants.CSS_TASK_PREVIEW_DETAILS);
 		tempRecurring = new Label();
-		tempRecurring.setId("taskPreviewDetails");
+		tempRecurring.setId(Constants.CSS_TASK_PREVIEW_DETAILS);
+	}
 
-		header.setText("Add new task");
-		header.setFont(Font.font("SansSerif", FontWeight.BOLD, 16));
-
+	private void setUpAddPopupLayout() {
 		GridPane taskPreviewLayout = new GridPane();
 		GridPane.setConstraints(header, 0, 0, 2, 1);
 		GridPane.setConstraints(titleLabel, 0, 1);
@@ -58,17 +59,13 @@ public class AddTaskPreview extends StackPane {
 		GridPane.setConstraints(tempStartTime, 1, 2);
 		GridPane.setConstraints(tempEndTime, 1, 3);
 		GridPane.setConstraints(tempRecurring, 1, 4);
-		// GridPane.setConstraints();
 
-		taskPreviewLayout.setPrefSize(700, 50);
-		taskPreviewLayout.setPadding(new Insets(20, 20, 20, 20));
-		taskPreviewLayout.setStyle("-fx-background-color: rgba(0,0,0,0.5); -fx-background-radius:20");
 		taskPreviewLayout.getChildren().addAll(header, titleLabel, startLabel, endLabel, recurringLabel, tempTitle,
 				tempStartTime, tempEndTime, tempRecurring);
+		taskPreviewLayout.setId(Constants.CSS_POPUP_LAYOUT);
 
 		this.getChildren().addAll(taskPreviewLayout);
-		this.setPrefSize(700, 50);
-		this.setStyle("-fx-background-color: rgba(255,255,255,0.5)");
+		this.setId(Constants.CSS_POPUP_PANE);
 		this.setPadding(new Insets(200, 50, 100, 50));
 	}
 

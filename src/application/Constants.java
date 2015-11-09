@@ -27,17 +27,21 @@ public class Constants {
 	public static final int DAYS_OFFSET = 7;
 	public static final int BEGINNING_OF_LIST = 1;
 
-	public static final String LABEL_TITLE = "Title: ";
-	public static final String LABEL_LOCATION = "Location: ";
-	public static final String LABEL_START_TIME = "Start Time: ";
-	public static final String LABEL_START = "Start: ";
-	public static final String LABEL_END = "End: ";
-	public static final String LABEL_END_TIME = "End Time: ";
-	public static final String LABEL_START_DATE = "Start Date: ";
-	public static final String LABEL_END_DATE = "Due Date: ";
-	public static final String LABEL_PRIORITY = "Priority: ";
+	public static final String LABEL_EDIT_TASK = "Edit Task";
+	public static final String LABEL_ADD_TASK = "Add New Task";
+	public static final String LABEL_HELP = "Help";
 
-	public static final int REFRESH_TIME = 60 * 1000; // refers to the time in
+	public static final String LABEL_NEW_TITLE = "Title:";
+	public static final String LABEL_TITLE = "New Title:";
+	public static final String LABEL_NEW_START_TIME = "New Start Time:";
+	public static final String LABEL_CURRENT_START_TIME = "Current Start Time:";
+	public static final String LABEL_NEW_END_TIME = "New End Time:";
+	public static final String LABEL_CURRENT_END_TIME = "Current End Time:";
+	public static final String LABEL_START_DATE = "Start Date: ";
+
+	public static final String LABEL_START = "Start:";
+	public static final String LABEL_END = "End:";
+	public static final String LABEL_RECURRING = "Repeat:";
 
 	// Separators
 	public static final String SEPARATOR = "\\\\";
@@ -238,6 +242,8 @@ public class Constants {
 	public static final String FORMAT_DATE_WITHOUT_YEAR = "EEE dd MMM";
 	public static final String FORMAT_TWENTYFOURHOUR = "HHmm";
 	public static final String FORMAT_DATE_VERBOSE = "EEEE dd MMMM";
+	public static final String FORMAT_CLOCK = "HH:mm:ss";
+	public static final String FORMAT_DATE = "dd MMM yyyy";
 
 	public static final String TIME_START_OF_DAY = "0000";
 	public static final String TIME_END_OF_DAY = "2359";
@@ -250,4 +256,31 @@ public class Constants {
 
 	// used in Storage.java to correct index when calling String.substring()
 	public static final int FIX_CORRECT_INDEX = 1;
+
+	public static final String CSS_CONTENT = "content";
+	public static final String CSS_DATE_DISPLAY = "dateDisplay";
+	public static final String CSS_TIME_DISPLAY = "timeDisplay";
+	public static final String CSS_SCROLLPANE = "scrollPane";
+	public static final String CSS_INPUT_CONSOLE = "inputConsole";
+	public static final String CSS_TIMED_LIST = "timedList";
+	public static final String CSS_FLOATING_LIST = "floatingList";
+	public static final String CSS_STATUS_BAR = "statusBar";
+	public static final String CSS_LIST_ITEM = "listItem";
+	public static final String CSS_TITLE_OVERDUE = "titleOverdue";
+	public static final String CSS_TITLE_TASK = "titleTask";
+	public static final String CSS_TITLE_EVENT = "titleEvent";
+	public static final String CSS_TITLE_DEADLINE = "titleDeadline";
+	public static final String CSS_INDEX = "index";
+	public static final String CSS_STATUS_ICON = "statusIcon";
+	public static final String CSS_DURATION = "duration";
+	public static final String CSS_TASK_PREVIEW_HEADER = "taskPreviewHeader";
+	public static final String CSS_TASK_PREVIEW_LABEL = "taskPreviewLabel";
+	public static final String CSS_TASK_PREVIEW_DETAILS = "taskPreviewDetails";
+	public static final String CSS_POPUP_LAYOUT = "popupLayout";
+	public static final String CSS_POPUP_PANE = "popupPane";
+	public static final String CSS_HELP_TEXT = "helpText";
+
+	public static final String TEXT_HELP_COMMAND_LIST = "add\ndelete\nedit\nmark\nunmark\nundo\nredo\nsearch\nshow\nsetpath\nenquirepath\nexit";
+	public static final String TEXT_HELP_FLEXI_COMMAND_LIST = "a [title] from [start] to [end]\ndel [index]\ne [index] [field] [new value]\nm [index]\num [index]\nun\nre\nsearch [keyword]\nshow [date]\nset [filepath]\nen\nexit";
+
 }
