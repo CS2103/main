@@ -39,8 +39,11 @@ public class TaskBin {
 		displayList = display.returnDisplay();
 	}
 
+	//Return the list that is current in display. 
 	public ArrayList<Task> returnDisplay() {
+		
 		displayList = display.returnDisplay();
+		displayList = sorter.sortArrayByTime(displayList);
 		return displayList;
 	}
 

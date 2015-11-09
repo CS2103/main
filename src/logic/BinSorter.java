@@ -47,8 +47,7 @@ public class BinSorter {
 		timeUndefined = sortArrayByAlpha(timeUndefined);
 		for(int i = 1; i < normalTask.size() - 1; i++){
 			boolean isSorted = true;
-			for (int m = 1; m < inboxArr.size() - i; m++) {
-				
+			for (int m = 0; m < inboxArr.size() - i - 1; m++) {
 				if(normalTask.get(i).getEndingTime().isAfter(normalTask.get(i+1).getEndingTime())){
 					Task buffer = normalTask.get(i);
 					normalTask.set(i, normalTask.get(i+1));
